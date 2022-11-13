@@ -9,7 +9,7 @@ db.connect();
 const { Client, Collection } = require("discord.js");
 const client = new Client({ intents: 33349 });
 
-const commandFolders = fs.readdirSync("./commands/").filter(item => !/(^|\/)\.[^/.]/g.test(item));;
+const commandFolders = fs.readdirSync("./commands/").filter(item => !/(^|\/)\.[^/.]/g.test(item));
 const commands = [];
 
 client.commands = new Collection();
