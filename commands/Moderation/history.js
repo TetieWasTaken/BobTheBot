@@ -1,14 +1,15 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const profileSchema = require('../../models/profileSchema');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('userprofile')
-        .setDescription('Check a user\'s warn profile and history')
+        .setName('history')
+        .setDescription('Check a user\'s infraction history')
         .addUserOption((option) => 
             option
                 .setName("target")
-                .setDescription("member to view profile of")
+                .setDescription("member to view history of")
                 .setRequired(true)
         ),
     async execute(interaction) {
@@ -22,7 +23,7 @@ module.exports = {
                 let profile = await profileSchema.create({
                     userId: user,
                     guildId: interaction.guild.id,
-                    score: 1
+                    warningCount: 0,
                 });
                 profile.save();
             }
@@ -30,9 +31,18 @@ module.exports = {
             console.log(err)
         }
 
+        const replyEmbed = new EmbedBuilder()
+            .setColor(0xffbd67)
+            .setTitle(`History for ${user}`)
+            .addFields(
+                { name: `Warns`, value: `
+                    ${profileData.warningCount}`, inline: true 
+                },
+            )
+            .setTimestamp()
+
         interaction.reply({
-            content: `${user}'s score is: ${profileData.score}`,
-            ephemeral: true
+            embeds: [replyEmbed]
         })
     }
 }

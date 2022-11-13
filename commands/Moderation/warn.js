@@ -19,23 +19,11 @@ module.exports = {
                 .setDescription("reason for warn")
                 .setRequired(true)
         )
-        .addIntegerOption((option) => 
-            option
-                .setName("severity")
-                .setDescription("severity of the warn (default set to minor)")
-                .addChoices(
-                    { name: 'Minor offense', value: 3 }, 
-                    { name: 'Basic offense', value: 5 }, 
-                    { name: 'Severe offense', value: 10})
-                .setRequired(false)
-        )
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
 	    .setDMPermission(false),
     async execute(interaction) {
         const user = interaction.options.getUser('target');
         const reason = interaction.options.getString('reason');
-        const severityValue = interaction.options.getInteger('severity');
-        additionalScore = 0;
 
         let profileData;
         try {
@@ -44,30 +32,26 @@ module.exports = {
                 let profile = await profileSchema.create({
                     userId: user,
                     guildId: interaction.guild.id,
-                    score: 1
+                    warningCount: 0,
                 });
                 profile.save();
             }
         } catch (err) {
             console.log(err)
         }
-        if(severityValue===null){
-            additionalScore = 3;
-        }
-        const newScore = interaction.options.getInteger('severity') + additionalScore;
 
         await profileSchema.findOneAndUpdate({
             userId: user,
         }, {
             $inc: {
-                score: newScore,
+                warningCount: 1,
             }
         });
 
         const replyEmbed = new EmbedBuilder()
             .setColor(0xffbd67)
             .setTitle('User warned')
-            .setDescription(`${user} has been warned for: ${reason},\nTheir score has been updated to: ${profileData.score + newScore}`)
+            .setDescription(`${user} has been warned for: ${reason}`)
             .setTimestamp()
 
         user.send(

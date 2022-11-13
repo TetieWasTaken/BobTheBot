@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const profileSchema = new mongoose.Schema({
     userId: { type: String, require: true, unique: true },
     guildId: { type: String, require: true},
-    score: { type: Number, default: 1 }
+    warningCount: { type: Number, default: 0 },
 });
 
 const model = mongoose.model("ProfileModels", profileSchema);
