@@ -4,7 +4,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('mute')
-        .setDescription('mute a user')
+        .setDescription('Puts a user in timeout for a certain amount of time')
         .addUserOption((option) => 
             option
                 .setName("target")

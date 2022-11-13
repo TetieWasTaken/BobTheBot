@@ -4,7 +4,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('roles')
-        .setDescription('get roles'),
+        .setDescription('Returns a list of all roles in the guild'),
     async execute(interaction) {
         const roles = interaction.guild.roles.cache.filter(role => role.id !== interaction.guild.id).toJSON().join('\n')
       const replyEmbed = new EmbedBuilder()

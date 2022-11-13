@@ -5,7 +5,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('unban')
-        .setDescription('unban command')
+        .setDescription('Unbans a user from the current guild')
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
         .addStringOption((option) => 
             option

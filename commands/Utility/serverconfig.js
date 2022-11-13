@@ -5,7 +5,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('serverconfig')
-        .setDescription('configurate your server')
+        .setDescription('Allows the guild owner to change guild configuation settings')
         .addStringOption((option) => 
             option
                 .setName("guild_log_channel")

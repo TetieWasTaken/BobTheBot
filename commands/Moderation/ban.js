@@ -5,7 +5,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ban')
-        .setDescription('ban command')
+        .setDescription('Bans a user from the current guild')
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
         .addUserOption((option) => 
             option

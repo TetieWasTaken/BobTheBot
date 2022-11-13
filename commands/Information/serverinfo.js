@@ -4,7 +4,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('serverinfo')
-        .setDescription('get server info'),
+        .setDescription('Receive information about the current guild'),
     async execute(interaction) {
         var serverIcon = interaction.guild.iconURL();
         var boostCount = interaction.guild.premiumSubscriptionCount;

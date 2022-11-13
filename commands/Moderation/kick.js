@@ -5,7 +5,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('kick')
-        .setDescription('kick command')
+        .setDescription('Kicks a user from the current guild')
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
         .addUserOption((option) => 
             option

@@ -4,7 +4,7 @@ const profileSchema = require('../../models/profileSchema');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('userprofile')
-        .setDescription('check a users\'s profile')
+        .setDescription('Check a user\'s warn profile and history')
         .addUserOption((option) => 
             option
                 .setName("target")

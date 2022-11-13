@@ -6,7 +6,7 @@ const { SlashCommandBuilder } = require ('@discordjs/builders');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('warn')
-        .setDescription('Warn a member')
+        .setDescription('Warns a user in the current guild')
         .addUserOption((option) => 
             option
                 .setName("target")
