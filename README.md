@@ -1,8 +1,8 @@
-### Scorcher
+# Scorcher
 
 ## Command list
 
-# Moderation
+### Moderation
 
 - Ban
 - Unban
@@ -11,13 +11,13 @@
 - Warn
 - Userprofile
 
-# Information
+### Information
 
 - RoleInfo
 - Roles
 - Serverinfo
 
-# Utility
+### Utility
 
 - Ping
 - Serverconfig
