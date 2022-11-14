@@ -28,18 +28,33 @@ module.exports = {
       newData.save();
     }
 
+    const member = await interaction.guild.members.fetch(user.id);
+    let isCommunicationDisabledBool = false;
+    if (member.isCommunicationDisabled() == true) {
+      isCommunicationDisabledBool = true;
+    }
+
     let punishmentArray = data.Punishments.map(
       (punishment) => `\`${punishment.PunishType}\`: ${punishment.Reason}`
     );
     const replyEmbed = new EmbedBuilder()
       .setColor(0xffbd67)
-      .setTitle(`History for ${user}`)
+      .setTitle(`History for ${user.username}`)
       .addFields({
         name: `Infractions`,
         value: punishmentArray.join("\n"),
         inline: true,
       })
+      .addFields({
+        name: `Active infraction`,
+        value: `This user is timed out until: ${member.communicationDisabledUntil}`,
+        inline: false,
+      })
       .setTimestamp();
+
+    if (!isCommunicationDisabledBool) {
+      replyEmbed.spliceFields(-1, 1);
+    }
 
     interaction.reply({
       embeds: [replyEmbed],

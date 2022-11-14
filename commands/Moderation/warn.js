@@ -50,18 +50,12 @@ module.exports = {
       newData.save();
     }
 
-    const replyEmbed = new EmbedBuilder()
-      .setColor(0xffbd67)
-      .setTitle("User warned")
-      .setDescription(`${user} has been warned for: ${reason}`)
-      .setTimestamp();
-
     user
       .send(`You have been warned in ${interaction.guild.name} for ${reason}`)
       .catch(console.log);
 
     interaction.reply({
-      embeds: [replyEmbed],
+      content: `:warning:  \`${user.username}#${user.discriminator}\` has been warned for \`${reason}\``,
       ephemeral: true,
     });
   },

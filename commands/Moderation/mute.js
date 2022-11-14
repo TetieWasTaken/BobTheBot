@@ -65,16 +65,9 @@ module.exports = {
       newData.save();
     }
 
-    const replyEmbed = new EmbedBuilder()
-      .setColor(0xff8355)
-      .setTitle("User muted")
-      .setDescription(
-        `Target: ${user}\nReason: ${reason}\nDuration: ${duration} hours`
-      )
-      .setTimestamp();
-
     interaction.reply({
-      embeds: [replyEmbed],
+      content: `:mute:  \`${user.username}#${user.discriminator}\` has been muted for \`${reason}\``,
+      ephemeral: true,
     });
   },
 };
