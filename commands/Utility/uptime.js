@@ -2,20 +2,15 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("ping")
-    .setDescription("Returns the bots's latency"),
+    .setName("uptime")
+    .setDescription("Receive the bots's uptime"),
   async execute(interaction) {
     const sent = await interaction.reply({
       content: "Pinging...",
       fetchReply: true,
-      ephemeral: true,
     });
     await interaction.editReply(
-      `Websocket heartbeat: \`${
-        interaction.client.ws.ping
-      }ms\`.\nRountrip Latency: \`${
-        sent.createdTimestamp - interaction.createdTimestamp
-      }ms\``
+      `Uptime: \`${Math.round(interaction.client.uptime / 60000)} minutes\``
     );
   },
 };
