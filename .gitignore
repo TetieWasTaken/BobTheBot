@@ -1,3 +1,12 @@
-
+#dotenv
 .env
+
+#Dependencies
+node_modules/
+
+#Json files
+package.json
+package-lock.json
+
+#Misc
 .DS_Store
