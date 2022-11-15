@@ -18,6 +18,8 @@ module.exports = {
       boostTier = 3;
     }
 
+    const fetchedOwner = await Promise.resolve(interaction.guild.fetchOwner());
+
     const replyEmbed = new EmbedBuilder()
       .setColor(0xff8355)
       .setAuthor({ name: `${interaction.guild.name}`, iconURL: serverIcon })
@@ -26,7 +28,7 @@ module.exports = {
         {
           name: "General information",
           value: `
-          *Owner:* <@!${interaction.guild.ownerId}>
+          *Owner:* \`${fetchedOwner.user.tag}\`
                 *Member count:* \`${interaction.guild.memberCount}\`
                 *Boosts:* \`${boostCount}\``,
           inline: true,
