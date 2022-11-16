@@ -24,7 +24,18 @@ module.exports = {
         name: `Developers`,
         value: `
                     ${developerArray.join(", ") || "None"}`,
-        inline: false,
+        inline: true,
+      })
+      .addFields({
+        name: `Dependency versions`,
+        value: `NodeJS: \`v18.12.0\`\nDiscord.JS: \`14.6.0\`\nMongoose: \`6.7.0\``,
+        inline: true,
+      })
+      .addFields({
+        name: `Links`,
+        value:
+          "[**Github**](https://github.com/UndefinedToast/Scorcher)\n[**Discord**](https://discord.com)",
+        inline: true,
       })
       .setTimestamp();
     interaction.reply({
