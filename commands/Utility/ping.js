@@ -11,9 +11,9 @@ module.exports = {
       ephemeral: true,
     });
     await interaction.editReply(
-      `Websocket heartbeat: \`${
+      `:heartbeat: Websocket heartbeat: \`${
         interaction.client.ws.ping
-      }ms\`.\nRountrip Latency: \`${
+      }ms\`.\n:comet: Rountrip Latency: \`${
         sent.createdTimestamp - interaction.createdTimestamp
       }ms\``
     );
