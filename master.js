@@ -9,10 +9,13 @@ db.connect();
 const { Client, Collection } = require("discord.js");
 const client = new Client({ intents: 33349 });
 
-const commandFolders = fs.readdirSync("./commands/").filter(item => !/(^|\/)\.[^/.]/g.test(item));
+const commandFolders = fs
+  .readdirSync("./commands/")
+  .filter((item) => !/(^|\/)\.[^/.]/g.test(item));
 const commands = [];
 
 client.commands = new Collection();
+client.buttons = new Collection();
 
 for (const folder of commandFolders) {
   const commandFiles = fs
@@ -22,6 +25,24 @@ for (const folder of commandFolders) {
     const command = require(`./commands/${folder}/${file}`);
     commands.push(command.data.toJSON());
     client.commands.set(command.data.name, command);
+  }
+}
+
+const componentFolders = fs.readdirSync(`./components`);
+for (const compfolder of componentFolders) {
+  const componentFiles = fs
+    .readdirSync(`./components/${compfolder}`)
+    .filter((file) => file.endsWith(".js"));
+
+  switch (compfolder) {
+    case "buttons":
+      for (const file of componentFiles) {
+        const button = require(`./components/${compfolder}/${file}`);
+        client.buttons.set(button.data.name, button);
+      }
+      break;
+    default:
+      break;
   }
 }
 

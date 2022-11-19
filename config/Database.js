@@ -1,24 +1,27 @@
-const mongoose = require('mongoose');
-require('dotenv').config();
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 class Database {
-    constructor() {
-        this.connection = null;
-    }
+  constructor() {
+    this.connection = null;
+  }
 
-    connect() {
-        console.log('Connecting to database...');
+  connect() {
+    console.log("✔️ Connecting to database...");
 
-        mongoose.connect(process.env.MONGO_DATABASETOKEN, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        }).then(() => {
-            console.log('Connected to database!');
-            this.connection = mongoose.connection;
-        }).catch(err => {
-            console.error(err);
-        });
-    }
+    mongoose
+      .connect(process.env.MONGO_DATABASETOKEN, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      })
+      .then(() => {
+        console.log("✔️ Connected to database!");
+        this.connection = mongoose.connection;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 }
 
 module.exports = Database;
