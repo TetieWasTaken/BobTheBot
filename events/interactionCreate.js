@@ -1,3 +1,5 @@
+const GuildSchema = require("../models/GuildModel");
+
 module.exports = {
   name: "interactionCreate",
   once: false,
@@ -15,6 +17,24 @@ module.exports = {
         console.log(err);
       }
     }
+
+    if (interaction.isModalSubmit()) {
+      if (interaction.customId === "full-setup-modal") {
+        const logChannelId =
+          interaction.fields.getTextInputValue("logChannelIdInput");
+        await interaction.reply(logChannelId);
+
+        await GuildSchema.findOneAndUpdate(
+          {
+            GuildId: interaction.guild.id,
+          },
+          {
+            GuildLogChannel: logChannelId,
+          }
+        );
+      }
+    }
+
     if (!interaction.isCommand()) return;
 
     const command = interaction.client.commands.get(interaction.commandName);
