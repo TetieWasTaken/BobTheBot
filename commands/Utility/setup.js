@@ -16,12 +16,21 @@ module.exports = {
       GuildId: interaction.guild.id,
     });
 
-    if (!data) {
-      let newData = new GuildSchema({
-        GuildId: interaction.guild.id,
-      });
-      newData.save();
+    let GuildLogChannelResponse;
+
+    if (data) {
+      GuildLogChannelResponse = `<#${data.GuildLogChannel}>`;
     }
+
+    if (!data) {
+      GuildLogChannelResponse = "Not set";
+      data = new GuildSchema({
+        GuildId: interaction.guild.id,
+        GuildLogChannel: "Not set",
+      });
+      data.save();
+    }
+
     const replyEmbed = new EmbedBuilder()
       .setColor(0xffbd67)
       .setTitle(`Current server data`)
@@ -33,7 +42,7 @@ module.exports = {
         },
         {
           name: `Guild log channel`,
-          value: `Log channel not set`,
+          value: `${GuildLogChannelResponse}`,
           inline: true,
         }
       )

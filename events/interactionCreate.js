@@ -1,4 +1,5 @@
 const GuildSchema = require("../models/GuildModel");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
   name: "interactionCreate",
@@ -22,7 +23,25 @@ module.exports = {
       if (interaction.customId === "full-setup-modal") {
         const logChannelId =
           interaction.fields.getTextInputValue("logChannelIdInput");
-        await interaction.reply(logChannelId);
+
+        const replyEmbed = new EmbedBuilder()
+          .setColor(0xffbd67)
+          .setTitle(`Setup completed`)
+          .addFields({
+            name: `Guild ID`,
+            value: `${interaction.guild.id}`,
+            inline: true,
+          })
+          .addFields({
+            name: `Logging channel`,
+            value: `<#${logChannelId}>`,
+            inline: true,
+          })
+          .setFooter({
+            text: "Incorrect information? Re-run the setup command.",
+          });
+
+        await interaction.reply({ embeds: [replyEmbed], ephemeral: true });
 
         await GuildSchema.findOneAndUpdate(
           {
