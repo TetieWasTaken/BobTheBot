@@ -2,12 +2,28 @@
 require("dotenv").config();
 const fs = require("fs");
 const Database = require("./config/Database");
+const { Partials } = require("discord.js");
 
 const db = new Database();
 db.connect();
 
 const { Client, Collection } = require("discord.js");
-const client = new Client({ intents: 33349 });
+const client = new Client({
+  intents: 131071,
+  partials: [Partials.Message, Partials.Channel, Partials.Reaction],
+}); // 34373
+
+const { GiveawaysManager } = require("discord-giveaways");
+const manager = new GiveawaysManager(client, {
+  storage: "./giveaways.json",
+  default: {
+    botsCanWin: false,
+    embedColor: "#FF0000",
+    embedColorEnd: "#000000",
+    reaction: "🎉",
+  },
+});
+client.giveawaysManager = manager;
 
 const commandFolders = fs
   .readdirSync("./commands/")

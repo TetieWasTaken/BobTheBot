@@ -37,6 +37,10 @@ module.exports = {
     let punishmentArray = data.Punishments.map(
       (punishment) => `\`${punishment.PunishType}\`: ${punishment.Reason}`
     );
+    if (punishmentArray.length == 0) {
+      punishmentArray.push("No active infractions.");
+    }
+
     const replyEmbed = new EmbedBuilder()
       .setColor(0xffbd67)
       .setTitle(`History for ${user.username}`)
