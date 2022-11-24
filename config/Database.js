@@ -7,7 +7,7 @@ class Database {
   }
 
   connect() {
-    console.log("✔️ Connecting to database...");
+    console.log("✅ Connecting to database...");
 
     mongoose
       .connect(process.env.MONGO_DATABASETOKEN, {
@@ -15,7 +15,7 @@ class Database {
         useUnifiedTopology: true,
       })
       .then(() => {
-        console.log("✔️ Connected to database!");
+        console.log("✅ Connected to database!");
         this.connection = mongoose.connection;
       })
       .catch((err) => {

@@ -1,23 +1,19 @@
-# Scorcher
+<a name="readme-top"></a>
 
-## Command list
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/othneildrew/Best-README-Template">
+    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  </a>
 
-### Moderation
-
-| Ban - Bans a user from the current guild  
-| Unban - Unbans a user from the current guild  
-| Kick - Kicks a user from the current guild  
-| Mute - Puts a user in timeout for a certain amount of time  
-| Warn - Warns a user in the current guild  
-| History - Check a user's infraction history
-
-### Information
-
-| Roleinfo - Receive information about a role  
-| Roles - Returns a list of all roles in the guild  
-| Serverinfo - Receive information about the current guild
-
-### Utility
-
-| Ping - Returns the bots's latency  
-| Serverconfig - Allows the guild owner to change guild configuation settings
+<div align="center">
+	<br />
+	<h3 align="center">Bob The Bot</h3>
+	<br />
+	<p>
+		<a href="https://discord.gg/https://discord.gg/7YZUpj6vZJ"><img src="https://img.shields.io/discord/1045431888342417449?color=5865F2&logo=discord&logoColor=white" alt="Discord server" /></a>
+    		<a href="https://www.npmjs.com/package/discord.js"><img src="https://img.shields.io/npm/v/npm?maxAge=3600" alt="npm version" /></a>
+		<a href="https://github.com/discordjs/discord.js/actions"><img src="https://github.com/discordjs/discord.js/actions/workflows/test.yml/badge.svg" alt="Tests status" /></a>
+	</p>
+</div>

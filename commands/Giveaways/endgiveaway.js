@@ -10,6 +10,7 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
+    //TODO: REMOVE GIVEAWAY DATA
     const messageId = interaction.options.getString("messageid");
     interaction.client.giveawaysManager
       .end(messageId)

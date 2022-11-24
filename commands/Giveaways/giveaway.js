@@ -40,12 +40,9 @@ module.exports = {
     const channel = interaction.options.getChannel("channel");
     const duration = interaction.options.getString("duration");
     let winners = interaction.options.getInteger("winners");
-    console.log(winners);
-    if (typeof winners == "undefined") {
-      console.log(`winners is undefined`);
+    if (winners === null) {
       winners = 1;
     }
-    console.log(winners);
 
     interaction.client.giveawaysManager
       .start(channel, {
@@ -61,23 +58,12 @@ module.exports = {
           embedColor: "0xff6600",
         },
       })
-      .then((data) => {
-        console.log(data); // {...} (messageId, end date and more)
-      })
       .catch((err) => {
         console.log(err);
       });
 
-    const replyEmbed = new EmbedBuilder()
-      .setColor(0xffbd67)
-      .setTitle(`${prize}`)
-      .setDescription(`React with 🎉 to enter!\nTime remaining: \`999\``)
-      .setFooter({ text: `${winners} winners` })
-      .setTimestamp();
-
     interaction.reply({
-      content: `Preview of the giveaway`,
-      embeds: [replyEmbed],
+      content: `Giveaway started in ${channel}`,
     });
   },
 };

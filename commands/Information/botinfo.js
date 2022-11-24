@@ -11,7 +11,7 @@ module.exports = {
       .addFields({
         name: `Name`,
         value: `
-                    Scorcher`,
+                    BobTheBot`,
         inline: true,
       })
       .addFields({
@@ -34,7 +34,7 @@ module.exports = {
       .addFields({
         name: `Links`,
         value:
-          "[**Github**](https://github.com/UndefinedToast/Scorcher)\n[**Discord**](https://discord.com)",
+          "[**Github**](https://github.com/)\n[**Discord**](https://discord.com)",
         inline: true,
       })
       .setTimestamp();

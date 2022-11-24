@@ -3,6 +3,7 @@ require("dotenv").config();
 const fs = require("fs");
 const Database = require("./config/Database");
 const { Partials } = require("discord.js");
+const GiveawayModel = require("./models/GiveawayModel");
 
 const db = new Database();
 db.connect();
@@ -14,8 +15,27 @@ const client = new Client({
 }); // 34373
 
 const { GiveawaysManager } = require("discord-giveaways");
-const manager = new GiveawaysManager(client, {
-  storage: "./giveaways.json",
+const GiveawayManagerWithOwnDatabase = class extends GiveawaysManager {
+  async getAllGiveaways() {
+    return await GiveawayModel.find().lean().exec();
+  }
+
+  async saveGiveaway(messageId, giveawayData) {
+    await GiveawayModel.create(giveawayData);
+    return true;
+  }
+
+  async editGiveaway(messageId, giveawayData) {
+    await GiveawayModel.updateOne({ messageId }, giveawayData).exec();
+    return true;
+  }
+
+  async deleteGiveaway(messageId) {
+    await GiveawayModel.deleteOne({ messageId }).exec();
+    return true;
+  }
+};
+const manager = new GiveawayManagerWithOwnDatabase(client, {
   default: {
     botsCanWin: false,
     embedColor: "#FF0000",
@@ -33,7 +53,10 @@ const commands = [];
 client.commands = new Collection();
 client.buttons = new Collection();
 
+console.log(`------------------------------------------------`);
+
 for (const folder of commandFolders) {
+  console.log(`Loading commands from ${folder}`);
   const commandFiles = fs
     .readdirSync(`./commands/${folder}`)
     .filter((file) => file.endsWith(".js"));
@@ -41,11 +64,15 @@ for (const folder of commandFolders) {
     const command = require(`./commands/${folder}/${file}`);
     commands.push(command.data.toJSON());
     client.commands.set(command.data.name, command);
+    console.log(`| ✅ ${file} loaded!`);
   }
 }
 
+console.log(`------------------------------------------------`);
+
 const componentFolders = fs.readdirSync(`./components`);
 for (const compfolder of componentFolders) {
+  console.log(`Loading buttons from ${compfolder}`);
   const componentFiles = fs
     .readdirSync(`./components/${compfolder}`)
     .filter((file) => file.endsWith(".js"));
@@ -55,6 +82,7 @@ for (const compfolder of componentFolders) {
       for (const file of componentFiles) {
         const button = require(`./components/${compfolder}/${file}`);
         client.buttons.set(button.data.name, button);
+        console.log(`| ✅ ${file} loaded!`);
       }
       break;
     default:
@@ -62,12 +90,15 @@ for (const compfolder of componentFolders) {
   }
 }
 
+console.log(`------------------------------------------------`);
+
 const eventFiles = fs
   .readdirSync("./events")
   .filter((file) => file.endsWith(".js"));
 
 for (const file of eventFiles) {
   const event = require(`./events/${file}`);
+  console.log(`| ✅ ${file} loaded!`);
 
   if (event.once) {
     client.once(event.name, (...args) => event.execute(...args, commands));
@@ -75,6 +106,8 @@ for (const file of eventFiles) {
     client.on(event.name, (...args) => event.execute(...args, commands));
   }
 }
+
+console.log(`------------------------------------------------`);
 
 client.on("error", (error) => {
   console.error("The WebSocket encountered an error:", error);

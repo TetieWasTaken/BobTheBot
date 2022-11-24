@@ -7,7 +7,7 @@ module.exports = {
   name: "ready",
   once: true,
   execute(client, commands) {
-    console.log("✔️ Scorcher is ready!");
+    console.log("✅ BobTheBot is ready!");
 
     const CLIENT_ID = client.user.id;
 
@@ -21,7 +21,7 @@ module.exports = {
           await rest.put(Routes.applicationCommands(CLIENT_ID), {
             body: commands,
           });
-          console.log("✔️ Globally registered commands");
+          console.log("✅ Globally registered commands");
         } else {
           await rest.put(
             Routes.applicationGuildCommands(CLIENT_ID, process.env.GUILD_ID),
@@ -29,7 +29,7 @@ module.exports = {
               body: commands,
             }
           );
-          console.log("✔️ Locally registered commands");
+          console.log("✅ Locally registered commands");
         }
       } catch (err) {
         if (err) console.log(err);
