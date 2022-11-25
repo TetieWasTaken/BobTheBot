@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -12,6 +13,15 @@ module.exports = {
     ),
   async execute(interaction) {
     const user = interaction.options.getUser("target");
+
+    if (
+      !interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)
+    ) {
+      return interaction.reply({
+        content: "You do not have the `MODERATE_MEMBERS` permission!",
+        ephemeral: true,
+      });
+    }
 
     const member = await interaction.guild.members.fetch(user.id);
 

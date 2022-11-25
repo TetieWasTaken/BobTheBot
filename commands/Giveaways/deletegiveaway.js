@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { PermissionFlagsBits } = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("deletegiveaway")
@@ -11,6 +12,16 @@ module.exports = {
     ),
   async execute(interaction) {
     const messageId = interaction.options.getString("messageid");
+
+    if (
+      !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
+    ) {
+      return interaction.reply({
+        content: "You do not have the `MANAGE_MESSAGES` permission!",
+        ephemeral: true,
+      });
+    }
+
     interaction.client.giveawaysManager
       .delete(messageId)
       .then(() => {

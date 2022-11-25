@@ -1,10 +1,20 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("unlock")
     .setDescription("unlock the current channel"),
   async execute(interaction) {
+    if (
+      !interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)
+    ) {
+      return interaction.reply({
+        content: "You do not have the `MANAGE_CHANNELS` permission!",
+        ephemeral: true,
+      });
+    }
+
     const modRole = interaction.guild.roles.cache.find((role) =>
       ["moderator", "mod", "Moderator", "Mod"].includes(role.name)
     );

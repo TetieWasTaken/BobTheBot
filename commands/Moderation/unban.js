@@ -1,12 +1,10 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { PermissionFlagsBits } = require("discord.js");
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("unban")
     .setDescription("Unbans a user from the current guild")
-    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
     .addStringOption((option) =>
       option
         .setName("userid")
@@ -15,6 +13,13 @@ module.exports = {
     ),
   async execute(interaction) {
     const userId = interaction.options.getString("userid");
+
+    if (!interaction.member.permissions.has(PermissionFlagsBits.BanMembers)) {
+      return interaction.reply({
+        content: "You do not have the `BAN_MEMBERS` permission!",
+        ephemeral: true,
+      });
+    }
 
     try {
       await interaction.guild.members.unban(userId);

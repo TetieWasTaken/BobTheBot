@@ -1,6 +1,6 @@
 const InfractionsSchema = require("../../models/InfractionsModel");
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -31,6 +31,15 @@ module.exports = {
     const user = interaction.options.getUser("target");
     const reason = interaction.options.getString("reason");
     let duration = interaction.options.getInteger("duration");
+
+    if (
+      !interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)
+    ) {
+      return interaction.reply({
+        content: "You do not have the `MODERATE_MEMBERS` permission!",
+        ephemeral: true,
+      });
+    }
 
     if (duration === null) {
       duration = 12;

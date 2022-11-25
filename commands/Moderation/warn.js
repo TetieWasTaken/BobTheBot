@@ -1,5 +1,5 @@
 const InfractionsSchema = require("../../models/InfractionsModel");
-const { EmbedBuilder, PermissionsBitField } = require("discord.js");
+const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
 module.exports = {
@@ -23,11 +23,7 @@ module.exports = {
     const user = interaction.options.getUser("target");
     const reason = interaction.options.getString("reason");
 
-    if (
-      !interaction.member.permissions.has(
-        PermissionsBitField.FLAGS.KICK_MEMBERS
-      )
-    ) {
+    if (!interaction.member.permissions.has(PermissionFlagsBits.KickMembers)) {
       return interaction.reply({
         content: "You do not have the `KICK_MEMBERS` permission!",
         ephemeral: true,

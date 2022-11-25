@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { PermissionFlagsBits } = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("endgiveaway")
@@ -10,6 +11,15 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
+    if (
+      !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
+    ) {
+      return interaction.reply({
+        content: "You do not have the `MANAGE_MESSAGES` permission!",
+        ephemeral: true,
+      });
+    }
+
     //TODO: REMOVE GIVEAWAY DATA
     const messageId = interaction.options.getString("messageid");
     interaction.client.giveawaysManager

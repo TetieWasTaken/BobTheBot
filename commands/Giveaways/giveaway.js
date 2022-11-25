@@ -4,6 +4,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  PermissionFlagsBits,
 } = require("discord.js");
 const ms = require("ms");
 
@@ -42,6 +43,15 @@ module.exports = {
     let winners = interaction.options.getInteger("winners");
     if (winners === null) {
       winners = 1;
+    }
+
+    if (
+      !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
+    ) {
+      return interaction.reply({
+        content: "You do not have the `MANAGE_MESSAGES` permission!",
+        ephemeral: true,
+      });
     }
 
     interaction.client.giveawaysManager

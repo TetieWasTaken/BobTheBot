@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -19,6 +20,15 @@ module.exports = {
   async execute(interaction) {
     const channel = interaction.options.getChannel("channel");
     const message = interaction.options.getString("message");
+
+    if (
+      !interaction.member.permissions.has(PermissionFlagsBits.Administrator)
+    ) {
+      return interaction.reply({
+        content: "You do not have the `ADMINISTRATOR` permission!",
+        ephemeral: true,
+      });
+    }
 
     channel.send(message);
 

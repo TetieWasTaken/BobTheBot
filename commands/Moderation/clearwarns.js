@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const InfractionsSchema = require("../../models/InfractionsModel");
+const { PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -13,6 +14,15 @@ module.exports = {
     ),
   async execute(interaction) {
     const user = interaction.options.getUser("target");
+
+    if (
+      !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
+    ) {
+      return interaction.reply({
+        content: "You do not have the `MANAGE_MESSAGES` permission!",
+        ephemeral: true,
+      });
+    }
 
     let data = await InfractionsSchema.findOne({
       GuildId: interaction.guild.id,

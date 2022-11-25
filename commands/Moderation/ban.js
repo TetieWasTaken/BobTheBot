@@ -1,12 +1,10 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { PermissionFlagsBits } = require("discord.js");
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("ban")
     .setDescription("Bans a user from the current guild")
-    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
     .addUserOption((option) =>
       option.setName("target").setDescription("member to ban").setRequired(true)
     )
@@ -19,6 +17,13 @@ module.exports = {
   async execute(interaction) {
     const user = interaction.options.getUser("target");
     const reason = interaction.options.getString("reason");
+
+    if (!interaction.member.permissions.has(PermissionFlagsBits.BanMembers)) {
+      return interaction.reply({
+        content: "You do not have the `BAN_MEMBERS` permission!",
+        ephemeral: true,
+      });
+    }
 
     const member = await interaction.guild.members.fetch(user.id);
     await member.ban({ days: 1, reason: reason });

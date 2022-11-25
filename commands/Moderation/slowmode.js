@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -12,6 +13,15 @@ module.exports = {
     ),
   async execute(interaction) {
     let duration = interaction.options.getInteger("duration");
+
+    if (
+      !interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)
+    ) {
+      return interaction.reply({
+        content: "You do not have the `MANAGE_CHANNELS` permission!",
+        ephemeral: true,
+      });
+    }
 
     if (duration >= 21601) {
       duration = 21600;

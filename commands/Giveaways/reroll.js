@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -12,6 +13,14 @@ module.exports = {
     ),
   async execute(interaction) {
     const messageId = interaction.options.getString("messageid");
+
+    if (!interaction.member.permissions.has(PermissionFlagsBits.KickMembers)) {
+      return interaction.reply({
+        content: "You do not have the `KICK_MEMBERS` permission!",
+        ephemeral: true,
+      });
+    }
+
     interaction.client.giveawaysManager
       .reroll(messageId)
       .then(() => {
