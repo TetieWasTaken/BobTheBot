@@ -1,22 +1,48 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder } = require("discord.js");
+const fs = require("fs");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("help")
-    .setDescription("Get help from the bot"),
+    .setDescription("Get help from the bot")
+    .addStringOption((option) =>
+      option
+        .setName("category")
+        .setDescription("The category of the command to get help for")
+        .addChoices(
+          { name: "Fun", value: "Fun" },
+          { name: "Giveaways", value: "Giveaways" },
+          { name: "Information", value: "Information" },
+          { name: "Moderation", value: "Moderation" },
+          { name: "Utility", value: "Utility" }
+        )
+        .setRequired(true)
+    ),
   async execute(interaction) {
+    const category = interaction.options.getString("category");
+
+    let commandArray = [];
+
+    const commandFiles = fs
+      .readdirSync(`./commands/${category}`)
+      .filter((file) => file.endsWith(".js"));
+    for (const file of commandFiles) {
+      commandArray.push(`${file}`);
+    }
+
+    commandArray = commandArray.map(function (d) {
+      return d.replace(".js", "");
+    });
+
     const userDM = new EmbedBuilder()
       .setColor(0xffbd67)
-      .setTitle(`Bob's heldesk`)
-      .addFields(
-        {
-          name: `Commands`,
-          value: `:one:`,
-          inline: true,
-        },
-        { name: `Social links`, value: `:two:`, inline: true }
-      )
+      .setTitle(`${category}`)
+      .addFields({
+        name: `Commands in ${category}`,
+        value: commandArray.join("\n"),
+        inline: false,
+      })
       .setTimestamp();
 
     interaction.user

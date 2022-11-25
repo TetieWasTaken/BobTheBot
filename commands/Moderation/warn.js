@@ -1,6 +1,5 @@
 const InfractionsSchema = require("../../models/InfractionsModel");
-const { PermissionFlagsBits } = require("discord.js");
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
 module.exports = {
@@ -19,11 +18,21 @@ module.exports = {
         .setDescription("reason for warn")
         .setRequired(true)
     )
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .setDMPermission(false),
   async execute(interaction) {
     const user = interaction.options.getUser("target");
     const reason = interaction.options.getString("reason");
+
+    if (
+      !interaction.member.permissions.has(
+        PermissionsBitField.FLAGS.KICK_MEMBERS
+      )
+    ) {
+      return interaction.reply({
+        content: "You do not have the `KICK_MEMBERS` permission!",
+        ephemeral: true,
+      });
+    }
 
     let data = await InfractionsSchema.findOne({
       GuildId: interaction.guild.id,
