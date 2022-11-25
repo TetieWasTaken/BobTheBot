@@ -24,7 +24,7 @@ module.exports = {
     interaction.client.giveawaysManager
       .reroll(messageId)
       .then(() => {
-        interaction.reply("Success! Giveaway rerolled!");
+        interaction.reply("Giveaway rerolled successfully");
       })
       .catch((err) => {
         interaction.reply(

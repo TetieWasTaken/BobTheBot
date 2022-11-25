@@ -73,7 +73,7 @@ module.exports = {
       });
 
     interaction.reply({
-      content: `Giveaway started in ${channel}`,
+      content: `Giveaway started successfully! ${channel}`,
     });
   },
 };

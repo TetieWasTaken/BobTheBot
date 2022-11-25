@@ -16,7 +16,7 @@ module.exports = {
 
     const replyEmbed = new EmbedBuilder()
       .setTitle(user.username)
-      .setFooter({ text: `${interaction.guild.id}` })
+      .setFooter({ text: `${user.id}` })
       .setThumbnail(user.bannerURL())
       .setImage(user.displayAvatarURL({ dynamic: true, size: 256 }))
       .setTimestamp();

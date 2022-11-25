@@ -11,6 +11,6 @@ module.exports = {
     dadJokesTxt = dadJokesTxt.split("\n");
     randomNum = Math.floor(Math.random() * 710);
 
-    interaction.reply({ content: dadJokesTxt[randomNum] });
+    interaction.reply({ content: dadJokesTxt[randomNum], ephemeral: true });
   },
 };

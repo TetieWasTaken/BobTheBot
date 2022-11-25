@@ -25,7 +25,7 @@ module.exports = {
     interaction.client.giveawaysManager
       .delete(messageId)
       .then(() => {
-        interaction.reply("Success! Giveaway deleted!");
+        interaction.reply("Giveaway deleted successfully");
       })
       .catch((err) => {
         interaction.reply(
