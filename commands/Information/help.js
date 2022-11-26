@@ -36,7 +36,7 @@ module.exports = {
     });
 
     const userDM = new EmbedBuilder()
-      .setColor(0xffbd67)
+      .setColor(0xffffff)
       .setTitle(`${category}`)
       .addFields({
         name: `Commands in ${category}`,

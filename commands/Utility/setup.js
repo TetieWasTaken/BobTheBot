@@ -41,7 +41,7 @@ module.exports = {
     }
 
     const replyEmbed = new EmbedBuilder()
-      .setColor(0xffbd67)
+      .setColor(0xffffff)
       .setTitle(`Current server data`)
       .addFields(
         {

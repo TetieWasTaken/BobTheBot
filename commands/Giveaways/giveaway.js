@@ -5,6 +5,7 @@ const {
   ButtonBuilder,
   ButtonStyle,
   PermissionFlagsBits,
+  ChannelType,
 } = require("discord.js");
 const ms = require("ms");
 
@@ -23,6 +24,7 @@ module.exports = {
         .setName("channel")
         .setDescription("Channel to announce the message in")
         .setRequired(true)
+        .addChannelTypes(ChannelType.GuildText)
     )
     .addStringOption((option) =>
       option

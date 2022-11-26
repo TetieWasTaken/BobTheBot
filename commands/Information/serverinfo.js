@@ -21,7 +21,7 @@ module.exports = {
     const fetchedOwner = await Promise.resolve(interaction.guild.fetchOwner());
 
     const replyEmbed = new EmbedBuilder()
-      .setColor(0xff8355)
+      .setColor(0xffffff)
       .setAuthor({ name: `${interaction.guild.name}`, iconURL: serverIcon })
       .setThumbnail(serverIcon)
       .addFields(

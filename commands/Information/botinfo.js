@@ -37,6 +37,7 @@ module.exports = {
           "[**Github**](https://github.com/)\n[**Discord**](https://discord.com)",
         inline: true,
       })
+      .setColor(0xffffff)
       .setTimestamp();
     interaction.reply({
       embeds: [replyEmbed],

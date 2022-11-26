@@ -91,7 +91,7 @@ module.exports = {
     console.log(optionsFiltered);
 
     const pollEmbed = new EmbedBuilder()
-      .setColor(0xffbd67)
+      .setColor(0xffffff)
       .setTitle(`${message}`)
       .addFields({
         name: `Option 1`,

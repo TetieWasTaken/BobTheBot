@@ -25,7 +25,7 @@ module.exports = {
           interaction.fields.getTextInputValue("logChannelIdInput");
 
         const replyEmbed = new EmbedBuilder()
-          .setColor(0xffbd67)
+          .setColor(0xffffff)
           .setTitle(`Setup completed`)
           .addFields({
             name: `Guild ID`,

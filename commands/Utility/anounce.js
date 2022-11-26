@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { PermissionFlagsBits } = require("discord.js");
+const { PermissionFlagsBits, ChannelType } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -10,6 +10,7 @@ module.exports = {
         .setName("channel")
         .setDescription("Channel to announce the message in")
         .setRequired(true)
+        .addChannelTypes(ChannelType.GuildText)
     )
     .addStringOption((option) =>
       option
