@@ -29,12 +29,12 @@ module.exports = {
       UserId: user.id,
     });
     if (!data) {
-      let newData = new InfractionsSchema({
+      data = new InfractionsSchema({
         GuildId: interaction.guild.id,
         UserId: user.id,
         Punishments: [],
       });
-      newData.save();
+      data.save();
     }
 
     const member = await interaction.guild.members.fetch(user.id);
@@ -44,7 +44,8 @@ module.exports = {
     }
 
     let punishmentArray = data.Punishments.map(
-      (punishment) => `\`${punishment.PunishType}\`: ${punishment.Reason}`
+      (punishment) =>
+        `\`ID\`: ${punishment.CaseId}, \`${punishment.PunishType}\`: ${punishment.Reason}`
     );
     if (punishmentArray.length == 0) {
       punishmentArray.push("No active infractions.");

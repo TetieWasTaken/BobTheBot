@@ -73,7 +73,8 @@ module.exports = {
       });
 
     interaction.reply({
-      content: `Giveaway started successfully! ${channel}`,
+      content: `:gift: Giveaway started successfully in ${channel}`,
+      ephemeral: true,
     });
   },
 };

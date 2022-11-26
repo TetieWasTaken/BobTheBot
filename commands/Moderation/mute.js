@@ -55,9 +55,12 @@ module.exports = {
     });
 
     if (data) {
+      const NewCaseId = data.Punishments.length + 1;
+
       data.Punishments.unshift({
         PunishType: "MUTE",
         Reason: reason,
+        CaseId: NewCaseId,
       });
       data.save();
     } else if (!data) {
@@ -68,6 +71,7 @@ module.exports = {
           {
             PunishType: "MUTE",
             Reason: reason,
+            CaseId: 1,
           },
         ],
       });

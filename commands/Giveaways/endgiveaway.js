@@ -25,7 +25,10 @@ module.exports = {
     interaction.client.giveawaysManager
       .end(messageId)
       .then(() => {
-        interaction.reply("Giveaway ended successfully");
+        interaction.reply({
+          content: ":gift: Giveaway ended successfully",
+          ephemeral: true,
+        });
       })
       .catch((err) => {
         interaction.reply(

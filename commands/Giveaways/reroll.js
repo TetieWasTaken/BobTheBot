@@ -14,9 +14,11 @@ module.exports = {
   async execute(interaction) {
     const messageId = interaction.options.getString("messageid");
 
-    if (!interaction.member.permissions.has(PermissionFlagsBits.KickMembers)) {
+    if (
+      !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
+    ) {
       return interaction.reply({
-        content: "You do not have the `KICK_MEMBERS` permission!",
+        content: "You do not have the `MANAGE_MESSAGES` permission!",
         ephemeral: true,
       });
     }
@@ -24,7 +26,10 @@ module.exports = {
     interaction.client.giveawaysManager
       .reroll(messageId)
       .then(() => {
-        interaction.reply("Giveaway rerolled successfully");
+        interaction.reply({
+          content: ":gift: Giveaway rerolled successfully",
+          ephemeral: true,
+        });
       })
       .catch((err) => {
         interaction.reply(
