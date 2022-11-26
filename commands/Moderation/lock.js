@@ -15,6 +15,17 @@ module.exports = {
       });
     }
 
+    if (
+      !interaction.guild.members.me.permissions.has(
+        PermissionFlagsBits.ManageChannels
+      )
+    ) {
+      return interaction.reply({
+        content: ":wrench: I do not have the `MANAGE_CHANNELS` permission!",
+        ephemeral: true,
+      });
+    }
+
     const modRole = interaction.guild.roles.cache.find((role) =>
       ["moderator", "mod", "Moderator", "Mod"].includes(role.name)
     );

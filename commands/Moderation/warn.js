@@ -23,9 +23,22 @@ module.exports = {
     const user = interaction.options.getUser("target");
     const reason = interaction.options.getString("reason");
 
-    if (!interaction.member.permissions.has(PermissionFlagsBits.KickMembers)) {
+    if (
+      !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
+    ) {
       return interaction.reply({
-        content: "You do not have the `KICK_MEMBERS` permission!",
+        content: "You do not have the `MANAGE_MESSAGES` permission!",
+        ephemeral: true,
+      });
+    }
+
+    if (
+      !interaction.guild.members.me.permissions.has(
+        PermissionFlagsBits.ManageMessages
+      )
+    ) {
+      return interaction.reply({
+        content: ":wrench: I do not have the `MANAGE_MESSAGES` permission!",
         ephemeral: true,
       });
     }

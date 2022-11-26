@@ -23,6 +23,17 @@ module.exports = {
       });
     }
 
+    if (
+      !interaction.guild.members.me.permissions.has(
+        PermissionFlagsBits.ManageChannels
+      )
+    ) {
+      return interaction.reply({
+        content: ":wrench: I do not have the `MANAGE_CHANNELS` permission!",
+        ephemeral: true,
+      });
+    }
+
     if (duration >= 21601) {
       duration = 21600;
     }

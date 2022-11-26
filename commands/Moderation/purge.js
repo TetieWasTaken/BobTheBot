@@ -23,6 +23,17 @@ module.exports = {
       });
     }
 
+    if (
+      !interaction.guild.members.me.permissions.has(
+        PermissionFlagsBits.ManageMessages
+      )
+    ) {
+      return interaction.reply({
+        content: ":wrench: I do not have the `MANAGE_MESSAGES` permission!",
+        ephemeral: true,
+      });
+    }
+
     interaction.channel.bulkDelete(amount).then((messages) =>
       interaction.reply({
         content: `Purged ${messages.size} messages`,

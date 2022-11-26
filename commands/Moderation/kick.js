@@ -28,7 +28,30 @@ module.exports = {
       });
     }
 
+    if (
+      !interaction.guild.members.me.permissions.has(
+        PermissionFlagsBits.KickMembers
+      )
+    ) {
+      return interaction.reply({
+        content: ":wrench: I do not have the `KICK_MEMBERS` permission!",
+        ephemeral: true,
+      });
+    }
+
     const member = await interaction.guild.members.fetch(user.id);
+
+    const highestUserRole = member.roles.highest;
+    if (
+      highestUserRole.position >=
+      interaction.guild.members.me.roles.highest.position
+    ) {
+      return interaction.reply({
+        content: `:wrench: Please make sure my role is above the ${highestUserRole} role!`,
+        ephemeral: true,
+      });
+    }
+
     await member.kick(reason);
 
     interaction.reply({

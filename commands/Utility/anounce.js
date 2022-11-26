@@ -30,6 +30,16 @@ module.exports = {
         ephemeral: true,
       });
     }
+    if (
+      !channel
+        .permissionsFor(interaction.guild.members.me)
+        .has(PermissionFlagsBits.SendMessages)
+    ) {
+      return interaction.reply({
+        content: "I do not have permissions to send messages in this channel!",
+        ephemeral: true,
+      });
+    }
 
     channel.send(message);
 

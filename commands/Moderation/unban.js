@@ -21,6 +21,17 @@ module.exports = {
       });
     }
 
+    if (
+      !interaction.guild.members.me.permissions.has(
+        PermissionFlagsBits.BanMembers
+      )
+    ) {
+      return interaction.reply({
+        content: ":wrench: I do not have the `BAN_MEMBERS` permission!",
+        ephemeral: true,
+      });
+    }
+
     try {
       await interaction.guild.members.unban(userId);
 
