@@ -37,6 +37,9 @@ module.exports = {
     }
 
     const member = await interaction.guild.members.fetch(user.id);
+    const authorMember = await interaction.guild.members.fetch(
+      interaction.user.id
+    );
 
     const highestUserRole = member.roles.highest;
     if (
@@ -45,6 +48,12 @@ module.exports = {
     ) {
       return interaction.reply({
         content: `:wrench: Please make sure my role is above the ${highestUserRole} role!`,
+        ephemeral: true,
+      });
+    }
+    if (highestUserRole.position >= authorMember.roles.highest.position) {
+      return interaction.reply({
+        content: `:wrench: ${user} has a higher or equal role than you on the hierarchy!`,
         ephemeral: true,
       });
     }

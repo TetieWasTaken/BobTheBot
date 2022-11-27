@@ -1,4 +1,3 @@
-//https://ziad87.net/intents/, https://discord.com/developers/applications/1036359071508484237/information
 require("dotenv").config();
 const fs = require("fs");
 const Database = require("./config/Database");
