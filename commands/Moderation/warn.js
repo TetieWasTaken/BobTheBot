@@ -16,12 +16,12 @@ module.exports = {
       option
         .setName("reason")
         .setDescription("reason for warn")
-        .setRequired(true)
+        .setRequired(false)
     )
     .setDMPermission(false),
   async execute(interaction) {
     const user = interaction.options.getUser("target");
-    const reason = interaction.options.getString("reason");
+    let reason = interaction.options.getString("reason");
 
     if (
       !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
@@ -63,6 +63,10 @@ module.exports = {
         content: `:wrench: ${user} has a higher or equal role than you on the hierarchy!`,
         ephemeral: true,
       });
+    }
+
+    if (reason == null) {
+      reason = "No reason provided";
     }
 
     let data = await InfractionsSchema.findOne({

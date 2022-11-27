@@ -12,11 +12,11 @@ module.exports = {
       option
         .setName("reason")
         .setDescription("reason for ban")
-        .setRequired(true)
+        .setRequired(false)
     ),
   async execute(interaction) {
     const user = interaction.options.getUser("target");
-    const reason = interaction.options.getString("reason");
+    let reason = interaction.options.getString("reason");
 
     if (!interaction.member.permissions.has(PermissionFlagsBits.BanMembers)) {
       return interaction.reply({
@@ -58,7 +58,14 @@ module.exports = {
       });
     }
 
-    await member.ban({ days: 1, reason: reason });
+    if (reason == null) {
+      reason = "No reason provided";
+    }
+
+    await member.ban({
+      deleteMessageSeconds: 60 * 60 * 24 * 7,
+      reason: reason,
+    });
 
     interaction.reply({
       content: `:hammer:  \`${user.username}#${user.discriminator}\` has been banned for \`${reason}\``,

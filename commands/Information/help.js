@@ -24,11 +24,34 @@ module.exports = {
 
     let commandArray = [];
 
+    const inputs = {
+      "ban.js": "`[target]`, `(reason)`",
+      "history.js": "`[target]`",
+      "kick.js": "`[target]`, `(reason)`",
+      "mute.js": "`[target]`, [duration], `(reason)`",
+      "purge.js": "`[amount]`",
+      "revoke.js": "`[target]`,`[caseId]`",
+      "slowmode.js": "`[amount]`",
+      "unban.js": "`[target]`",
+      "unmute.js": "`[target]`",
+      "warn.js": "`[target]`, `(reason)`",
+      "deletegiveaway.js": "`[messageId]`",
+      "endgiveaway.js": "`[messageId]`",
+      "giveaway.js": "`[prize]`, `[channel]`, `[time]`, `(winners)`",
+      "reroll.js": "`[messageId]`",
+      "avatar.js": "`(target)`",
+      "rank.js": "`(target)`",
+      "help.js": "`[category]`",
+      "roleinfo.js": "`[role]`",
+      "announce.js": "`[channel]`, `[message]`",
+      "poll.js": "`[channel]`, `[message]`, `[option1]`, `[option2]`, `etc...`",
+    };
+
     const commandFiles = fs
       .readdirSync(`./commands/${category}`)
       .filter((file) => file.endsWith(".js"));
     for (const file of commandFiles) {
-      commandArray.push(`${file}`);
+      commandArray.push(`${file} ${inputs[file] ?? ""}`);
     }
 
     commandArray = commandArray.map(function (d) {

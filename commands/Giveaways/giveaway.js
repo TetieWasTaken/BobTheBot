@@ -29,7 +29,9 @@ module.exports = {
     .addStringOption((option) =>
       option
         .setName("duration")
-        .setDescription("Time until the giveaway ends")
+        .setDescription(
+          "duration of the giveaway, in ms format (ex: 1s, 1m, 1h, 1d, 1w)"
+        )
         .setRequired(true)
     )
     .addIntegerOption((option) =>

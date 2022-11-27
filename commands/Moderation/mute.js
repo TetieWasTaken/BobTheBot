@@ -1,6 +1,7 @@
 const InfractionsSchema = require("../../models/InfractionsModel");
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
+const { PermissionFlagsBits } = require("discord.js");
+const ms = require("ms");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -14,23 +15,22 @@ module.exports = {
     )
     .addStringOption((option) =>
       option
-        .setName("reason")
-        .setDescription("reason to mute")
-        .setRequired(true)
-    )
-    .addIntegerOption((option) =>
-      option
         .setName("duration")
         .setDescription(
-          "duration of the mute in hours (default set to 12 hours)"
+          "duration of the mute, in ms format (ex: 1s, 1m, 1h, 1d, 1w)"
         )
-        .setAutocomplete(true)
+        .setRequired(true)
+    )
+    .addStringOption((option) =>
+      option
+        .setName("reason")
+        .setDescription("reason to mute")
         .setRequired(false)
     ),
   async execute(interaction) {
     const user = interaction.options.getUser("target");
-    const reason = interaction.options.getString("reason");
-    let duration = interaction.options.getInteger("duration");
+    let duration = interaction.options.getString("duration");
+    let reason = interaction.options.getString("reason");
 
     if (
       !interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)
@@ -50,10 +50,6 @@ module.exports = {
         content: ":wrench: I do not have the `MODERATE_MEMBERS` permission!",
         ephemeral: true,
       });
-    }
-
-    if (duration === null) {
-      duration = 12;
     }
 
     const member = await interaction.guild.members.fetch(user.id);
@@ -78,7 +74,11 @@ module.exports = {
       });
     }
 
-    await member.timeout(duration * 60 * 1000 * 60, reason);
+    if (reason == null) {
+      reason = "No reason provided";
+    }
+
+    await member.timeout(ms(duration), reason);
 
     let data = await InfractionsSchema.findOne({
       GuildId: interaction.guild.id,

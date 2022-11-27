@@ -15,11 +15,11 @@ module.exports = {
       option
         .setName("reason")
         .setDescription("reason for kick")
-        .setRequired(true)
+        .setRequired(false)
     ),
   async execute(interaction) {
     const user = interaction.options.getUser("target");
-    const reason = interaction.options.getString("reason");
+    let reason = interaction.options.getString("reason");
 
     if (!interaction.member.permissions.has(PermissionFlagsBits.KickMembers)) {
       return interaction.reply({
@@ -59,6 +59,10 @@ module.exports = {
         content: `:wrench: ${user} has a higher or equal role than you on the hierarchy!`,
         ephemeral: true,
       });
+    }
+
+    if (reason == null) {
+      reason = "No reason provided";
     }
 
     await member.kick(reason);
