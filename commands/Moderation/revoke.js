@@ -35,11 +35,11 @@ module.exports = {
       {
         GuildId: interaction.guild.id,
         UserId: user.id,
+        "Punishments.CaseId": caseId,
       },
       { $pull: { Punishments: { CaseId: caseId } } }
     );
 
-    //FIXME: IF(!DATA) DOES NOT WORK
     if (!data) {
       return interaction.reply({
         content: "Could not find infraction with this ID",
