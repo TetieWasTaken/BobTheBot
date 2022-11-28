@@ -7,9 +7,7 @@ module.exports = {
     const author = message.author;
     const messageLength = message.content.length;
 
-    if (author.bot) {
-      return;
-    }
+    if (author.bot) return;
 
     //https://www.desmos.com/calculator/6lbyqqpk4u
     //Special thanks to @That_Guy977#5882 for helping me with this formula

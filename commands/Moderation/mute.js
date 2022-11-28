@@ -25,12 +25,14 @@ module.exports = {
       option
         .setName("reason")
         .setDescription("reason to mute")
+        .setMaxLength(255)
         .setRequired(false)
     ),
   async execute(interaction) {
     const user = interaction.options.getUser("target");
     let duration = interaction.options.getString("duration");
-    let reason = interaction.options.getString("reason");
+    let reason =
+      interaction.options.getString("reason") ?? "No reason provided";
 
     if (
       !interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)
@@ -72,10 +74,6 @@ module.exports = {
         content: `:wrench: ${user} has a higher or equal role than you on the hierarchy!`,
         ephemeral: true,
       });
-    }
-
-    if (reason == null) {
-      reason = "No reason provided";
     }
 
     await member.timeout(ms(duration), reason);

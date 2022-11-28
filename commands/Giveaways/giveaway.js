@@ -44,10 +44,7 @@ module.exports = {
     const prize = interaction.options.getString("prize");
     const channel = interaction.options.getChannel("channel");
     const duration = interaction.options.getString("duration");
-    let winners = interaction.options.getInteger("winners");
-    if (winners === null) {
-      winners = 1;
-    }
+    let winners = interaction.options.getInteger("winners") ?? 1;
 
     if (
       !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)

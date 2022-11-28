@@ -5,6 +5,8 @@ module.exports = {
   name: "messageUpdate",
   once: false,
   async execute(initMessage, newMessage) {
+    if (initMessage.author.bot) return;
+
     guildData = await GuildSchema.findOne({
       GuildId: newMessage.guild.id,
     });

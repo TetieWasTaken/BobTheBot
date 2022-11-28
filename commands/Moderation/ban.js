@@ -12,11 +12,13 @@ module.exports = {
       option
         .setName("reason")
         .setDescription("reason for ban")
+        .setMaxLength(255)
         .setRequired(false)
     ),
   async execute(interaction) {
     const user = interaction.options.getUser("target");
-    let reason = interaction.options.getString("reason");
+    let reason =
+      interaction.options.getString("reason") ?? "No reason provided";
 
     if (!interaction.member.permissions.has(PermissionFlagsBits.BanMembers)) {
       return interaction.reply({
@@ -56,10 +58,6 @@ module.exports = {
         content: `:wrench: ${user} has a higher or equal role than you on the hierarchy!`,
         ephemeral: true,
       });
-    }
-
-    if (reason == null) {
-      reason = "No reason provided";
     }
 
     await member.ban({

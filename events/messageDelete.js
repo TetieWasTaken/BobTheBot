@@ -5,6 +5,8 @@ module.exports = {
   name: "messageDelete",
   once: false,
   async execute(message) {
+    if (message.author.bot) return;
+
     guildData = await GuildSchema.findOne({
       GuildId: message.guild.id,
     });
@@ -13,7 +15,7 @@ module.exports = {
         guildData.GuildLogChannel
       );
 
-      let userNickname = ` (${message.member.nickname})`;
+      let userNickname = ` (${message.member.nickname ?? ""})`;
       if (userNickname == " (null)") {
         userNickname = "";
       }

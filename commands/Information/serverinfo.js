@@ -6,6 +6,17 @@ module.exports = {
     .setName("serverinfo")
     .setDescription("Receive information about the current guild"),
   async execute(interaction) {
+    let roleColor = "ffffff";
+    const member = interaction.guild.members.cache.get(
+      interaction.client.user.id
+    );
+    const roleCacheSize = member.roles.cache.size;
+    if (roleCacheSize >= 2) {
+      if (member.roles.color !== null) {
+        roleColor = member.roles.color.hexColor;
+      }
+    }
+
     var serverIcon = interaction.guild.iconURL();
     var boostCount = interaction.guild.premiumSubscriptionCount;
     var boostTier = 0;
@@ -21,7 +32,7 @@ module.exports = {
     const fetchedOwner = await Promise.resolve(interaction.guild.fetchOwner());
 
     const replyEmbed = new EmbedBuilder()
-      .setColor(0xffffff)
+      .setColor(roleColor)
       .setAuthor({ name: `${interaction.guild.name}`, iconURL: serverIcon })
       .setThumbnail(serverIcon)
       .addFields(

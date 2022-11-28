@@ -12,11 +12,7 @@ module.exports = {
         .setRequired(false)
     ),
   async execute(interaction) {
-    let user = interaction.options.getUser("target");
-
-    if (user == null) {
-      user = interaction.user;
-    }
+    let user = interaction.options.getUser("target") ?? interaction.user;
 
     let data = await LevelSchema.findOne({
       GuildId: interaction.guild.id,
