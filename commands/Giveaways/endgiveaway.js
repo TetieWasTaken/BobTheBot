@@ -20,7 +20,6 @@ module.exports = {
       });
     }
 
-    //TODO: REMOVE GIVEAWAY DATA
     const messageId = interaction.options.getString("messageid");
     interaction.client.giveawaysManager
       .end(messageId)

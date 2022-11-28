@@ -36,7 +36,7 @@ module.exports = {
 
     interaction.channel.bulkDelete(amount).then((messages) =>
       interaction.reply({
-        content: `Purged ${messages.size} messages`,
+        content: `:mag: Purged ${messages.size} messages`,
       })
     );
   },
