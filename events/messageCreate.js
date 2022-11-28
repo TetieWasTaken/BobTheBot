@@ -11,11 +11,11 @@ module.exports = {
       return;
     }
 
-    //https://www.desmos.com/calculator/zrhztzwhsc
+    //https://www.desmos.com/calculator/6lbyqqpk4u
     //Special thanks to @That_Guy977#5882 for helping me with this formula
 
     const bonusXP = Math.floor(
-      Math.min(210 - 115000 / (messageLength + 550), 50)
+      Math.min(210 - 115040 / (messageLength + 550), 50)
     );
     const randomNum = Math.floor(Math.random() * 21 + 15);
     const xpToAdd = randomNum + bonusXP;
