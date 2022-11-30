@@ -1,5 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
+const GiveawaySchema = require("../../models/GiveawayModel");
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("endgiveaway")
@@ -23,6 +25,9 @@ module.exports = {
     const messageId = interaction.options.getString("messageid");
     interaction.client.giveawaysManager
       .end(messageId)
+      .then(() => {
+        GiveawaySchema.deleteOne({ messageId: messageId }).exec();
+      })
       .then(() => {
         interaction.reply({
           content: ":gift: Giveaway ended successfully",
