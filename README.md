@@ -21,9 +21,9 @@ Bob The Bot is a simple, competitive, community driven [Discord.js](https://gith
 1: Paste this link in your browser
 `https://discord.com/api/oauth2/authorize?client_id=1036359071508484237&permissions=8&scope=bot%20applications.commands`
 
-2: Select the server you want to add the bot to
-![alt text](logo)
+2: Select the server you want to add the bot to <br />
+![Image failed to load](step2)
 
 3: Click 'Continue', and then 'Authorise'
 
-[step2]: https://imgur.com/a/RcItmkQ "Image failed to load"
+[step2]: ../Scorcher/docs/step_2.png "Select the server"
