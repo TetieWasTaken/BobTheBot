@@ -1,5 +1,3 @@
-# Ha, nothing to be seen here...
-
 <div align="center">
 	<br />
 	<p>
