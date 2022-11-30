@@ -24,8 +24,8 @@ module.exports = {
         .setMaxValue(1000)
     ),
   async execute(interaction) {
-    const expression = interaction.options.getString("expression"); //input example: 2 * x + 1
-    const pointAmount = interaction.options.getInteger("points") ?? 25;
+    const expression = interaction.options.getString("expression");
+    const pointAmount = interaction.options.getInteger("points") ?? 26;
 
     var parser = new Parser();
     var expr = parser.parse(`${expression}`);

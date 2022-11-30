@@ -39,7 +39,7 @@ module.exports = {
       })
       .addFields({
         name: `Dependency versions`,
-        value: `NodeJS: \`v18.12.0\`\nDiscord.JS: \`14.6.0\`\nMongoose: \`6.7.0\``,
+        value: `NodeJS: \`v18.12.0\`\nDiscord.JS: \`14.7.0\`\nMongoose: \`6.7.0\``,
         inline: true,
       })
       .addFields({
