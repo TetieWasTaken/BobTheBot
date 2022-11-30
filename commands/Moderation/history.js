@@ -43,12 +43,16 @@ module.exports = {
       isCommunicationDisabledBool = true;
     }
 
-    let punishmentArray = data.Punishments.map(
-      (punishment) =>
-        `\`ID\`: ${punishment.CaseId}, \`${punishment.PunishType}\`: ${punishment.Reason}`
-    );
-    if (punishmentArray.length == 0) {
-      punishmentArray.push("No active infractions.");
+    let punishmentArray = ["No active infractions."];
+
+    if (data) {
+      punishmentArray = data.Punishments.map(
+        (punishment) =>
+          `\`ID\`: ${punishment.CaseId}, \`${punishment.PunishType}\`: ${punishment.Reason}`
+      );
+      if (punishmentArray.length == 0) {
+        punishmentArray.push("No active infractions.");
+      }
     }
 
     let roleColor = "ffffff";

@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 
+//Switch to postgresql?
+
 class Database {
   constructor() {
     this.connection = null;

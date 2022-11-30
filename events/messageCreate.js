@@ -7,6 +7,7 @@ module.exports = {
     const author = message.author;
     const messageLength = message.content.length;
 
+    if (message.channel.isDMBased()) return;
     if (author.bot) return;
 
     //https://www.desmos.com/calculator/6lbyqqpk4u

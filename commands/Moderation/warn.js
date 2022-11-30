@@ -25,11 +25,24 @@ module.exports = {
     let reason =
       interaction.options.getString("reason") ?? "No reason provided";
 
+    if (user.bot) {
+      return interaction.reply({
+        content: ":wrench: You can't warn bots!",
+        ephemeral: true,
+      });
+    }
+    if (user.id === interaction.user.id) {
+      return interaction.reply({
+        content: ":wrench: You can't warn yourself!",
+        ephemeral: true,
+      });
+    }
+
     if (
       !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
     ) {
       return interaction.reply({
-        content: "You do not have the `MANAGE_MESSAGES` permission!",
+        content: ":wrench: You do not have the `MANAGE_MESSAGES` permission!",
         ephemeral: true,
       });
     }
