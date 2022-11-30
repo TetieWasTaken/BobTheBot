@@ -18,7 +18,7 @@ Bob The Bot is a simple, competitive, community driven [Discord.js](https://gith
 
 ## Adding this bot to your discord server
 
-1: Paste this link in your browser
+1: Paste this link in your browser <br />
 `https://discord.com/api/oauth2/authorize?client_id=1036359071508484237&permissions=8&scope=bot%20applications.commands`
 
 2: Select the server you want to add the bot to <br />
@@ -26,4 +26,4 @@ Bob The Bot is a simple, competitive, community driven [Discord.js](https://gith
 
 3: Click 'Continue', and then 'Authorise'
 
-[serverselect]: ../Scorcher/docs/step_2.png "Select the server"
+[serverSelect]: ../Scorcher/docs/step_2.png "Select the server"
