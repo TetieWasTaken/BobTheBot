@@ -52,7 +52,7 @@ module.exports = {
       ":asterisk: Finding password... `37,5%`",
       `:asterisk: Password found! \`${randomPassword}\` \`50%\``,
       ":keyboard: Logging in... `62,5%`",
-      ":keyboard: Logged in! `74%`",
+      ":keyboard: Logged in! `75%`",
       ":money_with_wings: Finding bank details... `86,5%`",
       `:money_with_wings: Bank details found! Email: \`${
         (username.replace(/\s/g, ""), randomEmail)

@@ -11,7 +11,7 @@ const { Client, Collection } = require("discord.js");
 const client = new Client({
   intents: 131071,
   partials: [Partials.Message, Partials.Channel, Partials.Reaction],
-}); // 34373
+}); // Reduce intents later, https://ziad87.net/intents/
 
 const { GiveawaysManager } = require("discord-giveaways");
 const GiveawayManagerWithOwnDatabase = class extends GiveawaysManager {

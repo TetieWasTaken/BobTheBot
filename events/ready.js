@@ -36,9 +36,9 @@ module.exports = {
       }
     })();
 
-    client.user.setPresence({
+    /*client.user.setPresence({
       activities: [{ name: `discord`, type: ActivityType.Watching }],
       status: "online",
-    });
+    });*/
   },
 };
