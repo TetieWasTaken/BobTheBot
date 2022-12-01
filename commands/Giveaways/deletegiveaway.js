@@ -31,9 +31,10 @@ module.exports = {
         });
       })
       .catch((err) => {
-        interaction.reply(
-          `An error has occurred, please check and try again.\n\`${err}\``
-        );
+        console.log(err);
+        interaction.reply({
+          content: `An error has occurred, please check and try again.`,
+        });
       });
   },
 };
