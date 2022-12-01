@@ -110,8 +110,12 @@ module.exports = {
     }
 
     user
-      .send(`You have been warned in ${interaction.guild.name} for ${reason}`)
-      .catch(console.log);
+      .send(
+        `You have been warned in \`${interaction.guild.name}\` for \`${reason}\``
+      )
+      .catch((err) => {
+        console.log(err);
+      });
 
     interaction.reply({
       content: `:warning:  \`${user.username}#${user.discriminator}\` has been warned for \`${reason}\``,

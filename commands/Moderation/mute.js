@@ -107,6 +107,14 @@ module.exports = {
       newData.save();
     }
 
+    user
+      .send(
+        `You have been muted in \`${interaction.guild.name}\` for \`${reason}\`\nDuration: \`${duration}\``
+      )
+      .catch((err) => {
+        console.log(err);
+      });
+
     interaction.reply({
       content: `:mute:  \`${user.username}#${user.discriminator}\` has been muted for \`${reason}\``,
       ephemeral: true,

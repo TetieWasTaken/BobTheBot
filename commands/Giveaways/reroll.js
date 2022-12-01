@@ -27,7 +27,7 @@ module.exports = {
       .reroll(messageId)
       .then(() => {
         interaction.reply({
-          content: ":gift: Giveaway rerolled successfully",
+          content: ":gift: Rerolling giveaway...",
           ephemeral: true,
         });
       })
