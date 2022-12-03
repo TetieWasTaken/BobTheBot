@@ -20,10 +20,18 @@ module.exports = {
       }
     }
 
+    let botNickname = ` (${botMember.nickname ?? "null"})`;
+    if (botNickname == " (null)") {
+      botNickname = "";
+    }
+
     const replyEmbed = new EmbedBuilder()
       .setColor(roleColor)
-      .setTitle("Bot Statistics")
-      .setDescription("test")
+      .setTitle(
+        `${interaction.client.user.username}#${interaction.client.user.discriminator}` +
+          botNickname
+      )
+      .setDescription("🧮 Statistics about the bot")
       .addFields(
         {
           name: `Servers`,
