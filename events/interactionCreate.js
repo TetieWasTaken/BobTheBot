@@ -95,6 +95,7 @@ module.exports = {
         ":lock:",
         ":warning:",
         ":mag:",
+        "slot_machine",
       ];
 
       if (!loggingEmojis.some((elem) => repliedMessage.startsWith(elem))) {

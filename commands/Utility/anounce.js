@@ -26,7 +26,7 @@ module.exports = {
       !interaction.member.permissions.has(PermissionFlagsBits.Administrator)
     ) {
       return interaction.reply({
-        content: "You do not have the `ADMINISTRATOR` permission!",
+        content: ":wrench: You do not have the `ADMINISTRATOR` permission!",
         ephemeral: true,
       });
     }
@@ -36,7 +36,8 @@ module.exports = {
         .has(PermissionFlagsBits.SendMessages)
     ) {
       return interaction.reply({
-        content: "I do not have permissions to send messages in this channel!",
+        content:
+          ":wrench: I do not have permissions to send messages in this channel!",
         ephemeral: true,
       });
     }
