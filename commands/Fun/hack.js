@@ -60,7 +60,7 @@ module.exports = {
       `:computer: <@!${user.id}> has been hacked!`,
     ];
     let i = 0;
-    await setInterval(() => {
+    var replyInterval = await setInterval(() => {
       if (i < replyArray.length) {
         let editReplyMessage = [replyArray[i]];
         editReplyMessage = editReplyMessage.toString();
@@ -69,7 +69,7 @@ module.exports = {
         });
         i++;
       } else {
-        return;
+        clearInterval(replyInterval);
       }
     }, 2500);
   },
