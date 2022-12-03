@@ -88,7 +88,6 @@ module.exports = {
       option9,
     ];
     const optionsFiltered = options.filter((option) => option !== null);
-    console.log(optionsFiltered);
 
     let roleColor = "ffffff";
     const member = interaction.guild.members.cache.get(

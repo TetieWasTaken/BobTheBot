@@ -25,6 +25,11 @@ module.exports = {
     let commandArray = [];
 
     const inputs = {
+      "8ball.js": "`[question]`",
+      "hack.js": "`[user]`",
+      "quote.js": "`[category]`",
+      "roll.js": "`(amount)`",
+      "rps.js": "`[option1]`, `[option2]`, `[option3]`",
       "ban.js": "`[target]`, `(reason)`",
       "history.js": "`[target]`",
       "kick.js": "`[target]`, `(reason)`",

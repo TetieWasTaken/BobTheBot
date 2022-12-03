@@ -33,8 +33,8 @@ module.exports = {
 
     let data = await InfractionsSchema.findOneAndUpdate(
       {
-        GuildId: interaction.guild.id,
-        UserId: user.id,
+        "GuildId": interaction.guild.id,
+        "UserId": user.id,
         "Punishments.CaseId": caseId,
       },
       { $pull: { Punishments: { CaseId: caseId } } }
@@ -48,7 +48,7 @@ module.exports = {
     }
 
     interaction.reply({
-      content: `Cleared warn with case id \`${caseId}\``,
+      content: `:card_index: Cleared infraction with case id \`${caseId}\``,
       ephemeral: true,
     });
   },

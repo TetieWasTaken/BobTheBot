@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const InfractionsSchema = require("../../models/InfractionsModel");
-const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
+const { EmbedBuilder, PermissionFlagsBits, time } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -52,6 +52,9 @@ module.exports = {
       );
       if (punishmentArray.length == 0) {
         punishmentArray.push("No active infractions.");
+      } else if (punishmentArray.length >= 20) {
+        punishmentArray = punishmentArray.slice(0, 20);
+        punishmentArray.push("+ more");
       }
     }
 
@@ -76,7 +79,10 @@ module.exports = {
       })
       .addFields({
         name: `Active infraction`,
-        value: `This user is timed out until: ${member.communicationDisabledUntil}`,
+        value: `This user is timed out until: ${time(
+          member.communicationDisabledUntil,
+          "f"
+        )}`,
         inline: false,
       })
       .setTimestamp();

@@ -22,10 +22,13 @@ module.exports = {
           { name: "MD5 (not recommended)", value: "MD5" },
           { name: "salt", value: "salt" }
         )
+        .setMaxLength(128)
     ),
   async execute(interaction) {
-    let string = interaction.options.getString("string");
+    let input = interaction.options.getString("string");
     const algorithm = interaction.options.getString("algorithm");
+
+    let string = input;
 
     switch (algorithm) {
       case "sha256":
@@ -42,7 +45,7 @@ module.exports = {
         string = scryptSync(string, salt, 64).toString("hex");
     }
     interaction.reply({
-      content: `**${algorithm}**\n \`${string}\``,
+      content: `\`${input}\` --> **${algorithm}** --> \`${string}\``,
       ephemeral: true,
     });
   },

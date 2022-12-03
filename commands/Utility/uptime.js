@@ -10,6 +10,7 @@ module.exports = {
 
     interaction.reply({
       content: convertMS(milliseconds),
+      ephemeral: true,
     });
   },
 };

@@ -114,4 +114,6 @@ client.on("error", (error) => {
   console.error("The WebSocket encountered an error:", error);
 });
 
+client.rest.on("rateLimited", console.log);
+
 client.login(process.env.BOT_TOKEN);

@@ -6,13 +6,10 @@ module.exports = {
   once: false,
   async execute(interaction) {
     if (interaction.isButton()) {
-      console.log("isButton interaction");
       const button = interaction.client.buttons.get(interaction.customId);
-      console.log(button);
       if (!button) return new Error("No code for button!");
 
       try {
-        console.log("trying button...");
         await button.execute(interaction);
       } catch (err) {
         console.log(err);
@@ -95,7 +92,9 @@ module.exports = {
         ":lock:",
         ":warning:",
         ":mag:",
-        "slot_machine",
+        ":slot_machine:",
+        ":card_index:",
+        ":mega:",
       ];
 
       if (!loggingEmojis.some((elem) => repliedMessage.startsWith(elem))) {

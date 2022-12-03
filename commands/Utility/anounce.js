@@ -45,7 +45,7 @@ module.exports = {
     channel.send(message);
 
     interaction.reply({
-      content: `:white_check_mark: Announced message successfully! <#${channel.id}>`,
+      content: `:mega: Announced message successfully! <#${channel.id}>`,
       ephemeral: true,
     });
   },

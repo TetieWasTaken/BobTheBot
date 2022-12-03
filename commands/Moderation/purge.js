@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
+const wait = require("node:timers/promises").setTimeout;
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -39,5 +40,7 @@ module.exports = {
         content: `:mag: Purged ${messages.size} messages`,
       })
     );
+    await wait(1500);
+    interaction.deleteReply();
   },
 };
