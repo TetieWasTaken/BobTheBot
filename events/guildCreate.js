@@ -1,7 +1,7 @@
 module.exports = {
   name: "guildCreate",
   once: false,
-  execute(guild) {
+  async execute(guild) {
     guild.members.me.setNickname("Bob");
   },
 };

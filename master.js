@@ -71,13 +71,13 @@ console.log(`------------------------------------------------`);
 
 const componentFolders = fs.readdirSync(`./components`);
 for (const compfolder of componentFolders) {
-  console.log(`Loading buttons from ${compfolder}`);
   const componentFiles = fs
     .readdirSync(`./components/${compfolder}`)
     .filter((file) => file.endsWith(".js"));
 
   switch (compfolder) {
     case "buttons":
+      console.log(`Loading buttons from ${compfolder}`);
       for (const file of componentFiles) {
         const button = require(`./components/${compfolder}/${file}`);
         client.buttons.set(button.data.name, button);
@@ -94,6 +94,8 @@ console.log(`------------------------------------------------`);
 const eventFiles = fs
   .readdirSync("./events")
   .filter((file) => file.endsWith(".js"));
+
+console.log(`Loading events`);
 
 for (const file of eventFiles) {
   const event = require(`./events/${file}`);
