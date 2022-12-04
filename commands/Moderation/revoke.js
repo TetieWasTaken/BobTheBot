@@ -2,6 +2,11 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const InfractionsSchema = require("../../models/InfractionsModel");
 const { PermissionFlagsBits } = require("discord.js");
 
+const requiredPerms = {
+  type: "flags",
+  key: PermissionFlagsBits.SendMessages,
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("revoke")
@@ -52,4 +57,5 @@ module.exports = {
       ephemeral: true,
     });
   },
+  requiredPerms: requiredPerms,
 };

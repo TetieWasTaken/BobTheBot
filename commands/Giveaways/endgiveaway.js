@@ -2,6 +2,11 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
 const GiveawaySchema = require("../../models/GiveawayModel");
 
+const requiredPerms = {
+  type: "flags",
+  key: PermissionFlagsBits.ManageMessages,
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("endgiveaway")
@@ -41,4 +46,5 @@ module.exports = {
         });
       });
   },
+  requiredPerms: requiredPerms,
 };

@@ -1,5 +1,11 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { createHash, scryptSync, randomBytes } = require("crypto");
+const { PermissionFlagsBits } = require("discord.js");
+
+const requiredPerms = {
+  type: "flags",
+  key: PermissionFlagsBits.SendMessages,
+};
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -49,4 +55,5 @@ module.exports = {
       ephemeral: true,
     });
   },
+  requiredPerms: requiredPerms,
 };

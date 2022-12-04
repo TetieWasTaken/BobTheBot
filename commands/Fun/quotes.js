@@ -1,5 +1,11 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { PermissionFlagsBits } = require("discord.js");
 const fs = require("fs");
+
+const requiredPerms = {
+  type: "flags",
+  key: PermissionFlagsBits.SendMessages,
+};
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -37,4 +43,5 @@ module.exports = {
 
     interaction.reply({ content: txtfile[randomNum], ephemeral: true });
   },
+  requiredPerms: requiredPerms,
 };

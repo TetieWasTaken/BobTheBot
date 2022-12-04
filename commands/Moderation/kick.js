@@ -1,6 +1,11 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
 
+const requiredPerms = {
+  type: "flags",
+  key: PermissionFlagsBits.KickMembers,
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("kick")
@@ -70,4 +75,5 @@ module.exports = {
       ephemeral: true,
     });
   },
+  requiredPerms: requiredPerms,
 };

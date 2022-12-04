@@ -1,6 +1,11 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
 
+const requiredPerms = {
+  type: "flags",
+  key: PermissionFlagsBits.ManageChannels,
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("slowmode")
@@ -54,4 +59,5 @@ module.exports = {
       ephemeral: true,
     });
   },
+  requiredPerms: requiredPerms,
 };

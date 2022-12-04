@@ -1,5 +1,11 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { PermissionFlagsBits } = require("discord.js");
 const wait = require("node:timers/promises").setTimeout;
+
+const requiredPerms = {
+  type: "flags",
+  key: PermissionFlagsBits.SendMessages,
+};
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -113,4 +119,5 @@ module.exports = {
       content: `${replyMessageArray.join("\n")}`,
     });
   },
+  requiredPerms: requiredPerms,
 };

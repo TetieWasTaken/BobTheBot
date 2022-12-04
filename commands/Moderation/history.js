@@ -2,6 +2,11 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const InfractionsSchema = require("../../models/InfractionsModel");
 const { EmbedBuilder, PermissionFlagsBits, time } = require("discord.js");
 
+const requiredPerms = {
+  type: "flags",
+  key: PermissionFlagsBits.SendMessages,
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("history")
@@ -95,4 +100,5 @@ module.exports = {
       embeds: [replyEmbed],
     });
   },
+  requiredPerms: requiredPerms,
 };

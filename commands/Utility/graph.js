@@ -1,10 +1,16 @@
 var Parser = require("expr-eval").Parser;
 const { ChartJSNodeCanvas } = require("chartjs-node-canvas");
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { PermissionFlagsBits } = require("discord.js");
 
 const width = 800;
 const height = 600;
 const backgroundColour = "white";
+
+const requiredPerms = {
+  type: "flags",
+  key: PermissionFlagsBits.SendMessages,
+};
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -65,4 +71,5 @@ module.exports = {
 
     await interaction.reply({ files: [image] });
   },
+  requiredPerms: requiredPerms,
 };

@@ -1,6 +1,11 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
 
+const requiredPerms = {
+  type: "flags",
+  key: PermissionFlagsBits.ManageMessages,
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("reroll")
@@ -37,4 +42,5 @@ module.exports = {
         );
       });
   },
+  requiredPerms: requiredPerms,
 };

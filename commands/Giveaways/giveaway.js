@@ -9,6 +9,11 @@ const {
 } = require("discord.js");
 const ms = require("ms");
 
+const requiredPerms = {
+  type: "flags",
+  key: PermissionFlagsBits.SendMessages,
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("giveaway")
@@ -78,4 +83,5 @@ module.exports = {
       ephemeral: true,
     });
   },
+  requiredPerms: requiredPerms,
 };

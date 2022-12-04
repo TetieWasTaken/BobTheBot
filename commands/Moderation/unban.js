@@ -1,6 +1,11 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
 
+const requiredPerms = {
+  type: "flags",
+  key: PermissionFlagsBits.BanMembers,
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("unban")
@@ -43,4 +48,5 @@ module.exports = {
       console.log(err);
     }
   },
+  requiredPerms: requiredPerms,
 };

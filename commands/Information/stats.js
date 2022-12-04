@@ -1,6 +1,11 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const { convertMS } = require("../../functions/convertMS.js");
+
+const requiredPerms = {
+  type: "flags",
+  key: PermissionFlagsBits.SendMessages,
+};
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -56,4 +61,5 @@ module.exports = {
       );
     interaction.reply({ embeds: [replyEmbed] });
   },
+  requiredPerms: requiredPerms,
 };

@@ -3,6 +3,11 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
 const ms = require("ms");
 
+const requiredPerms = {
+  type: "flags",
+  key: PermissionFlagsBits.ModerateMembers,
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("mute")
@@ -120,4 +125,5 @@ module.exports = {
       ephemeral: true,
     });
   },
+  requiredPerms: requiredPerms,
 };
