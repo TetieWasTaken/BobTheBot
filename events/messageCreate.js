@@ -12,35 +12,34 @@ module.exports = {
     if (message.channel.isDMBased()) {
       const developerArray = ["Tetie#4242"];
       const embed = new EmbedBuilder()
-        .addFields({
-          name: `Name`,
-          value: `
-                    BobTheBot`,
-          inline: true,
-        })
-        .addFields({
-          name: `ID`,
-          value: `
-                    1036359071508484237`,
-          inline: true,
-        })
-        .addFields({
-          name: `Developers`,
-          value: `
-                    ${developerArray.join(", ") || "None"}`,
-          inline: true,
-        })
-        .addFields({
-          name: `Dependency versions`,
-          value: `NodeJS: \`v18.12.0\`\nDiscord.JS: \`14.7.0\`\nMongoose: \`6.7.0\``,
-          inline: true,
-        })
-        .addFields({
-          name: `Links`,
-          value:
-            "[**Github**](https://github.com/)\n[**Discord**](https://discord.com)",
-          inline: true,
-        })
+        .addFields(
+          {
+            name: `Name`,
+            value: `BobTheBot`,
+            inline: true,
+          },
+          {
+            name: `ID`,
+            value: `1036359071508484237`,
+            inline: true,
+          },
+          {
+            name: `Developers`,
+            value: `${developerArray.join(", ") || "None"}`,
+            inline: true,
+          },
+          {
+            name: `Dependency versions`,
+            value: `NodeJS: \`v18.12.0\`\nDiscord.JS: \`14.7.0\`\nMongoose: \`6.7.0\``,
+            inline: true,
+          },
+          {
+            name: `Links`,
+            value:
+              "[**Github**](https://github.com/)\n[**Discord**](https://discord.com)",
+            inline: true,
+          }
+        )
         .setColor(0x00ff00)
         .setTimestamp();
       message.channel.send({ embeds: [embed] });

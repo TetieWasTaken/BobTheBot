@@ -24,16 +24,18 @@ module.exports = {
         const replyEmbed = new EmbedBuilder()
           .setColor(0xffffff)
           .setTitle(`Setup completed`)
-          .addFields({
-            name: `Guild ID`,
-            value: `${interaction.guild.id}`,
-            inline: true,
-          })
-          .addFields({
-            name: `Logging channel`,
-            value: `<#${logChannelId}>`,
-            inline: true,
-          })
+          .addFields(
+            {
+              name: `Guild ID`,
+              value: `${interaction.guild.id}`,
+              inline: true,
+            },
+            {
+              name: `Logging channel`,
+              value: `<#${logChannelId}>`,
+              inline: true,
+            }
+          )
           .setFooter({
             text: "Incorrect information? Re-run the setup command.",
           });
@@ -114,21 +116,23 @@ module.exports = {
             " | Command executed",
           iconURL: `${interaction.member.user.displayAvatarURL()}`,
         })
-        .addFields({
-          name: `Channel`,
-          value: `${interaction.channel}`,
-          inline: false,
-        })
-        .addFields({
-          name: `Command executed`,
-          value: `\`${interaction.commandName}\``,
-          inline: false,
-        })
-        .addFields({
-          name: `ID`,
-          value: `\`\`\`ini\nUser = ${interaction.user.id}\nID = ${interaction.id}\`\`\``,
-          inline: false,
-        })
+        .addFields(
+          {
+            name: `Channel`,
+            value: `${interaction.channel}`,
+            inline: false,
+          },
+          {
+            name: `Command executed`,
+            value: `\`${interaction.commandName}\``,
+            inline: false,
+          },
+          {
+            name: `ID`,
+            value: `\`\`\`ini\nUser = ${interaction.user.id}\nID = ${interaction.id}\`\`\``,
+            inline: false,
+          }
+        )
         .setTimestamp();
       logChannel.send({ embeds: [logEmbed] });
     }

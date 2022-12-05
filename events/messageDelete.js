@@ -29,21 +29,23 @@ module.exports = {
             " | Message deleted",
           iconURL: `${message.member.user.displayAvatarURL()}`,
         })
-        .addFields({
-          name: `Channel`,
-          value: `${message.channel}`,
-          inline: false,
-        })
-        .addFields({
-          name: `Message`,
-          value: `\`${message.content}\``,
-          inline: false,
-        })
-        .addFields({
-          name: `ID`,
-          value: `\`\`\`ini\nUser = ${message.member.id}\nID = ${message.id}\`\`\``,
-          inline: false,
-        })
+        .addFields(
+          {
+            name: `Channel`,
+            value: `${message.channel}`,
+            inline: false,
+          },
+          {
+            name: `Message`,
+            value: `\`${message.content}\``,
+            inline: false,
+          },
+          {
+            name: `ID`,
+            value: `\`\`\`ini\nUser = ${message.member.id}\nID = ${message.id}\`\`\``,
+            inline: false,
+          }
+        )
         .setTimestamp();
       logChannel.send({ embeds: [logEmbed] });
     }

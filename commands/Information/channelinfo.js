@@ -35,31 +35,29 @@ module.exports = {
         name: `${channel.name}`,
         iconURL: interaction.guild.iconURL(),
       })
-      .addFields({
-        name: `Name`,
-        value: `${channel.name}`,
-        inline: true,
-      })
-      .addFields({
-        name: `ID`,
-        value: `${channel.id}`,
-        inline: true,
-      })
-      .addFields({
-        name: `Type`,
-        value: `${ChannelType[channel.type]}`,
-        inline: true,
-      })
-      .addFields({
-        name: `Created at`,
-        value: `${time(Math.round(channel.createdTimestamp / 1000), "f")}`,
-        inline: true,
-      })
-      .addFields({
-        name: `Position`,
-        value: `${channel.position}`,
-        inline: false,
-      })
+      .addFields(
+        { name: `Name`, value: `${channel.name}`, inline: true },
+        {
+          name: `Type`,
+          value: `${ChannelType[channel.type]}`,
+          inline: true,
+        },
+        {
+          name: `ID`,
+          value: `${channel.id}`,
+          inline: true,
+        },
+        {
+          name: `Created at`,
+          value: `${time(Math.round(channel.createdTimestamp / 1000), "D")}`,
+          inline: true,
+        },
+        {
+          name: `Position`,
+          value: `${channel.position}`,
+          inline: true,
+        }
+      )
       .setTimestamp();
 
     interaction.reply({

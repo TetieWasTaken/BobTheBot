@@ -38,48 +38,43 @@ module.exports = {
     const replyEmbed = new EmbedBuilder()
       .setColor(target.color)
       .setThumbnail(target.icon)
-      .addFields({
-        name: `Name`,
-        value: `
-                    ${target.name}`,
-        inline: true,
-      })
-      .addFields({
-        name: `ID`,
-        value: `
-                    ${target.id}`,
-        inline: true,
-      })
-      .addFields({
-        name: `Color`,
-        value: `
-                    ${target.hexColor || "none"}`,
-        inline: true,
-      })
-      .addFields({
-        name: `Hoisted`,
-        value: `
-                    ${target.hoist}`,
-        inline: true,
-      })
-      .addFields({
-        name: `Mentionable`,
-        value: `
-                    ${target.mentionable}`,
-        inline: true,
-      })
-      .addFields({
-        name: `Position`,
-        value: `
-                    ${target.position || "none"}`,
-        inline: true,
-      })
-      .addFields({
-        name: `Key permissions`,
-        value: `
-                    ${permissionsArray.join(", ") || "None"}`,
-        inline: false,
-      })
+      .addFields(
+        {
+          name: `Name`,
+          value: `${target.name}`,
+          inline: true,
+        },
+        {
+          name: `ID`,
+          value: `${target.id}`,
+          inline: true,
+        },
+        {
+          name: `Color`,
+          value: `${target.hexColor || "none"}`,
+          inline: true,
+        },
+        {
+          name: `Hoisted`,
+          value: `${target.hoist}`,
+          inline: true,
+        },
+        {
+          name: `Mentionable`,
+          value: `${target.mentionable}`,
+          inline: true,
+        },
+        {
+          name: `Position`,
+          value: `${target.position || "none"}`,
+          inline: true,
+        },
+        {
+          name: `Key permissions`,
+          value: `${permissionsArray.join(", ") || "None"}`,
+          inline: false,
+        }
+      )
       .setTimestamp();
     interaction.reply({
       embeds: [replyEmbed],

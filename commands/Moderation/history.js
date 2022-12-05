@@ -76,19 +76,21 @@ module.exports = {
     const replyEmbed = new EmbedBuilder()
       .setColor(roleColor)
       .setTitle(`History for ${member.displayName}`)
-      .addFields({
-        name: `Infractions`,
-        value: punishmentArray.join("\n"),
-        inline: true,
-      })
-      .addFields({
-        name: `Active infraction`,
-        value: `This member is timed out until: ${time(
-          member.communicationDisabledUntil,
-          "f"
-        )}`,
-        inline: false,
-      })
+      .addFields(
+        {
+          name: `Infractions`,
+          value: punishmentArray.join("\n"),
+          inline: true,
+        },
+        {
+          name: `Active infraction`,
+          value: `This member is timed out until: ${time(
+            member.communicationDisabledUntil,
+            "f"
+          )}`,
+          inline: false,
+        }
+      )
       .setTimestamp();
 
     if (!isCommunicationDisabledBool) {

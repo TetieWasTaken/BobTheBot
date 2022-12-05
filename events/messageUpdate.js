@@ -29,26 +29,28 @@ module.exports = {
             " | Message edited",
           iconURL: `${newMessage.member.user.displayAvatarURL()}`,
         })
-        .addFields({
-          name: `Channel`,
-          value: `${newMessage.channel}`,
-          inline: false,
-        })
-        .addFields({
-          name: `New message`,
-          value: `\`${newMessage.content}\``,
-          inline: false,
-        })
-        .addFields({
-          name: `Old message`,
-          value: `\`${initMessage.content}\``,
-          inline: false,
-        })
-        .addFields({
-          name: `ID`,
-          value: `\`\`\`ini\nUser = ${newMessage.member.id}\nID = ${newMessage.id}\`\`\``,
-          inline: false,
-        })
+        .addFields(
+          {
+            name: `Channel`,
+            value: `${newMessage.channel}`,
+            inline: false,
+          },
+          {
+            name: `New message`,
+            value: `\`${newMessage.content}\``,
+            inline: false,
+          },
+          {
+            name: `Old message`,
+            value: `\`${initMessage.content}\``,
+            inline: false,
+          },
+          {
+            name: `ID`,
+            value: `\`\`\`ini\nUser = ${newMessage.member.id}\nID = ${newMessage.id}\`\`\``,
+            inline: false,
+          }
+        )
         .setTimestamp();
       logChannel.send({ embeds: [logEmbed] });
     }

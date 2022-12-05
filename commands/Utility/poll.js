@@ -19,55 +19,55 @@ module.exports = {
     .addStringOption((option) =>
       option
         .setName("option1")
-        .setDescription("Add a poll option (min 2 max 10)")
+        .setDescription("Add a poll option (min 2 max 9)")
         .setRequired(true)
     )
     .addStringOption((option) =>
       option
         .setName("option2")
-        .setDescription("Add a poll option (min 2 max 10)")
+        .setDescription("Add a poll option (min 2 max 9)")
         .setRequired(true)
     )
     .addStringOption((option) =>
       option
         .setName("option3")
-        .setDescription("Add a poll option (min 2 max 10)")
+        .setDescription("Add a poll option (min 2 max 9)")
         .setRequired(false)
     )
     .addStringOption((option) =>
       option
         .setName("option4")
-        .setDescription("Add a poll option (min 2 max 10)")
+        .setDescription("Add a poll option (min 2 max 9)")
         .setRequired(false)
     )
     .addStringOption((option) =>
       option
         .setName("option5")
-        .setDescription("Add a poll option (min 2 max 10)")
+        .setDescription("Add a poll option (min 2 max 9)")
         .setRequired(false)
     )
     .addStringOption((option) =>
       option
         .setName("option6")
-        .setDescription("Add a poll option (min 2 max 10)")
+        .setDescription("Add a poll option (min 2 max 9)")
         .setRequired(false)
     )
     .addStringOption((option) =>
       option
         .setName("option7")
-        .setDescription("Add a poll option (min 2 max 10)")
+        .setDescription("Add a poll option (min 2 max 9)")
         .setRequired(false)
     )
     .addStringOption((option) =>
       option
         .setName("option8")
-        .setDescription("Add a poll option (min 2 max 10)")
+        .setDescription("Add a poll option (min 2 max 9)")
         .setRequired(false)
     )
     .addStringOption((option) =>
       option
         .setName("option9")
-        .setDescription("Add a poll option (min 2 max 10)")
+        .setDescription("Add a poll option (min 2 max 9)")
         .setRequired(false)
     ),
   async execute(interaction) {
@@ -108,51 +108,54 @@ module.exports = {
     const pollEmbed = new EmbedBuilder()
       .setColor(roleColor)
       .setTitle(`${message}`)
-      .addFields({
-        name: `Option 1`,
-        value: `${option1} :one:`,
-        inline: true,
-      })
-      .addFields({
-        name: `Option 2`,
-        value: `${option2} :two:`,
-        inline: true,
-      })
-      .addFields({
-        name: `Option 3`,
-        value: `${option3} :three:`,
-        inline: true,
-      })
-      .addFields({
-        name: `Option 4`,
-        value: `${option4} :four:`,
-        inline: true,
-      })
-      .addFields({
-        name: `Option 5`,
-        value: `${option5} :five:`,
-        inline: true,
-      })
-      .addFields({
-        name: `Option 6`,
-        value: `${option6} :six:`,
-        inline: true,
-      })
-      .addFields({
-        name: `Option 7`,
-        value: `${option7} :seven:`,
-        inline: true,
-      })
-      .addFields({
-        name: `Option 8`,
-        value: `${option8} :eight:`,
-        inline: true,
-      })
-      .addFields({
-        name: `Option 9`,
-        value: `${option9} :nine:`,
-        inline: true,
-      })
+      .addFields(
+        {
+          name: `Option 1`,
+          value: `${option1} :one:`,
+          inline: true,
+        },
+        {
+          name: `Option 2`,
+          value: `${option2} :two:`,
+          inline: true,
+        },
+        {
+          name: `Option 3`,
+          value: `${option3} :three:`,
+          inline: true,
+        },
+        {
+          name: `Option 4`,
+          value: `${option4} :four:`,
+          inline: true,
+        },
+        {
+          name: `Option 5`,
+
+          value: `${option5} :five:`,
+          inline: true,
+        },
+        {
+          name: `Option 6`,
+          value: `${option6} :six:`,
+          inline: true,
+        },
+        {
+          name: `Option 7`,
+          value: `${option7} :seven:`,
+          inline: true,
+        },
+        {
+          name: `Option 8`,
+          value: `${option8} :eight:`,
+          inline: true,
+        },
+        {
+          name: `Option 9`,
+          value: `${option9} :nine:`,
+          inline: true,
+        }
+      )
       .setTimestamp();
 
     for (let i = 9; i > optionsFiltered.length; i--) {
