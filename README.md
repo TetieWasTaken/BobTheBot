@@ -14,6 +14,8 @@
 
 Bob The Bot is a simple, competitive, community driven [Discord.js](https://github.com/discordjs) bot.
 
+# WARNING: THIS BOT IS NOT DONE YET! THIS BOT IS NOT BEING HOSTED, DO NOT EXPECT THE BOT TO RESPOND.
+
 ## Adding this bot to your discord server
 
 1: Paste this link in your browser <br />
