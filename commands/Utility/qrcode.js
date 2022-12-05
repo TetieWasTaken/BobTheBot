@@ -20,10 +20,10 @@ module.exports = {
   async execute(interaction) {
     const text = interaction.options.getString("url");
     const baseURL = "http://api.qrserver.com/v1";
-    const regexString =
+    const regex =
       /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
 
-    if (!text.match(regexString)) {
+    if (!text.match(regex)) {
       interaction.reply({
         content: `Please enter a valid URL.`,
         ephemeral: true,
