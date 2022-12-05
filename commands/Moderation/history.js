@@ -18,7 +18,7 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    const user = interaction.options.getUser("target");
+    const member = interaction.options.getMember("target");
 
     if (
       !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
@@ -31,18 +31,17 @@ module.exports = {
 
     let data = await InfractionsSchema.findOne({
       GuildId: interaction.guild.id,
-      UserId: user.id,
+      UserId: member.id,
     });
     if (!data) {
       data = new InfractionsSchema({
         GuildId: interaction.guild.id,
-        UserId: user.id,
+        UserId: member.id,
         Punishments: [],
       });
       data.save();
     }
 
-    const member = await interaction.guild.members.fetch(user.id);
     let isCommunicationDisabledBool = false;
     if (member.isCommunicationDisabled() == true) {
       isCommunicationDisabledBool = true;
@@ -76,7 +75,7 @@ module.exports = {
 
     const replyEmbed = new EmbedBuilder()
       .setColor(roleColor)
-      .setTitle(`History for ${user.username}`)
+      .setTitle(`History for ${member.displayName}`)
       .addFields({
         name: `Infractions`,
         value: punishmentArray.join("\n"),
@@ -84,7 +83,7 @@ module.exports = {
       })
       .addFields({
         name: `Active infraction`,
-        value: `This user is timed out until: ${time(
+        value: `This member is timed out until: ${time(
           member.communicationDisabledUntil,
           "f"
         )}`,

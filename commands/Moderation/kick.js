@@ -24,7 +24,7 @@ module.exports = {
         .setRequired(false)
     ),
   async execute(interaction) {
-    const user = interaction.options.getUser("target");
+    const member = interaction.options.getMember("target");
     let reason =
       interaction.options.getString("reason") ?? "No reason provided";
 
@@ -46,7 +46,6 @@ module.exports = {
       });
     }
 
-    const member = await interaction.guild.members.fetch(user.id);
     const authorMember = await interaction.guild.members.fetch(
       interaction.user.id
     );
@@ -63,7 +62,7 @@ module.exports = {
     }
     if (highestUserRole.position >= authorMember.roles.highest.position) {
       return interaction.reply({
-        content: `:wrench: ${user} has a higher or equal role than you on the hierarchy!`,
+        content: `:wrench: ${member} has a higher or equal role than you on the hierarchy!`,
         ephemeral: true,
       });
     }
@@ -71,7 +70,7 @@ module.exports = {
     await member.kick(reason);
 
     interaction.reply({
-      content: `:athletic_shoe:  \`${user.username}#${user.discriminator}\` has been kicked for \`${reason}\``,
+      content: `:athletic_shoe:  \`${member.user.username}#${member.user.discriminator}\` has been kicked for \`${reason}\``,
       ephemeral: true,
     });
   },

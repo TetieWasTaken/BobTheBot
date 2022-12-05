@@ -13,7 +13,7 @@ module.exports = {
     .setDescription("Sets the rank of a user")
     .addUserOption((option) =>
       option
-        .setName("user")
+        .setName("target")
         .setDescription("The user to set the rank of")
         .setRequired(true)
     )
@@ -24,7 +24,7 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    const user = interaction.options.getUser("user");
+    const user = interaction.options.getUser("target");
     const rank = interaction.options.getInteger("rank");
 
     if (rank <= 0) {

@@ -17,7 +17,7 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    const user = interaction.options.getUser("target");
+    const member = interaction.options.getMember("target");
 
     if (
       !interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)
@@ -39,8 +39,6 @@ module.exports = {
       });
     }
 
-    const member = await interaction.guild.members.fetch(user.id);
-
     const highestUserRole = member.roles.highest;
     if (
       highestUserRole.position >=
@@ -55,7 +53,7 @@ module.exports = {
     await member.timeout(1000);
 
     interaction.reply({
-      content: `:loud_sound:  \`${user.username}#${user.discriminator}\` has been unmuted`,
+      content: `:loud_sound:  \`${member.user.username}#${member.user.discriminator}\` has been unmuted`,
       ephemeral: true,
     });
   },

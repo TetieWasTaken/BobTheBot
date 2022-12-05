@@ -34,7 +34,7 @@ module.exports = {
         .setRequired(false)
     ),
   async execute(interaction) {
-    const user = interaction.options.getUser("target");
+    const member = interaction.options.getMember("target");
     let duration = interaction.options.getString("duration");
     let reason =
       interaction.options.getString("reason") ?? "No reason provided";
@@ -59,7 +59,6 @@ module.exports = {
       });
     }
 
-    const member = await interaction.guild.members.fetch(user.id);
     const authorMember = await interaction.guild.members.fetch(
       interaction.user.id
     );
@@ -76,7 +75,14 @@ module.exports = {
     }
     if (highestUserRole.position >= authorMember.roles.highest.position) {
       return interaction.reply({
-        content: `:wrench: ${user} has a higher or equal role than you on the hierarchy!`,
+        content: `:wrench: ${member} has a higher or equal role than you on the hierarchy!`,
+        ephemeral: true,
+      });
+    }
+
+    if (member.isCommunicationDisabled()) {
+      return interaction.reply({
+        content: `:wrench:  \`${member.user.username}#${member.user.discriminator}\` is already muted!`,
         ephemeral: true,
       });
     }
@@ -85,7 +91,7 @@ module.exports = {
 
     let data = await InfractionsSchema.findOne({
       GuildId: interaction.guild.id,
-      UserId: user.id,
+      UserId: member.id,
     });
 
     if (data) {
@@ -100,7 +106,7 @@ module.exports = {
     } else if (!data) {
       let newData = new InfractionsSchema({
         GuildId: interaction.guild.id,
-        UserId: user.id,
+        UserId: member.id,
         Punishments: [
           {
             PunishType: "MUTE",
@@ -112,7 +118,7 @@ module.exports = {
       newData.save();
     }
 
-    user
+    member
       .send(
         `You have been muted in \`${interaction.guild.name}\` for \`${reason}\`\nDuration: \`${duration}\``
       )
@@ -121,7 +127,7 @@ module.exports = {
       });
 
     interaction.reply({
-      content: `:mute:  \`${user.username}#${user.discriminator}\` has been muted for \`${reason}\``,
+      content: `:mute:  \`${member.user.username}#${member.user.discriminator}\` has been muted for \`${reason}\``,
       ephemeral: true,
     });
   },

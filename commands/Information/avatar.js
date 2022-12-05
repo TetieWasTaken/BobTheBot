@@ -18,9 +18,8 @@ module.exports = {
         .setRequired(false)
     ),
   async execute(interaction) {
-    let user = interaction.options.getUser("target") ?? interaction.user;
+    let member = interaction.options.getMember("target") ?? interaction.member;
 
-    const member = await interaction.guild.members.fetch(user.id);
     let roleColor = "ffffff";
     const roleCacheSize = member.roles.cache.size;
     if (roleCacheSize >= 2) {
@@ -30,10 +29,10 @@ module.exports = {
     }
 
     const replyEmbed = new EmbedBuilder()
-      .setTitle(user.username)
-      .setFooter({ text: `${user.id}` })
-      .setThumbnail(user.bannerURL())
-      .setImage(user.displayAvatarURL({ dynamic: true, size: 256 }))
+      .setTitle(member.user.username)
+      .setFooter({ text: `${member.id}` })
+      .setThumbnail(member.user.bannerURL())
+      .setImage(member.displayAvatarURL({ dynamic: true, size: 256 }))
       .setColor(roleColor)
       .setTimestamp();
 
