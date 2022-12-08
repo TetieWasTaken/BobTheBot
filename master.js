@@ -3,6 +3,7 @@ const fs = require("fs");
 const Database = require("./config/Database");
 const { Partials } = require("discord.js");
 const GiveawayModel = require("./models/GiveawayModel");
+const { Player } = require("discord-player");
 
 const db = new Database();
 db.connect();
@@ -109,6 +110,13 @@ for (const file of eventFiles) {
 }
 
 console.log(`------------------------------------------------`);
+
+client.player = new Player(client, {
+  ytdlOptions: {
+    quality: "highestaudio",
+    highWaterMark: 1 << 25,
+  },
+});
 
 client.on("error", (error) => {
   console.error("The WebSocket encountered an error:", error);
