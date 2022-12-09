@@ -3,7 +3,7 @@ const { PermissionFlagsBits, ChannelType } = require("discord.js");
 
 const requiredPerms = {
   type: "flags",
-  key: PermissionFlagsBits.SendMessages,
+  key: [PermissionFlagsBits.SendMessages],
 };
 
 module.exports = {

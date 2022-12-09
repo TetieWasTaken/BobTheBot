@@ -4,7 +4,7 @@ const { roleColor } = require("../../functions/roleColor.js");
 
 const requiredPerms = {
   type: "flags",
-  key: PermissionFlagsBits.SendMessages,
+  key: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks],
 };
 
 module.exports = {
@@ -20,8 +20,7 @@ module.exports = {
       .setColor(roleColor(interaction))
       .addFields({
         name: "Roles",
-        value: `
-                    ${roles}`,
+        value: `${roles}`,
         inline: true,
       })
       .setFooter({ text: `${interaction.guild.id}` })

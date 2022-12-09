@@ -4,7 +4,7 @@ const GiveawaySchema = require("../../models/GiveawayModel");
 
 const requiredPerms = {
   type: "flags",
-  key: PermissionFlagsBits.ManageMessages,
+  key: [PermissionFlagsBits.ManageMessages, PermissionFlagsBits.SendMessages],
 };
 
 module.exports = {

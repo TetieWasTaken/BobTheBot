@@ -7,7 +7,11 @@ const {
 
 const requiredPerms = {
   type: "flags",
-  key: PermissionFlagsBits.ViewAuditLog,
+  key: [
+    PermissionFlagsBits.ViewAuditLog,
+    PermissionFlagsBits.SendMessages,
+    PermissionFlagsBits.EmbedLinks,
+  ],
 };
 
 module.exports = {

@@ -9,7 +9,7 @@ const backgroundColour = "white";
 
 const requiredPerms = {
   type: "flags",
-  key: PermissionFlagsBits.SendMessages,
+  key: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.AttachFiles],
 };
 
 module.exports = {

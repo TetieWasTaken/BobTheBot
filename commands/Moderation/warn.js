@@ -4,7 +4,7 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 
 const requiredPerms = {
   type: "flags",
-  key: PermissionFlagsBits.SendMessages,
+  key: [PermissionFlagsBits.SendMessages],
 };
 
 module.exports = {

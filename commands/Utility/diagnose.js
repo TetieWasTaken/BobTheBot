@@ -8,7 +8,7 @@ const {
 
 const requiredPerms = {
   type: "flags",
-  key: PermissionFlagsBits.SendMessages,
+  key: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks],
 };
 
 module.exports = {
@@ -49,28 +49,35 @@ module.exports = {
 
           let replyEmbed = new EmbedBuilder();
 
-          if (interaction.guild.members.me.permissions.has(requiredPerms.key)) {
-            replyEmbed = new EmbedBuilder()
-              .setColor(0x00ff00)
-              .setTitle(`Diagnosing ${commandFile.data.name}...`)
-              .setDescription(`Everything looks normal.`)
-              .setTimestamp();
-          } else {
-            let missingPermission = new PermissionsBitField(
-              requiredPerms.key
-            ).toArray();
-
-            replyEmbed = new EmbedBuilder()
-              .setColor(0xff0000)
-              .setTitle(`Diagnosing ${commandFile.data.name}...`)
-              .setDescription(
-                `Error! I am missing the following permissions: \`${missingPermission}\``
+          for (i = 0; i < requiredPerms.key.length; i++) {
+            if (
+              !interaction.guild.members.me.permissions.has(
+                requiredPerms.key[i]
               )
-              .setTimestamp();
+            ) {
+              let missingPermission = new PermissionsBitField(
+                requiredPerms.key[i]
+              ).toArray();
+
+              replyEmbed = new EmbedBuilder()
+                .setColor(0xff0000)
+                .setTitle(`Diagnosing ${commandFile.data.name}...`)
+                .setDescription(
+                  `Error! I am missing the following permissions: \`${missingPermission}\``
+                )
+                .setTimestamp();
+
+              return interaction.reply({ embeds: [replyEmbed] });
+            }
           }
 
-          interaction.reply({ embeds: [replyEmbed] });
-          return;
+          replyEmbed = new EmbedBuilder()
+            .setColor(0x00ff00)
+            .setTitle(`Diagnosing ${commandFile.data.name}...`)
+            .setDescription(`Everything looks normal.`)
+            .setTimestamp();
+
+          return interaction.reply({ embeds: [replyEmbed] });
         }
       }
     }

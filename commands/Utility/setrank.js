@@ -4,7 +4,7 @@ const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 
 const requiredPerms = {
   type: "flags",
-  key: PermissionFlagsBits.SendMessages,
+  key: [PermissionFlagsBits.SendMessages],
 };
 
 module.exports = {

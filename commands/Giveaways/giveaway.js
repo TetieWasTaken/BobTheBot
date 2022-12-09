@@ -11,7 +11,7 @@ const ms = require("ms");
 
 const requiredPerms = {
   type: "flags",
-  key: PermissionFlagsBits.SendMessages,
+  key: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks],
 };
 
 module.exports = {

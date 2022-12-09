@@ -3,7 +3,7 @@ const { PermissionFlagsBits } = require("discord.js");
 
 const requiredPerms = {
   type: "flags",
-  key: PermissionFlagsBits.KickMembers,
+  key: [PermissionFlagsBits.KickMembers, PermissionFlagsBits.SendMessages],
 };
 
 module.exports = {

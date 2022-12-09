@@ -4,7 +4,7 @@ const fs = require("fs");
 
 const requiredPerms = {
   type: "flags",
-  key: PermissionFlagsBits.SendMessages,
+  key: [PermissionFlagsBits.SendMessages],
 };
 
 module.exports = {
