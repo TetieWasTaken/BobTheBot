@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const LevelSchema = require("../../models/LevelModel");
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
+const { roleColor } = require("../../functions/roleColor.js");
 
 const requiredPerms = {
   type: "flags",
@@ -40,17 +41,6 @@ module.exports = {
       userLevel = data.UserLevel;
     }
 
-    let roleColor = "ffffff";
-    const botMember = interaction.guild.members.cache.get(
-      interaction.client.user.id
-    );
-    const roleCacheSize = botMember.roles.cache.size;
-    if (roleCacheSize >= 2) {
-      if (botMember.roles.color !== null) {
-        roleColor = botMember.roles.color.hexColor;
-      }
-    }
-
     let userNickname = ` (${user.nickname ?? ""})`;
     if (userNickname == " ()") {
       userNickname = "";
@@ -59,7 +49,7 @@ module.exports = {
     let xpNeeded = 50 * (userLevel + 1) ** 2 + 50;
 
     const rankEmbed = new EmbedBuilder()
-      .setColor(roleColor)
+      .setColor(roleColor(interaction))
       .setAuthor({
         name: `${user.username}#${user.discriminator}` + userNickname,
         iconURL: `${user.displayAvatarURL()}`,

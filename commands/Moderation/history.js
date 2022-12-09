@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const InfractionsSchema = require("../../models/InfractionsModel");
 const { EmbedBuilder, PermissionFlagsBits, time } = require("discord.js");
+const { roleColor } = require("../../functions/roleColor.js");
 
 const requiredPerms = {
   type: "flags",
@@ -62,19 +63,8 @@ module.exports = {
       }
     }
 
-    let roleColor = "ffffff";
-    const botMember = interaction.guild.members.cache.get(
-      interaction.client.user.id
-    );
-    const roleCacheSize = botMember.roles.cache.size;
-    if (roleCacheSize >= 2) {
-      if (botMember.roles.color !== null) {
-        roleColor = botMember.roles.color.hexColor;
-      }
-    }
-
     const replyEmbed = new EmbedBuilder()
-      .setColor(roleColor)
+      .setColor(roleColor(interaction))
       .setTitle(`History for ${member.displayName}`)
       .addFields(
         {

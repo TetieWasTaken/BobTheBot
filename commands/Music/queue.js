@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const { QueryType } = require("discord-player");
+const { roleColor } = require("../../functions/roleColor.js");
 
 const requiredPerms = {
   type: "flags",
@@ -43,17 +44,6 @@ module.exports = {
 
     const currentTrack = queue.current;
 
-    let roleColor = "ffffff";
-    const member = interaction.guild.members.cache.get(
-      interaction.client.user.id
-    );
-    const roleCacheSize = member.roles.cache.size;
-    if (roleCacheSize >= 2) {
-      if (member.roles.color !== null) {
-        roleColor = member.roles.color.hexColor;
-      }
-    }
-
     let replyEmbed = new EmbedBuilder()
       .setTitle("Queue")
       .setDescription(
@@ -62,7 +52,7 @@ module.exports = {
         })\n\n${queueString.join("\n")}`
       )
       .setThumbnail(currentTrack.thumbnail)
-      .setColor(roleColor)
+      .setColor(roleColor(interaction))
       .setTimestamp();
 
     interaction.reply({

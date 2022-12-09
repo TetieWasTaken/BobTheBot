@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
+const { roleColor } = require("../../functions/roleColor.js");
 
 const requiredPerms = {
   type: "flags",
@@ -94,19 +95,8 @@ module.exports = {
     ];
     const optionsFiltered = options.filter((option) => option !== null);
 
-    let roleColor = "ffffff";
-    const member = interaction.guild.members.cache.get(
-      interaction.client.user.id
-    );
-    const roleCacheSize = member.roles.cache.size;
-    if (roleCacheSize >= 2) {
-      if (member.roles.color !== null) {
-        roleColor = member.roles.color.hexColor;
-      }
-    }
-
     const pollEmbed = new EmbedBuilder()
-      .setColor(roleColor)
+      .setColor(roleColor(interaction))
       .setTitle(`${message}`)
       .addFields(
         {

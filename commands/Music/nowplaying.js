@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
+const { roleColor } = require("../../functions/roleColor.js");
 
 const requiredPerms = {
   type: "flags",
@@ -21,17 +22,6 @@ module.exports = {
     }
 
     const track = queue.current;
-
-    let roleColor = "ffffff";
-    const member = interaction.guild.members.cache.get(
-      interaction.client.user.id
-    );
-    const roleCacheSize = member.roles.cache.size;
-    if (roleCacheSize >= 2) {
-      if (member.roles.color !== null) {
-        roleColor = member.roles.color.hexColor;
-      }
-    }
 
     const embed = new EmbedBuilder()
       .setTitle("Now Playing")
@@ -62,7 +52,7 @@ module.exports = {
           size: 256,
         })}`,
       })
-      .setColor(roleColor)
+      .setColor(roleColor(interaction))
       .setTimestamp();
 
     await interaction.reply({

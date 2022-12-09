@@ -7,6 +7,7 @@ const {
   ButtonStyle,
   PermissionFlagsBits,
 } = require("discord.js");
+const { roleColor } = require("../../functions/roleColor.js");
 
 const requiredPerms = {
   type: "flags",
@@ -46,19 +47,8 @@ module.exports = {
       data.save();
     }
 
-    let roleColor = "ffffff";
-    const member = interaction.guild.members.cache.get(
-      interaction.client.user.id
-    );
-    const roleCacheSize = member.roles.cache.size;
-    if (roleCacheSize >= 2) {
-      if (member.roles.color !== null) {
-        roleColor = member.roles.color.hexColor;
-      }
-    }
-
     const replyEmbed = new EmbedBuilder()
-      .setColor(roleColor)
+      .setColor(roleColor(interaction))
       .setTitle(`Current server data`)
       .addFields(
         {

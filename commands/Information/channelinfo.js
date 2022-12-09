@@ -5,6 +5,7 @@ const {
   PermissionFlagsBits,
   time,
 } = require("discord.js");
+const { roleColor } = require("../../functions/roleColor.js");
 
 const requiredPerms = {
   type: "flags",
@@ -16,21 +17,10 @@ module.exports = {
     .setName("channelinfo")
     .setDescription("Receive information about the current channel"),
   async execute(interaction) {
-    let roleColor = "ffffff";
-    const member = interaction.guild.members.cache.get(
-      interaction.client.user.id
-    );
-    const roleCacheSize = member.roles.cache.size;
-    if (roleCacheSize >= 2) {
-      if (member.roles.color !== null) {
-        roleColor = member.roles.color.hexColor;
-      }
-    }
-
     const channel = interaction.channel;
 
     const replyEmbed = new EmbedBuilder()
-      .setColor(roleColor)
+      .setColor(roleColor(interaction))
       .setAuthor({
         name: `${channel.name}`,
         iconURL: interaction.guild.iconURL(),

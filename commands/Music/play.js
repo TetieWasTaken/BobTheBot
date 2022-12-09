@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const { QueryType } = require("discord-player");
+const { roleColor } = require("../../functions/roleColor.js");
 
 const requiredPerms = {
   type: "flags",
@@ -46,22 +47,11 @@ module.exports = {
 
     await queue.addTrack(song);
 
-    let roleColor = "ffffff";
-    const member = interaction.guild.members.cache.get(
-      interaction.client.user.id
-    );
-    const roleCacheSize = member.roles.cache.size;
-    if (roleCacheSize >= 2) {
-      if (member.roles.color !== null) {
-        roleColor = member.roles.color.hexColor;
-      }
-    }
-
     let replyEmbed = new EmbedBuilder()
       .setTitle("Added to queue")
       .setDescription(`[${song.title}](${song.url})`)
       .setThumbnail(song.thumbnail)
-      .setColor(roleColor)
+      .setColor(roleColor(interaction))
       .setTimestamp();
 
     if (!queue.playing) await queue.play();

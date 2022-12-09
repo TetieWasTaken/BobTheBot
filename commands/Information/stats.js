@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const { convertMS } = require("../../functions/convertMS.js");
+const { roleColor } = require("../../functions/roleColor.js");
 
 const requiredPerms = {
   type: "flags",
@@ -14,16 +15,9 @@ module.exports = {
   async execute(interaction) {
     let milliseconds = interaction.client.uptime;
 
-    let roleColor = "ffffff";
     const botMember = interaction.guild.members.cache.get(
       interaction.client.user.id
     );
-    const roleCacheSize = botMember.roles.cache.size;
-    if (roleCacheSize >= 2) {
-      if (botMember.roles.color !== null) {
-        roleColor = botMember.roles.color.hexColor;
-      }
-    }
 
     let botNickname = ` (${botMember.nickname ?? "null"})`;
     if (botNickname == " (null)") {
@@ -31,7 +25,7 @@ module.exports = {
     }
 
     const replyEmbed = new EmbedBuilder()
-      .setColor(roleColor)
+      .setColor(roleColor(interaction))
       .setTitle(
         `${interaction.client.user.username}#${interaction.client.user.discriminator}` +
           botNickname
