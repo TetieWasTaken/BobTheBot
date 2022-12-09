@@ -43,6 +43,17 @@ module.exports = {
 
     const currentTrack = queue.current;
 
+    let roleColor = "ffffff";
+    const member = interaction.guild.members.cache.get(
+      interaction.client.user.id
+    );
+    const roleCacheSize = member.roles.cache.size;
+    if (roleCacheSize >= 2) {
+      if (member.roles.color !== null) {
+        roleColor = member.roles.color.hexColor;
+      }
+    }
+
     let replyEmbed = new EmbedBuilder()
       .setTitle("Queue")
       .setDescription(
@@ -51,12 +62,12 @@ module.exports = {
         })\n\n${queueString.join("\n")}`
       )
       .setThumbnail(currentTrack.thumbnail)
-      .setColor("#00FF00")
+      .setColor(roleColor)
       .setTimestamp();
 
     interaction.reply({
       embeds: [replyEmbed],
-      ephemeral: true,
+      ephemeral: false,
     });
   },
   requiredPerms: requiredPerms,

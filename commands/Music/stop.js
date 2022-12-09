@@ -12,33 +12,40 @@ module.exports = {
     .setDescription("Stops the player and leaves the voice channel"),
   async execute(interaction) {
     const DJRole = interaction.guild.roles.cache.find((role) =>
-      ["DJ", "dj"].includes(role.name)
+      ["DJ", "dj", "Dj", "dJ"].includes(role.name)
     );
+
     if (
-      !interaction.member.roles.cache.has(DJRole.id) ||
-      !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
+      interaction.member.permissions.has(PermissionFlagsBits.ManageMessages) ||
+      interaction.member.roles.cache.has(DJRole.id)
     ) {
-      return await interaction.reply({
+      const queue = interaction.client.player.getQueue(interaction.guildId);
+
+      if (!queue) {
+        return await interaction.reply({
+          content: ":wrench: There is no music playing!",
+          ephemeral: true,
+        });
+      }
+
+      queue.destroy();
+      await interaction.reply({
+        content: ":satellite: Successfully left the voice channel!",
+        ephemeral: false,
+      });
+    } else if (DJRole) {
+      await interaction.reply({
         content:
-          ":wrench: You do not have the permission to use this command. You need the `DJ` role or the `MANAGE_MESSAGES` permission!",
+          "You do not have the permission to use this command. You need the `DJ` role or the MANAGE_MESSAGES permission!",
+        ephemeral: true,
+      });
+    } else {
+      await interaction.reply({
+        content:
+          "You do not have the permission to use this command. You need the MANAGE_MESSAGES permission or a role named `DJ`!",
         ephemeral: true,
       });
     }
-
-    const queue = interaction.client.player.getQueue(interaction.guildId);
-
-    if (!queue) {
-      return await interaction.reply({
-        content: ":wrench: There is no music playing!",
-        ephemeral: true,
-      });
-    }
-
-    queue.destroy();
-    await interaction.reply({
-      content: ":satellite: Successfully left the voice channel!",
-      ephemeral: true,
-    });
   },
   requiredPerms: requiredPerms,
 };

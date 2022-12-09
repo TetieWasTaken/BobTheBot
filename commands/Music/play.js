@@ -46,18 +46,29 @@ module.exports = {
 
     await queue.addTrack(song);
 
+    let roleColor = "ffffff";
+    const member = interaction.guild.members.cache.get(
+      interaction.client.user.id
+    );
+    const roleCacheSize = member.roles.cache.size;
+    if (roleCacheSize >= 2) {
+      if (member.roles.color !== null) {
+        roleColor = member.roles.color.hexColor;
+      }
+    }
+
     let replyEmbed = new EmbedBuilder()
       .setTitle("Added to queue")
       .setDescription(`[${song.title}](${song.url})`)
       .setThumbnail(song.thumbnail)
-      .setColor("#00FF00")
+      .setColor(roleColor)
       .setTimestamp();
 
     if (!queue.playing) await queue.play();
 
     await interaction.reply({
       embeds: [replyEmbed],
-      ephemeral: true,
+      ephemeral: false,
     });
 
     // Data structure for query:

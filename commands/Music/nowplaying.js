@@ -22,6 +22,17 @@ module.exports = {
 
     const track = queue.current;
 
+    let roleColor = "ffffff";
+    const member = interaction.guild.members.cache.get(
+      interaction.client.user.id
+    );
+    const roleCacheSize = member.roles.cache.size;
+    if (roleCacheSize >= 2) {
+      if (member.roles.color !== null) {
+        roleColor = member.roles.color.hexColor;
+      }
+    }
+
     const embed = new EmbedBuilder()
       .setTitle("Now Playing")
       .setDescription(`[${track.title}](${track.url})`)
@@ -51,6 +62,7 @@ module.exports = {
           size: 256,
         })}`,
       })
+      .setColor(roleColor)
       .setTimestamp();
 
     await interaction.reply({
