@@ -19,18 +19,6 @@ module.exports = {
     ),
   async execute(interaction) {
     const page = interaction.options.getInteger("page") ?? 1;
-    /*const shopItems = [
-      {
-        name: "🍎 Apple",
-        price: 10,
-        description: "A delicious apple",
-      },
-      {
-        name: "🍌 Banana",
-        price: 15,
-        description: "A delicious banana",
-      },
-    ];*/
 
     fs.readFile("./docs/shopitems.json", (err, data) => {
       if (err) throw err;
