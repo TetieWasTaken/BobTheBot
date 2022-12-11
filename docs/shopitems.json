@@ -1,0 +1,38 @@
+[
+    {
+        "name": "🍎 Apple",
+        "price": 10,
+        "description": "A delicious apple",
+        "num": 1
+    },
+    {
+        "name": "🍌 Banana",
+        "price": 15,
+        "description": "A delicious banana",
+        "num": 2
+    },
+    {
+        "name": "🍇 Grapes",
+        "price": 500,
+        "description": "Some delicious grapes",
+        "num": 3
+    },
+    {
+        "name": "Toilet",
+        "price": 1,
+        "description": "brain fard",
+        "num": 4
+    },
+    {
+        "name": "yes",
+        "price": 9999,
+        "description": "no",
+        "num": 5
+    },
+    {
+        "name": "maybe",
+        "price": 2922222,
+        "description": "ok",
+        "num": 6
+    }
+]
