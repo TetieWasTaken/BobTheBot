@@ -81,7 +81,8 @@ module.exports = {
       repliedMessage = repliedMessage.toString();
 
       const loggingEmojis = [
-        ":gift:",
+        ":gift: G",
+        ":gift: R",
         ":hammer:",
         ":athletic_shoe:",
         ":mute:",
