@@ -12,23 +12,26 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("buy")
     .setDescription("Buy an item from the shop")
-    .addIntegerOption((option) =>
-      option
-        .setName("item")
-        .setDescription("The number of the item you want to buy")
-        .setRequired(true)
+    .addStringOption((option) =>
+      option.setName("item").setDescription("The item to buy").setRequired(true)
     ),
   async execute(interaction) {
-    const itemNum = interaction.options.getInteger("item");
+    const itemName = interaction.options.getString("item");
 
-    fs.readFile("./docs/shopitems.json", (err, data) => {
+    fs.readFile("./docs/items.json", (err, data) => {
       if (err) throw err;
-      const shopItems = JSON.parse(data);
+      const itemsJSON = JSON.parse(data);
 
-      const item = shopItems.find((item) => item.num === itemNum);
+      const item = itemsJSON.find((item) => item.name === itemName);
       if (!item) {
         return interaction.reply({
-          content: "That item does not exist",
+          content: `The item \`${itemName}\` does not exist in the shop`,
+          ephemeral: true,
+        });
+      }
+      if (!item.buyable) {
+        return interaction.reply({
+          content: `\`${item.name}\` is not buyable`,
           ephemeral: true,
         });
       }
@@ -50,14 +53,18 @@ module.exports = {
           });
         } else {
           const itemIndex = data.Inventory.findIndex(
-            (item) => item.num === itemNum
+            (item) => item.name === itemName
           );
           if (itemIndex === -1) {
             data.Inventory.push({
               name: item.name,
-              num: item.num,
               description: item.description,
+              type: item.type,
+              sellable: item.sellable,
+              buyable: item.buyable,
+              useable: item.useable,
               price: item.price,
+              id: item.id,
               amount: 1,
             });
           } else {

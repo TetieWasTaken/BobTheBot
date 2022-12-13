@@ -66,7 +66,7 @@ module.exports = {
       `:computer: <@!${user.id}> has been hacked!`,
     ];
     let i = 0;
-    var replyInterval = await setInterval(() => {
+    let replyInterval = await setInterval(() => {
       if (i < replyArray.length) {
         let editReplyMessage = [replyArray[i]];
         editReplyMessage = editReplyMessage.toString();

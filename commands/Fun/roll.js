@@ -27,7 +27,7 @@ module.exports = {
     await interaction.reply({ content: "Rolling dice...", ephemeral: true });
 
     let j = 0;
-    var rollDiceInterval = await setInterval(() => {
+    let rollDiceInterval = await setInterval(() => {
       if (j < 2) {
         fileDirArray = [];
         for (let i = 0; i < amount; i++) {

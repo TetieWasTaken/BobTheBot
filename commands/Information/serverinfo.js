@@ -12,9 +12,9 @@ module.exports = {
     .setName("serverinfo")
     .setDescription("Receive information about the current guild"),
   async execute(interaction) {
-    var serverIcon = interaction.guild.iconURL();
-    var boostCount = interaction.guild.premiumSubscriptionCount;
-    var boostTier = 0;
+    let serverIcon = interaction.guild.iconURL();
+    let boostCount = interaction.guild.premiumSubscriptionCount;
+    let boostTier = 0;
 
     if (boostCount >= 2) {
       boostTier = 1;

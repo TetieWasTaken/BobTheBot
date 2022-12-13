@@ -16,12 +16,6 @@ module.exports = {
       subcommand
         .setName("bobbucks")
         .setDescription("Transfer Bobbucks to another user")
-        .addUserOption((option) =>
-          option
-            .setName("user")
-            .setDescription("The user to transfer Bobbucks to")
-            .setRequired(true)
-        )
         .addIntegerOption((option) =>
           option
             .setName("amount")
@@ -30,21 +24,27 @@ module.exports = {
             .setMinValue(1)
             .setMaxValue(99999)
         )
+        .addUserOption((option) =>
+          option
+            .setName("user")
+            .setDescription("The user to transfer Bobbucks to")
+            .setRequired(true)
+        )
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("item")
         .setDescription("Transfer an item to another user")
-        .addUserOption((option) =>
-          option
-            .setName("user")
-            .setDescription("The user to transfer the item to")
-            .setRequired(true)
-        )
         .addStringOption((option) =>
           option
             .setName("item")
             .setDescription("The name of the item to transfer")
+            .setRequired(true)
+        )
+        .addUserOption((option) =>
+          option
+            .setName("user")
+            .setDescription("The user to transfer the item to")
             .setRequired(true)
         )
     ),
@@ -107,9 +107,9 @@ module.exports = {
     } else if (subcommand === "item") {
       const itemName = interaction.options.getString("item");
 
-      const shopItems = JSON.parse(fs.readFileSync("./docs/shopitems.json"));
+      const itemsJSON = JSON.parse(fs.readFileSync("./docs/items.json"));
 
-      const item = shopItems.find((i) => i.name === itemName);
+      const item = itemsJSON.find((i) => i.name === itemName);
       if (!item) {
         return interaction.reply({
           content: `:wrench: Unable to find item of \`${itemName}\``,
@@ -134,10 +134,10 @@ module.exports = {
       });
 
       if (targetData) {
-        const itemNum = item.num;
+        const itemId = item.id;
 
         const itemIndex = targetData.Inventory.findIndex(
-          (item) => item.num === itemNum
+          (item) => item.id === itemId
         );
 
         if (itemIndex !== -1) {
@@ -156,9 +156,13 @@ module.exports = {
           Inventory: [
             {
               name: item.name,
-              num: item.num,
               description: item.description,
+              type: item.type,
+              sellable: item.sellable,
+              buyable: item.buyable,
+              useable: item.useable,
               price: item.price,
+              id: item.id,
               amount: 1,
             },
           ],

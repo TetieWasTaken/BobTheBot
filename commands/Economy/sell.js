@@ -12,20 +12,37 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("sell")
     .setDescription("Sell an item from your inventory")
-    .addIntegerOption((option) =>
-      option
-        .setName("item")
-        .setDescription("The item to sell")
-        .setRequired(true)
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("bulk")
+        .setDescription("Sell multiple items from your inventory")
+        .addStringOption((option) =>
+          option
+            .setName("item")
+            .setDescription("The item you want to sell")
+            .setRequired(true)
+        )
+        .addIntegerOption((option) =>
+          option
+
+            .setName("amount")
+            .setDescription("The amount of items you want to sell")
+            .setRequired(true)
+        )
     )
-    .addIntegerOption((option) =>
-      option
-        .setName("amount")
-        .setDescription("The amount to sell")
-        .setRequired(false)
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("single")
+        .setDescription("Sell a single item from your inventory")
+        .addStringOption((option) =>
+          option
+            .setName("item")
+            .setDescription("The item you want to sell")
+            .setRequired(true)
+        )
     ),
   async execute(interaction) {
-    const item = interaction.options.getInteger("item");
+    const item = interaction.options.getString("item");
     const amount = interaction.options.getInteger("amount") ?? 1;
 
     const data = await EconomySchema.findOne({
@@ -38,54 +55,48 @@ module.exports = {
         ephemeral: true,
       });
     }
-    const object = data.Inventory.find((object) => object.num === item);
+    const object = data.Inventory.find((object) => object.name === item);
     if (!object) {
       return interaction.reply({
         content: "🚫 You do not the have the item you are trying to sell",
         ephemeral: true,
       });
     } else {
-      fs.readFile("./docs/shopitems.json", (err, shopItemsData) => {
+      if (!object.sellable) {
+        return interaction.reply({
+          content: "🚫 You cannot sell this item",
+          ephemeral: true,
+        });
+      }
+      fs.readFile("./docs/items.json", (err, itemsJSONData) => {
         if (err) throw err;
-        const shopItems = JSON.parse(shopItemsData);
 
-        if (item > shopItems.length) {
+        if (object.amount < amount) {
           return interaction.reply({
-            content: "🚫 That item does not exist",
+            content: "🚫 You do not have enough of that item",
             ephemeral: true,
           });
         } else {
-          if (object.amount < amount) {
-            return interaction.reply({
-              content: "🚫 You do not have enough of that item",
-              ephemeral: true,
-            });
-          } else {
-            const price = object.price;
-            const total = price * amount;
+          const price = object.price;
+          const total = price * amount;
 
-            object.amount -= amount;
-            if (object.amount === 0) {
-              data.Inventory.splice(data.Inventory.indexOf(object), 1);
-            }
-
-            data.Inventory = data.Inventory.filter(
-              (object) => object.amount > 0
-            );
-            data.Wallet += total;
-            data.save();
-
-            const sellEmbed = new EmbedBuilder()
-              .setTitle("Sell")
-              .setDescription(
-                `You sold ${amount} ${shopItems[item - 1].name} for ₳${total}`
-              )
-              .setColor(0x00ff00);
-
-            return interaction.reply({
-              embeds: [sellEmbed],
-            });
+          object.amount -= amount;
+          if (object.amount === 0) {
+            data.Inventory.splice(data.Inventory.indexOf(object), 1);
           }
+
+          data.Inventory = data.Inventory.filter((object) => object.amount > 0);
+          data.Wallet += total;
+          data.save();
+
+          const sellEmbed = new EmbedBuilder()
+            .setTitle("Sell")
+            .setDescription(`You sold ${amount} ${object.name} for ₳${total}`)
+            .setColor(0x00ff00);
+
+          return interaction.reply({
+            embeds: [sellEmbed],
+          });
         }
       });
     }

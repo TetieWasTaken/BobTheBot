@@ -20,23 +20,26 @@ module.exports = {
   async execute(interaction) {
     const page = interaction.options.getInteger("page") ?? 1;
 
-    fs.readFile("./docs/shopitems.json", (err, data) => {
+    fs.readFile("./docs/items.json", (err, data) => {
       if (err) throw err;
-      const shopItems = JSON.parse(data);
+      const itemsJSON = JSON.parse(data);
 
       const shopEmbed = new EmbedBuilder()
         .setTitle("Shop")
-        .setDescription(`Page ${page} of ${Math.ceil(shopItems.length / 5)}`)
+        .setDescription(`Page ${page} of ${Math.ceil(itemsJSON.length / 5)}`)
         .setColor(0x00ff00);
 
       for (let i = 0; i < 5; i++) {
-        if (shopItems[i + (page - 1) * 5]) {
+        if (
+          itemsJSON[i + (page - 1) * 5] &&
+          itemsJSON[i + (page - 1) * 5].buyable
+        ) {
           shopEmbed.addFields({
-            name: `${shopItems[i + (page - 1) * 5].name} - ${
-              shopItems[i + (page - 1) * 5].num
+            name: `${itemsJSON[i + (page - 1) * 5].name} - ${
+              itemsJSON[i + (page - 1) * 5].id
             }`,
-            value: `${shopItems[i + (page - 1) * 5].description} - ₳${
-              shopItems[i + (page - 1) * 5].price
+            value: `${itemsJSON[i + (page - 1) * 5].description} - ₳${
+              itemsJSON[i + (page - 1) * 5].price
             }`,
             inline: false,
           });

@@ -31,7 +31,7 @@ module.exports = {
       UserId: user.id,
     });
 
-    if (data.Inventory.length === 0) {
+    if (!data || data.Inventory.length === 0) {
       const inventoryEmbed = new EmbedBuilder()
         .setTitle("Inventory")
         .setColor(0x00ff00)

@@ -21,17 +21,17 @@ module.exports = {
   async execute(interaction) {
     const item = interaction.options.getInteger("item");
 
-    fs.readFile("./docs/shopitems.json", (err, data) => {
+    fs.readFile("./docs/items.json", (err, data) => {
       if (err) throw err;
-      const shopItems = JSON.parse(data);
+      const itemsJSON = JSON.parse(data);
 
-      if (item > shopItems.length) {
+      if (item > itemsJSON.length) {
         return interaction.reply({
           content: "🚫 That item does not exist",
           ephemeral: true,
         });
       }
-      const itemInfo = shopItems[item - 1];
+      const itemInfo = itemsJSON[item - 1];
       const itemEmbed = new EmbedBuilder()
         .setTitle(itemInfo.name)
         .setDescription(itemInfo.description)
@@ -39,12 +39,27 @@ module.exports = {
         .addFields(
           {
             name: "Price",
-            value: `₳${itemInfo.price}`,
+            value: `${`₳${itemInfo.price}` || "N/A"}`,
             inline: true,
           },
           {
             name: "id",
-            value: `${itemInfo.num}`,
+            value: `${itemInfo.id}`,
+            inline: true,
+          },
+          {
+            name: "Type",
+            value: `${itemInfo.type}`,
+            inline: true,
+          },
+          {
+            name: "Sellable",
+            value: `${itemInfo.sellable}`,
+            inline: true,
+          },
+          {
+            name: "Buyable",
+            value: `${itemInfo.buyable}`,
             inline: true,
           }
         );

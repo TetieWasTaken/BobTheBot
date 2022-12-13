@@ -1,4 +1,4 @@
-var Parser = require("expr-eval").Parser;
+let Parser = require("expr-eval").Parser;
 const { ChartJSNodeCanvas } = require("chartjs-node-canvas");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
@@ -33,8 +33,8 @@ module.exports = {
     const expression = interaction.options.getString("expression");
     const pointAmount = interaction.options.getInteger("points") ?? 26;
 
-    var parser = new Parser();
-    var expr = parser.parse(`${expression}`);
+    let parser = new Parser();
+    let expr = parser.parse(`${expression}`);
 
     let yValue = [];
     let xValue = [];

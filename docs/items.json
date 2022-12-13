@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Fishing Rod",
+        "description": "A fishing rod",
+        "type": "tool",
+        "sellable": true,
+        "buyable": true,
+        "useable": false,
+        "price": 70,
+        "id": 1
+    },
+    {
+        "name": "Placeholder",
+        "description": "A placeholder item",
+        "type": "tool",
+        "sellable": true,
+        "buyable": false,
+        "useable": true,
+        "price": 70,
+        "id": 2
+    }
+]
