@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
 const EconomySchema = require("../../models/EconomyModel");
-const fs = require("fs");
+const { useItem } = require("../../functions/useItem.js");
 
 const requiredPerms = {
   type: "flags",
@@ -42,6 +42,8 @@ module.exports = {
     }
 
     switch (item.name) {
+      case "Placeholder":
+        return useItem(interaction, item, data);
       default:
         return interaction.reply({
           content: `You cannot use this item!`,

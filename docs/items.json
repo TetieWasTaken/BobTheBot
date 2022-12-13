@@ -13,10 +13,9 @@
         "name": "Placeholder",
         "description": "A placeholder item",
         "type": "tool",
-        "sellable": true,
+        "sellable": false,
         "buyable": false,
         "useable": true,
-        "price": 70,
         "id": 2
     }
 ]
