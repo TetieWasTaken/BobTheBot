@@ -1,7 +1,7 @@
 require("dotenv").config();
 const fs = require("fs");
 const Database = require("./config/Database");
-const { Partials } = require("discord.js");
+const { Partials, GatewayIntentBits } = require("discord.js");
 const GiveawayModel = require("./models/GiveawayModel");
 const { Player } = require("discord-player");
 
@@ -10,9 +10,18 @@ db.connect();
 
 const { Client, Collection } = require("discord.js");
 const client = new Client({
-  intents: 131071,
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildBans,
+    GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.MessageContent,
+  ],
   partials: [Partials.Message, Partials.Channel, Partials.Reaction],
-}); // Reduce intents later, https://ziad87.net/intents/
+});
 
 const { GiveawaysManager } = require("discord-giveaways");
 const GiveawayManagerWithOwnDatabase = class extends GiveawaysManager {
