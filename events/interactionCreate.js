@@ -57,8 +57,6 @@ module.exports = {
             content: `Message reported successfully.\n\`\`\`${interaction.targetMessage.content}\`\`\``,
             ephemeral: true,
           });
-
-          return;
         } else {
           return interaction.reply({
             content:
