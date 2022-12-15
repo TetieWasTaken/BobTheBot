@@ -12,8 +12,8 @@ module.exports = {
         });
 
         if (guildData && guildData.GuildLogChannel !== null) {
-          const logChannel = interaction.guild.channels.cache.get(
-            guildData.GuildLogChannel
+          const logChannel = await Promise.resolve(
+            interaction.guild.channels.fetch(guildData.GuildLogChannel)
           );
 
           let userNickname = ` (${interaction.member.nickname})`;
@@ -83,8 +83,8 @@ module.exports = {
         GuildId: interaction.guild.id,
       });
       if (guildData && guildData.GuildLogChannel !== null) {
-        const logChannel = interaction.guild.channels.cache.get(
-          guildData.GuildLogChannel
+        const logChannel = await Promise.resolve(
+          interaction.guild.channels.fetch(guildData.GuildLogChannel)
         );
 
         let userNickname = ` (${interaction.member.nickname})`;

@@ -49,6 +49,7 @@ module.exports = {
     }
 
     useItem(interaction, item, data);
+    data.save();
   },
   requiredPerms: requiredPerms,
 };

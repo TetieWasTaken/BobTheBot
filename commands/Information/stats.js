@@ -15,9 +15,7 @@ module.exports = {
   async execute(interaction) {
     let milliseconds = interaction.client.uptime;
 
-    const botMember = interaction.guild.members.cache.get(
-      interaction.client.user.id
-    );
+    const botMember = interaction.guild.members.me;
 
     let botNickname = ` (${botMember.nickname ?? "null"})`;
     if (botNickname == " (null)") {
