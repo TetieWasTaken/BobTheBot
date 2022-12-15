@@ -68,6 +68,7 @@ module.exports = {
             .setMaxValue(99999)
         )
     ),
+  cooldownTime: 60 * 5 * 1000,
   async execute(interaction) {
     let amount = interaction.options.getInteger("amount");
 

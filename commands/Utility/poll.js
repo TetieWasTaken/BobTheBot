@@ -75,6 +75,7 @@ module.exports = {
         .setDescription("Add a poll option (min 2 max 9)")
         .setRequired(false)
     ),
+  cooldownTime: 20 * 1000,
   async execute(interaction) {
     const message = interaction.options.getString("message");
     const option1 = interaction.options.getString("option1");

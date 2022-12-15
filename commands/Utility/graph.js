@@ -29,6 +29,7 @@ module.exports = {
         .setRequired(false)
         .setMaxValue(1000)
     ),
+  cooldownTime: 20 * 1000,
   async execute(interaction) {
     const expression = interaction.options.getString("expression");
     const pointAmount = interaction.options.getInteger("points") ?? 26;

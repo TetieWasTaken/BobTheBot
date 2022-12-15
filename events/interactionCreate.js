@@ -66,7 +66,9 @@ module.exports = {
         }
       }
 
-      const command = interaction.client.commands.get(interaction.commandName);
+      const client = interaction.client;
+
+      const command = client.commands.get(interaction.commandName);
 
       if (!command) return;
 
@@ -74,11 +76,10 @@ module.exports = {
         const cooldownTime = command.cooldownTime;
 
         const currentTime = Date.now();
-        if (interaction.client.cooldowns.has(interaction.commandName)) {
+        if (client.cooldowns.has(interaction.commandName)) {
           const timeLeft =
             cooldownTime -
-            (currentTime -
-              interaction.client.cooldowns.get(interaction.commandName));
+            (currentTime - client.cooldowns.get(interaction.commandName));
           if (timeLeft > 0) {
             return interaction.reply({
               content: `Please wait \`${
@@ -89,13 +90,10 @@ module.exports = {
           }
         }
 
-        interaction.client.cooldowns.set(
-          `${interaction.commandName}`,
-          currentTime
-        );
+        client.cooldowns.set(`${interaction.commandName}`, currentTime);
 
         setTimeout(() => {
-          interaction.client.cooldowns.delete(interaction.commandName);
+          client.cooldowns.delete(interaction.commandName);
         }, cooldownTime);
       }
 
@@ -180,7 +178,7 @@ module.exports = {
     }
 
     if (interaction.isButton()) {
-      const button = interaction.client.buttons.get(interaction.customId);
+      const button = client.buttons.get(interaction.customId);
       if (!button) return new Error("No code for button!");
 
       try {

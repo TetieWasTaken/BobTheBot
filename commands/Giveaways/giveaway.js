@@ -45,6 +45,7 @@ module.exports = {
         .setDescription("Amount of winners (defaulted to 1)")
         .setRequired(false)
     ),
+  cooldownTime: 20 * 1000,
   async execute(interaction) {
     const prize = interaction.options.getString("prize");
     const channel = interaction.options.getChannel("channel");

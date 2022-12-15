@@ -17,6 +17,7 @@ module.exports = {
         .setRequired(true)
         .setMaxLength(2000)
     ),
+  cooldownTime: 10 * 1000,
   async execute(interaction) {
     const text = interaction.options.getString("url");
     const baseURL = "http://api.qrserver.com/v1";

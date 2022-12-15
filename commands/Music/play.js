@@ -23,6 +23,7 @@ module.exports = {
         .setDescription("The song you want to play")
         .setRequired(true)
     ),
+  cooldownTime: 10 * 1000,
   async execute(interaction) {
     if (!interaction.member.voice.channel)
       return await interaction.reply({

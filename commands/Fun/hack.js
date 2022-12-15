@@ -17,6 +17,7 @@ module.exports = {
         .setDescription("user to target")
         .setRequired(true)
     ),
+  cooldownTime: 10 * 1000,
   async execute(interaction) {
     const user = interaction.options.getUser("target");
 

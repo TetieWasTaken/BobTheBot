@@ -11,6 +11,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("fish")
     .setDescription("Go fishing for some cash"),
+  cooldownTime: 60 * 2 * 1000,
   async execute(interaction) {
     const data = await EconomySchema.findOne({
       UserId: interaction.user.id,
