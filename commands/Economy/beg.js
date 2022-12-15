@@ -11,6 +11,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("beg")
     .setDescription("Beg for some cash"),
+  cooldownTime: 60 * 2 * 1000,
   async execute(interaction) {
     const responses = [
       "You begged for some cash and received ",

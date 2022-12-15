@@ -61,6 +61,7 @@ const commands = [];
 
 client.commands = new Collection();
 client.buttons = new Collection();
+client.cooldowns = new Collection();
 
 console.log(`------------------------------------------------`);
 

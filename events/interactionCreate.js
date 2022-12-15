@@ -70,6 +70,35 @@ module.exports = {
 
       if (!command) return;
 
+      if (command.cooldownTime) {
+        const cooldownTime = command.cooldownTime;
+
+        const currentTime = Date.now();
+        if (interaction.client.cooldowns.has(interaction.commandName)) {
+          const timeLeft =
+            cooldownTime -
+            (currentTime -
+              interaction.client.cooldowns.get(interaction.commandName));
+          if (timeLeft > 0) {
+            return interaction.reply({
+              content: `Please wait \`${
+                timeLeft / 1000
+              }\` seconds before using this command again.`,
+              ephemeral: true,
+            });
+          }
+        }
+
+        interaction.client.cooldowns.set(
+          `${interaction.commandName}`,
+          currentTime
+        );
+
+        setTimeout(() => {
+          interaction.client.cooldowns.delete(interaction.commandName);
+        }, cooldownTime);
+      }
+
       try {
         await command.execute(interaction);
       } catch (err) {

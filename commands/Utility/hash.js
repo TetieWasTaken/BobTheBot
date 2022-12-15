@@ -30,6 +30,7 @@ module.exports = {
         )
         .setMaxLength(128)
     ),
+  cooldownTime: 15 * 1000,
   async execute(interaction) {
     let input = interaction.options.getString("string");
     const algorithm = interaction.options.getString("algorithm");
