@@ -5,6 +5,7 @@ const economySchema = new mongoose.Schema({
   Bank: Number,
   Wallet: Number,
   NetWorth: Number,
+  Multiplier: Number,
   Inventory: Array,
 });
 

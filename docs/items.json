@@ -17,5 +17,15 @@
         "buyable": false,
         "useable": true,
         "id": 2
+    },
+    {
+        "name": "Chicken",
+        "description": "Grants 1.2x bobbucks",
+        "type": "pet",
+        "sellable": false,
+        "buyable": true,
+        "useable": true,
+        "price": 100,
+        "id": 3
     }
 ]

@@ -21,6 +21,13 @@ module.exports = {
       UserId: interaction.user.id,
     });
 
+    if (!data) {
+      return interaction.reply({
+        content: `You do not have this item`,
+        ephemeral: true,
+      });
+    }
+
     const itemIndex = data.Inventory.findIndex(
       (item) => item.name === itemInput
     );
@@ -41,15 +48,7 @@ module.exports = {
       });
     }
 
-    switch (item.name) {
-      case "Placeholder":
-        return useItem(interaction, item, data);
-      default:
-        return interaction.reply({
-          content: `You cannot use this item!`,
-          ephemeral: true,
-        });
-    }
+    useItem(interaction, item, data);
   },
   requiredPerms: requiredPerms,
 };
