@@ -12,10 +12,14 @@ module.exports = {
     .setName("roles")
     .setDescription("Returns a list of all roles in the guild"),
   async execute(interaction) {
-    const roles = interaction.guild.roles.cache
-      .filter((role) => role.id !== interaction.guild.id)
-      .toJSON()
-      .join("\n");
+    const roles = await Promise.resolve(
+      interaction.guild.roles.fetch().then((roles) => {
+        return roles
+          .filter((role) => role.id !== interaction.guild.id)
+          .toJSON()
+          .join("\n");
+      })
+    );
     const replyEmbed = new EmbedBuilder()
       .setColor(roleColor(interaction))
       .addFields({
