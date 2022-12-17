@@ -178,7 +178,7 @@ module.exports = {
     }
 
     if (interaction.isButton()) {
-      const button = client.buttons.get(interaction.customId);
+      const button = interaction.client.buttons.get(interaction.customId);
       if (!button) return new Error("No code for button!");
 
       try {
