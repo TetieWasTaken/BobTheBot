@@ -4,7 +4,13 @@ const { roleColor } = require("../../functions/roleColor");
 
 const requiredPerms = {
   type: "flags",
-  key: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks],
+  key: [
+    PermissionFlagsBits.SendMessages,
+    PermissionFlagsBits.EmbedLinks,
+    PermissionFlagsBits.AttachFiles,
+    PermissionFlagsBits.ReadMessageHistory,
+    PermissionFlagsBits.AddReactions,
+  ],
 };
 
 module.exports = {
