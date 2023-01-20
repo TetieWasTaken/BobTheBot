@@ -98,7 +98,9 @@ module.exports = {
       }
 
       try {
+        console.time(`Command ${interaction.commandName} executed in`);
         await command.execute(interaction);
+        console.timeEnd(`Command ${interaction.commandName} executed in`);
       } catch (err) {
         if (err) console.error(err);
         await interaction.reply({

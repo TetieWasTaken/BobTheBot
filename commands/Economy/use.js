@@ -29,7 +29,7 @@ module.exports = {
     }
 
     const itemIndex = data.Inventory.findIndex(
-      (item) => item.name === itemInput
+      (item) => item.name.toLowerCase() === itemInput.toLowerCase()
     );
 
     if (itemIndex === -1) {

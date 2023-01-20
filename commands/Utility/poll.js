@@ -176,6 +176,7 @@ module.exports = {
     });
     for (let i = 1; i <= optionsFiltered.length; i++) {
       interactionMessage.react(reactions[i]);
+      await new Promise((resolve) => setTimeout(resolve, 500));
     }
   },
   requiredPerms: requiredPerms,

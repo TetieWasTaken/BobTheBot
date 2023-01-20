@@ -50,7 +50,7 @@ module.exports = {
     channel.send(message);
 
     interaction.reply({
-      content: `:mega: Announced message successfully! <#${channel.id}>`,
+      content: `:mega: Message announced successfully! <#${channel.id}>`,
       ephemeral: true,
     });
   },

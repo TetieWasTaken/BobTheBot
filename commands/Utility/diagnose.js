@@ -61,10 +61,11 @@ module.exports = {
 
               replyEmbed = new EmbedBuilder()
                 .setColor(0xff0000)
-                .setTitle(`Diagnosing ${commandFile.data.name}...`)
+                .setTitle(`Diagnosing command...`)
                 .setDescription(
                   `Error! I am missing the following permissions: \`${missingPermission}\``
                 )
+                .setFooter({ text: `${commandFile.data.name}` })
                 .setTimestamp();
 
               return interaction.reply({ embeds: [replyEmbed] });
@@ -73,8 +74,9 @@ module.exports = {
 
           replyEmbed = new EmbedBuilder()
             .setColor(0x00ff00)
-            .setTitle(`Diagnosing ${commandFile.data.name}...`)
+            .setTitle(`Diagnosing command...`)
             .setDescription(`Everything looks normal.`)
+            .setFooter({ text: `${commandFile.data.name}` })
             .setTimestamp();
 
           return interaction.reply({ embeds: [replyEmbed] });

@@ -22,7 +22,9 @@ module.exports = {
       if (err) throw err;
       const itemsJSON = JSON.parse(data);
 
-      const item = itemsJSON.find((item) => item.name === itemName);
+      const item = itemsJSON.find(
+        (item) => item.name.toLowerCase() === itemName.toLowerCase()
+      );
       if (!item) {
         return interaction.reply({
           content: `The item \`${itemName}\` does not exist in the shop`,

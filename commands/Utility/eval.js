@@ -18,6 +18,10 @@ module.exports = {
     ),
   async execute(interaction) {
     const code = interaction.options.getString("code");
+
+    // Security check, although command should not be present in external servers.
+    if (interaction.user.id != "406887792015048715") return;
+
     try {
       const ev = eval(code);
       await interaction.reply({

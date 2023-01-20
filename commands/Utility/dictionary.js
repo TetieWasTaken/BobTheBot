@@ -61,25 +61,7 @@ module.exports = {
       result[0].meanings[0].definitions[0].example = "None";
     }
 
-    /*The data is a list with one element, which is a dictionary.
-The dictionary has the following keys:
-"word": The word being defined. In this case, the word is "hello".
-"phonetics": A list of dictionaries representing the different phonetic pronunciations of the word "hello". Each dictionary has the following keys:
-"audio": The URL of an audio file with the pronunciation of the word.
-"sourceUrl": The URL of the source of the pronunciation.
-"license": A dictionary with information about the license for the pronunciation.
-"meanings": A list of dictionaries representing the different meanings of the word "hello". Each dictionary has the following keys:
-"partOfSpeech": The part of speech (noun, verb, interjection, etc.) of the meaning.
-"definitions": A list of dictionaries representing the different definitions of the word "hello" for this part of speech. Each dictionary has the following keys:
-"definition": The definition of the word.
-"synonyms": A list of synonyms (words with the same or similar meaning) for the word.
-"antonyms": A list of antonyms (words with opposite meanings) for the word.
-"example": An example sentence using the word.
-"synonyms": A list of synonyms for the word for this part of speech.
-"antonyms": A list of antonyms for the word for this part of speech.
-"license": A dictionary with information about the license for the word's definition and information.
-"sourceUrls": A list of URLs where the word's definition and information can be found.
-*/
+    // Warning: Synonyms and antonyms are not working properly
 
     const embed = new EmbedBuilder()
       .setColor("#0099ff")
