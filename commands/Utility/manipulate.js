@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { PermissionFlagsBits } = require("discord.js");
+const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+const { roleColor } = require("../../functions/roleColor");
 
 const requiredPerms = {
   type: "flags",
@@ -19,6 +20,7 @@ module.exports = {
             .setName("input")
             .setDescription("Text to reverse")
             .setRequired(true)
+            .setMaxLength(1024)
         )
     )
     .addSubcommand((subcommand) =>
@@ -40,6 +42,17 @@ module.exports = {
           option
             .setName("input")
             .setDescription("Text to remove vowels from")
+            .setRequired(true)
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("1337")
+        .setDescription("Convert text to 1337 (leet)")
+        .addStringOption((option) =>
+          option
+            .setName("input")
+            .setDescription("Text to convert")
             .setRequired(true)
         )
     ),
@@ -64,6 +77,32 @@ module.exports = {
       case "vowel":
         return interaction.reply({
           content: `${text.replace(/[aeiou]/gi, "")}`,
+          ephemeral: true,
+        });
+      case "1337":
+        const embed = new EmbedBuilder()
+          .addFields(
+            {
+              name: "1337 C0NV3R73R",
+              value: `\`\`\`fix\nINPUT = ${text}\`\`\``,
+              inline: false,
+            },
+            {
+              name: "\u200b",
+              value: `\`\`\`fix\n0U7PU7 = ${text
+                .replace(/a/gi, "4")
+                .replace(/e/gi, "3")
+                .replace(/i/gi, "1")
+                .replace(/o/gi, "0")
+                .replace(/s/gi, "5")
+                .replace(/t/gi, "7")}\`\`\``,
+              inline: false,
+            }
+          )
+          .setColor(roleColor(interaction));
+
+        return interaction.reply({
+          embeds: [embed],
           ephemeral: true,
         });
       default:
