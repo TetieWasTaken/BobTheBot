@@ -27,7 +27,7 @@ module.exports = {
                 .setColor(0xff6333)
                 .setAuthor({
                   name:
-                    `${interaction.member.user.username}#${interaction.member.user.discriminator}` +
+                    `${interaction.user.tag}` +
                     userNickname +
                     " | Message reported",
                   iconURL: `${interaction.member.user.displayAvatarURL()}`,
@@ -72,6 +72,29 @@ module.exports = {
 
       if (!command) return;
 
+      const guildData = await GuildSchema.findOne({
+        GuildId: interaction.guild.id,
+      });
+
+      if (guildData && guildData.DisabledCommands) {
+        if (guildData.DisabledCommands.includes(interaction.commandName)) {
+          const embed = new EmbedBuilder()
+            .setColor(0xff0000)
+            .setTitle(":x: Command Disabled")
+            .setDescription(
+              `This command has been disabled by the server administrators.`
+            )
+            .setFooter({
+              text: `Believe this is a mistake? Contact administrators to /enable this command`,
+            });
+
+          return interaction.reply({
+            embeds: [embed],
+            ephemeral: true,
+          });
+        }
+      }
+
       if (command.cooldownTime) {
         const cooldownTime = command.cooldownTime;
 
@@ -108,9 +131,7 @@ module.exports = {
           ephemeral: true,
         });
       }
-      guildData = await GuildSchema.findOne({
-        GuildId: interaction.guild.id,
-      });
+
       if (guildData && guildData.GuildLogChannel !== null) {
         const logChannel = await Promise.resolve(
           interaction.guild.channels.fetch(guildData.GuildLogChannel)
@@ -152,9 +173,7 @@ module.exports = {
           .setColor(0xff6333)
           .setAuthor({
             name:
-              `${interaction.member.user.username}#${interaction.member.user.discriminator}` +
-              userNickname +
-              " | Command executed",
+              `${interaction.user.tag}` + userNickname + " | Command executed",
             iconURL: `${interaction.member.user.displayAvatarURL()}`,
           })
           .addFields(
