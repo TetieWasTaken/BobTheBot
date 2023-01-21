@@ -43,7 +43,16 @@ module.exports = {
       duration = 21600;
     }
 
-    interaction.channel.setRateLimitPerUser(duration);
+    try {
+      interaction.channel.setRateLimitPerUser(duration);
+    } catch (err) {
+      console.log(err);
+      return interaction.reply({
+        content:
+          "Something went wrong while setting the slowmode, please report this!",
+        ephemeral: true,
+      });
+    }
 
     let reply = `:rabbit2: Slowmode has been turned off!`;
     if (duration == 1) {

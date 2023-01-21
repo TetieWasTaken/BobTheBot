@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
-const wait = require("node:timers/promises").setTimeout;
 
 const requiredPerms = {
   type: "flags",
@@ -40,13 +39,20 @@ module.exports = {
       });
     }
 
-    interaction.channel.bulkDelete(amount).then((messages) =>
-      interaction.reply({
-        content: `:mag: Purged ${messages.size} messages`,
-      })
-    );
-    await wait(1500);
-    interaction.deleteReply();
+    try {
+      interaction.channel.bulkDelete(amount).then((messages) =>
+        interaction.reply({
+          content: `:mag: Purged ${messages.size} messages`,
+          ephemeral: true,
+        })
+      );
+    } catch (err) {
+      console.log(err);
+      return interaction.reply({
+        content: "Something went wrong while purging messages",
+        ephemeral: true,
+      });
+    }
   },
   requiredPerms: requiredPerms,
 };

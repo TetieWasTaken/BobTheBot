@@ -41,7 +41,7 @@ module.exports = {
       await interaction.guild.members.unban(userId);
 
       interaction.reply({
-        content: `:scales:  <@!${userId}> has been unbanned`,
+        content: `:scales:  <@${userId}> has been unbanned`,
         ephemeral: true,
       });
     } catch (err) {

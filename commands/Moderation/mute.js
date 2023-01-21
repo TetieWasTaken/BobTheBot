@@ -82,12 +82,20 @@ module.exports = {
 
     if (member.isCommunicationDisabled()) {
       return interaction.reply({
-        content: `:wrench:  \`${member.user.username}#${member.user.discriminator}\` is already muted!`,
+        content: `:wrench:  \`${member.user.tag}\` is already muted!`,
         ephemeral: true,
       });
     }
 
-    await member.timeout(ms(duration), reason);
+    try {
+      await member.timeout(ms(duration), reason);
+    } catch (error) {
+      console.error(error);
+      return interaction.reply({
+        content: `:wrench:  \`${member.user.tag}\` could not be muted!`,
+        ephemeral: true,
+      });
+    }
 
     let data = await InfractionsSchema.findOne({
       GuildId: interaction.guild.id,
@@ -127,7 +135,7 @@ module.exports = {
       });
 
     interaction.reply({
-      content: `:mute:  \`${member.user.username}#${member.user.discriminator}\` has been muted for \`${reason}\``,
+      content: `:mute:  \`${member.user.tag}\` has been muted for \`${reason}\``,
       ephemeral: true,
     });
   },

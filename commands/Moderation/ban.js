@@ -64,13 +64,43 @@ module.exports = {
       });
     }
 
-    await member.ban({
-      deleteMessageSeconds: 60 * 60 * 24 * 7,
-      reason: reason,
-    });
+    try {
+      await member.ban({
+        deleteMessageSeconds: 604800,
+        reason: reason,
+      });
+    } catch (error) {
+      console.error(error);
+      try {
+        await member.kick({
+          reason: reason,
+        });
+      } catch (error) {
+        console.error(error);
+        try {
+          await member.timeout({
+            reason: reason,
+          });
+        } catch (error) {
+          console.error(error);
+          return interaction.reply({
+            content: `:wrench: An error occurred while trying to ban ${member.user.tag}!\nAn unsuccessfull attempt was made to kick but failed as well! Please manually ban the user.`,
+            ephemeral: true,
+          });
+        }
+        return interaction.reply({
+          content: `:wrench: An error occurred while trying to ban ${member.user.tag}!\nAn unsuccessfull attempt was made to kick but failed as well! Please manually ban the user.`,
+          ephemeral: true,
+        });
+      }
+      return interaction.reply({
+        content: `:wrench: An error occurred while trying to ban ${member.user.tag}!\nThey were kicked instead!`,
+        ephemeral: true,
+      });
+    }
 
     interaction.reply({
-      content: `:hammer:  \`${member.user.username}#${member.user.discriminator}\` has been banned for \`${reason}\``,
+      content: `:hammer:  \`${member.user.tag}\` has been banned for \`${reason}\``,
       ephemeral: true,
     });
   },

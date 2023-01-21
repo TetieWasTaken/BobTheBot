@@ -106,7 +106,7 @@ module.exports = {
       if (target.username !== undefined) {
         replyEmbed.addFields({
           name: `${targetType + " " + actionType}`,
-          value: `\`\`\`ini\nExecutor = '${executor.username}'\nTarget = '${target.username}#${target.discriminator}'\`\`\``,
+          value: `\`\`\`ini\nExecutor = '${executor.username}'\nTarget = '${target.tag}'\`\`\``,
           inline: false,
         });
       } else {

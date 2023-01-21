@@ -23,10 +23,7 @@ module.exports = {
       const logEmbed = new EmbedBuilder()
         .setColor(0xfff033)
         .setAuthor({
-          name:
-            `${newMessage.member.user.username}#${newMessage.member.user.discriminator}` +
-            userNickname +
-            " | Message edited",
+          name: `${newMessage.author.tag}` + userNickname + " | Message edited",
           iconURL: `${newMessage.member.user.displayAvatarURL()}`,
         })
         .addFields(

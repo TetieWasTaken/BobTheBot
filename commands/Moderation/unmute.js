@@ -53,7 +53,7 @@ module.exports = {
     await member.timeout(1000);
 
     interaction.reply({
-      content: `:loud_sound:  \`${member.user.username}#${member.user.discriminator}\` has been unmuted`,
+      content: `:loud_sound:  \`${member.user.tag}\` has been unmuted`,
       ephemeral: true,
     });
   },

@@ -34,7 +34,7 @@ module.exports = {
       });
     }
     await interaction.reply({
-      content: `:computer: Hacking <@!${user.id}>...`,
+      content: `:computer: Hacking <@${user.id}>...`,
     });
 
     emailTxt = fs.readFileSync("./docs/hackdocs/emailextensions.txt");
@@ -64,7 +64,7 @@ module.exports = {
       `:money_with_wings: Bank details found! Email: \`${
         (username.replace(/\s/g, ""), randomEmail)
       }\` Password: \`${randomPassword}\` \`100%\``,
-      `:computer: <@!${user.id}> has been hacked!`,
+      `:computer: ${user.id}> has been hacked!`,
     ];
     let i = 0;
     let replyInterval = await setInterval(() => {

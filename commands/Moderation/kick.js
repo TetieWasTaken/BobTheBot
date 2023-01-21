@@ -67,10 +67,27 @@ module.exports = {
       });
     }
 
-    await member.kick(reason);
+    try {
+      await member.kick(reason);
+    } catch (error) {
+      console.error(error);
+      try {
+        member.timeout({ reason: "Failed to kick member" });
+        return interaction.reply({
+          content: `:wrench: I was unable to kick \`${member.user.tag}\` for an unknown reason. Please try again later\n\n**Note:** This user has been timed out as a result of this failed action.`,
+          ephemeral: true,
+        });
+      } catch (error) {
+        console.error(error);
+        return interaction.reply({
+          content: `:wrench: I was unable to kick \`${member.user.tag}\` for an unknown reason. Please try again later`,
+          ephemeral: true,
+        });
+      }
+    }
 
     interaction.reply({
-      content: `:athletic_shoe:  \`${member.user.username}#${member.user.discriminator}\` has been kicked for \`${reason}\``,
+      content: `:athletic_shoe:  \`${member.user.tag}\` has been kicked for \`${reason}\``,
       ephemeral: true,
     });
   },
