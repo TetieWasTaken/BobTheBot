@@ -68,21 +68,31 @@ module.exports = {
     }
 
     try {
-      await member.kick(reason);
+      await member.send(
+        `:athletic_shoe: You have been kicked from \`${interaction.guild.name}\` for \`${reason}\``
+      );
     } catch (error) {
-      console.error(error);
+      // Ignore error
+    } finally {
       try {
-        member.timeout({ reason: "Failed to kick member" });
-        return interaction.reply({
-          content: `:wrench: I was unable to kick \`${member.user.tag}\` for an unknown reason. Please try again later\n\n**Note:** This user has been timed out as a result of this failed action.`,
-          ephemeral: true,
-        });
+        member.kick({ reason: reason });
       } catch (error) {
-        console.error(error);
-        return interaction.reply({
-          content: `:wrench: I was unable to kick \`${member.user.tag}\` for an unknown reason. Please try again later`,
-          ephemeral: true,
-        });
+        try {
+          member.timeout({
+            reason: "Failed to kick member",
+            time: 1000 * 60 * 60 * 24 * 7,
+          });
+          return interaction.reply({
+            content: `:wrench: I was unable to kick \`${member.user.tag}\` for an unknown reason. Please try again later\n\n**Note:** This user has been timed out as a result of this failed action.`,
+            ephemeral: true,
+          });
+        } catch (error) {
+          console.error(error);
+          return interaction.reply({
+            content: `:wrench: I was unable to kick \`${member.user.tag}\` for an unknown reason. Please try again later`,
+            ephemeral: true,
+          });
+        }
       }
     }
 

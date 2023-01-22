@@ -1,4 +1,4 @@
-const canvacord = require("canvacord");
+//const canvacord = require("canvacord");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
 

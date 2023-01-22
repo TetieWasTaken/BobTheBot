@@ -80,6 +80,7 @@ module.exports = {
         try {
           await member.timeout({
             reason: reason,
+            time: 1000 * 60 * 60 * 24 * 7,
           });
         } catch (error) {
           console.error(error);

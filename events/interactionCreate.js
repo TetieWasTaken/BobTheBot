@@ -196,9 +196,22 @@ module.exports = {
           .setTimestamp();
         logChannel.send({ embeds: [logEmbed] });
       }
-    }
+    } else if (interaction.isAutocomplete()) {
+      const command = interaction.client.commands.get(interaction.commandName);
 
-    if (interaction.isButton()) {
+      if (!command) {
+        console.error(
+          `No command matching ${interaction.commandName} was found.`
+        );
+        return;
+      }
+
+      try {
+        await command.autocomplete(interaction);
+      } catch (error) {
+        console.error(error);
+      }
+    } else if (interaction.isButton()) {
       const button = interaction.client.buttons.get(interaction.customId);
       if (!button) return new Error("No code for button!");
 
