@@ -1,5 +1,9 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
+const {
+  raiseUserPermissionsError,
+  raiseBotPermissionsError,
+} = require("../../functions/returnError.js");
 
 const requiredPerms = {
   type: "flags",
@@ -19,25 +23,15 @@ module.exports = {
   async execute(interaction) {
     let duration = interaction.options.getInteger("duration");
 
-    if (
-      !interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)
-    ) {
-      return interaction.reply({
-        content: "You do not have the `MANAGE_CHANNELS` permission!",
-        ephemeral: true,
-      });
-    }
+    if (!interaction.member.permissions.has(PermissionFlagsBits.ManageChannels))
+      return raiseUserPermissionsError(interaction, "MANAGE_CHANNELS");
 
     if (
       !interaction.guild.members.me.permissions.has(
         PermissionFlagsBits.ManageChannels
       )
-    ) {
-      return interaction.reply({
-        content: ":wrench: I do not have the `MANAGE_CHANNELS` permission!",
-        ephemeral: true,
-      });
-    }
+    )
+      return raiseBotPermissionsError(interaction, "MANAGE_CHANNELS");
 
     if (duration >= 21601) {
       duration = 21600;

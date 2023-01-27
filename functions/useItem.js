@@ -4,6 +4,7 @@ const itemHandlers = {
 
     data.Inventory[item.name] -= 1;
     data.Wallet += reward;
+    data.NetWorth += reward;
 
     return interaction.reply({
       content: `You used \`${item.name}\` and received \`₳${reward}\` bobbucks`,

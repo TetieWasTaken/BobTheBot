@@ -1,6 +1,12 @@
 const InfractionsSchema = require("../../models/InfractionsModel");
 const { PermissionFlagsBits } = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const {
+  raiseUserPermissionsError,
+  raiseBotPermissionsError,
+  raiseUserHierarchyError,
+  raiseBotHierarchyError,
+} = require("../../functions/returnError.js");
 
 const requiredPerms = {
   type: "flags",
@@ -43,25 +49,15 @@ module.exports = {
       });
     }
 
-    if (
-      !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
-    ) {
-      return interaction.reply({
-        content: ":wrench: You do not have the `MANAGE_MESSAGES` permission!",
-        ephemeral: true,
-      });
-    }
+    if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages))
+      return raiseUserPermissionsError(interaction, "MANAGE_MESSAGES");
 
     if (
       !interaction.guild.members.me.permissions.has(
         PermissionFlagsBits.ManageMessages
       )
-    ) {
-      return interaction.reply({
-        content: ":wrench: I do not have the `MANAGE_MESSAGES` permission!",
-        ephemeral: true,
-      });
-    }
+    )
+      return raiseBotPermissionsError(interaction, "MANAGE_MESSAGES");
 
     const member = await interaction.guild.members.fetch(user.id);
     const authorMember = await interaction.guild.members.fetch(
@@ -72,18 +68,11 @@ module.exports = {
     if (
       highestUserRole.position >=
       interaction.guild.members.me.roles.highest.position
-    ) {
-      return interaction.reply({
-        content: `:wrench: Please make sure my role is above the ${highestUserRole} role!`,
-        ephemeral: true,
-      });
-    }
-    if (highestUserRole.position >= authorMember.roles.highest.position) {
-      return interaction.reply({
-        content: `:wrench: ${user} has a higher or equal role than you on the hierarchy!`,
-        ephemeral: true,
-      });
-    }
+    )
+      return raiseBotHierarchyError(interaction);
+
+    if (highestUserRole.position >= authorMember.roles.highest.position)
+      return raiseUserHierarchyError(interaction);
 
     let data = await InfractionsSchema.findOne({
       GuildId: interaction.guild.id,

@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const InfractionsSchema = require("../../models/InfractionsModel");
 const { PermissionFlagsBits } = require("discord.js");
+const { raiseUserPermissionsError } = require("../../functions/returnError.js");
 
 const requiredPerms = {
   type: "flags",
@@ -27,14 +28,8 @@ module.exports = {
     const user = interaction.options.getUser("target");
     const caseId = interaction.options.getInteger("caseid");
 
-    if (
-      !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
-    ) {
-      return interaction.reply({
-        content: "You do not have the `MANAGE_MESSAGES` permission!",
-        ephemeral: true,
-      });
-    }
+    if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages))
+      return raiseUserPermissionsError(interaction, "MANAGE_MESSAGES");
 
     let data = await InfractionsSchema.findOneAndUpdate(
       {

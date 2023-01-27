@@ -95,6 +95,7 @@ module.exports = {
           content: `🪙 You won ${amount / 2} coins!`,
         });
         data.Wallet += amount;
+        data.NetWorth += amount;
       } else if (choice === "tails" && result === tails) {
         interaction.reply({
           content: `🪙 You won ${amount / 2} coins!`,

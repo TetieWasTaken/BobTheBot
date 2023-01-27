@@ -1,5 +1,9 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
+const {
+  raiseUserPermissionsError,
+  raiseBotPermissionsError,
+} = require("../../functions/returnError.js");
 
 const requiredPerms = {
   type: "flags",
@@ -19,25 +23,15 @@ module.exports = {
   async execute(interaction) {
     const amount = interaction.options.getInteger("amount");
 
-    if (
-      !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
-    ) {
-      return interaction.reply({
-        content: "You do not have the `MANAGE_MESSAGES` permission!",
-        ephemeral: true,
-      });
-    }
+    if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages))
+      return raiseUserPermissionsError(interaction, "MANAGE_MESSAGES");
 
     if (
       !interaction.guild.members.me.permissions.has(
         PermissionFlagsBits.ManageMessages
       )
-    ) {
-      return interaction.reply({
-        content: ":wrench: I do not have the `MANAGE_MESSAGES` permission!",
-        ephemeral: true,
-      });
-    }
+    )
+      return raiseBotPermissionsError(interaction, "MANAGE_MESSAGES");
 
     try {
       interaction.channel.bulkDelete(amount).then((messages) =>

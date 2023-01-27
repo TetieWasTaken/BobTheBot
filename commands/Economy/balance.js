@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const EconomySchema = require("../../models/EconomyModel");
+const { genGradient } = require("../../functions/genGradient");
 
 const requiredPerms = {
   type: "flags",
@@ -26,7 +27,8 @@ module.exports = {
 
     if (!data) {
       let replyEmbed = new EmbedBuilder()
-        .setTitle(`balance of ${user.username}#${user.discriminator}`)
+        .setTitle(`Balance of ${user.username}#${user.discriminator}`)
+        .setColor("#ff0000")
         .addFields(
           {
             name: "🏦  Bank",
@@ -51,6 +53,13 @@ module.exports = {
     } else {
       let replyEmbed = new EmbedBuilder()
         .setTitle(`balance of ${user.username}#${user.discriminator}`)
+        .setColor(
+          genGradient(
+            "#ff0000",
+            "#00ff00",
+            Math.min(data.NetWorth / 1000000, 1)
+          )
+        )
         .addFields(
           {
             name: "🏦  Bank",

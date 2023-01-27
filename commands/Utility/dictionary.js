@@ -45,7 +45,7 @@ module.exports = {
     module.exports.totalPages = totalPages;
 
     if (result.status === 404 || result.title === "No Definitions Found") {
-      return interaction.reply({
+      return interaction.editReply({
         content: "Word not found",
         ephemeral: true,
       });
@@ -66,7 +66,11 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setColor("#0099ff")
       .setTitle(result[0].word)
-      .setURL(result[0].phonetics[0].audio)
+      .setURL(
+        result[0].phonetics[0].audio.length > 0
+          ? result[0].phonetics[0].audio
+          : null
+      )
       .setDescription(result[0].meanings[0].definitions[0].definition)
       .addFields(
         {

@@ -1,5 +1,11 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
+const {
+  raiseUserPermissionsError,
+  raiseBotPermissionsError,
+  raiseUserHierarchyError,
+  raiseBotHierarchyError,
+} = require("../../functions/returnError.js");
 
 const requiredPerms = {
   type: "flags",
@@ -25,44 +31,28 @@ module.exports = {
     let reason =
       interaction.options.getString("reason") ?? "No reason provided";
 
-    if (!interaction.member.permissions.has(PermissionFlagsBits.BanMembers)) {
-      return interaction.reply({
-        content: "You do not have the `BAN_MEMBERS` permission!",
-        ephemeral: true,
-      });
-    }
-
+    if (!interaction.member.permissions.has(PermissionFlagsBits.BanMembers))
+      return raiseUserPermissionsError(interaction, "BAN_MEMBERS");
     if (
       !interaction.guild.members.me.permissions.has(
         PermissionFlagsBits.BanMembers
       )
-    ) {
-      return interaction.reply({
-        content: ":wrench: I do not have the `BAN_MEMBERS` permission!",
-        ephemeral: true,
-      });
-    }
+    )
+      return raiseBotPermissionsError(interaction, "BAN_MEMBERS");
 
     const authorMember = await interaction.guild.members.fetch(
       interaction.user.id
     );
 
     const highestUserRole = member.roles.highest;
+    if (highestUserRole.position >= authorMember.roles.highest.position)
+      return raiseUserHierarchyError(interaction);
+
     if (
       highestUserRole.position >=
       interaction.guild.members.me.roles.highest.position
-    ) {
-      return interaction.reply({
-        content: `:wrench: Please make sure my role is above the ${highestUserRole} role!`,
-        ephemeral: true,
-      });
-    }
-    if (highestUserRole.position >= authorMember.roles.highest.position) {
-      return interaction.reply({
-        content: `:wrench: ${member} has a higher or equal role than you on the hierarchy!`,
-        ephemeral: true,
-      });
-    }
+    )
+      return raiseBotHierarchyError(interaction);
 
     try {
       await member.ban({

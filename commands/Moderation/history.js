@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const InfractionsSchema = require("../../models/InfractionsModel");
 const { EmbedBuilder, PermissionFlagsBits, time } = require("discord.js");
 const { roleColor } = require("../../functions/roleColor.js");
+const { raiseUserPermissionsError } = require("../../functions/returnError.js");
 
 const requiredPerms = {
   type: "flags",
@@ -21,14 +22,8 @@ module.exports = {
   async execute(interaction) {
     const member = interaction.options.getMember("target");
 
-    if (
-      !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
-    ) {
-      return interaction.reply({
-        content: "You do not have the `MANAGE_MESSAGES` permission!",
-        ephemeral: true,
-      });
-    }
+    if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages))
+      return raiseUserPermissionsError(interaction, "MANAGE_MESSAGES");
 
     let data = await InfractionsSchema.findOne({
       GuildId: interaction.guild.id,

@@ -4,6 +4,10 @@ const {
   AuditLogEvent,
   EmbedBuilder,
 } = require("discord.js");
+const {
+  raiseUserPermissionsError,
+  raiseBotPermissionsError,
+} = require("../../functions/returnError.js");
 
 const requiredPerms = {
   type: "flags",
@@ -47,17 +51,10 @@ module.exports = {
     const limit = interaction.options.getInteger("limit") ?? 5;
 
     if (!interaction.member.permissions.has(requiredPerms.key))
-      return interaction.reply({
-        content: ":wrench: You do not have permission to use this command!",
-        ephemeral: true,
-      });
+      return raiseUserPermissionsError(interaction, "VIEW_AUDIT_LOG");
 
-    if (!interaction.guild.members.me.permissions.has(requiredPerms.key)) {
-      return interaction.reply({
-        content: ":wrench: I do not have the `VIEWAUDITLOG` permission!",
-        ephemeral: true,
-      });
-    }
+    if (!interaction.guild.members.me.permissions.has(requiredPerms.key))
+      return raiseBotPermissionsError(interaction, "VIEW_AUDIT_LOG");
 
     const auditLogTypes = {
       "ban": AuditLogEvent.MemberBanAdd,

@@ -6,6 +6,7 @@ const {
 } = require("discord.js");
 const fs = require("fs");
 const damerau = require("damerau-levenshtein");
+const { capitalizeFirst } = require("../../functions/capitalizeFirst.js");
 
 const requiredPerms = {
   type: "flags",
@@ -35,11 +36,11 @@ function getCommands() {
       .filter((file) => file.endsWith(".js"));
 
     for (let file of commandFiles) {
-      category = category.charAt(0).toUpperCase() + category.slice(1);
+      category = capitalizeFirst(category);
 
       let commandName = require(`../${category}/${file}`);
       commandName = commandName.data.name;
-      commandName = commandName.charAt(0).toUpperCase() + commandName.slice(1);
+      commandName = capitalizeFirst(commandName);
       commands.push(`${category}: ${commandName}`);
     }
   }
@@ -141,7 +142,7 @@ module.exports = {
 
         catEmbed.setDescription(descriptionArray.join("\n"));
 
-        await interaction.reply({ embeds: [catEmbed], ephemeral: true });
+        await interaction.reply({ embeds: [catEmbed] });
         break;
       case "command":
         const query = interaction.options.getString("query");
@@ -164,21 +165,15 @@ module.exports = {
         if (!command) {
           return interaction.reply({
             content: `Command \`${commandQuery}\` not found.`,
-            ephemeral: true,
           });
         }
 
         const embed = new EmbedBuilder()
           .setAuthor({
-            name:
-              categoryQuery.charAt(0).toUpperCase() + categoryQuery.slice(1),
+            name: capitalizeFirst(commandQuery),
           })
           .setColor(0x00ff00)
-          .setTitle(
-            `Help for ${
-              commandQuery.charAt(0).toUpperCase() + commandQuery.slice(1)
-            }`
-          )
+          .setTitle(`Help for ${capitalizeFirst(commandQuery)}`)
           .setDescription(command.data.description)
           .addFields({ name: "Usage", value: `\`/${command.data.name}\`` });
 

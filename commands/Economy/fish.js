@@ -60,6 +60,7 @@ module.exports = {
       data.NetWorth += randomAmount - data.Inventory[rodIndex].price;
       data.Inventory.splice(rodIndex, 1);
       data.Wallet += randomAmount;
+      data.NetWorth += randomAmount;
       data.save();
       return interaction.reply({
         content: `You went fishing and caught a ${items[randomItem]}! Unfortunately, your fishing rod broke and you lost it. The pawn shop gave you ₳${randomAmount} Bobbucks for it.`,
