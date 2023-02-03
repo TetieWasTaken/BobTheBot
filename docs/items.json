@@ -1,13 +1,13 @@
 [
   {
-    "name": "Fishing Rod",
+    "name": ":fishing_pole_and_fish: Fishing Rod",
     "description": "A fishing rod",
     "type": "tool",
     "sellable": true,
     "buyable": true,
     "useable": false,
     "price": 70,
-    "id": 1
+    "id": "fishingrod"
   },
   {
     "name": "Placeholder",
@@ -16,7 +16,7 @@
     "sellable": false,
     "buyable": false,
     "useable": true,
-    "id": 2
+    "id": "placeholder"
   },
   {
     "name": "Chicken",
@@ -26,86 +26,6 @@
     "buyable": true,
     "useable": true,
     "price": 100,
-    "id": 3
-  },
-  {
-    "name": "Chicken",
-    "description": "Grants 1.2x bobbucks",
-    "type": "pet",
-    "sellable": false,
-    "buyable": true,
-    "useable": true,
-    "price": 100,
-    "id": 3
-  },
-  {
-    "name": "Chicken",
-    "description": "Grants 1.2x bobbucks",
-    "type": "pet",
-    "sellable": false,
-    "buyable": true,
-    "useable": true,
-    "price": 100,
-    "id": 3
-  },
-  {
-    "name": "Chicken",
-    "description": "Grants 1.2x bobbucks",
-    "type": "pet",
-    "sellable": false,
-    "buyable": true,
-    "useable": true,
-    "price": 100,
-    "id": 3
-  },
-  {
-    "name": "Chicken",
-    "description": "Grants 1.2x bobbucks",
-    "type": "pet",
-    "sellable": false,
-    "buyable": true,
-    "useable": true,
-    "price": 100,
-    "id": 3
-  },
-  {
-    "name": "Chicken",
-    "description": "Grants 1.2x bobbucks",
-    "type": "pet",
-    "sellable": false,
-    "buyable": true,
-    "useable": true,
-    "price": 100,
-    "id": 3
-  },
-  {
-    "name": "Chicken",
-    "description": "Grants 1.2x bobbucks",
-    "type": "pet",
-    "sellable": false,
-    "buyable": true,
-    "useable": true,
-    "price": 100,
-    "id": 3
-  },
-  {
-    "name": "Chicken",
-    "description": "Grants 1.2x bobbucks",
-    "type": "pet",
-    "sellable": false,
-    "buyable": true,
-    "useable": true,
-    "price": 100,
-    "id": 3
-  },
-  {
-    "name": "Chicken",
-    "description": "Grants 1.2x bobbucks",
-    "type": "pet",
-    "sellable": false,
-    "buyable": true,
-    "useable": true,
-    "price": 100,
-    "id": 3
+    "id": "chicken"
   }
 ]

@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
 const EconomySchema = require("../../models/EconomyModel");
+const { raiseMiscellaneousError } = require("../../functions/returnError");
 
 const requiredPerms = {
   type: "flags",
@@ -17,11 +18,12 @@ module.exports = {
       UserId: interaction.user.id,
     });
 
-    if (!data || !data.Inventory.find((item) => item.name === "Fishing Rod")) {
-      return interaction.reply({
-        content: "You need a fishing rod to go fishing!",
-        ephemeral: true,
-      });
+    if (!data || !data.Inventory.find((item) => item.id === "fishingrod")) {
+      return raiseMiscellaneousError(
+        interaction,
+        "Property Error",
+        "You need a fishing rod to go fishing!"
+      );
     }
 
     const items = [
@@ -44,7 +46,7 @@ module.exports = {
       `You went fishing and caught a ${items[randomItem]}! You sold it for ₳${randomAmount} Bobbucks.`,
       `You went fishing and caught a ${items[randomItem]}! The pawn shop gave you ₳${randomAmount} Bobbucks for it.`,
       `You went fishing and caught a ${items[randomItem]}! A fisherman gave you ₳${randomAmount} Bobbucks for it.`,
-      `You went fishing and caught a ${items[randomItem]}! A robber robbed it but left ₳${randomAmount} Bobbucks behind.`,
+      `You went fishing and caught a ${items[randomItem]}! A thief stole it but left ₳${randomAmount} Bobbucks behind.`,
       `You went fishing and caught a ${items[randomItem]}! Your grandma bought it for ₳${randomAmount} Bobbucks.`,
       `On your way home from fishing, you found a wallet on the ground and it contained ₳${randomAmount} Bobbucks.`,
       `Your fishing rod magically gave you ₳${randomAmount} Bobbucks.`,

@@ -3,9 +3,10 @@ const fs = require("fs");
 const Database = require("./config/Database");
 const { Partials, GatewayIntentBits } = require("discord.js");
 const GiveawayModel = require("./models/GiveawayModel");
+const { table } = require("table");
+const { logTimings } = require("./functions/logTimings");
 
-const db = new Database();
-db.connect();
+let timerStart;
 
 const { Client, Collection } = require("discord.js");
 const client = new Client({
@@ -21,6 +22,16 @@ const client = new Client({
   ],
   partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 });
+
+client.commands = new Collection();
+client.buttons = new Collection();
+client.cooldowns = new Collection();
+client.timings = new Collection();
+
+const db = new Database();
+db.connect(client);
+
+timerStart = Date.now();
 
 const { GiveawaysManager } = require("discord-giveaways");
 const GiveawayManagerWithOwnDatabase = class extends GiveawaysManager {
@@ -53,31 +64,57 @@ const manager = new GiveawayManagerWithOwnDatabase(client, {
 });
 client.giveawaysManager = manager;
 
+client.timings.set("Giveaways", Date.now() - timerStart);
+timerStart = Date.now();
+
 const commandFolders = fs
   .readdirSync("./commands/")
   .filter((item) => !/(^|\/)\.[^/.]/g.test(item));
 const commands = [];
 
-client.commands = new Collection();
-client.buttons = new Collection();
-client.cooldowns = new Collection();
+console.log(`\n————————————————————————————————————————————————\n`);
 
-console.log(`------------------------------------------------`);
+let cnslTable = [["Command", "Status"]];
+
+let config = {
+  header: {
+    alignment: "center",
+    content: "Commands",
+  },
+};
 
 for (const folder of commandFolders) {
-  console.log(`Loading commands from ${folder}`);
   const commandFiles = fs
     .readdirSync(`./commands/${folder}`)
     .filter((file) => file.endsWith(".js"));
   for (const file of commandFiles) {
-    const command = require(`./commands/${folder}/${file}`);
-    commands.push(command.data.toJSON());
-    client.commands.set(command.data.name, command);
-    console.log(`| ✅ ${file} loaded!`);
+    try {
+      const command = require(`./commands/${folder}/${file}`);
+      commands.push(command.data.toJSON());
+      client.commands.set(command.data.name, command);
+      cnslTable.push([`/${command.data.name}`, "✅"]);
+    } catch (error) {
+      cnslTable.push([`${file}`, "❌"]);
+    }
   }
 }
 
-console.log(`------------------------------------------------`);
+console.log(table(cnslTable, config));
+
+client.timings.set("Commands", Date.now() - timerStart);
+
+console.log(`————————————————————————————————————————————————\n`);
+
+cnslTable = [["Component", "Status"]];
+
+config = {
+  header: {
+    alignment: "center",
+    content: "Components",
+  },
+};
+
+timerStart = Date.now();
 
 const componentFolders = fs.readdirSync(`./components`);
 for (const compfolder of componentFolders) {
@@ -87,11 +124,14 @@ for (const compfolder of componentFolders) {
 
   switch (compfolder) {
     case "buttons":
-      console.log(`Loading buttons from ${compfolder}`);
       for (const file of componentFiles) {
-        const button = require(`./components/${compfolder}/${file}`);
-        client.buttons.set(button.data.name, button);
-        console.log(`| ✅ ${file} loaded!`);
+        try {
+          const button = require(`./components/${compfolder}/${file}`);
+          client.buttons.set(button.data.name, button);
+          cnslTable.push([`${button.data.name}`, "✅"]);
+        } catch (error) {
+          cnslTable.push([`${file}`, "❌"]);
+        }
       }
       break;
     default:
@@ -99,26 +139,50 @@ for (const compfolder of componentFolders) {
   }
 }
 
-console.log(`------------------------------------------------`);
+console.log(table(cnslTable, config));
+
+client.timings.set("Components", Date.now() - timerStart);
+
+console.log(`————————————————————————————————————————————————\n`);
+
+cnslTable = [["Event", "Status"]];
+config = {
+  header: {
+    alignment: "center",
+    content: "Events",
+  },
+};
+
+timerStart = Date.now();
 
 const eventFiles = fs
   .readdirSync("./events")
   .filter((file) => file.endsWith(".js"));
 
-console.log(`Loading events`);
-
 for (const file of eventFiles) {
-  const event = require(`./events/${file}`);
-  console.log(`| ✅ ${file} loaded!`);
+  try {
+    const event = require(`./events/${file}`);
 
-  if (event.once) {
-    client.once(event.name, (...args) => event.execute(...args, commands));
-  } else {
-    client.on(event.name, (...args) => event.execute(...args, commands));
+    if (event.once) {
+      client.once(event.name, (...args) => event.execute(...args, commands));
+    } else {
+      client.on(event.name, (...args) => event.execute(...args, commands));
+    }
+    cnslTable.push([`${event.name}`, "✅"]);
+  } catch (error) {
+    cnslTable.push([`${file}`, "❌"]);
   }
 }
 
-console.log(`------------------------------------------------`);
+console.log(table(cnslTable, config));
+
+client.timings.set("Events", Date.now() - timerStart);
+
+console.log(`————————————————————————————————————————————————\n`);
+
+if (client.timings.size === 6) {
+  logTimings(client.timings);
+}
 
 client.on("error", (error) => {
   console.error("The WebSocket encountered an error:", error);

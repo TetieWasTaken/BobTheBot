@@ -23,7 +23,7 @@ module.exports = {
       const itemsJSON = JSON.parse(data);
 
       const item = itemsJSON.find(
-        (item) => item.name.toLowerCase() === itemName.toLowerCase()
+        (item) => item.id === itemName.toLowerCase().replace(/\s+/g, "")
       );
       if (!item) {
         return interaction.reply({
@@ -55,17 +55,10 @@ module.exports = {
           });
         } else {
           const itemIndex = data.Inventory.findIndex(
-            (item) => item.name === itemName
+            (item) => item.id === itemName.toLowerCase().replace(/\s+/g, "")
           );
           if (itemIndex === -1) {
             data.Inventory.push({
-              name: item.name,
-              description: item.description,
-              type: item.type,
-              sellable: item.sellable,
-              buyable: item.buyable,
-              useable: item.useable,
-              price: item.price,
               id: item.id,
               amount: 1,
             });
@@ -77,7 +70,9 @@ module.exports = {
           data.Wallet -= item.price;
           data.save();
           return interaction.reply({
-            content: `You have bought a \`${item.name}\` for ₳\`${item.price}\` Bobbucks`,
+            content: `You have bought a \`${item.name
+              .replace(/:.*?:/g, "")
+              .slice(1)}\` for ₳\`${item.price}\` Bobbucks`,
           });
         }
       });

@@ -2,12 +2,15 @@ require("dotenv").config();
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const { ActivityType } = require("discord.js");
+const { logTimings } = require("../functions/logTimings");
 
 module.exports = {
   name: "ready",
   once: true,
   execute(client, commands) {
     console.log("✅ BobTheBot is ready!");
+
+    const timerStart = Date.now();
 
     const CLIENT_ID = client.user.id;
 
@@ -30,6 +33,12 @@ module.exports = {
             }
           );
           console.log("✅ Locally registered commands");
+
+          client.timings.set("Registering", Date.now() - timerStart);
+
+          if (client.timings.size === 6) {
+            logTimings(client.timings);
+          }
         }
       } catch (err) {
         if (err) console.log(err);

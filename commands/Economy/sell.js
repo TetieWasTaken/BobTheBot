@@ -55,51 +55,52 @@ module.exports = {
         ephemeral: true,
       });
     }
-    const object = data.Inventory.find((object) => object.name === item);
+    const object = data.Inventory.find(
+      (object) => object.id === item.toLowerCase().replace(/\s+/g, "")
+    );
     if (!object) {
       return interaction.reply({
         content: "🚫 You do not the have the item you are trying to sell",
         ephemeral: true,
       });
-    } else {
-      if (!object.sellable) {
-        return interaction.reply({
-          content: "🚫 You cannot sell this item",
-          ephemeral: true,
-        });
-      }
-      fs.readFile("./docs/items.json", (err, itemsJSONData) => {
-        if (err) throw err;
-
-        if (object.amount < amount) {
-          return interaction.reply({
-            content: "🚫 You do not have enough of that item",
-            ephemeral: true,
-          });
-        } else {
-          const price = object.price;
-          const total = price * amount;
-
-          object.amount -= amount;
-          if (object.amount === 0) {
-            data.Inventory.splice(data.Inventory.indexOf(object), 1);
-          }
-
-          data.Inventory = data.Inventory.filter((object) => object.amount > 0);
-          data.Wallet += total;
-          data.save();
-
-          const sellEmbed = new EmbedBuilder()
-            .setTitle("Sell")
-            .setDescription(`You sold ${amount} ${object.name} for ₳${total}`)
-            .setColor(0x00ff00);
-
-          return interaction.reply({
-            embeds: [sellEmbed],
-          });
-        }
+    }
+    if (object.amount < amount) {
+      return interaction.reply({
+        content: "🚫 You do not have enough of the item you are trying to sell",
+        ephemeral: true,
       });
     }
+
+    fs.readFile("./docs/items.json", (err, itemsData) => {
+      if (err) throw err;
+      const itemsJSON = JSON.parse(itemsData);
+
+      const itemObject = itemsJSON.find((item) => item.id === object.id);
+
+      if (object.amount === amount) {
+        data.Inventory.splice(data.Inventory.indexOf(object), 1);
+      } else {
+        object.amount -= amount;
+      }
+
+      data.Wallet += itemObject.price * amount;
+      data.save();
+
+      const embed = new EmbedBuilder()
+        .setTitle("Item Sold")
+        .setDescription(
+          `You sold ${amount} ${itemObject.name} for ${
+            itemObject.price * amount
+          } coins`
+        )
+        .setColor("#00FF00")
+        .setTimestamp();
+
+      interaction.reply({
+        embeds: [embed],
+        ephemeral: true,
+      });
+    });
   },
   requiredPerms: requiredPerms,
 };

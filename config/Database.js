@@ -1,13 +1,14 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
+const { logTimings } = require("../functions/logTimings");
 
 class Database {
   constructor() {
     this.connection = null;
   }
 
-  connect() {
-    console.log("✅ Connecting to database...");
+  connect(client) {
+    const timerStart = Date.now();
 
     mongoose
       .connect(process.env.MONGO_DATABASETOKEN, {
@@ -16,6 +17,10 @@ class Database {
       })
       .then(() => {
         console.log("✅ Connected to database!");
+        client.timings.set("Mongoose", Date.now() - timerStart);
+        if (client.timings.size === 6) {
+          logTimings(client.timings);
+        }
         this.connection = mongoose.connection;
       })
       .catch((err) => {

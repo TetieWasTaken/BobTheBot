@@ -33,4 +33,11 @@ module.exports = {
       .setColor(0xff0000);
     return interaction.reply({ embeds: [embed], ephemeral: true });
   },
+  raiseMiscellaneousError: (interaction, errTitle, description) => {
+    const embed = new EmbedBuilder()
+      .setTitle(`${errTitle}  •  \`/${interaction.commandName}\``)
+      .setDescription(`:x: ${description}`)
+      .setColor(0xff0000);
+    return interaction.reply({ embeds: [embed], ephemeral: true });
+  },
 };
