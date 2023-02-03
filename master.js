@@ -4,7 +4,7 @@ const Database = require("./config/Database");
 const { Partials, GatewayIntentBits } = require("discord.js");
 const GiveawayModel = require("./models/GiveawayModel");
 const { table } = require("table");
-const { logTimings } = require("./functions/logTimings");
+const { logTimings } = require("./utils/logTimings");
 
 let timerStart;
 

@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
 const EconomySchema = require("../../models/EconomyModel");
-const { raiseMiscellaneousError } = require("../../functions/returnError");
+const { raiseMiscellaneousError } = require("../../utils/returnError");
 
 const requiredPerms = {
   type: "flags",

@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const fs = require("fs");
-const { raiseMiscellaneousError } = require("../../functions/returnError");
+const { raiseMiscellaneousError } = require("../../utils/returnError");
 
 const requiredPerms = {
   type: "flags",

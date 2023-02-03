@@ -2,7 +2,7 @@ require("dotenv").config();
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const { ActivityType } = require("discord.js");
-const { logTimings } = require("../functions/logTimings");
+const { logTimings } = require("../utils/logTimings");
 
 module.exports = {
   name: "ready",

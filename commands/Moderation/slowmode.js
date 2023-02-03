@@ -3,7 +3,7 @@ const { PermissionFlagsBits } = require("discord.js");
 const {
   raiseUserPermissionsError,
   raiseBotPermissionsError,
-} = require("../../functions/returnError.js");
+} = require("../../utils/returnError.js");
 
 const requiredPerms = {
   type: "flags",

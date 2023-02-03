@@ -1,8 +1,8 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const InfractionsSchema = require("../../models/InfractionsModel");
 const { EmbedBuilder, PermissionFlagsBits, time } = require("discord.js");
-const { roleColor } = require("../../functions/roleColor.js");
-const { raiseUserPermissionsError } = require("../../functions/returnError.js");
+const { roleColor } = require("../../utils/roleColor.js");
+const { raiseUserPermissionsError } = require("../../utils/returnError.js");
 
 const requiredPerms = {
   type: "flags",

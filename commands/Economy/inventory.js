@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const EconomySchema = require("../../models/EconomyModel");
-const { requestItemData } = require("../../functions/requestItemData");
+const { requestItemData } = require("../../utils/requestItemData");
 
 const requiredPerms = {
   type: "flags",

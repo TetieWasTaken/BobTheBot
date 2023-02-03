@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
-const { logTimings } = require("../functions/logTimings");
+const { logTimings } = require("../utils/logTimings");
 
 class Database {
   constructor() {

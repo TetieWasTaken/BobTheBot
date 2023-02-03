@@ -7,7 +7,7 @@ const {
   ButtonStyle,
   PermissionFlagsBits,
 } = require("discord.js");
-const { roleColor } = require("../../functions/roleColor.js");
+const { roleColor } = require("../../utils/roleColor.js");
 
 const requiredPerms = {
   type: "flags",

@@ -5,7 +5,7 @@ const {
   raiseBotPermissionsError,
   raiseUserHierarchyError,
   raiseBotHierarchyError,
-} = require("../../functions/returnError.js");
+} = require("../../utils/returnError.js");
 
 const requiredPerms = {
   type: "flags",

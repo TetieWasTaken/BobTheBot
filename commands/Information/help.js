@@ -6,7 +6,7 @@ const {
 } = require("discord.js");
 const fs = require("fs");
 const damerau = require("damerau-levenshtein");
-const { capitalizeFirst } = require("../../functions/capitalizeFirst.js");
+const { capitalizeFirst } = require("../../utils/capitalizeFirst.js");
 
 const requiredPerms = {
   type: "flags",
