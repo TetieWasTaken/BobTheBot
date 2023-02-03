@@ -22,6 +22,7 @@ module.exports = {
         text: `Requested by ${interaction.user.tag}`,
         iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}`,
       });
+
     for (let i = 0; i < data.length; i++) {
       const user = await interaction.client.users.fetch(data[i].UserId);
       embed.addFields({
