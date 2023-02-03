@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const fs = require("fs");
+const { raiseMiscellaneousError } = require("../../functions/returnError");
 
 const requiredPerms = {
   type: "flags",
@@ -11,58 +12,61 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("iteminfo")
     .setDescription("View information about an item")
-    .addIntegerOption((option) =>
+    .addStringOption((option) =>
       option
         .setName("item")
         .setDescription("The id of the item to view")
         .setRequired(true)
-        .setMinValue(1)
     ),
   async execute(interaction) {
-    const item = interaction.options.getInteger("item");
+    const item = interaction.options.getString("item");
 
     fs.readFile("./docs/items.json", (err, data) => {
       if (err) throw err;
       const itemsJSON = JSON.parse(data);
 
-      if (item > itemsJSON.length) {
-        return interaction.reply({
-          content: "🚫 That item does not exist",
-          ephemeral: true,
-        });
+      const itemInfo = itemsJSON.find(
+        (itemJSON) => itemJSON.id === item.toLowerCase().replace(/\s+/g, "")
+      );
+
+      if (!itemInfo)
+        return raiseMiscellaneousError(
+          interaction,
+          "Item not found",
+          "The item you specified was not found."
+        );
+
+      switch (itemInfo.usage) {
+        case "reusable":
+          itemInfo.usage = "♻️";
+          break;
+        case "consumable":
+          itemInfo.usage = "🍽️";
+          break;
+        default:
+          itemInfo.usage = "Unknown";
+          break;
       }
-      const itemInfo = itemsJSON[item - 1];
+
       const itemEmbed = new EmbedBuilder()
-        .setTitle(itemInfo.name)
-        .setDescription(itemInfo.description)
-        .setColor(0x00ff00)
+        .setTitle(
+          `${itemInfo.name}${itemInfo.price ? ` — ₳${itemInfo.price}` : ``}`
+        )
+        .setDescription(`\`${itemInfo.id}\` — *${itemInfo.description}*`)
         .addFields(
           {
-            name: "Price",
-            value: `${`₳${itemInfo.price}` || "N/A"}`,
-            inline: true,
+            name: "Information",
+            value: `\`Usage\` — ${itemInfo.usage}\n\`Sellable\` — ${
+              itemInfo.sellable ? "✅" : "❌"
+            }\n\`Buyable\` — ${itemInfo.buyable ? "✅" : "❌"}`,
+            inline: false,
           },
-          {
-            name: "id",
-            value: `${itemInfo.id}`,
-            inline: true,
-          },
-          {
-            name: "Type",
-            value: `${itemInfo.type}`,
-            inline: true,
-          },
-          {
-            name: "Sellable",
-            value: `${itemInfo.sellable}`,
-            inline: true,
-          },
-          {
-            name: "Buyable",
-            value: `${itemInfo.buyable}`,
-            inline: true,
-          }
-        );
+          { name: "Note", value: `*${itemInfo.note ?? "N/A"}*`, inline: false }
+        )
+        .setColor(0x00ff00);
+
+      if (!itemInfo.note) descriptionEmbed.spliceFields(-1, 1);
+
       return interaction.reply({
         embeds: [itemEmbed],
       });

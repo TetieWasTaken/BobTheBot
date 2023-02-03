@@ -2,11 +2,13 @@
   {
     "name": ":fishing_pole_and_fish: Fishing Rod",
     "description": "A fishing rod",
+    "note": "Has a chance of breaking while fishing",
     "type": "tool",
     "sellable": true,
     "buyable": true,
     "useable": false,
     "price": 70,
+    "usage": "reusable",
     "id": "fishingrod"
   },
   {
@@ -16,6 +18,7 @@
     "sellable": false,
     "buyable": false,
     "useable": true,
+    "usage": "reusable",
     "id": "placeholder"
   },
   {
@@ -26,6 +29,7 @@
     "buyable": true,
     "useable": true,
     "price": 100,
+    "usage": "consumable",
     "id": "chicken"
   }
 ]

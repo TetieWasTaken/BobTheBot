@@ -34,8 +34,11 @@ module.exports = {
           : page;
 
       const shopEmbed = new EmbedBuilder()
-        .setTitle("Shop")
-        .setDescription(`Page ${page} of ${Math.ceil(itemsJSON.length / 5)}`)
+        .setAuthor({ name: "Shop" })
+        .setFooter(
+          { text: `Page ${page} of ${Math.ceil(itemsJSON.length / 5)}` },
+          { iconURL: interaction.user.avatarURL }
+        )
         .setColor(0x00ff00);
 
       let id = 0;
@@ -44,12 +47,10 @@ module.exports = {
         if (itemsJSON[i + (page - 1) * 5]) {
           id++;
           shopEmbed.addFields({
-            name: `${itemsJSON[i + (page - 1) * 5].name} - ${
-              id + (page - 1) * 5
-            }`,
-            value: `${itemsJSON[i + (page - 1) * 5].description} - ₳${
+            name: `${itemsJSON[i + (page - 1) * 5].name} — ₳${
               itemsJSON[i + (page - 1) * 5].price
             }`,
+            value: `*${itemsJSON[i + (page - 1) * 5].description}*`,
             inline: false,
           });
         }

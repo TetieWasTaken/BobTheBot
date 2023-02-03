@@ -94,6 +94,7 @@ for (const folder of commandFolders) {
       client.commands.set(command.data.name, command);
       cnslTable.push([`/${command.data.name}`, "✅"]);
     } catch (error) {
+      console.log(error);
       cnslTable.push([`${file}`, "❌"]);
     }
   }
