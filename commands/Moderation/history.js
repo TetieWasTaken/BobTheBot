@@ -6,7 +6,7 @@ const { raiseUserPermissionsError } = require("../../utils/returnError.js");
 
 const requiredBotPerms = {
   type: "flags",
-  key: [PermissionFlagsBits.EmbedLinks],
+  key: [],
 };
 
 module.exports = {

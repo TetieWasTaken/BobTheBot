@@ -5,7 +5,7 @@ const { requestItemData } = require("../../utils/requestItemData");
 
 const requiredBotPerms = {
   type: "flags",
-  key: [PermissionFlagsBits.EmbedLinks],
+  key: [],
 };
 
 module.exports = {

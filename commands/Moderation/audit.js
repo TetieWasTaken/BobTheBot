@@ -11,7 +11,7 @@ const {
 
 const requiredBotPerms = {
   type: "flags",
-  key: [PermissionFlagsBits.ViewAuditLog, PermissionFlagsBits.EmbedLinks],
+  key: [PermissionFlagsBits.ViewAuditLog],
 };
 
 module.exports = {

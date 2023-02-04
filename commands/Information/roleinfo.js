@@ -3,7 +3,7 @@ const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 
 const requiredBotPerms = {
   type: "flags",
-  key: [PermissionFlagsBits.EmbedLinks],
+  key: [],
 };
 
 module.exports = {

@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const requiredBotPerms = {
   type: "flags",
-  key: [PermissionFlagsBits.EmbedLinks],
+  key: [],
 };
 
 module.exports = {

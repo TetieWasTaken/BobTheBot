@@ -5,7 +5,7 @@ const { genGradient } = require("../../utils/genGradient");
 
 const requiredBotPerms = {
   type: "flags",
-  key: [PermissionFlagsBits.EmbedLinks],
+  key: [],
 };
 
 module.exports = {
