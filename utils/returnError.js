@@ -1,17 +1,25 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 
 module.exports = {
   raiseUserPermissionsError: (interaction, permission) => {
     const embed = new EmbedBuilder()
       .setTitle(`Permissions Error  •  \`/${interaction.commandName}\``)
-      .setDescription(`:x: You do not have the \`${permission}\` permission!`)
+      .setDescription(
+        `:x: You do not have the \`${new PermissionsBitField(
+          permission
+        ).toArray()}\` permission!`
+      )
       .setColor(0xff0000);
     return interaction.reply({ embeds: [embed], ephemeral: true });
   },
   raiseBotPermissionsError: (interaction, permission) => {
     const embed = new EmbedBuilder()
       .setTitle(`Permissions Error  •  \`/${interaction.commandName}\``)
-      .setDescription(`:x: I do not have the \`${permission}\` permission!`)
+      .setDescription(
+        `:x: I do not have the \`${new PermissionsBitField(
+          permission
+        ).toArray()}\` permission!`
+      )
       .setColor(0xff0000);
     return interaction.reply({ embeds: [embed], ephemeral: true });
   },

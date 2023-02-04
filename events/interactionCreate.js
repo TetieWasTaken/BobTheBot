@@ -1,5 +1,9 @@
 const GuildSchema = require("../models/GuildModel");
 const { EmbedBuilder } = require("discord.js");
+const {
+  raiseUserPermissionsError,
+  raiseBotPermissionsError,
+} = require("../utils/returnError.js");
 
 module.exports = {
   name: "interactionCreate",
@@ -118,6 +122,22 @@ module.exports = {
         setTimeout(() => {
           client.cooldowns.delete(interaction.commandName);
         }, cooldownTime);
+      }
+
+      if (command.requiredUserPerms?.key.length > 0) {
+        for (const userPerm of command.requiredUserPerms.key) {
+          if (!interaction.member.permissions.has(userPerm)) {
+            return raiseUserPermissionsError(interaction, userPerm);
+          }
+        }
+      }
+
+      if (command.requiredBotPerms?.key.length > 0) {
+        for (const botPerm of command.requiredBotPerms.key) {
+          if (!interaction.guild.members.me.permissions.has(botPerm)) {
+            return raiseBotPermissionsError(interaction, botPerm);
+          }
+        }
       }
 
       try {
