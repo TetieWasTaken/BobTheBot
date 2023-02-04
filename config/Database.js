@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 const { logTimings } = require("../utils/logTimings");
+const { table } = require("table");
 
 class Database {
   constructor() {
@@ -16,12 +17,40 @@ class Database {
         useUnifiedTopology: true,
       })
       .then(() => {
-        console.log("✅ Connected to database!");
         client.timings.set("Mongoose", Date.now() - timerStart);
         if (client.timings.size === 6) {
           logTimings(client.timings);
         }
         this.connection = mongoose.connection;
+
+        // Unable to get the states out of mongoose.connection, temporary hardcode.
+        const states = {
+          0: "disconnected",
+          1: "connected",
+          2: "connecting",
+          3: "disconnecting",
+          99: "uninitialized",
+        };
+
+        const config = {
+          header: {
+            alignment: "center",
+            content: `${this.connection._connectionOptions.driverInfo.name} v${this.connection._connectionOptions.driverInfo.version}`,
+          },
+        };
+
+        const cnslTable = [
+          ["State", `${states[this.connection.readyState]}`],
+          ["Port", `${this.connection.port}`],
+          ["Host", `${this.connection.host}`],
+          ["Database", `${this.connection.name}`],
+          ["Collections", `${this.connection.collections.size}`],
+        ];
+
+        console.log(
+          table(cnslTable, config),
+          "\n————————————————————————————————————————————————\n"
+        );
       })
       .catch((err) => {
         console.error(err);
