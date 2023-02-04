@@ -1,7 +1,6 @@
 let Parser = require("expr-eval").Parser;
 const { ChartJSNodeCanvas } = require("chartjs-node-canvas");
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { PermissionFlagsBits } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
 const width = 800;
 const height = 600;

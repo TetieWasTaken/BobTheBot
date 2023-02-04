@@ -1,8 +1,8 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
 const {
+  SlashCommandBuilder,
+  PermissionFlagsBits,
   EmbedBuilder,
   ChannelType,
-  PermissionFlagsBits,
   time,
 } = require("discord.js");
 const { roleColor } = require("../../utils/roleColor.js");

@@ -1,6 +1,9 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  PermissionFlagsBits,
+} = require("discord.js");
 const LevelSchema = require("../../models/LevelModel");
-const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 
 const requiredBotPerms = {
   type: "flags",

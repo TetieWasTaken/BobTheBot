@@ -1,6 +1,10 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  PermissionFlagsBits,
+  time,
+} = require("discord.js");
 const InfractionsSchema = require("../../models/InfractionsModel");
-const { EmbedBuilder, PermissionFlagsBits, time } = require("discord.js");
 const { roleColor } = require("../../utils/roleColor.js");
 
 const requiredBotPerms = {

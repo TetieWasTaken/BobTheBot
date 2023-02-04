@@ -1,6 +1,5 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const { createHash, scryptSync, randomBytes } = require("crypto");
-const { PermissionFlagsBits } = require("discord.js");
 
 const requiredBotPerms = {
   type: "flags",

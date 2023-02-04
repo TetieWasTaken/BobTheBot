@@ -1,5 +1,8 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  PermissionFlagsBits,
+  EmbedBuilder,
+} = require("discord.js");
 require("dotenv").config();
 
 const requiredBotPerms = {

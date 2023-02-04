@@ -1,5 +1,8 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  PermissionFlagsBits,
+  EmbedBuilder,
+} = require("discord.js");
 const { convertMS } = require("../../utils/convertMS.js");
 const { roleColor } = require("../../utils/roleColor.js");
 

@@ -1,6 +1,5 @@
 const InfractionsSchema = require("../../models/InfractionsModel");
-const { PermissionFlagsBits } = require("discord.js");
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const {
   raiseUserHierarchyError,
   raiseBotHierarchyError,
