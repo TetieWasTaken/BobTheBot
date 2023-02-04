@@ -9,7 +9,7 @@ const backgroundColour = "white";
 
 const requiredBotPerms = {
   type: "flags",
-  key: [PermissionFlagsBits.AttachFiles],
+  key: [],
 };
 
 module.exports = {
