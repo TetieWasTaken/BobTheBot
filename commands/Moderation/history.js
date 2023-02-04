@@ -2,7 +2,6 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const InfractionsSchema = require("../../models/InfractionsModel");
 const { EmbedBuilder, PermissionFlagsBits, time } = require("discord.js");
 const { roleColor } = require("../../utils/roleColor.js");
-const { raiseUserPermissionsError } = require("../../utils/returnError.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -11,7 +10,7 @@ const requiredBotPerms = {
 
 const requiredUserPerms = {
   type: "flags",
-  key: [],
+  key: [PermissionFlagsBits.ManageMessages],
 };
 
 module.exports = {
@@ -26,9 +25,6 @@ module.exports = {
     ),
   async execute(interaction) {
     const member = interaction.options.getMember("target");
-
-    if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages))
-      return raiseUserPermissionsError(interaction, "MANAGE_MESSAGES");
 
     let data = await InfractionsSchema.findOne({
       GuildId: interaction.guild.id,

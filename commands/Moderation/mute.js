@@ -3,8 +3,6 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
 const ms = require("ms");
 const {
-  raiseUserPermissionsError,
-  raiseBotPermissionsError,
   raiseUserHierarchyError,
   raiseBotHierarchyError,
 } = require("../../utils/returnError.js");
@@ -16,7 +14,7 @@ const requiredBotPerms = {
 
 const requiredUserPerms = {
   type: "flags",
-  key: [],
+  key: [PermissionFlagsBits.ModerateMembers],
 };
 
 module.exports = {

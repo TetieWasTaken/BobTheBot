@@ -33,14 +33,6 @@ module.exports = {
     const message = interaction.options.getString("message");
 
     if (
-      !interaction.member.permissions.has(PermissionFlagsBits.Administrator)
-    ) {
-      return interaction.reply({
-        content: ":wrench: You do not have the `ADMINISTRATOR` permission!",
-        ephemeral: true,
-      });
-    }
-    if (
       !channel
         .permissionsFor(interaction.guild.members.me)
         .has(PermissionFlagsBits.SendMessages)

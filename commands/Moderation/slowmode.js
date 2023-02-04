@@ -1,9 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
-const {
-  raiseUserPermissionsError,
-  raiseBotPermissionsError,
-} = require("../../utils/returnError.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -12,7 +8,7 @@ const requiredBotPerms = {
 
 const requiredUserPerms = {
   type: "flags",
-  key: [],
+  key: [PermissionFlagsBits.ManageChannels],
 };
 
 module.exports = {
@@ -27,16 +23,6 @@ module.exports = {
     ),
   async execute(interaction) {
     let duration = interaction.options.getInteger("duration");
-
-    if (!interaction.member.permissions.has(PermissionFlagsBits.ManageChannels))
-      return raiseUserPermissionsError(interaction, "MANAGE_CHANNELS");
-
-    if (
-      !interaction.guild.members.me.permissions.has(
-        PermissionFlagsBits.ManageChannels
-      )
-    )
-      return raiseBotPermissionsError(interaction, "MANAGE_CHANNELS");
 
     if (duration >= 21601) {
       duration = 21600;

@@ -1,9 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
-const {
-  raiseUserPermissionsError,
-  raiseBotPermissionsError,
-} = require("../../utils/returnError.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -12,7 +8,7 @@ const requiredBotPerms = {
 
 const requiredUserPerms = {
   type: "flags",
-  key: [],
+  key: [PermissionFlagsBits.BanMembers],
 };
 
 module.exports = {
@@ -27,16 +23,6 @@ module.exports = {
     ),
   async execute(interaction) {
     const userId = interaction.options.getString("userid");
-
-    if (!interaction.member.permissions.has(PermissionFlagsBits.BanMembers))
-      return raiseUserPermissionsError(interaction, "BAN_MEMBERS");
-
-    if (
-      !interaction.guild.members.me.permissions.has(
-        PermissionFlagsBits.BanMembers
-      )
-    )
-      return raiseBotPermissionsError(interaction, "BAN_MEMBERS");
 
     try {
       await interaction.guild.members.unban(userId);

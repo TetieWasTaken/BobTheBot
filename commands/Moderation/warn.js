@@ -2,8 +2,6 @@ const InfractionsSchema = require("../../models/InfractionsModel");
 const { PermissionFlagsBits } = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const {
-  raiseUserPermissionsError,
-  raiseBotPermissionsError,
   raiseUserHierarchyError,
   raiseBotHierarchyError,
 } = require("../../utils/returnError.js");
@@ -15,7 +13,7 @@ const requiredBotPerms = {
 
 const requiredUserPerms = {
   type: "flags",
-  key: [],
+  key: [PermissionFlagsBits.ManageMessages],
 };
 
 module.exports = {
@@ -53,16 +51,6 @@ module.exports = {
         ephemeral: true,
       });
     }
-
-    if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages))
-      return raiseUserPermissionsError(interaction, "MANAGE_MESSAGES");
-
-    if (
-      !interaction.guild.members.me.permissions.has(
-        PermissionFlagsBits.ManageMessages
-      )
-    )
-      return raiseBotPermissionsError(interaction, "MANAGE_MESSAGES");
 
     const member = await interaction.guild.members.fetch(user.id);
     const authorMember = await interaction.guild.members.fetch(

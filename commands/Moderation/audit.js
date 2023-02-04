@@ -4,10 +4,6 @@ const {
   AuditLogEvent,
   EmbedBuilder,
 } = require("discord.js");
-const {
-  raiseUserPermissionsError,
-  raiseBotPermissionsError,
-} = require("../../utils/returnError.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -49,12 +45,6 @@ module.exports = {
     const type = interaction.options.getString("type") ?? null;
     const user = interaction.options.getUser("user") ?? null;
     const limit = interaction.options.getInteger("limit") ?? 5;
-
-    if (!interaction.member.permissions.has(requiredBotPerms.key))
-      return raiseUserPermissionsError(interaction, "VIEW_AUDIT_LOG");
-
-    if (!interaction.guild.members.me.permissions.has(requiredBotPerms.key))
-      return raiseBotPermissionsError(interaction, "VIEW_AUDIT_LOG");
 
     const auditLogTypes = {
       "ban": AuditLogEvent.MemberBanAdd,

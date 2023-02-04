@@ -1,9 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
-const {
-  raiseUserPermissionsError,
-  raiseBotPermissionsError,
-} = require("../../utils/returnError.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -12,7 +8,7 @@ const requiredBotPerms = {
 
 const requiredUserPerms = {
   type: "flags",
-  key: [],
+  key: [PermissionFlagsBits.ManageMessages],
 };
 
 module.exports = {
@@ -27,16 +23,6 @@ module.exports = {
     ),
   async execute(interaction) {
     const amount = interaction.options.getInteger("amount");
-
-    if (!interaction.member.permissions.has(PermissionFlagsBits.ManageMessages))
-      return raiseUserPermissionsError(interaction, "MANAGE_MESSAGES");
-
-    if (
-      !interaction.guild.members.me.permissions.has(
-        PermissionFlagsBits.ManageMessages
-      )
-    )
-      return raiseBotPermissionsError(interaction, "MANAGE_MESSAGES");
 
     try {
       interaction.channel.bulkDelete(amount).then((messages) =>

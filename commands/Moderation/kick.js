@@ -1,8 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits } = require("discord.js");
 const {
-  raiseUserPermissionsError,
-  raiseBotPermissionsError,
   raiseUserHierarchyError,
   raiseBotHierarchyError,
 } = require("../../utils/returnError.js");
@@ -14,7 +12,7 @@ const requiredBotPerms = {
 
 const requiredUserPerms = {
   type: "flags",
-  key: [],
+  key: [PermissionFlagsBits.KickMembers],
 };
 
 module.exports = {
@@ -38,16 +36,6 @@ module.exports = {
     const member = interaction.options.getMember("target");
     let reason =
       interaction.options.getString("reason") ?? "No reason provided";
-
-    if (!interaction.member.permissions.has(PermissionFlagsBits.KickMembers))
-      return raiseUserPermissionsError(interaction, "KICK_MEMBERS");
-
-    if (
-      !interaction.guild.members.me.permissions.has(
-        PermissionFlagsBits.KickMembers
-      )
-    )
-      return raiseBotPermissionsError(interaction, "KICK_MEMBERS");
 
     const authorMember = await interaction.guild.members.fetch(
       interaction.user.id
