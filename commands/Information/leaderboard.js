@@ -3,7 +3,7 @@ const LevelSchema = require("../../models/LevelModel");
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const { roleColor } = require("../../utils/roleColor.js");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks],
 };
@@ -32,5 +32,5 @@ module.exports = {
       .setColor(roleColor(interaction));
     interaction.reply({ embeds: [embed] });
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

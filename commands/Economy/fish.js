@@ -3,7 +3,7 @@ const { PermissionFlagsBits } = require("discord.js");
 const EconomySchema = require("../../models/EconomyModel");
 const { raiseMiscellaneousError } = require("../../utils/returnError");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.SendMessages],
 };
@@ -76,5 +76,5 @@ module.exports = {
       });
     }
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

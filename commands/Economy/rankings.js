@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const EconomySchema = require("../../models/EconomyModel");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks],
 };
@@ -33,5 +33,5 @@ module.exports = {
     }
     await interaction.reply({ embeds: [embed] });
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

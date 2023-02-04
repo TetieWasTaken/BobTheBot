@@ -9,7 +9,7 @@ const {
   raiseBotPermissionsError,
 } = require("../../utils/returnError.js");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [
     PermissionFlagsBits.ViewAuditLog,
@@ -50,10 +50,10 @@ module.exports = {
     const user = interaction.options.getUser("user") ?? null;
     const limit = interaction.options.getInteger("limit") ?? 5;
 
-    if (!interaction.member.permissions.has(requiredPerms.key))
+    if (!interaction.member.permissions.has(requiredBotPerms.key))
       return raiseUserPermissionsError(interaction, "VIEW_AUDIT_LOG");
 
-    if (!interaction.guild.members.me.permissions.has(requiredPerms.key))
+    if (!interaction.guild.members.me.permissions.has(requiredBotPerms.key))
       return raiseBotPermissionsError(interaction, "VIEW_AUDIT_LOG");
 
     const auditLogTypes = {
@@ -116,5 +116,5 @@ module.exports = {
     }
     interaction.reply({ embeds: [replyEmbed], ephemeral: true });
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

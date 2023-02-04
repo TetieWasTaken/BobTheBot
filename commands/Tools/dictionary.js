@@ -7,7 +7,7 @@ const {
   ButtonStyle,
 } = require("discord.js");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.SendMessages],
 };
@@ -119,5 +119,5 @@ module.exports = {
       return interaction.editReply({ embeds: [embed] });
     }
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

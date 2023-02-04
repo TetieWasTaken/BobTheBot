@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { convertMS } = require("../../utils/convertMS.js");
 const { PermissionFlagsBits } = require("discord.js");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.SendMessages],
 };
@@ -19,5 +19,5 @@ module.exports = {
       ephemeral: true,
     });
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

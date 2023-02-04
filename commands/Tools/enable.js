@@ -3,7 +3,7 @@ const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const GuildSchema = require("../../models/GuildModel");
 const fs = require("fs");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.SendMessages],
 };
@@ -145,5 +145,5 @@ module.exports = {
         });
     }
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

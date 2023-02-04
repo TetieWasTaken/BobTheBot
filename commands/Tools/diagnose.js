@@ -6,7 +6,7 @@ const {
   PermissionFlagsBits,
 } = require("discord.js");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks],
 };
@@ -44,19 +44,19 @@ module.exports = {
       for (const file of commandFiles) {
         const commandFile = require(`../../commands/${folder}/${file}`);
         if (commandFile.data.name === command) {
-          let requiredPerms = require(`../../commands/${folder}/${file}`);
-          requiredPerms = requiredPerms.requiredPerms;
+          let requiredBotPerms = require(`../../commands/${folder}/${file}`);
+          requiredBotPerms = requiredBotPerms.requiredBotPerms;
 
           let replyEmbed = new EmbedBuilder();
 
-          for (i = 0; i < requiredPerms.key.length; i++) {
+          for (i = 0; i < requiredBotPerms.key.length; i++) {
             if (
               !interaction.guild.members.me.permissions.has(
-                requiredPerms.key[i]
+                requiredBotPerms.key[i]
               )
             ) {
               let missingPermission = new PermissionsBitField(
-                requiredPerms.key[i]
+                requiredBotPerms.key[i]
               ).toArray();
 
               replyEmbed = new EmbedBuilder()
@@ -88,5 +88,5 @@ module.exports = {
       ephemeral: true,
     });
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

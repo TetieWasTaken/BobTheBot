@@ -7,7 +7,7 @@ const {
   raiseBotHierarchyError,
 } = require("../../utils/returnError.js");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.KickMembers, PermissionFlagsBits.SendMessages],
 };
@@ -93,5 +93,5 @@ module.exports = {
       ephemeral: true,
     });
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

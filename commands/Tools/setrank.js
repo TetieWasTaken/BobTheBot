@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const LevelSchema = require("../../models/LevelModel");
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.SendMessages],
 };
@@ -63,5 +63,5 @@ module.exports = {
       ephemeral: true,
     });
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

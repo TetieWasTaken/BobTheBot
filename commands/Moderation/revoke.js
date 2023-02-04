@@ -3,7 +3,7 @@ const InfractionsSchema = require("../../models/InfractionsModel");
 const { PermissionFlagsBits } = require("discord.js");
 const { raiseUserPermissionsError } = require("../../utils/returnError.js");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.SendMessages],
 };
@@ -52,5 +52,5 @@ module.exports = {
       ephemeral: true,
     });
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

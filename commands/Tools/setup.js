@@ -9,7 +9,7 @@ const {
 } = require("discord.js");
 const { roleColor } = require("../../utils/roleColor.js");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks],
 };
@@ -74,5 +74,5 @@ module.exports = {
       components: [new ActionRowBuilder().addComponents(button)],
     });
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

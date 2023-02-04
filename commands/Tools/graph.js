@@ -7,7 +7,7 @@ const width = 800;
 const height = 600;
 const backgroundColour = "white";
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.AttachFiles],
 };
@@ -72,5 +72,5 @@ module.exports = {
 
     await interaction.reply({ files: [image] });
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

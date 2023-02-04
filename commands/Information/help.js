@@ -8,7 +8,7 @@ const fs = require("fs");
 const damerau = require("damerau-levenshtein");
 const { capitalizeFirst } = require("../../utils/capitalizeFirst.js");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.SendMessages],
 };
@@ -221,7 +221,7 @@ module.exports = {
             : "- ";
         }
 
-        for (let perm of command.requiredPerms.key) {
+        for (let perm of command.requiredBotPerms.key) {
           hasPerm = getPerms(perm);
           permsArray.push(hasPerm + new PermissionsBitField(perm).toArray());
           if (hasPerm === "- ") {
@@ -231,7 +231,7 @@ module.exports = {
           }
         }
 
-        if (command.requiredPerms) {
+        if (command.requiredBotPerms) {
           embed.addFields({
             name: "Permissions",
             value: `I require the following permissions for this command:\n\`\`\`diff\n${permsArray.join(
@@ -244,5 +244,5 @@ module.exports = {
         break;
     }
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

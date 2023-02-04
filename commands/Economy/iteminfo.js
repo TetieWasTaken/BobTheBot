@@ -3,7 +3,7 @@ const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const fs = require("fs");
 const { raiseMiscellaneousError } = require("../../utils/returnError");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.SendMessages],
 };
@@ -72,5 +72,5 @@ module.exports = {
       });
     });
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

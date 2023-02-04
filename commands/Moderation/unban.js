@@ -5,7 +5,7 @@ const {
   raiseBotPermissionsError,
 } = require("../../utils/returnError.js");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.BanMembers, PermissionFlagsBits.SendMessages],
 };
@@ -44,5 +44,5 @@ module.exports = {
       console.log(err);
     }
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

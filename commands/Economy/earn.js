@@ -3,7 +3,7 @@ const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const EconomySchema = require("../../models/EconomyModel");
 const { genGradient } = require("../../utils/genGradient");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks],
 };
@@ -98,5 +98,5 @@ module.exports = {
 
     return interaction.reply({ embeds: [embed] });
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

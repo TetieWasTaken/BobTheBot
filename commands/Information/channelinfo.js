@@ -7,7 +7,7 @@ const {
 } = require("discord.js");
 const { roleColor } = require("../../utils/roleColor.js");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks],
 };
@@ -54,5 +54,5 @@ module.exports = {
       embeds: [replyEmbed],
     });
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };

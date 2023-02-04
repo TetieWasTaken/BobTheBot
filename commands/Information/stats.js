@@ -3,7 +3,7 @@ const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const { convertMS } = require("../../utils/convertMS.js");
 const { roleColor } = require("../../utils/roleColor.js");
 
-const requiredPerms = {
+const requiredBotPerms = {
   type: "flags",
   key: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks],
 };
@@ -53,5 +53,5 @@ module.exports = {
       );
     interaction.reply({ embeds: [replyEmbed] });
   },
-  requiredPerms: requiredPerms,
+  requiredBotPerms: requiredBotPerms,
 };
