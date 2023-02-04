@@ -12,6 +12,11 @@ const requiredBotPerms = {
   key: [PermissionFlagsBits.BanMembers],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [],
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("ban")
@@ -96,4 +101,5 @@ module.exports = {
     });
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };

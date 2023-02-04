@@ -8,6 +8,11 @@ const requiredBotPerms = {
   key: [],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [],
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("leaderboard")
@@ -33,4 +38,5 @@ module.exports = {
     interaction.reply({ embeds: [embed] });
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };

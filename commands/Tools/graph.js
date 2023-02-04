@@ -12,6 +12,11 @@ const requiredBotPerms = {
   key: [],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [],
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("graph")
@@ -73,4 +78,5 @@ module.exports = {
     await interaction.reply({ files: [image] });
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };

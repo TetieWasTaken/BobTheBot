@@ -10,6 +10,11 @@ const requiredBotPerms = {
   ],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [],
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("capybara")
@@ -31,4 +36,5 @@ module.exports = {
     await interaction.reply({ embeds: [embed] });
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };

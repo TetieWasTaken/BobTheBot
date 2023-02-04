@@ -8,6 +8,11 @@ const requiredBotPerms = {
   key: [],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [],
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("earn")
@@ -99,4 +104,5 @@ module.exports = {
     return interaction.reply({ embeds: [embed] });
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };

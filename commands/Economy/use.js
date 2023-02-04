@@ -8,6 +8,11 @@ const requiredBotPerms = {
   key: [],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [],
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("use")
@@ -52,4 +57,5 @@ module.exports = {
     data.save();
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };

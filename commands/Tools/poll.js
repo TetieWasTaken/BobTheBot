@@ -7,6 +7,11 @@ const requiredBotPerms = {
   key: [PermissionFlagsBits.AddReactions],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [],
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("poll")
@@ -176,4 +181,5 @@ module.exports = {
     }
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };

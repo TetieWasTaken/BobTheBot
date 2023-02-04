@@ -13,6 +13,11 @@ const requiredBotPerms = {
   key: [],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [],
+};
+
 function getChoices() {
   const choises = fs
     .readdirSync("./commands")
@@ -245,4 +250,5 @@ module.exports = {
     }
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };

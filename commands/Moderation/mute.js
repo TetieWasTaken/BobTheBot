@@ -14,6 +14,11 @@ const requiredBotPerms = {
   key: [PermissionFlagsBits.ModerateMembers],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [],
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("mute")
@@ -44,18 +49,6 @@ module.exports = {
     let duration = interaction.options.getString("duration");
     let reason =
       interaction.options.getString("reason") ?? "No reason provided";
-
-    if (
-      !interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)
-    )
-      return raiseUserPermissionsError(interaction, "MODERATE_MEMBERS");
-
-    if (
-      !interaction.guild.members.me.permissions.has(
-        PermissionFlagsBits.ModerateMembers
-      )
-    )
-      return raiseBotPermissionsError(interaction, "MODERATE_MEMBERS");
 
     const authorMember = await interaction.guild.members.fetch(
       interaction.user.id
@@ -132,4 +125,5 @@ module.exports = {
     });
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };

@@ -6,6 +6,11 @@ const requiredBotPerms = {
   key: [],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [PermissionFlagsBits.Administrator],
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("announce")
@@ -55,4 +60,5 @@ module.exports = {
     });
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };

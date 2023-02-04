@@ -6,6 +6,11 @@ const requiredBotPerms = {
   key: [PermissionFlagsBits.ManageMessages],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [],
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("deletegiveaway")
@@ -44,4 +49,5 @@ module.exports = {
       });
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };

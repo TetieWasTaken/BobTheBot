@@ -12,6 +12,11 @@ const requiredBotPerms = {
   key: [PermissionFlagsBits.KickMembers],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [],
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("kick")
@@ -94,4 +99,5 @@ module.exports = {
     });
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };

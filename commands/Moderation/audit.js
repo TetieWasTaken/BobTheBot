@@ -14,6 +14,10 @@ const requiredBotPerms = {
   key: [PermissionFlagsBits.ViewAuditLog],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [PermissionFlagsBits.Administrator],
+};
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("audit")
@@ -113,4 +117,5 @@ module.exports = {
     interaction.reply({ embeds: [replyEmbed], ephemeral: true });
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };

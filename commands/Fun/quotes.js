@@ -7,6 +7,11 @@ const requiredBotPerms = {
   key: [],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [],
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("quote")
@@ -44,4 +49,5 @@ module.exports = {
     interaction.reply({ content: txtfile[randomNum], ephemeral: true });
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };

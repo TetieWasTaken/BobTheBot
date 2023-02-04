@@ -10,6 +10,11 @@ const requiredBotPerms = {
   key: [PermissionFlagsBits.ManageChannels],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [],
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("lock")
@@ -56,4 +61,5 @@ module.exports = {
     });
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };

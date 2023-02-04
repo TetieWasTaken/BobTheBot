@@ -7,6 +7,11 @@ const requiredBotPerms = {
   key: [],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [],
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("dadjoke")
@@ -20,4 +25,5 @@ module.exports = {
     interaction.reply({ content: dadJokesTxt[randomNum], ephemeral: true });
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };

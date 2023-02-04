@@ -6,6 +6,11 @@ const requiredBotPerms = {
   key: [],
 };
 
+const requiredUserPerms = {
+  type: "flags",
+  key: [],
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("meme")
@@ -32,4 +37,5 @@ module.exports = {
     await interaction.reply({ embeds: [replyEmbed], ephemeral: true });
   },
   requiredBotPerms: requiredBotPerms,
+  requiredUserPerms: requiredUserPerms,
 };
