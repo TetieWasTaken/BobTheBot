@@ -5,7 +5,7 @@ const { raiseMiscellaneousError } = require("../../utils/returnError");
 
 const requiredBotPerms = {
   type: "flags",
-  key: [PermissionFlagsBits.SendMessages],
+  key: [],
 };
 
 module.exports = {

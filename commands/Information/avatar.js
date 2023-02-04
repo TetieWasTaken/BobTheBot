@@ -5,11 +5,7 @@ const { roleColor } = require("../../utils/roleColor.js");
 
 const requiredBotPerms = {
   type: "flags",
-  key: [
-    PermissionFlagsBits.SendMessages,
-    PermissionFlagsBits.AttachFiles,
-    PermissionFlagsBits.EmbedLinks,
-  ],
+  key: [PermissionFlagsBits.AttachFiles, PermissionFlagsBits.EmbedLinks],
 };
 
 module.exports = {

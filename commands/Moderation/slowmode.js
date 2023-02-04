@@ -7,7 +7,7 @@ const {
 
 const requiredBotPerms = {
   type: "flags",
-  key: [PermissionFlagsBits.ManageChannels, PermissionFlagsBits.SendMessages],
+  key: [PermissionFlagsBits.ManageChannels],
 };
 
 module.exports = {

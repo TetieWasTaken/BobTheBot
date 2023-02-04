@@ -10,7 +10,7 @@ const { capitalizeFirst } = require("../../utils/capitalizeFirst.js");
 
 const requiredBotPerms = {
   type: "flags",
-  key: [PermissionFlagsBits.SendMessages],
+  key: [],
 };
 
 function getChoices() {

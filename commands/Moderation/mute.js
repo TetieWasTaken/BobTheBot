@@ -11,7 +11,7 @@ const {
 
 const requiredBotPerms = {
   type: "flags",
-  key: [PermissionFlagsBits.ModerateMembers, PermissionFlagsBits.SendMessages],
+  key: [PermissionFlagsBits.ModerateMembers],
 };
 
 module.exports = {

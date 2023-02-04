@@ -4,7 +4,7 @@ const EconomySchema = require("../../models/EconomyModel");
 
 const requiredBotPerms = {
   type: "flags",
-  key: [PermissionFlagsBits.SendMessages],
+  key: [],
 };
 
 module.exports = {
