@@ -131,6 +131,7 @@ for (const compfolder of componentFolders) {
           client.buttons.set(button.data.name, button);
           cnslTable.push([`${button.data.name}`, "✅"]);
         } catch (error) {
+          console.log(error);
           cnslTable.push([`${file}`, "❌"]);
         }
       }
@@ -171,6 +172,7 @@ for (const file of eventFiles) {
     }
     cnslTable.push([`${event.name}`, "✅"]);
   } catch (error) {
+    console.log(error);
     cnslTable.push([`${file}`, "❌"]);
   }
 }
