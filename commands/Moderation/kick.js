@@ -59,7 +59,7 @@ module.exports = {
       // Ignore error
     } finally {
       try {
-        member.kick({ reason: reason });
+        member.kick(reason);
       } catch (error) {
         try {
           member.timeout({
