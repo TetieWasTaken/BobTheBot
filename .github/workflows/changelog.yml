@@ -1,6 +1,26 @@
-name: Changelog
+name: Changelogger
 
 on:
   push:
-    tags:
-      - "commit"
+    branches:
+      - main
+
+jobs:
+  update_readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: jitterbit/get-changed-files@v1
+        id: changed-files
+        with:
+          format: space-delimited
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update Changelog
+        run: node update_changelog.js "${{ github.event.head_commit.message }}" "${{ github.event.head_commit.description }}" "${{ steps.changed-files.outputs.added }}" "${{ steps.changed-files.outputs.removed }}" "${{ steps.changed-files.outputs.modified }}" "${{ steps.changed-files.outputs.renamed }}"
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 💡 docs(Changelog): add changelog data
+          add_files: "CHANGELOG.md"
