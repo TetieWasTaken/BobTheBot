@@ -55,7 +55,6 @@ module.exports = {
           await rest.put(Routes.applicationCommands(CLIENT_ID), {
             body: commands,
           });
-          console.log("✅ Globally registered commands");
         } else {
           await rest.put(
             Routes.applicationGuildCommands(CLIENT_ID, process.env.GUILD_ID),
@@ -63,13 +62,32 @@ module.exports = {
               body: commands,
             }
           );
-          console.log("✅ Locally registered commands");
+        }
 
-          client.timings.set("Registering", Date.now() - timerStart);
+        const registerConfig = {
+          header: {
+            alignment: "center",
+            content: `Commands registered`,
+          },
+          columnDefault: {
+            width: 20,
+          },
+        };
 
-          if (client.timings.size === 6) {
-            logTimings(client.timings);
-          }
+        const registerTable = [
+          ["Commands", `${commands.length}`],
+          ["Scope", `${process.env.ENV === "production" ? "Global" : "Guild"}`],
+          process.env.ENV === "production"
+            ? ["Servers", `${client.guilds.cache.size}`]
+            : ["Guild", `${process.env.GUILD_ID}`],
+        ];
+
+        await console.log(table(registerTable, registerConfig));
+
+        client.timings.set("Registering", Date.now() - timerStart);
+
+        if (client.timings.size === 6) {
+          logTimings(client.timings);
         }
       } catch (err) {
         if (err) console.log(err);

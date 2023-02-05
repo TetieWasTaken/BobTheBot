@@ -19,7 +19,7 @@ module.exports = {
     cnslTable.push(componentRow);
     cnslTable.push(timeRow);
 
-    console.log(`\n————————————————————————————————————————————————\n`);
+    console.log(`————————————————————————————————————————————————\n`);
 
     console.log(table(cnslTable, config));
 
