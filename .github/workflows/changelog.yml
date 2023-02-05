@@ -23,4 +23,4 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "💡 docs(Changelog): add changelog data"
-          add_files: "CHANGELOG.md"
+          file_pattern: "CHANGELOG.md"
