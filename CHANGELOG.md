@@ -5,4 +5,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 <!--Changelog start-->
 
+### [ 🐛 FIX ] (2023-02-05)
+
+🐛 fix(Changelog): fix branch protection
+
+
+
+**File(s) modified:** `update_changelog.js`
+
+
+
+
+
+
 <!--Changelog end-->
