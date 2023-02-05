@@ -10,11 +10,11 @@
 	</p>
 </div>
 
-## About
+# 👽 About
 
 Bob The Bot is a simple, competitive, community driven [Discord.js](https://github.com/discordjs) bot.
 
-# WARNING: THIS BOT IS NOT DONE YET! THIS BOT IS NOT BEING HOSTED, DO NOT EXPECT THE BOT TO RESPOND.
+#### WARNING: THIS BOT IS NOT DONE YET! THIS BOT IS NOT BEING HOSTED, DO NOT EXPECT THE BOT TO RESPOND.
 
 ## Adding this bot to your discord server
 
@@ -28,7 +28,7 @@ Bob The Bot is a simple, competitive, community driven [Discord.js](https://gith
 
 [serverselect]: docs/step_2.png "Select the server"
 
-## How to build
+# 📦 How to build
 
 If you want to use this code in your own project/bot, you can follow the steps below.
 This guide does not include how to set up your bot, you can follow [this guide](https://discordjs.guide/preparations/setting-up-a-bot-application.html#setting-up-a-bot-application) for more information
@@ -51,9 +51,10 @@ To configure your bot locally, you need to remove `ENV = production` and add: `G
 ###### If you're using this software, please follow the terms of the [Apache License below](#%EF%B8%8F-license)
 
 <!--Title start
-# License
 This template is licensed under the MIT license (https://choosealicense.com/licenses/mit/).
 The MIT License is a permissive open-source license that allows you to use this template for any purpose, including commercial purposes, as long as you include a copy of the license and retain the copyright notice. You can also modify and distribute the template, as long as you include the same license and copyright notice as the original template. You are not required to share your modifications or derivative works with others. You are free to use this template in your own projects without any limitations.
+
+NOTE: This template is licensed under the MIT license. The software itselfs under the Apache License V2.0.
 Title end-->
 
 <!--Start template-->
