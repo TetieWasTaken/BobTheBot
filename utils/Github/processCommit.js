@@ -21,3 +21,4 @@ try {
 } catch (e) {}
 
 fs.writeFileSync(process.env.GITHUB_OUTPUT, `commit=${output}`);
+console.log(`Successfully wrote ${output} to $GITHUB_OUTPUT`);
