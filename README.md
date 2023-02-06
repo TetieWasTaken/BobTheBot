@@ -74,6 +74,11 @@ Summarized,
 - If you modify the software, you must include a notice stating that you have made changes to the original software.
 - If you distribute the software, you must include a disclaimer of warranties.
 
+###### Not sure how to attribute? You can include a copy of the [License](https://github.com/UndefinedToast/BobTheBot/blob/main/LICENSE.md) in your software or you can copy the text below into your readme.md file.
+```
+###### ❤️ [@UndefinedToast](https://github.com/UndefinedToast)/[BobTheBot](https://github.com/UndefinedToast/BobTheBot) - [Apache License 2.0](https://github.com/UndefinedToast/BobTheBot/blob/main/LICENSE.md)
+```
+
 ## What is the Apache License 2.0?
 
 The Apache 2.0 License is a permissive open-source license that allows the use, modification, and distribution of software and intellectual property. It allows users to use the software for any purpose, including commercial purposes, as long as they include a copy of the license and retain the copyright notice. The Apache 2.0 License also allows users to distribute modified versions of the software, as long as they include the same license and copyright notice as the original software. In addition, users must also include a copy of the Apache 2.0 License with any distribution of the software, and they must also provide a copy of the Apache 2.0 License to anyone to whom they distribute the software. The Apache 2.0 License is often used for software projects that require a strong emphasis on patent protection, as it includes a patent license grant that allows users to use any patents that are necessary for using the software.
