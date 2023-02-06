@@ -18,6 +18,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Changelog
+        run: echo node update_changelog.js "test" "test" "test" "test" "test" "test"
         run: node update_changelog.js "${{ github.event.head_commit.message }}" "${{ github.event.head_commit.description }}" "${{ steps.changed-files.outputs.added }}" "${{ steps.changed-files.outputs.removed }}" "${{ steps.changed-files.outputs.modified }}" "${{ steps.changed-files.outputs.renamed }}"
 
       - uses: stefanzweifel/git-auto-commit-action@v4
