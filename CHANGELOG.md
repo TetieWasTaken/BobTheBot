@@ -5,4 +5,16 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 <!--Changelog start-->
 
+### [ 🐛 FIX ] (2023-02-06)
+
+🐛 fix(Changelog)!: fix syntax
+
+
+
+**File(s) modified:** `.github/workflows/changelog.yml`
+
+
+
+
+
 <!--Changelog end-->
