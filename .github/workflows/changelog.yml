@@ -17,10 +17,24 @@ jobs:
           format: space-delimited
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update Changelog
+      - name: Process commit message
+        id: process-commit
+        run: node utils/Github/processCommit.js "${{ github.event.head_commit.message }}" >> $GITHUB_OUTPUT
+
+      - name:
+        id: check-commit
+        if: steps.process-commit.outputs.commit == 'Invalid' || steps.process-commit.outputs.commit == 'Failed'
         run: |
-          echo node update_changelog.js "test" "test" "test" "test" "test" "test"
-          node update_changelog.js "${{ github.event.head_commit.message }}" "${{ github.event.head_commit.description }}" "${{ steps.changed-files.outputs.added }}" "${{ steps.changed-files.outputs.removed }}" "${{ steps.changed-files.outputs.modified }}" "${{ steps.changed-files.outputs.renamed }}"
+          echo "Commit message is invalid or failed to process"
+          exit 1
+        if: steps.process-commit.outputs.commit == 'Not-Important'
+        run: |
+          echo "Commit message is not important"
+          exit 0
+
+      - name: Update Changelog
+        if: steps.process-commit.outputs.commit == 'Important'
+        run: node update_changelog.js "${{ github.event.head_commit.message }}" "${{ github.event.head_commit.description }}" "${{ steps.changed-files.outputs.added }}" "${{ steps.changed-files.outputs.removed }}" "${{ steps.changed-files.outputs.modified }}" "${{ steps.changed-files.outputs.renamed }}"
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:

@@ -11,22 +11,6 @@ if (!commitMsg) {
   return console.error("No commit message provided");
 }
 
-console.log(commitMsg);
-
-if (
-  !commitMsg.match(
-    /^(revert: )?(\u00a9\s|\u00ae\s|[\u2000-\u3300]\s|\ud83c[\ud000-\udfff]\s|\ud83d[\ud000-\udfff]\s|\ud83e[\ud000-\udfff]\s)?\s*(feat|fix|docs|style|refactor|perf|test|workflow|build|ci|chore|types|wip)(.+.+)?(!)?: .{1,72}/
-  )
-)
-  return console.log("Commit message is formatted correctly");
-
-if (
-  !commitMsg.match(
-    /^(revert: )?(\u00a9\s|\u00ae\s|[\u2000-\u3300]\s|\ud83c[\ud000-\udfff]\s|\ud83d[\ud000-\udfff]\s|\ud83e[\ud000-\udfff]\s)?\s*(feat|fix|docs|style|refactor|perf|test|workflow|build|ci|chore|types|wip)(.+.+)?!: .{1,72}/
-  )
-)
-  return console.log("Commit is not flagged as important");
-
 const changelog = fs.readFileSync("CHANGELOG.md", "utf8");
 
 const changelogContent = changelog.match(
