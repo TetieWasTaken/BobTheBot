@@ -19,7 +19,7 @@ jobs:
 
       - name: Process commit message
         id: process-commit
-        run: node utils/Github/processCommit.js "${{ github.event.head_commit.message }}" >> $GITHUB_OUTPUT
+        run: node utils/Github/processCommit.js "${{ github.event.head_commit.message }}"
 
       - name: Check invalid commit
         id: check-invalid-commit
@@ -30,7 +30,7 @@ jobs:
 
       - name: Check commit is not important
         id: check-important-commit
-        if: steps.process-commit.outputs.commit == 'Not-Important'
+        if: steps.process-commit.outputs.commit == 'Not important'
         run: |
           echo "Commit message is not important"
           exit 0
