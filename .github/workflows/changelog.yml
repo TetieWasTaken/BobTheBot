@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  update_readme:
+  update_changelog:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -18,9 +18,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Changelog
-        run: node update_changelog.js "${{ github.event.head_commit.message }}" "${{ github.event.head_commit.description }}" "${{ steps.changed-files.outputs.added }}" "${{ steps.changed-files.outputs.removed }}" "${{ steps.changed-files.outputs.modified }}" "${{ steps.changed-files.outputs.renamed }}"
+        run: node update_changelog.js '{{ github.event.head_commit.message }}' '${{ github.event.head_commit.description }}' "${{ steps.changed-files.outputs.added }}" "${{ steps.changed-files.outputs.removed }}" "${{ steps.changed-files.outputs.modified }}" "${{ steps.changed-files.outputs.renamed }}"
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "💡 docs(Changelog): add changelog data"
           file_pattern: "CHANGELOG.md"
+          commit_user_name: "Changelogger Action"
