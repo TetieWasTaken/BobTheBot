@@ -21,18 +21,21 @@ jobs:
         id: process-commit
         run: node utils/Github/processCommit.js "${{ github.event.head_commit.message }}" >> $GITHUB_OUTPUT
 
-      - name:
-        id: check-commit
+      - name: Check invalid commit
+        id: check-invalid-commit
         if: steps.process-commit.outputs.commit == 'Invalid' || steps.process-commit.outputs.commit == 'Failed'
         run: |
           echo "Commit message is invalid or failed to process"
           exit 1
+
+      - name: Check commit is not important
+        id: check-important-commit
         if: steps.process-commit.outputs.commit == 'Not-Important'
         run: |
           echo "Commit message is not important"
           exit 0
 
-      - name: Update Changelog
+      - name: Update changelog
         if: steps.process-commit.outputs.commit == 'Important'
         run: node update_changelog.js "${{ github.event.head_commit.message }}" "${{ github.event.head_commit.description }}" "${{ steps.changed-files.outputs.added }}" "${{ steps.changed-files.outputs.removed }}" "${{ steps.changed-files.outputs.modified }}" "${{ steps.changed-files.outputs.renamed }}"
 
