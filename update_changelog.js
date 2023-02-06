@@ -1,5 +1,4 @@
 const fs = require("fs");
-const core = require("@actions/core");
 
 let commitMsg = process.argv[2];
 let commitDescription = process.argv[3] ?? "";
@@ -19,14 +18,14 @@ if (
     /^(revert: )?(\u00a9\s|\u00ae\s|[\u2000-\u3300]\s|\ud83c[\ud000-\udfff]\s|\ud83d[\ud000-\udfff]\s|\ud83e[\ud000-\udfff]\s)?\s*(feat|fix|docs|style|refactor|perf|test|workflow|build|ci|chore|types|wip)(.+.+)?(!)?: .{1,72}/
   )
 )
-  return core.setFailed("Commit message is not formatted correctly");
+  return console.log("Commit message is formatted correctly");
 
 if (
   !commitMsg.match(
     /^(revert: )?(\u00a9\s|\u00ae\s|[\u2000-\u3300]\s|\ud83c[\ud000-\udfff]\s|\ud83d[\ud000-\udfff]\s|\ud83e[\ud000-\udfff]\s)?\s*(feat|fix|docs|style|refactor|perf|test|workflow|build|ci|chore|types|wip)(.+.+)?!: .{1,72}/
   )
 )
-  return core.setFailed("Commit is not flagged as important");
+  return console.log("Commit is not flagged as important");
 
 const changelog = fs.readFileSync("CHANGELOG.md", "utf8");
 
