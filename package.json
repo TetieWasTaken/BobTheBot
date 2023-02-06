@@ -9,6 +9,7 @@
   "author": "Tetie#4242",
   "license": "ISC",
   "dependencies": {
+    "@actions/core": "^1.10.0",
     "canvacord": "^5.4.8",
     "chartjs-node-canvas": "^4.1.6",
     "damerau-levenshtein": "^1.0.8",
