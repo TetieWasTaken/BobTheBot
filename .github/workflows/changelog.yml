@@ -17,18 +17,18 @@ jobs:
           format: space-delimited
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Process commit message
+      - name: Process commit
         id: process-commit
         run: node utils/Github/processCommit.js "${{ github.event.head_commit.message }}"
 
-      - name: Check invalid commit
+      - name: Check for invalid
         id: check-invalid-commit
         if: steps.process-commit.outputs.commit == 'Invalid' || steps.process-commit.outputs.commit == 'Failed'
         run: |
           echo "Commit message is invalid or failed to process"
           exit 1
 
-      - name: Check commit is not important
+      - name: Check for important
         id: check-important-commit
         if: steps.process-commit.outputs.commit == 'Not important'
         run: |
