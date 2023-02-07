@@ -12,7 +12,7 @@ const requiredBotPerms = {
 
 const requiredUserPerms = {
   type: "flags",
-  key: [],
+  key: [PermissionFlagsBits.Administrator],
 };
 
 module.exports = {
@@ -52,15 +52,6 @@ module.exports = {
     const channel = interaction.options.getChannel("channel");
     const duration = interaction.options.getString("duration");
     let winners = interaction.options.getInteger("winners") ?? 1;
-
-    if (
-      !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
-    ) {
-      return interaction.reply({
-        content: "You do not have the `MANAGE_MESSAGES` permission!",
-        ephemeral: true,
-      });
-    }
 
     interaction.client.giveawaysManager
       .start(channel, {

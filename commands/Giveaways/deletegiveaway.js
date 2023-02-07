@@ -2,12 +2,12 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
 const requiredBotPerms = {
   type: "flags",
-  key: [PermissionFlagsBits.ManageMessages],
+  key: [],
 };
 
 const requiredUserPerms = {
   type: "flags",
-  key: [],
+  key: [PermissionFlagsBits.Administrator],
 };
 
 module.exports = {
@@ -22,15 +22,6 @@ module.exports = {
     ),
   async execute(interaction) {
     const messageId = interaction.options.getString("messageid");
-
-    if (
-      !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
-    ) {
-      return interaction.reply({
-        content: "You do not have the `MANAGE_MESSAGES` permission!",
-        ephemeral: true,
-      });
-    }
 
     interaction.client.giveawaysManager
       .delete(messageId)

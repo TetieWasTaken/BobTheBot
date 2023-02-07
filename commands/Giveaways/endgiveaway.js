@@ -3,12 +3,12 @@ const GiveawaySchema = require("../../models/GiveawayModel");
 
 const requiredBotPerms = {
   type: "flags",
-  key: [PermissionFlagsBits.ManageMessages],
+  key: [],
 };
 
 const requiredUserPerms = {
   type: "flags",
-  key: [],
+  key: [PermissionFlagsBits.Administrator],
 };
 
 module.exports = {
@@ -22,15 +22,6 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    if (
-      !interaction.member.permissions.has(PermissionFlagsBits.ManageMessages)
-    ) {
-      return interaction.reply({
-        content: "You do not have the `MANAGE_MESSAGES` permission!",
-        ephemeral: true,
-      });
-    }
-
     const messageId = interaction.options.getString("messageid");
     interaction.client.giveawaysManager
       .end(messageId)
