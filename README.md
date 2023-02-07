@@ -74,9 +74,9 @@ Summarized,
 - If you modify the software, you must include a notice stating that you have made changes to the original software.
 - If you distribute the software, you must include a disclaimer of warranties.
 
-###### Not sure how to attribute? You can include a copy of the [License](https://github.com/UndefinedToast/BobTheBot/blob/main/LICENSE.md) in your software or you can copy the text below into your readme.md file.
+###### Not sure how to attribute? You can include a copy of the [License](https://github.com/UndefinedToast/BobTheBot/blob/main/LICENSE) in your software or you can copy the text below into your readme.md file.
 ```
-###### ❤️ [@UndefinedToast](https://github.com/UndefinedToast)/[BobTheBot](https://github.com/UndefinedToast/BobTheBot) - [Apache License 2.0](https://github.com/UndefinedToast/BobTheBot/blob/main/LICENSE.md)
+###### ❤️ [@UndefinedToast](https://github.com/UndefinedToast)/[BobTheBot](https://github.com/UndefinedToast/BobTheBot) - [Apache License 2.0](https://github.com/UndefinedToast/BobTheBot/blob/main/LICENSE)
 ```
 
 ## What is the Apache License 2.0?
