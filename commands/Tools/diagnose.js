@@ -29,16 +29,6 @@ module.exports = {
   async execute(interaction) {
     const command = interaction.options.getString("command");
 
-    if (
-      !interaction.channel
-        .permissionsFor(interaction.guild.members.me)
-        .has(PermissionFlagsBits.SendMessages)
-    ) {
-      return interaction.user.send(
-        ":wrench: I do not have permissions to send messages in the channel!"
-      );
-    }
-
     const commandFolders = fs
       .readdirSync("./commands")
       .filter((item) => !/(^|\/)\.[^/.]/g.test(item));
@@ -66,12 +56,13 @@ module.exports = {
 
               replyEmbed = new EmbedBuilder()
                 .setColor(0xff0000)
-                .setTitle(`Diagnosing command...`)
+                .setTitle(`❌ Diagnosed command \`${commandFile.data.name}\``)
                 .setDescription(
                   `Error! I am missing the following permissions: \`${missingPermission}\``
                 )
-                .setFooter({ text: `${commandFile.data.name}` })
-                .setTimestamp();
+                .setFooter({
+                  text: "Believe this is a mistake? Report it on our discord server!",
+                });
 
               return interaction.reply({ embeds: [replyEmbed] });
             }
@@ -79,10 +70,11 @@ module.exports = {
 
           replyEmbed = new EmbedBuilder()
             .setColor(0x00ff00)
-            .setTitle(`Diagnosing command...`)
-            .setDescription(`Everything looks normal.`)
-            .setFooter({ text: `${commandFile.data.name}` })
-            .setTimestamp();
+            .setTitle(`✅ Diagnosed command \`${commandFile.data.name}\``)
+            .setDescription(`No anomalies found`)
+            .setFooter({
+              text: "Believe this is a mistake? Report it on our discord server!",
+            });
 
           return interaction.reply({ embeds: [replyEmbed] });
         }
