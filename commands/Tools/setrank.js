@@ -12,7 +12,7 @@ const requiredBotPerms = {
 
 const requiredUserPerms = {
   type: "flags",
-  key: [],
+  key: [PermissionFlagsBits.Administrator],
 };
 
 module.exports = {
@@ -38,15 +38,6 @@ module.exports = {
     if (rank <= 0) {
       return interaction.reply({
         content: ":wrench: You cannot set a user's rank to a negative number!",
-        ephemeral: true,
-      });
-    }
-
-    if (
-      !interaction.member.permissions.has(PermissionFlagsBits.Administrator)
-    ) {
-      return interaction.reply({
-        content: ":wrench: You do not have the `ADMINISTRATOR` permission!",
         ephemeral: true,
       });
     }

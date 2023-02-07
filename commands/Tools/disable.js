@@ -13,7 +13,7 @@ const requiredBotPerms = {
 
 const requiredUserPerms = {
   type: "flags",
-  key: [],
+  key: [PermissionFlagsBits.Administrator],
 };
 
 module.exports = {
@@ -44,15 +44,6 @@ module.exports = {
     ),
   async execute(interaction) {
     const subcommand = interaction.options.getSubcommand();
-
-    if (
-      !interaction.member.permissions.has(PermissionFlagsBits.Administrator)
-    ) {
-      return interaction.reply({
-        content: "You do not have the `ADMINISTRATOR` permission!",
-        ephemeral: true,
-      });
-    }
 
     let guildData = await GuildSchema.findOne({
       guildId: interaction.guild.id,

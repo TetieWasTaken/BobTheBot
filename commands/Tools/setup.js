@@ -16,7 +16,7 @@ const requiredBotPerms = {
 
 const requiredUserPerms = {
   type: "flags",
-  key: [],
+  key: [PermissionFlagsBits.Administrator],
 };
 
 module.exports = {
@@ -24,15 +24,6 @@ module.exports = {
     .setName("setup")
     .setDescription("Set up the bot for your server"),
   async execute(interaction) {
-    if (
-      !interaction.member.permissions.has(PermissionFlagsBits.Administrator)
-    ) {
-      return interaction.reply({
-        content: "You do not have the `ADMINISTRATOR` permission!",
-        ephemeral: true,
-      });
-    }
-
     let data = await GuildSchema.findOne({
       GuildId: interaction.guild.id,
     });
