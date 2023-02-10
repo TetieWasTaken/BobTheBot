@@ -3,7 +3,7 @@ const {
   PermissionFlagsBits,
   EmbedBuilder,
 } = require("discord.js");
-const fs = require("fs");
+const { requestItemData } = require("../../utils/requestItemData");
 const { raiseMiscellaneousError } = require("../../utils/returnError");
 
 const requiredBotPerms = {
@@ -28,56 +28,48 @@ module.exports = {
     ),
   async execute(interaction) {
     const item = interaction.options.getString("item");
+    const itemInfo = await requestItemData(item);
 
-    fs.readFile("./docs/items.json", (err, data) => {
-      if (err) throw err;
-      const itemsJSON = JSON.parse(data);
-
-      const itemInfo = itemsJSON.find(
-        (itemJSON) => itemJSON.id === item.toLowerCase().replace(/\s+/g, "")
+    if (!itemInfo)
+      return raiseMiscellaneousError(
+        interaction,
+        "Item not found",
+        "The item you specified was not found."
       );
 
-      if (!itemInfo)
-        return raiseMiscellaneousError(
-          interaction,
-          "Item not found",
-          "The item you specified was not found."
-        );
+    switch (itemInfo.usage) {
+      case "reusable":
+        itemInfo.usage = "♻️";
+        break;
+      case "consumable":
+        itemInfo.usage = "🍽️";
+        break;
+      default:
+        itemInfo.usage = "Unknown";
+        break;
+    }
 
-      switch (itemInfo.usage) {
-        case "reusable":
-          itemInfo.usage = "♻️";
-          break;
-        case "consumable":
-          itemInfo.usage = "🍽️";
-          break;
-        default:
-          itemInfo.usage = "Unknown";
-          break;
-      }
+    const itemEmbed = new EmbedBuilder()
+      .setTitle(
+        `${itemInfo.name}${itemInfo.price ? ` — ₳${itemInfo.price}` : ``}`
+      )
+      .setDescription(`\`${itemInfo.id}\` — *${itemInfo.description}*`)
+      .addFields(
+        {
+          name: "Information",
+          value: `\`Usage\` — ${itemInfo.usage}\n\`Sellable\` — ${
+            itemInfo.sellable ? "✅" : "❌"
+          }\n\`Buyable\` — ${itemInfo.buyable ? "✅" : "❌"}`,
+          inline: false,
+        },
+        { name: "Note", value: `*${itemInfo.note ?? "N/A"}*`, inline: false }
+      )
+      .setColor(0x00ff00);
 
-      const itemEmbed = new EmbedBuilder()
-        .setTitle(
-          `${itemInfo.name}${itemInfo.price ? ` — ₳${itemInfo.price}` : ``}`
-        )
-        .setDescription(`\`${itemInfo.id}\` — *${itemInfo.description}*`)
-        .addFields(
-          {
-            name: "Information",
-            value: `\`Usage\` — ${itemInfo.usage}\n\`Sellable\` — ${
-              itemInfo.sellable ? "✅" : "❌"
-            }\n\`Buyable\` — ${itemInfo.buyable ? "✅" : "❌"}`,
-            inline: false,
-          },
-          { name: "Note", value: `*${itemInfo.note ?? "N/A"}*`, inline: false }
-        )
-        .setColor(0x00ff00);
+    if (!itemInfo.note) descriptionEmbed.spliceFields(-1, 1);
 
-      if (!itemInfo.note) descriptionEmbed.spliceFields(-1, 1);
-
-      return interaction.reply({
-        embeds: [itemEmbed],
-      });
+    return interaction.reply({
+      embeds: [itemEmbed],
     });
   },
   requiredBotPerms: requiredBotPerms,

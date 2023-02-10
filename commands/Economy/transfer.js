@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const EconomySchema = require("../../models/EconomyModel");
-const fs = require("fs");
+const { requestItemData } = require("../../utils/requestItemData");
+const { raiseMiscellaneousError } = require("../../utils/returnError");
 
 const requiredBotPerms = {
   type: "flags",
@@ -111,21 +112,21 @@ module.exports = {
     } else if (subcommand === "item") {
       const itemName = interaction.options.getString("item");
 
-      const itemsJSON = JSON.parse(fs.readFileSync("./docs/items.json"));
-
-      const item = itemsJSON.find((i) => i.name === itemName);
-      if (!item) {
-        return interaction.reply({
-          content: `:wrench: Unable to find item of \`${itemName}\``,
-          ephemeral: true,
-        });
-      }
+      const item = await requestItemData(itemName);
+      if (!item)
+        return raiseMiscellaneousError(
+          interaction,
+          "Item not found",
+          "The item you specified was not found."
+        );
 
       const userData = await EconomySchema.findOne({
         UserId: interaction.user.id,
       });
 
-      const userItem = userData.Inventory.find((i) => i.name === itemName);
+      const userItem = userData.Inventory.find(
+        (i) => i.id === itemName.toLowerCase().replace(/\s+/g, "")
+      );
       if (!userItem) {
         return interaction.reply({
           content: ":wrench: You don't own this item",

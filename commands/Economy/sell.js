@@ -4,7 +4,8 @@ const {
   EmbedBuilder,
 } = require("discord.js");
 const EconomySchema = require("../../models/EconomyModel");
-const fs = require("fs");
+const { requestItemData } = require("../../utils/requestItemData");
+const { raiseMiscellaneousError } = require("../../utils/returnError");
 
 const requiredBotPerms = {
   type: "flags",
@@ -79,35 +80,36 @@ module.exports = {
       });
     }
 
-    fs.readFile("./docs/items.json", (err, itemsData) => {
-      if (err) throw err;
-      const itemsJSON = JSON.parse(itemsData);
+    const itemObject = await requestItemData(item);
+    if (!itemObject)
+      return raiseMiscellaneousError(
+        interaction,
+        "Item not found",
+        "The item you specified was not found."
+      );
 
-      const itemObject = itemsJSON.find((item) => item.id === object.id);
+    if (object.amount === amount) {
+      data.Inventory.splice(data.Inventory.indexOf(object), 1);
+    } else {
+      object.amount -= amount;
+    }
 
-      if (object.amount === amount) {
-        data.Inventory.splice(data.Inventory.indexOf(object), 1);
-      } else {
-        object.amount -= amount;
-      }
+    data.Wallet += itemObject.price * amount;
+    data.save();
 
-      data.Wallet += itemObject.price * amount;
-      data.save();
+    const embed = new EmbedBuilder()
+      .setTitle("Item Sold")
+      .setDescription(
+        `You sold ${amount} ${itemObject.name} for ${
+          itemObject.price * amount
+        } coins`
+      )
+      .setColor("#00FF00")
+      .setTimestamp();
 
-      const embed = new EmbedBuilder()
-        .setTitle("Item Sold")
-        .setDescription(
-          `You sold ${amount} ${itemObject.name} for ${
-            itemObject.price * amount
-          } coins`
-        )
-        .setColor("#00FF00")
-        .setTimestamp();
-
-      interaction.reply({
-        embeds: [embed],
-        ephemeral: true,
-      });
+    interaction.reply({
+      embeds: [embed],
+      ephemeral: true,
     });
   },
   requiredBotPerms: requiredBotPerms,
