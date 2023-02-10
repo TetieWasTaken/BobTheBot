@@ -1,5 +1,5 @@
 module.exports = {
-  roleColor: function (interaction) {
+  roleColor: (interaction) => {
     let roleColor = "ffffff";
     const botMember = interaction.guild.members.me;
 

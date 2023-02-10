@@ -1,5 +1,5 @@
 const itemHandlers = {
-  Placeholder: (interaction, item, data) => {
+  placeholder: (interaction, item, data) => {
     const reward = Math.floor(Math.random() * 1000) + 1;
 
     data.Inventory[item.name] -= 1;
@@ -11,7 +11,7 @@ const itemHandlers = {
       ephemeral: true,
     });
   },
-  Chicken: (interaction, item, data) => {
+  chicken: (interaction, item, data) => {
     switch (item.name) {
       case "Chicken":
         data.Multiplier = 1.2;
@@ -41,7 +41,7 @@ const itemHandlers = {
 
 module.exports = {
   useItem: function (interaction, item, data) {
-    const handler = itemHandlers[item.name];
+    const handler = itemHandlers[item.name.toLowerCase()];
     if (handler) {
       return handler(interaction, item, data);
     } else {

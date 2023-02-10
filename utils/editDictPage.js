@@ -6,7 +6,7 @@ const {
 } = require("discord.js");
 
 module.exports = {
-  editDictPage: async function (interaction, result, currentPage, totalPages) {
+  editDictPage: async (interaction, result, currentPage, totalPages) => {
     await interaction.deferUpdate();
 
     if (currentPage !== 0) {
