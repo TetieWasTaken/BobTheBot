@@ -34,7 +34,7 @@ module.exports = {
         { name: `Name`, value: `${channel.name}`, inline: true },
         {
           name: `Type`,
-          value: `${ChannelType[channel.type]}`,
+          value: `${ChannelType[channel.type].replace(/Guild/g, " ")}`,
           inline: true,
         },
         {
@@ -49,7 +49,12 @@ module.exports = {
         },
         {
           name: `Position`,
-          value: `${channel.position}`,
+          value: `${channel.position + 1}`,
+          inline: true,
+        },
+        {
+          name: `Category`,
+          value: `${channel.parent ? channel.parent.name : "None"}`,
           inline: true,
         }
       )
