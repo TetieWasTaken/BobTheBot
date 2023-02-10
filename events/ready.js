@@ -7,8 +7,8 @@ module.exports = {
   name: "ready",
   once: true,
   async execute(client, commands) {
-    // This promise is required to make sure the WebSocket is fully ready before proceeding
-    await new Promise((resolve) => setTimeout(resolve, 5));
+    // This Promise is required to make sure the WebSocket is fully ready before proceeding
+    await new Promise((resolve) => setTimeout(resolve, 50));
 
     const config = {
       header: {
