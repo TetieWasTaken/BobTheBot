@@ -44,7 +44,7 @@ class Database {
           ["Port", `${this.connection.port}`],
           ["Host", `${this.connection.host}`],
           ["Database", `${this.connection.name}`],
-          ["Collections", `${this.connection.collections.size}`],
+          ["Collections", `${Object.keys(this.connection.collections).length}`],
         ];
 
         console.log(
