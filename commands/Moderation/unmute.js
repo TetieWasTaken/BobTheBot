@@ -41,7 +41,7 @@ module.exports = {
     )
       return raiseBotHierarchyError(interaction);
 
-    await member.timeout(1000);
+    await member.timeout(null);
 
     interaction.reply({
       content: `:loud_sound:  \`${member.user.tag}\` has been unmuted`,
