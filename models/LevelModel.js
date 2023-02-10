@@ -7,6 +7,4 @@ const levelSchema = new mongoose.Schema({
   UserLevel: Number,
 });
 
-const model = mongoose.model("LevelModel", levelSchema);
-
-module.exports = model;
+module.exports = mongoose.model("LevelModel", levelSchema);

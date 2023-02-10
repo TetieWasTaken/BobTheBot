@@ -9,6 +9,4 @@ const economySchema = new mongoose.Schema({
   Inventory: Array,
 });
 
-const model = mongoose.model("EconomyModel", economySchema);
-
-module.exports = model;
+module.exports = mongoose.model("EconomyModel", economySchema);

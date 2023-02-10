@@ -6,6 +6,4 @@ const profileSchema = new mongoose.Schema({
   Punishments: Array,
 });
 
-const model = mongoose.model("InfractionsModel", profileSchema);
-
-module.exports = model;
+module.exports = mongoose.model("InfractionsModel", profileSchema);
