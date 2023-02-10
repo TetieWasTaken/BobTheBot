@@ -1,5 +1,10 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  PermissionFlagsBits,
+  EmbedBuilder,
+} = require("discord.js");
 const { convertMS } = require("../../utils/convertMS.js");
+const { roleColor } = require("../../utils/roleColor.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -18,10 +23,13 @@ module.exports = {
   async execute(interaction) {
     let milliseconds = interaction.client.uptime;
 
-    interaction.reply({
-      content: convertMS(milliseconds),
-      ephemeral: true,
-    });
+    const embed = new EmbedBuilder()
+      .setTitle("⏱️ Uptime")
+      .setDescription(`${convertMS(milliseconds)}`)
+      .setColor(roleColor(interaction))
+      .setFooter({ text: `${milliseconds}ms` });
+
+    return await interaction.reply({ embeds: [embed] });
   },
   requiredBotPerms: requiredBotPerms,
   requiredUserPerms: requiredUserPerms,
