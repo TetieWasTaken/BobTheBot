@@ -5,6 +5,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 <!--Changelog start-->
 
+### [ 🔨 REFACTOR ] (2023-02-11)
+
+🔨 refactor(Changelog)!: rename file
+
+
+
+**File(s) modified:** ``.github/workflows/changelog.yml``
+**File(s) renamed:** ``utils/Github/updateChangelog.js``
+
+
+
 ### [ 🐛 FIX ] (2023-02-11)
 
 🐛 fix(Changelog)!: fix formatting
@@ -28,6 +39,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 🐛 fix(Changelog)!: fix syntax
 
 **File(s) modified:** `.github/workflows/changelog.yml`
+
 
 
 <!--Changelog end-->
