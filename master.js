@@ -2,7 +2,6 @@ require("dotenv").config();
 const fs = require("fs");
 const Database = require("./config/Database");
 const { Partials, GatewayIntentBits } = require("discord.js");
-const GiveawayModel = require("./models/GiveawayModel");
 const { table } = require("table");
 const { logTimings } = require("./utils/logTimings");
 
@@ -31,40 +30,6 @@ client.timings = new Collection();
 const db = new Database();
 db.connect(client);
 
-timerStart = Date.now();
-
-const { GiveawaysManager } = require("discord-giveaways");
-const GiveawayManagerWithOwnDatabase = class extends GiveawaysManager {
-  async getAllGiveaways() {
-    return await GiveawayModel.find().lean().exec();
-  }
-
-  async saveGiveaway(messageId, giveawayData) {
-    await GiveawayModel.create(giveawayData);
-    return true;
-  }
-
-  async editGiveaway(messageId, giveawayData) {
-    await GiveawayModel.updateOne({ messageId }, giveawayData).exec();
-    return true;
-  }
-
-  async deleteGiveaway(messageId) {
-    await GiveawayModel.deleteOne({ messageId }).exec();
-    return true;
-  }
-};
-const manager = new GiveawayManagerWithOwnDatabase(client, {
-  default: {
-    botsCanWin: false,
-    embedColor: "#FF0000",
-    embedColorEnd: "#000000",
-    reaction: "🎉",
-  },
-});
-client.giveawaysManager = manager;
-
-client.timings.set("Giveaways", Date.now() - timerStart);
 timerStart = Date.now();
 
 const commandFolders = fs
@@ -183,7 +148,7 @@ client.timings.set("Events", Date.now() - timerStart);
 
 console.log(`————————————————————————————————————————————————\n`);
 
-if (client.timings.size === 6) {
+if (client.timings.size === 5) {
   logTimings(client.timings);
 }
 

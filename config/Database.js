@@ -18,7 +18,7 @@ class Database {
       })
       .then(() => {
         client.timings.set("Mongoose", Date.now() - timerStart);
-        if (client.timings.size === 6) {
+        if (client.timings.size === 5) {
           logTimings(client.timings);
         }
         this.connection = mongoose.connection;

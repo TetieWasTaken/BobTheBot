@@ -86,7 +86,7 @@ module.exports = {
 
         client.timings.set("Registering", Date.now() - timerStart);
 
-        if (client.timings.size === 6) {
+        if (client.timings.size === 5) {
           logTimings(client.timings);
         }
       } catch (err) {
