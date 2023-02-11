@@ -145,6 +145,9 @@ module.exports = {
         await command.execute(interaction);
         console.timeEnd(`Command ${interaction.commandName} executed in`);
       } catch (err) {
+        console.log(
+          `Command ${interaction.commandName} failed to execute.\n\n${interaction}`
+        );
         if (err) console.error(err);
         await interaction.reply({
           content: "An error occured while executing that command.",
@@ -229,6 +232,9 @@ module.exports = {
       try {
         await command.autocomplete(interaction);
       } catch (error) {
+        console.log(
+          `Autocomplete ${interaction.commandName} failed to execute.\n\n${interaction}`
+        );
         console.error(error);
       }
     } else if (interaction.isButton()) {
@@ -244,6 +250,9 @@ module.exports = {
       try {
         await button.execute(interaction);
       } catch (err) {
+        console.log(
+          `Button ${interaction.customId} failed to execute.\n\n${interaction}`
+        );
         console.log(err);
       }
     }
