@@ -34,7 +34,7 @@ ${commitMsg}
 
 ${
   filesAdded[0].length > 0
-    ? `**File(s) added:** \`${filesAdded
+    ? `**File(s) added:** \`\`${filesAdded
         .map((file) => `\`${file}\``)
         .join(", ")}\``
     : ""
@@ -48,9 +48,9 @@ ${
 }
 ${
   filesModified[0].length > 0
-    ? `**File(s) modified:** ${filesModified
+    ? `**File(s) modified:** \`${filesModified
         .map((file) => `\`${file}\``)
-        .join(", ")}`
+        .join(", ")}\``
     : ""
 }
 ${
