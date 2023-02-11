@@ -232,6 +232,12 @@ module.exports = {
         console.error(error);
       }
     } else if (interaction.isButton()) {
+      if (interaction.message.interaction.user.id !== interaction.user.id)
+        return interaction.reply({
+          content: "This button is not for you!",
+          ephemeral: true,
+        });
+
       const button = interaction.client.buttons.get(interaction.customId);
       if (!button) return new Error("No code for button!");
 
