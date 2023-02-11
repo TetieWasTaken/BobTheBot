@@ -164,7 +164,6 @@ module.exports = {
           .toLowerCase()
           .slice(0, -1);
 
-        console.log(commandQuery, categoryQuery);
         const command = interaction.client.commands.get(commandQuery);
 
         if (!command) {
@@ -218,28 +217,44 @@ module.exports = {
           });
         }
 
-        let permsArray = [];
+        let botPermsArray = [];
+        let userPermsArray = [];
 
-        function getPerms(perm) {
+        function getBotPerms(perm) {
           return interaction.guild.members.me.permissions.has(perm)
             ? "+ "
             : "- ";
         }
 
-        for (let perm of command.requiredBotPerms.key) {
-          hasPerm = getPerms(perm);
-          permsArray.push(hasPerm + new PermissionsBitField(perm).toArray());
-          if (hasPerm === "- ") {
-            embed.setFooter({
-              text: "I'm missing permissions to execute this command!",
-            });
-          }
+        function getUserPerms(perm) {
+          return interaction.member.permissions.has(perm) ? "+ " : "- ";
         }
 
-        if (command.requiredBotPerms) {
+        for (let perm of command.requiredBotPerms.key) {
+          hasPerm = getBotPerms(perm);
+          botPermsArray.push(hasPerm + new PermissionsBitField(perm).toArray());
+        }
+
+        for (let perm of command.requiredUserPerms.key) {
+          hasPerm = getUserPerms(perm);
+          userPermsArray.push(
+            hasPerm + new PermissionsBitField(perm).toArray()
+          );
+        }
+
+        if (botPermsArray.length > 0) {
           embed.addFields({
-            name: "Permissions",
-            value: `I require the following permissions for this command:\n\`\`\`diff\n${permsArray.join(
+            name: "Bot Permissions",
+            value: `I require the following permissions for this command:\n\`\`\`diff\n${botPermsArray.join(
+              "\n"
+            )}\`\`\``,
+          });
+        }
+
+        if (userPermsArray.length > 0) {
+          embed.addFields({
+            name: "User Permissions",
+            value: `You require the following permissions for this command:\n\`\`\`diff\n${userPermsArray.join(
               "\n"
             )}\`\`\``,
           });
