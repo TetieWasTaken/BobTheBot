@@ -37,7 +37,7 @@ jobs:
 
       - name: Update changelog
         if: steps.process-commit.outputs.commit == 'Important'
-        run: node utils/Github/update_changelog.js "${{ github.event.head_commit.message }}" "${{ github.event.head_commit.description }}" "${{ steps.changed-files.outputs.added }}" "${{ steps.changed-files.outputs.removed }}" "${{ steps.changed-files.outputs.modified }}" "${{ steps.changed-files.outputs.renamed }}"
+        run: node utils/Github/updateChangelog.js "${{ github.event.head_commit.message }}" "${{ github.event.head_commit.description }}" "${{ steps.changed-files.outputs.added }}" "${{ steps.changed-files.outputs.removed }}" "${{ steps.changed-files.outputs.modified }}" "${{ steps.changed-files.outputs.renamed }}"
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
