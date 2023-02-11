@@ -5,6 +5,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 <!--Changelog start-->
 
+### [ 🐛 FIX ] (2023-02-11)
+
+🐛 fix(Changelog)!: fix formatting
+
+
+
+**File(s) modified:** ``CHANGELOG.md``
+
+
+
+
 ### [ 🔥 REFACTOR ] (2023-02-11)
 
 🔥 refactor(Giveaway)!: remove giveaway
@@ -17,5 +28,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 🐛 fix(Changelog)!: fix syntax
 
 **File(s) modified:** `.github/workflows/changelog.yml`
+
 
 <!--Changelog end-->
