@@ -5,7 +5,6 @@ const {
 } = require("discord.js");
 
 const LevelSchema = require("../../models/LevelModel");
-const { roleColor } = require("../../utils/roleColor.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -38,7 +37,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle("Leaderboard")
       .setDescription(mappedData.toString())
-      .setColor(roleColor(interaction));
+      .setColor(interaction.guild.members.me.displayHexColor);
     interaction.reply({ embeds: [embed] });
   },
   requiredBotPerms: requiredBotPerms,

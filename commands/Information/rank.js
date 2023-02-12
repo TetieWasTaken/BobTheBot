@@ -4,7 +4,6 @@ const {
   EmbedBuilder,
 } = require("discord.js");
 const LevelSchema = require("../../models/LevelModel");
-const { roleColor } = require("../../utils/roleColor.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -57,7 +56,7 @@ module.exports = {
     let xpNeeded = 50 * (userLevel + 1) ** 2 + 50;
 
     const rankEmbed = new EmbedBuilder()
-      .setColor(roleColor(interaction))
+      .setColor(interaction.guild.members.me.displayHexColor)
       .setAuthor({
         name: `${user.username}#${user.discriminator}` + userNickname,
         iconURL: `${user.displayAvatarURL()}`,

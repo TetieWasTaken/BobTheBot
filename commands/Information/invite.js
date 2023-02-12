@@ -3,7 +3,6 @@ const {
   PermissionFlagsBits,
   EmbedBuilder,
 } = require("discord.js");
-const { roleColor } = require("../../utils/roleColor.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -25,7 +24,7 @@ module.exports = {
       .setDescription(
         "[**Click here to invite BobTheBot to your server**](https://discord.com/api/oauth2/authorize?client_id=1036359071508484237&permissions=8&scope=bot%20applications.commands)"
       )
-      .setColor(roleColor(interaction))
+      .setColor(interaction.guild.members.me.displayHexColor)
       .setTimestamp();
     interaction.reply({
       embeds: [replyEmbed],

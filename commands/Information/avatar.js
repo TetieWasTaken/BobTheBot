@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const { EmbedBuilder } = require("discord.js");
-const { roleColor } = require("../../utils/roleColor.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -30,7 +29,7 @@ module.exports = {
       .setFooter({ text: `${member.id}` })
       .setThumbnail(member.user.bannerURL())
       .setImage(member.displayAvatarURL({ dynamic: true, size: 256 }))
-      .setColor(roleColor(interaction))
+      .setColor(interaction.guild.members.me.displayHexColor)
       .setTimestamp();
 
     interaction.reply({

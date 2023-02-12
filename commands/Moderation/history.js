@@ -5,7 +5,6 @@ const {
   time,
 } = require("discord.js");
 const InfractionsSchema = require("../../models/InfractionsModel");
-const { roleColor } = require("../../utils/roleColor.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -64,7 +63,7 @@ module.exports = {
     }
 
     const replyEmbed = new EmbedBuilder()
-      .setColor(roleColor(interaction))
+      .setColor(interaction.guild.members.me.displayHexColor)
       .setTitle(`History for ${member.displayName}`)
       .addFields(
         {

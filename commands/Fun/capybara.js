@@ -3,7 +3,6 @@ const {
   PermissionFlagsBits,
   EmbedBuilder,
 } = require("discord.js");
-const { roleColor } = require("../../utils/roleColor");
 
 const requiredBotPerms = {
   type: "flags",
@@ -30,7 +29,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle("Okay I pull up")
       .setImage(`${img.data.url}`)
-      .setColor(roleColor(interaction))
+      .setColor(interaction.guild.members.me.displayHexColor)
       .setFooter({
         text: `Requested by ${interaction.user.tag}`,
         iconURL: `${interaction.user.displayAvatarURL()}`,

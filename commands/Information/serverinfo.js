@@ -3,7 +3,6 @@ const {
   PermissionFlagsBits,
   EmbedBuilder,
 } = require("discord.js");
-const { roleColor } = require("../../utils/roleColor.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -35,7 +34,7 @@ module.exports = {
     const fetchedOwner = await Promise.resolve(interaction.guild.fetchOwner());
 
     const replyEmbed = new EmbedBuilder()
-      .setColor(roleColor(interaction))
+      .setColor(interaction.guild.members.me.displayHexColor)
       .setAuthor({ name: `${interaction.guild.name}`, iconURL: serverIcon })
       .setThumbnail(serverIcon)
       .addFields(

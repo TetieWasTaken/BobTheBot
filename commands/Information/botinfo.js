@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const { EmbedBuilder } = require("discord.js");
-const { roleColor } = require("../../utils/roleColor.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -47,7 +46,7 @@ module.exports = {
           inline: true,
         }
       )
-      .setColor(roleColor(interaction))
+      .setColor(interaction.guild.members.me.displayHexColor)
       .setTimestamp();
     interaction.reply({
       embeds: [replyEmbed],

@@ -4,7 +4,6 @@ const {
   EmbedBuilder,
 } = require("discord.js");
 const { convertMS } = require("../../utils/convertMS.js");
-const { roleColor } = require("../../utils/roleColor.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -26,7 +25,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle("⏱️ Uptime")
       .setDescription(`${convertMS(milliseconds)}`)
-      .setColor(roleColor(interaction))
+      .setColor(interaction.guild.members.me.displayHexColor)
       .setFooter({ text: `${milliseconds}ms` });
 
     return await interaction.reply({ embeds: [embed] });

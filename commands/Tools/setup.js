@@ -7,7 +7,6 @@ const {
   PermissionFlagsBits,
 } = require("discord.js");
 const GuildSchema = require("../../models/GuildModel");
-const { roleColor } = require("../../utils/roleColor.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -44,7 +43,7 @@ module.exports = {
     }
 
     const replyEmbed = new EmbedBuilder()
-      .setColor(roleColor(interaction))
+      .setColor(interaction.guild.members.me.displayHexColor)
       .setTitle(`Current server data`)
       .addFields(
         {
