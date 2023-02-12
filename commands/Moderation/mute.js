@@ -85,7 +85,8 @@ module.exports = {
     });
 
     if (data) {
-      const NewCaseId = data.Punishments.length + 1;
+      const NewCaseId =
+        data.Punishments.reduce((a, b) => Math.max(a, b.CaseId), 0) + 1;
 
       data.Punishments.unshift({
         PunishType: "MUTE",
