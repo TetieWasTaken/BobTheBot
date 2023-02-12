@@ -5,6 +5,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 <!--Changelog start-->
 
+### [ 🔥 REFACTOR ] (2023-02-12)
+
+🔥 refactor(Rolecolor)!: remove rolecolor
+
+
+**File(s) deleted:** ``utils/roleColor.js``
+**File(s) modified:** ``commands/Fun/capybara.js`, `commands/Fun/cat.js`, `commands/Fun/dog.js`, `commands/Information/avatar.js`, `commands/Information/botinfo.js`, `commands/Information/channelinfo.js`, `commands/Information/invite.js`, `commands/Information/leaderboard.js`, `commands/Information/rank.js`, `commands/Information/roles.js`, `commands/Information/serverinfo.js`, `commands/Information/stats.js`, `commands/Information/uptime.js`, `commands/Moderation/history.js`, `commands/Tools/manipulate.js`, `commands/Tools/poll.js`, `commands/Tools/setup.js``
+
+
+
+
 ### [ 🔨 REFACTOR ] (2023-02-11)
 
 🔨 refactor(Changelog)!: rename file
@@ -39,6 +50,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 🐛 fix(Changelog)!: fix syntax
 
 **File(s) modified:** `.github/workflows/changelog.yml`
+
 
 
 
