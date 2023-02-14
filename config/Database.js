@@ -23,6 +23,8 @@ class Database {
         }
         this.connection = mongoose.connection;
 
+        require("../utils/dataSweeper").loop(client);
+
         // Unable to get the states out of mongoose.connection, temporary hardcode.
         const states = {
           0: "disconnected",
