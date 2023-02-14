@@ -2,9 +2,8 @@
 name: Feature request
 about: Suggest an idea for this project
 title: "[FEAT] "
-labels: 'type: feature request'
-assignees: UndefinedToast
-
+labels: "type: feature request"
+assignees: TetieWasTaken
 ---
 
 **Is your feature request related to a problem? Please describe.**

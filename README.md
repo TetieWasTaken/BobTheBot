@@ -33,7 +33,7 @@ Bob The Bot is a simple, competitive, community driven [Discord.js](https://gith
 If you want to use this code in your own project/bot, you can follow the steps below.
 This guide does not include how to set up your bot, you can follow [this guide](https://discordjs.guide/preparations/setting-up-a-bot-application.html#setting-up-a-bot-application) for more information
 
-1. Clone this repository using the following command: `git clone https://github.com/UndefinedToast/BobTheBot.git`.
+1. Clone this repository using the following command: `git clone https://github.com/TetieWasTaken/BobTheBot.git`.
 2. Run `npm install` to install all the required dependencies.
 3. Add a .env file in the root with the following;
 
@@ -74,9 +74,10 @@ Summarized,
 - If you modify the software, you must include a notice stating that you have made changes to the original software.
 - If you distribute the software, you must include a disclaimer of warranties.
 
-###### Not sure how to attribute? You can include a copy of the [License](https://github.com/UndefinedToast/BobTheBot/blob/main/LICENSE) in your software or you can copy the text below into your readme.md file.
+###### Not sure how to attribute? You can include a copy of the [License](https://github.com/TetieWasTaken/BobTheBot/blob/main/LICENSE) in your software or you can copy the text below into your readme.md file.
+
 ```
-###### ❤️ [@UndefinedToast](https://github.com/UndefinedToast)/[BobTheBot](https://github.com/UndefinedToast/BobTheBot) - [Apache License 2.0](https://github.com/UndefinedToast/BobTheBot/blob/main/LICENSE)
+###### ❤️ [@TetieWasTaken](https://github.com/TetieWasTaken)/[BobTheBot](https://github.com/TetieWasTaken/BobTheBot) - [Apache License 2.0](https://github.com/TetieWasTaken/BobTheBot/blob/main/LICENSE)
 ```
 
 ## What is the Apache License 2.0?

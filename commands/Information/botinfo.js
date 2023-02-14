@@ -42,7 +42,7 @@ module.exports = {
         {
           name: `Links`,
           value:
-            "[**Github**](https://github.com/UndefinedToast/BobTheBot)\n[**Discord**](https://discord.gg/FJ5DMEb8zA)",
+            "[**Github**](https://github.com/TetieWasTaken/BobTheBot)\n[**Discord**](https://discord.gg/FJ5DMEb8zA)",
           inline: true,
         }
       )
