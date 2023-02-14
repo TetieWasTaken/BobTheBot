@@ -5,6 +5,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 <!--Changelog start-->
 
+### [ ✨ FEAT ] (2023-02-14)
+
+✨ feat(Database)!: add data sweeper
+
+**File(s) added:** ```utils/dataSweeper.js``
+
+**File(s) modified:** ``config/Database.js`, `package.json``
+
+
+
+
 ### [ 🔥 REFACTOR ] (2023-02-12)
 
 🔥 refactor(Rolecolor)!: remove rolecolor
@@ -50,6 +61,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 🐛 fix(Changelog)!: fix syntax
 
 **File(s) modified:** `.github/workflows/changelog.yml`
+
 
 
 
