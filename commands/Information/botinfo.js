@@ -28,7 +28,7 @@ module.exports = {
         {
           name: `Legal`,
           value:
-            "[**Privacy Policy**]()\n[**Terms of Service**]()\n[**License**](https://github.com/TetieWasTaken/BobTheBot/blob/main/LICENSE)", // Placeholder links, will be changed later
+            "[**Privacy Policy**](https://github.com/TetieWasTaken/BobTheBot/blob/main/PRIVACY.md)\n[**License**](https://github.com/TetieWasTaken/BobTheBot/blob/main/LICENSE)",
           inline: true,
         },
         {
