@@ -28,56 +28,38 @@ const sweep = async (client) => {
   };
 
   let cnslTable = [["Collection", "Deleted"]];
-  let count;
 
-  for (const [name, collection] of Object.entries(connection.collections)) {
-    switch (name) {
-      case "economymodels":
-        count = 0;
-        for await (const doc of collection.find()) {
-          if (doc.NetWorth <= 0) {
-            await collection.deleteOne({ UserId: doc.UserId });
-            count++;
-          }
-        }
-        cnslTable.push(["Economy", `${count} guilds`]);
-        break;
-      case "levelmodels":
-        count = 0;
-        for await (const doc of collection.find()) {
-          const guild = await client.guilds.cache.get(doc.GuildId);
-          if (!guild) {
-            await collection.deleteOne({ GuildId: doc.GuildId });
-            count++;
-          }
-        }
-        cnslTable.push(["Levels", `${count} guilds`]);
-        break;
-      case "infractionsmodels":
-        count = 0;
-        for await (const doc of collection.find()) {
-          const guild = await client.guilds.cache.get(doc.GuildId);
-          if (!guild) {
-            await collection.deleteOne({ GuildId: doc.GuildId });
-            count++;
-          }
-        }
-        cnslTable.push(["Infractions", `${count} guilds`]);
-        break;
-      case "guildmodels":
-        count = 0;
-        for await (const doc of collection.find()) {
-          const guild = await client.guilds.cache.get(doc.GuildId);
-          if (!guild) {
-            await collection.deleteOne({ GuildId: doc.GuildId });
-            count++;
-          }
-        }
-        cnslTable.push(["Guilds", `${count} guilds`]);
-        break;
-      default:
-        break;
+  const deleteDocs = async (collection, queryFn) => {
+    let count = 0;
+    for await (const doc of collection.find()) {
+      if (queryFn(doc)) {
+        await collection.deleteOne({ _id: doc._id });
+        count++;
+      }
     }
+    return count;
+  };
+
+  const collections = {
+    economymodels: { queryFn: (doc) => doc.NetWorth <= 0, label: "Economy" },
+    levelmodels: {
+      queryFn: (doc) => !client.guilds.cache.get(doc.GuildId),
+      label: "Levels",
+    },
+    infractionsmodels: {
+      queryFn: (doc) => !client.guilds.cache.get(doc.GuildId),
+      label: "Infractions",
+    },
+    guildmodels: {
+      queryFn: (doc) => !client.guilds.cache.get(doc.GuildId),
+      label: "Guilds",
+    },
+  };
+
+  for (const [name, { queryFn, label }] of Object.entries(collections)) {
+    const collection = connection.collections[name];
+    const count = await deleteDocs(collection, queryFn);
+    cnslTable.push([label, `${count} guilds`]);
   }
 
   console.log(table(cnslTable, config));
