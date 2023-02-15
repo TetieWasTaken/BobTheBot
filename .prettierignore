@@ -1,0 +1,5 @@
+CHANGELOG.md
+LICENSE
+docs/**
+!docs/*.json
+.github/**
