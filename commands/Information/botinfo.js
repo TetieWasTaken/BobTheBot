@@ -1,5 +1,5 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const { EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, version } = require("discord.js");
+let mongoose = require("mongoose");
 
 const requiredBotPerms = {
   type: "flags",
@@ -12,31 +12,23 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("botinfo")
-    .setDescription("Receive information about the bot"),
+  data: new SlashCommandBuilder().setName("botinfo").setDescription("Receive information about the bot"),
   async execute(interaction) {
-    const developerArray = ["Tetie#4242"];
     const replyEmbed = new EmbedBuilder()
+      .setAuthor({
+        name: "BobTheBot",
+        iconUrl: interaction.guild.members.me.user.avatarURL,
+      })
       .addFields(
         {
-          name: `Name`,
-          value: `BobTheBot`,
+          name: `Dependencies`,
+          value: `NodeJS: \`${process.version}\`\nDiscord.JS: \`${version}\`\nMongoose: \`${mongoose.version}\``,
           inline: true,
         },
         {
-          name: `ID`,
-          value: `1036359071508484237`,
-          inline: true,
-        },
-        {
-          name: `Developers`,
-          value: `${developerArray.join(", ") || "None"}`,
-          inline: true,
-        },
-        {
-          name: `Dependency versions`,
-          value: `NodeJS: \`v18.12.0\`\nDiscord.JS: \`14.7.0\`\nMongoose: \`6.7.0\``,
+          name: `Legal`,
+          value:
+            "[**Privacy Policy**]()\n[**Terms of Service**]()\n[**License**](https://github.com/TetieWasTaken/BobTheBot/blob/main/LICENSE)", // Placeholder links, will be changed later
           inline: true,
         },
         {
@@ -44,9 +36,18 @@ module.exports = {
           value:
             "[**Github**](https://github.com/TetieWasTaken/BobTheBot)\n[**Discord**](https://discord.gg/FJ5DMEb8zA)",
           inline: true,
+        },
+        {
+          name: `Version`,
+          value: `Pre-Alpha 0.0.1`, // Placeholder version, will be changed later
+          inline: true,
         }
       )
       .setColor(interaction.guild.members.me.displayHexColor)
+      .setFooter({
+        text: `${interaction.client.user.id}`,
+        iconUrl: interaction.user.avatarURL,
+      })
       .setTimestamp();
     interaction.reply({
       embeds: [replyEmbed],
