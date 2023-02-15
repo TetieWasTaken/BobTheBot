@@ -1,9 +1,4 @@
-const {
-  EmbedBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ActionRowBuilder,
-} = require("discord.js");
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
 
 module.exports = {
   editDictPage: async (interaction, result, currentPage, totalPages) => {
@@ -30,11 +25,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setColor("#0099ff")
       .setTitle(result[0].word)
-      .setURL(
-        result[0].phonetics[0].audio.length > 0
-          ? result[0].phonetics[0].audio
-          : null
-      )
+      .setURL(result[0].phonetics[0].audio.length > 0 ? result[0].phonetics[0].audio : null)
       .setDescription(result[0].meanings[0].definitions[currentPage].definition)
       .addFields(
         {

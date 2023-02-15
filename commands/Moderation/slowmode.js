@@ -15,10 +15,7 @@ module.exports = {
     .setName("slowmode")
     .setDescription("Change the current channel's slowmode")
     .addIntegerOption((option) =>
-      option
-        .setName("duration")
-        .setDescription("duration of the slowmode in seconds (0 to disable)")
-        .setRequired(true)
+      option.setName("duration").setDescription("duration of the slowmode in seconds (0 to disable)").setRequired(true)
     ),
   async execute(interaction) {
     let duration = interaction.options.getInteger("duration");
@@ -32,8 +29,7 @@ module.exports = {
     } catch (err) {
       console.log(err);
       return interaction.reply({
-        content:
-          "Something went wrong while setting the slowmode, please report this!",
+        content: "Something went wrong while setting the slowmode, please report this!",
         ephemeral: true,
       });
     }

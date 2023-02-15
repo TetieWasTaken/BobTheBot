@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -19,64 +15,34 @@ module.exports = {
     .setName("poll")
     .setDescription("Start a poll")
     .addStringOption((option) =>
-      option
-        .setName("message")
-        .setDescription("message to display on the poll")
-        .setRequired(true)
+      option.setName("message").setDescription("message to display on the poll").setRequired(true)
     )
     .addStringOption((option) =>
-      option
-        .setName("option1")
-        .setDescription("Add a poll option (min 2 max 9)")
-        .setRequired(true)
+      option.setName("option1").setDescription("Add a poll option (min 2 max 9)").setRequired(true)
     )
     .addStringOption((option) =>
-      option
-        .setName("option2")
-        .setDescription("Add a poll option (min 2 max 9)")
-        .setRequired(true)
+      option.setName("option2").setDescription("Add a poll option (min 2 max 9)").setRequired(true)
     )
     .addStringOption((option) =>
-      option
-        .setName("option3")
-        .setDescription("Add a poll option (min 2 max 9)")
-        .setRequired(false)
+      option.setName("option3").setDescription("Add a poll option (min 2 max 9)").setRequired(false)
     )
     .addStringOption((option) =>
-      option
-        .setName("option4")
-        .setDescription("Add a poll option (min 2 max 9)")
-        .setRequired(false)
+      option.setName("option4").setDescription("Add a poll option (min 2 max 9)").setRequired(false)
     )
     .addStringOption((option) =>
-      option
-        .setName("option5")
-        .setDescription("Add a poll option (min 2 max 9)")
-        .setRequired(false)
+      option.setName("option5").setDescription("Add a poll option (min 2 max 9)").setRequired(false)
     )
     .addStringOption((option) =>
-      option
-        .setName("option6")
-        .setDescription("Add a poll option (min 2 max 9)")
-        .setRequired(false)
+      option.setName("option6").setDescription("Add a poll option (min 2 max 9)").setRequired(false)
     )
     .addStringOption((option) =>
-      option
-        .setName("option7")
-        .setDescription("Add a poll option (min 2 max 9)")
-        .setRequired(false)
+      option.setName("option7").setDescription("Add a poll option (min 2 max 9)").setRequired(false)
     )
     .addStringOption((option) =>
-      option
-        .setName("option8")
-        .setDescription("Add a poll option (min 2 max 9)")
-        .setRequired(false)
+      option.setName("option8").setDescription("Add a poll option (min 2 max 9)").setRequired(false)
     )
     .addStringOption((option) =>
-      option
-        .setName("option9")
-        .setDescription("Add a poll option (min 2 max 9)")
-        .setRequired(false)
+      option.setName("option9").setDescription("Add a poll option (min 2 max 9)").setRequired(false)
     ),
   cooldownTime: 20 * 1000,
   async execute(interaction) {
@@ -90,17 +56,7 @@ module.exports = {
     const option7 = interaction.options.getString("option7");
     const option8 = interaction.options.getString("option8");
     const option9 = interaction.options.getString("option9");
-    const options = [
-      option1,
-      option2,
-      option3,
-      option4,
-      option5,
-      option6,
-      option7,
-      option8,
-      option9,
-    ];
+    const options = [option1, option2, option3, option4, option5, option6, option7, option8, option9];
     const optionsFiltered = options.filter((option) => option !== null);
 
     const pollEmbed = new EmbedBuilder()
@@ -160,18 +116,7 @@ module.exports = {
       pollEmbed.spliceFields(-1, 1);
     }
 
-    const reactions = [
-      "",
-      "1️⃣",
-      "2️⃣",
-      "3️⃣",
-      "4️⃣",
-      "5️⃣",
-      "6️⃣",
-      "7️⃣",
-      "8️⃣",
-      "9️⃣",
-    ];
+    const reactions = ["", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
 
     const interactionMessage = await interaction.reply({
       embeds: [pollEmbed],

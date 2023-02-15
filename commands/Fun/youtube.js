@@ -20,34 +20,18 @@ module.exports = {
         .setName("dark")
         .setDescription("Generate a dark youtube comment")
         .addStringOption((option) =>
-          option
-            .setName("comment")
-            .setDescription("The comment to generate")
-            .setRequired(true)
+          option.setName("comment").setDescription("The comment to generate").setRequired(true)
         )
-        .addUserOption((option) =>
-          option
-            .setName("user")
-            .setDescription("The user to trigger")
-            .setRequired(false)
-        )
+        .addUserOption((option) => option.setName("user").setDescription("The user to trigger").setRequired(false))
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("light")
         .setDescription("Generate a light youtube comment")
         .addStringOption((option) =>
-          option
-            .setName("comment")
-            .setDescription("The comment to generate")
-            .setRequired(true)
+          option.setName("comment").setDescription("The comment to generate").setRequired(true)
         )
-        .addUserOption((option) =>
-          option
-            .setName("user")
-            .setDescription("The user to trigger")
-            .setRequired(false)
-        )
+        .addUserOption((option) => option.setName("user").setDescription("The user to trigger").setRequired(false))
     ),
   async execute(interaction) {
     const comment = interaction.options.getString("comment");

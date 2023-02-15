@@ -15,12 +15,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("hack")
     .setDescription("Hacks a user (fake)")
-    .addUserOption((option) =>
-      option
-        .setName("target")
-        .setDescription("user to target")
-        .setRequired(true)
-    ),
+    .addUserOption((option) => option.setName("target").setDescription("user to target").setRequired(true)),
   cooldownTime: 10 * 1000,
   async execute(interaction) {
     const user = interaction.options.getUser("target");
@@ -56,10 +51,7 @@ module.exports = {
 
     replyArray = [
       ":e_mail: Finding email... `12,5%`",
-      `:e_mail: Email found! \`${username.replace(
-        /\s/g,
-        ""
-      )}${randomEmail}\` \`25%\``,
+      `:e_mail: Email found! \`${username.replace(/\s/g, "")}${randomEmail}\` \`25%\``,
       ":asterisk: Finding password... `37,5%`",
       `:asterisk: Password found! \`${randomPassword}\` \`50%\``,
       ":keyboard: Logging in... `62,5%`",

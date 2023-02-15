@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -29,8 +25,7 @@ module.exports = {
   async execute(interaction) {
     const text = interaction.options.getString("url");
     const baseURL = "http://api.qrserver.com/v1";
-    const regex =
-      /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+    const regex = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
 
     if (!text.match(regex)) {
       interaction.reply({
@@ -40,9 +35,7 @@ module.exports = {
       return;
     }
 
-    const encodedURL =
-      `${baseURL}/create-qr-code/?size=150x150&data=` +
-      encodeURIComponent(text);
+    const encodedURL = `${baseURL}/create-qr-code/?size=150x150&data=` + encodeURIComponent(text);
 
     const replyEmbed = new EmbedBuilder()
       .setColor("ffffff")

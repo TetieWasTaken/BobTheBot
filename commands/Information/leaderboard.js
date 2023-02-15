@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 
 const LevelSchema = require("../../models/LevelModel");
 
@@ -21,17 +17,10 @@ module.exports = {
     .setName("leaderboard")
     .setDescription("Returns the top 10 users with the most amount of XP"),
   async execute(interaction) {
-    const data = await LevelSchema.find({ GuildID: interaction.guild.id })
-      .sort({ UserXP: -1 })
-      .limit(10);
+    const data = await LevelSchema.find({ GuildID: interaction.guild.id }).sort({ UserXP: -1 }).limit(10);
 
     const mappedData = data
-      .map(
-        (d, i) =>
-          `\`${i + 1}\` <@${d.UserId}> - Level: \`${d.UserLevel}\` - XP: \`${
-            d.UserXP
-          }\``
-      )
+      .map((d, i) => `\`${i + 1}\` <@${d.UserId}> - Level: \`${d.UserLevel}\` - XP: \`${d.UserXP}\``)
       .join("\n");
 
     const embed = new EmbedBuilder()

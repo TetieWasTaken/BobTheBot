@@ -13,9 +13,7 @@ if (!commitMsg) {
 
 const changelog = fs.readFileSync("CHANGELOG.md", "utf8");
 
-const changelogContent = changelog.match(
-  /<!--Changelog start-->([\s\S]*)<!--Changelog end-->/m
-)[1];
+const changelogContent = changelog.match(/<!--Changelog start-->([\s\S]*)<!--Changelog end-->/m)[1];
 let commitTitle = commitMsg.match(
   /^(revert: )?(\u00a9\s|\u00ae\s|[\u2000-\u3300]\s|\ud83c[\ud000-\udfff]\s|\ud83d[\ud000-\udfff]\s|\ud83e[\ud000-\udfff]\s)?\s*(feat|fix|docs|style|refactor|perf|test|workflow|build|ci|chore|types|wip)/
 );
@@ -32,34 +30,14 @@ const newChangelogEntry = `
 
 ${commitMsg}
 
-${
-  filesAdded[0].length > 0
-    ? `**File(s) added:** \`\`${filesAdded
-        .map((file) => `\`${file}\``)
-        .join(", ")}\``
-    : ""
-}
-${
-  filesDeleted[0].length > 0
-    ? `**File(s) deleted:** \`${filesDeleted
-        .map((file) => `\`${file}\``)
-        .join(", ")}\``
-    : ""
-}
+${filesAdded[0].length > 0 ? `**File(s) added:** \`\`${filesAdded.map((file) => `\`${file}\``).join(", ")}\`` : ""}
+${filesDeleted[0].length > 0 ? `**File(s) deleted:** \`${filesDeleted.map((file) => `\`${file}\``).join(", ")}\`` : ""}
 ${
   filesModified[0].length > 0
-    ? `**File(s) modified:** \`${filesModified
-        .map((file) => `\`${file}\``)
-        .join(", ")}\``
+    ? `**File(s) modified:** \`${filesModified.map((file) => `\`${file}\``).join(", ")}\``
     : ""
 }
-${
-  filesRenamed[0].length > 0
-    ? `**File(s) renamed:** \`${filesRenamed
-        .map((file) => `\`${file}\``)
-        .join(", ")}\``
-    : ""
-}
+${filesRenamed[0].length > 0 ? `**File(s) renamed:** \`${filesRenamed.map((file) => `\`${file}\``).join(", ")}\`` : ""}
 `;
 const newChangelog = changelog.replace(
   /<!--Changelog start-->([\s\S]*)<!--Changelog end-->/m,

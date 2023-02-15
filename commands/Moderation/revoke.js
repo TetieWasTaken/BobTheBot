@@ -15,17 +15,9 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("revoke")
     .setDescription("Revokes a user's infraction")
-    .addUserOption((option) =>
-      option
-        .setName("target")
-        .setDescription("member clear warnings of")
-        .setRequired(true)
-    )
+    .addUserOption((option) => option.setName("target").setDescription("member clear warnings of").setRequired(true))
     .addIntegerOption((option) =>
-      option
-        .setName("caseid")
-        .setDescription("case id of the warn to clear")
-        .setRequired(true)
+      option.setName("caseid").setDescription("case id of the warn to clear").setRequired(true)
     ),
   async execute(interaction) {
     const user = interaction.options.getUser("target");

@@ -15,12 +15,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("avatar")
     .setDescription("Returns the avatar of the user specified")
-    .addUserOption((option) =>
-      option
-        .setName("target")
-        .setDescription("user to target")
-        .setRequired(false)
-    ),
+    .addUserOption((option) => option.setName("target").setDescription("user to target").setRequired(false)),
   async execute(interaction) {
     let member = interaction.options.getMember("target") ?? interaction.member;
 

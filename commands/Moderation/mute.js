@@ -1,10 +1,7 @@
 const InfractionsSchema = require("../../models/InfractionsModel");
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const ms = require("ms");
-const {
-  raiseUserHierarchyError,
-  raiseBotHierarchyError,
-} = require("../../utils/returnError.js");
+const { raiseUserHierarchyError, raiseBotHierarchyError } = require("../../utils/returnError.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -20,46 +17,28 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("mute")
     .setDescription("Puts a user in timeout for a certain amount of time")
-    .addUserOption((option) =>
-      option
-        .setName("target")
-        .setDescription("member to mute")
-        .setRequired(true)
-    )
+    .addUserOption((option) => option.setName("target").setDescription("member to mute").setRequired(true))
     .addStringOption((option) =>
       option
         .setName("duration")
-        .setDescription(
-          "duration of the mute, in ms format (ex: 1s, 1m, 1h, 1d, 1w)"
-        )
+        .setDescription("duration of the mute, in ms format (ex: 1s, 1m, 1h, 1d, 1w)")
         .setRequired(true)
     )
     .addStringOption((option) =>
-      option
-        .setName("reason")
-        .setDescription("reason to mute")
-        .setMaxLength(255)
-        .setRequired(false)
+      option.setName("reason").setDescription("reason to mute").setMaxLength(255).setRequired(false)
     ),
   async execute(interaction) {
     const member = interaction.options.getMember("target");
     let duration = interaction.options.getString("duration");
-    let reason =
-      interaction.options.getString("reason") ?? "No reason provided";
+    let reason = interaction.options.getString("reason") ?? "No reason provided";
 
-    const authorMember = await interaction.guild.members.fetch(
-      interaction.user.id
-    );
+    const authorMember = await interaction.guild.members.fetch(interaction.user.id);
 
     const highestUserRole = member.roles.highest;
 
-    if (highestUserRole.position >= authorMember.roles.highest.position)
-      return raiseUserHierarchyError(interaction);
+    if (highestUserRole.position >= authorMember.roles.highest.position) return raiseUserHierarchyError(interaction);
 
-    if (
-      highestUserRole.position >=
-      interaction.guild.members.me.roles.highest.position
-    )
+    if (highestUserRole.position >= interaction.guild.members.me.roles.highest.position)
       return raiseBotHierarchyError(interaction);
 
     if (member.isCommunicationDisabled()) {
@@ -85,8 +64,7 @@ module.exports = {
     });
 
     if (data) {
-      const NewCaseId =
-        data.Punishments.reduce((a, b) => Math.max(a, b.CaseId), 0) + 1;
+      const NewCaseId = data.Punishments.reduce((a, b) => Math.max(a, b.CaseId), 0) + 1;
 
       data.Punishments.unshift({
         PunishType: "MUTE",
@@ -110,9 +88,7 @@ module.exports = {
     }
 
     member
-      .send(
-        `You have been muted in \`${interaction.guild.name}\` for \`${reason}\`\nDuration: \`${duration}\``
-      )
+      .send(`You have been muted in \`${interaction.guild.name}\` for \`${reason}\`\nDuration: \`${duration}\``)
       .catch((err) => {
         console.log(err);
       });

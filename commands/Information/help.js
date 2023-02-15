@@ -1,9 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-  PermissionsBitField,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, PermissionsBitField } = require("discord.js");
 const fs = require("fs");
 const damerau = require("damerau-levenshtein");
 const { capitalizeFirst } = require("../../utils/capitalizeFirst.js");
@@ -19,9 +14,7 @@ const requiredUserPerms = {
 };
 
 function getChoices() {
-  const choises = fs
-    .readdirSync("./commands")
-    .filter((item) => !/(^|\/)\.[^/.]/g.test(item));
+  const choises = fs.readdirSync("./commands").filter((item) => !/(^|\/)\.[^/.]/g.test(item));
 
   return choises.map((choice) => {
     return { name: choice, value: choice };
@@ -29,16 +22,12 @@ function getChoices() {
 }
 
 function getCommands() {
-  const categories = fs
-    .readdirSync("./commands")
-    .filter((item) => !/(^|\/)\.[^/.]/g.test(item));
+  const categories = fs.readdirSync("./commands").filter((item) => !/(^|\/)\.[^/.]/g.test(item));
 
   const commands = [];
 
   for (let category of categories) {
-    const commandFiles = fs
-      .readdirSync(`./commands/${category}`)
-      .filter((file) => file.endsWith(".js"));
+    const commandFiles = fs.readdirSync(`./commands/${category}`).filter((file) => file.endsWith(".js"));
 
     for (let file of commandFiles) {
       category = capitalizeFirst(category);
@@ -131,18 +120,14 @@ module.exports = {
           .setColor(0x00ff00)
           .setTitle(`Help for ${category}`);
 
-        const categoryCommands = fs
-          .readdirSync(`./commands/${category}`)
-          .filter((file) => file.endsWith(".js"));
+        const categoryCommands = fs.readdirSync(`./commands/${category}`).filter((file) => file.endsWith(".js"));
 
         let descriptionArray = [];
 
         for (let file of categoryCommands) {
           let command = require(`../${category}/${file}`);
 
-          descriptionArray.push(
-            `\`/${command.data.name}\` - ${command.data.description}`
-          );
+          descriptionArray.push(`\`/${command.data.name}\` - ${command.data.description}`);
         }
 
         catEmbed.setDescription(descriptionArray.join("\n"));
@@ -153,16 +138,8 @@ module.exports = {
         const query = interaction.options.getString("query");
         const commandRegExp = /^.*(?=(\:))/g;
         const categoryRegExp = /[^:]*$/g;
-        commandQuery = query
-          .replace(commandRegExp, "")
-          .trim()
-          .toLowerCase()
-          .slice(2);
-        categoryQuery = query
-          .replace(categoryRegExp, "")
-          .trim()
-          .toLowerCase()
-          .slice(0, -1);
+        commandQuery = query.replace(commandRegExp, "").trim().toLowerCase().slice(2);
+        categoryQuery = query.replace(categoryRegExp, "").trim().toLowerCase().slice(0, -1);
 
         const command = interaction.client.commands.get(commandQuery);
 
@@ -221,9 +198,7 @@ module.exports = {
         let userPermsArray = [];
 
         function getBotPerms(perm) {
-          return interaction.guild.members.me.permissions.has(perm)
-            ? "+ "
-            : "- ";
+          return interaction.guild.members.me.permissions.has(perm) ? "+ " : "- ";
         }
 
         function getUserPerms(perm) {
@@ -237,9 +212,7 @@ module.exports = {
 
         for (let perm of command.requiredUserPerms.key) {
           hasPerm = getUserPerms(perm);
-          userPermsArray.push(
-            hasPerm + new PermissionsBitField(perm).toArray()
-          );
+          userPermsArray.push(hasPerm + new PermissionsBitField(perm).toArray());
         }
 
         if (botPermsArray.length > 0) {

@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -17,18 +13,13 @@ const requiredUserPerms = {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("github")
-    .setDescription(
-      "Retrieve information about a repository or user on GitHub."
-    )
+    .setDescription("Retrieve information about a repository or user on GitHub.")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("user")
         .setDescription("Retrieve information about a user on GitHub.")
         .addStringOption((option) =>
-          option
-            .setName("user")
-            .setDescription("The user you want to get information about.")
-            .setRequired(true)
+          option.setName("user").setDescription("The user you want to get information about.").setRequired(true)
         )
     )
     .addSubcommand((subcommand) =>
@@ -36,10 +27,7 @@ module.exports = {
         .setName("repository")
         .setDescription("Retrieve information about a repository on GitHub.")
         .addStringOption((option) =>
-          option
-            .setName("user")
-            .setDescription("The user or company who owns the repository.")
-            .setRequired(true)
+          option.setName("user").setDescription("The user or company who owns the repository.").setRequired(true)
         )
         .addStringOption((option) =>
           option
@@ -57,9 +45,7 @@ module.exports = {
 
     switch (subcommand) {
       case "user":
-        res = await fetch(`https://api.github.com/users/${user}`).then((res) =>
-          res.json()
-        );
+        res = await fetch(`https://api.github.com/users/${user}`).then((res) => res.json());
 
         if (res.message) {
           return interaction.reply({
@@ -121,9 +107,7 @@ module.exports = {
               { name: "Type", value: `${res.type}`, inline: true }
             )
             .setFooter({
-              text: `ID: ${res.id} | Created at: ${new Date(
-                res.created_at
-              ).toLocaleDateString("en-US", {
+              text: `ID: ${res.id} | Created at: ${new Date(res.created_at).toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
                 year: "numeric",
@@ -134,17 +118,14 @@ module.exports = {
         } catch (error) {
           console.log(error);
           return interaction.reply({
-            content:
-              "An error occurred while trying to retrieve the user information.",
+            content: "An error occurred while trying to retrieve the user information.",
             ephemeral: true,
           });
         }
       case "repository":
         const repository = interaction.options.getString("repository");
 
-        res = await fetch(
-          `https://api.github.com/repos/${user}/${repository}`
-        ).then((res) => res.json());
+        res = await fetch(`https://api.github.com/repos/${user}/${repository}`).then((res) => res.json());
 
         if (res.message) {
           return interaction.reply({
@@ -187,9 +168,7 @@ module.exports = {
               }
             )
             .setFooter({
-              text: `ID: ${res.id} | Created at: ${new Date(
-                res.created_at
-              ).toLocaleDateString("en-US", {
+              text: `ID: ${res.id} | Created at: ${new Date(res.created_at).toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
                 year: "numeric",
@@ -199,8 +178,7 @@ module.exports = {
         } catch (error) {
           console.log(error);
           return interaction.reply({
-            content:
-              "An error occurred while trying to retrieve the repository information.",
+            content: "An error occurred while trying to retrieve the repository information.",
             ephemeral: true,
           });
         }

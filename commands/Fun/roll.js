@@ -16,11 +16,7 @@ module.exports = {
     .setName("roll")
     .setDescription("Rolls a dice")
     .addIntegerOption((option) =>
-      option
-        .setName("amount")
-        .setDescription("Amount of dice to roll")
-        .setMaxValue(6)
-        .setRequired(false)
+      option.setName("amount").setDescription("Amount of dice to roll").setMaxValue(6).setRequired(false)
     ),
   async execute(interaction) {
     const amount = interaction.options.getInteger("amount") ?? 1;

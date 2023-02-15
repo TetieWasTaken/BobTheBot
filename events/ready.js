@@ -36,10 +36,7 @@ module.exports = {
       ["Ping", `${await client.ws.ping}ms`],
     ];
 
-    await console.log(
-      table(cnslTable, config),
-      "\n————————————————————————————————————————————————\n"
-    );
+    await console.log(table(cnslTable, config), "\n————————————————————————————————————————————————\n");
 
     const timerStart = Date.now();
 
@@ -56,12 +53,9 @@ module.exports = {
             body: commands,
           });
         } else {
-          await rest.put(
-            Routes.applicationGuildCommands(CLIENT_ID, process.env.GUILD_ID),
-            {
-              body: commands,
-            }
-          );
+          await rest.put(Routes.applicationGuildCommands(CLIENT_ID, process.env.GUILD_ID), {
+            body: commands,
+          });
         }
 
         const registerConfig = {

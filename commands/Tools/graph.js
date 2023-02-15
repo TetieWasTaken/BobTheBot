@@ -21,10 +21,7 @@ module.exports = {
     .setName("graph")
     .setDescription("Creates a graph")
     .addStringOption((option) =>
-      option
-        .setName("expression")
-        .setDescription("The expression to graph (ex: 2 * x + 1)")
-        .setRequired(true)
+      option.setName("expression").setDescription("The expression to graph (ex: 2 * x + 1)").setRequired(true)
     )
     .addIntegerOption((option) =>
       option

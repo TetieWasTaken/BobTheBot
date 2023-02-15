@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -15,9 +11,7 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("invite")
-    .setDescription("Receive an invite link for the bot"),
+  data: new SlashCommandBuilder().setName("invite").setDescription("Receive an invite link for the bot"),
   async execute(interaction) {
     const replyEmbed = new EmbedBuilder()
       .setTitle("Invite BobTheBot")

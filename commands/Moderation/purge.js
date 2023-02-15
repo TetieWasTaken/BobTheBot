@@ -15,10 +15,7 @@ module.exports = {
     .setName("purge")
     .setDescription("Purge a set amount of messages")
     .addIntegerOption((option) =>
-      option
-        .setName("amount")
-        .setDescription("amount of messages to purge")
-        .setRequired(true)
+      option.setName("amount").setDescription("amount of messages to purge").setRequired(true)
     ),
   async execute(interaction) {
     const amount = interaction.options.getInteger("amount");

@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const EconomySchema = require("../../models/EconomyModel");
 
 const requiredBotPerms = {
@@ -16,9 +12,7 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("rankings")
-    .setDescription("Shows the top 10 richest people!"),
+  data: new SlashCommandBuilder().setName("rankings").setDescription("Shows the top 10 richest people!"),
   async execute(interaction) {
     const data = await EconomySchema.find().sort({ NetWorth: -1 }).limit(10);
     data.sort((a, b) => b.NetWorth - a.NetWorth);

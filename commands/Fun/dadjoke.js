@@ -12,9 +12,7 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("dadjoke")
-    .setDescription("Receive a random dad joke!"),
+  data: new SlashCommandBuilder().setName("dadjoke").setDescription("Receive a random dad joke!"),
   async execute(interaction) {
     dadJokesTxt = fs.readFileSync("./docs/dadjokes.txt");
     dadJokesTxt = dadJokesTxt.toString();

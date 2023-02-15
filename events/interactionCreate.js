@@ -1,9 +1,6 @@
 const GuildSchema = require("../models/GuildModel");
 const { EmbedBuilder } = require("discord.js");
-const {
-  raiseUserPermissionsError,
-  raiseBotPermissionsError,
-} = require("../utils/returnError.js");
+const { raiseUserPermissionsError, raiseBotPermissionsError } = require("../utils/returnError.js");
 
 module.exports = {
   name: "interactionCreate",
@@ -16,9 +13,7 @@ module.exports = {
         });
 
         if (guildData && guildData.GuildLogChannel !== null) {
-          const logChannel = await Promise.resolve(
-            interaction.guild.channels.fetch(guildData.GuildLogChannel)
-          );
+          const logChannel = await Promise.resolve(interaction.guild.channels.fetch(guildData.GuildLogChannel));
 
           let userNickname = ` (${interaction.member.nickname})`;
           if (userNickname == " (null)") {
@@ -30,10 +25,7 @@ module.exports = {
               new EmbedBuilder()
                 .setColor(0xff6333)
                 .setAuthor({
-                  name:
-                    `${interaction.user.tag}` +
-                    userNickname +
-                    " | Message reported",
+                  name: `${interaction.user.tag}` + userNickname + " | Message reported",
                   iconURL: `${interaction.member.user.displayAvatarURL()}`,
                 })
                 .addFields(
@@ -63,8 +55,7 @@ module.exports = {
           });
         } else {
           return interaction.reply({
-            content:
-              "Unable to report message: this server has not set up a logging channel.",
+            content: "Unable to report message: this server has not set up a logging channel.",
             ephemeral: true,
           });
         }
@@ -85,9 +76,7 @@ module.exports = {
           const embed = new EmbedBuilder()
             .setColor(0xff0000)
             .setTitle(":x: Command Disabled")
-            .setDescription(
-              `This command has been disabled by the server administrators.`
-            )
+            .setDescription(`This command has been disabled by the server administrators.`)
             .setFooter({
               text: `Believe this is a mistake? Contact administrators to /enable this command`,
             });
@@ -104,14 +93,10 @@ module.exports = {
 
         const currentTime = Date.now();
         if (client.cooldowns.has(interaction.commandName)) {
-          const timeLeft =
-            cooldownTime -
-            (currentTime - client.cooldowns.get(interaction.commandName));
+          const timeLeft = cooldownTime - (currentTime - client.cooldowns.get(interaction.commandName));
           if (timeLeft > 0) {
             return interaction.reply({
-              content: `Please wait \`${
-                timeLeft / 1000
-              }\` seconds before using this command again.`,
+              content: `Please wait \`${timeLeft / 1000}\` seconds before using this command again.`,
               ephemeral: true,
             });
           }
@@ -145,9 +130,7 @@ module.exports = {
         await command.execute(interaction);
         console.timeEnd(`Command ${interaction.commandName} executed in`);
       } catch (err) {
-        console.log(
-          `Command ${interaction.commandName} failed to execute.\n\n${interaction}`
-        );
+        console.log(`Command ${interaction.commandName} failed to execute.\n\n${interaction}`);
         if (err) console.error(err);
         await interaction.reply({
           content: "An error occured while executing that command.",
@@ -156,9 +139,7 @@ module.exports = {
       }
 
       if (guildData && guildData.GuildLogChannel !== null) {
-        const logChannel = await Promise.resolve(
-          interaction.guild.channels.fetch(guildData.GuildLogChannel)
-        );
+        const logChannel = await Promise.resolve(interaction.guild.channels.fetch(guildData.GuildLogChannel));
 
         let userNickname = ` (${interaction.member.nickname})`;
         let repliedMessage = await Promise.resolve(interaction.fetchReply());
@@ -195,8 +176,7 @@ module.exports = {
         const logEmbed = new EmbedBuilder()
           .setColor(0xff6333)
           .setAuthor({
-            name:
-              `${interaction.user.tag}` + userNickname + " | Command executed",
+            name: `${interaction.user.tag}` + userNickname + " | Command executed",
             iconURL: `${interaction.member.user.displayAvatarURL()}`,
           })
           .addFields(
@@ -223,18 +203,14 @@ module.exports = {
       const command = interaction.client.commands.get(interaction.commandName);
 
       if (!command) {
-        console.error(
-          `No command matching ${interaction.commandName} was found.`
-        );
+        console.error(`No command matching ${interaction.commandName} was found.`);
         return;
       }
 
       try {
         await command.autocomplete(interaction);
       } catch (error) {
-        console.log(
-          `Autocomplete ${interaction.commandName} failed to execute.\n\n${interaction}`
-        );
+        console.log(`Autocomplete ${interaction.commandName} failed to execute.\n\n${interaction}`);
         console.error(error);
       }
     } else if (interaction.isButton()) {
@@ -250,17 +226,14 @@ module.exports = {
       try {
         await button.execute(interaction);
       } catch (err) {
-        console.log(
-          `Button ${interaction.customId} failed to execute.\n\n${interaction}`
-        );
+        console.log(`Button ${interaction.customId} failed to execute.\n\n${interaction}`);
         console.log(err);
       }
     }
 
     if (interaction.isModalSubmit()) {
       if (interaction.customId === "full-setup-modal") {
-        const logChannelId =
-          interaction.fields.getTextInputValue("logChannelIdInput");
+        const logChannelId = interaction.fields.getTextInputValue("logChannelIdInput");
 
         const replyEmbed = new EmbedBuilder()
           .setColor(0xffffff)

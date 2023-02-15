@@ -11,9 +11,7 @@ module.exports = {
       GuildId: newMessage.guild.id,
     });
     if (guildData && guildData.GuildLogChannel !== null) {
-      const logChannel = await Promise.resolve(
-        interaction.guild.channels.fetch(guildData.GuildLogChannel)
-      );
+      const logChannel = await Promise.resolve(interaction.guild.channels.fetch(guildData.GuildLogChannel));
 
       let userNickname = ` (${newMessage.member.nickname})`;
       if (userNickname == " (null)") {

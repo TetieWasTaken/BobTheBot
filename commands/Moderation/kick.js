@@ -1,8 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const {
-  raiseUserHierarchyError,
-  raiseBotHierarchyError,
-} = require("../../utils/returnError.js");
+const { raiseUserHierarchyError, raiseBotHierarchyError } = require("../../utils/returnError.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -18,43 +15,25 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("kick")
     .setDescription("Kicks a user from the current guild")
-    .addUserOption((option) =>
-      option
-        .setName("target")
-        .setDescription("member to kick")
-        .setRequired(true)
-    )
+    .addUserOption((option) => option.setName("target").setDescription("member to kick").setRequired(true))
     .addStringOption((option) =>
-      option
-        .setName("reason")
-        .setDescription("reason for kick")
-        .setMaxLength(255)
-        .setRequired(false)
+      option.setName("reason").setDescription("reason for kick").setMaxLength(255).setRequired(false)
     ),
   async execute(interaction) {
     const member = interaction.options.getMember("target");
-    let reason =
-      interaction.options.getString("reason") ?? "No reason provided";
+    let reason = interaction.options.getString("reason") ?? "No reason provided";
 
-    const authorMember = await interaction.guild.members.fetch(
-      interaction.user.id
-    );
+    const authorMember = await interaction.guild.members.fetch(interaction.user.id);
 
     const highestUserRole = member.roles.highest;
 
-    if (highestUserRole.position >= authorMember.roles.highest.position)
-      return raiseUserHierarchyError(interaction);
+    if (highestUserRole.position >= authorMember.roles.highest.position) return raiseUserHierarchyError(interaction);
 
-    if (
-      highestUserRole.position >=
-      interaction.guild.members.me.roles.highest.position
-    )
+    if (highestUserRole.position >= interaction.guild.members.me.roles.highest.position)
       return raiseBotHierarchyError(interaction);
 
     try {
-      await member.send(
-        `:athletic_shoe: You have been kicked from \`${interaction.guild.name}\` for \`${reason}\``
-      );
+      await member.send(`:athletic_shoe: You have been kicked from \`${interaction.guild.name}\` for \`${reason}\``);
     } catch (error) {
       // Ignore error
     } finally {

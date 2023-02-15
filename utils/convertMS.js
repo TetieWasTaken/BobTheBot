@@ -11,8 +11,8 @@ module.exports = {
     minutes = minutes % 60;
     hours = hours % 24;
 
-    return `\`${padTo2Digits(hours)}\` hours, \`${padTo2Digits(
-      minutes
-    )}\` minutes, \`${padTo2Digits(seconds)}\` seconds`;
+    return `\`${padTo2Digits(hours)}\` hours, \`${padTo2Digits(minutes)}\` minutes, \`${padTo2Digits(
+      seconds
+    )}\` seconds`;
   },
 };

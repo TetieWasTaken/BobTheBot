@@ -1,8 +1,8 @@
 {
-	"printWidth": 120,
-	"useTabs": false,
-	"singleQuote": false,
-	"quoteProps": "consistent",
-	"trailingComma": "es5",
-	"endOfLine": "lf"
+  "printWidth": 120,
+  "useTabs": false,
+  "singleQuote": false,
+  "quoteProps": "consistent",
+  "trailingComma": "es5",
+  "endOfLine": "lf"
 }

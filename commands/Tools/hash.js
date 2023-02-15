@@ -15,12 +15,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("hash")
     .setDescription("Hash a custom string")
-    .addStringOption((option) =>
-      option
-        .setName("string")
-        .setDescription("The string to hash")
-        .setRequired(true)
-    )
+    .addStringOption((option) => option.setName("string").setDescription("The string to hash").setRequired(true))
     .addStringOption((option) =>
       option
         .setName("algorithm")

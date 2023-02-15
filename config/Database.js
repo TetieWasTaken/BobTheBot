@@ -49,10 +49,7 @@ class Database {
           ["Collections", `${Object.keys(this.connection.collections).length}`],
         ];
 
-        console.log(
-          table(cnslTable, config),
-          "\n————————————————————————————————————————————————\n"
-        );
+        console.log(table(cnslTable, config), "\n————————————————————————————————————————————————\n");
       })
       .catch((err) => {
         console.error(err);

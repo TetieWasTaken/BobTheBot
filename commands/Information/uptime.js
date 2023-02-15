@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const { convertMS } = require("../../utils/convertMS.js");
 
 const requiredBotPerms = {
@@ -16,9 +12,7 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("uptime")
-    .setDescription("Receive the bots's uptime"),
+  data: new SlashCommandBuilder().setName("uptime").setDescription("Receive the bots's uptime"),
   async execute(interaction) {
     let milliseconds = interaction.client.uptime;
 

@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -23,45 +19,28 @@ module.exports = {
         .setName("reverse")
         .setDescription("Reverse text")
         .addStringOption((option) =>
-          option
-            .setName("input")
-            .setDescription("Text to reverse")
-            .setRequired(true)
-            .setMaxLength(1024)
+          option.setName("input").setDescription("Text to reverse").setRequired(true).setMaxLength(1024)
         )
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("ascii")
         .setDescription("Convert text to ASCII")
-        .addStringOption((option) =>
-          option
-            .setName("input")
-            .setDescription("Text to convert")
-            .setRequired(true)
-        )
+        .addStringOption((option) => option.setName("input").setDescription("Text to convert").setRequired(true))
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("vowel")
         .setDescription("Remove vowels from text")
         .addStringOption((option) =>
-          option
-            .setName("input")
-            .setDescription("Text to remove vowels from")
-            .setRequired(true)
+          option.setName("input").setDescription("Text to remove vowels from").setRequired(true)
         )
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("1337")
         .setDescription("Convert text to 1337 (leet)")
-        .addStringOption((option) =>
-          option
-            .setName("input")
-            .setDescription("Text to convert")
-            .setRequired(true)
-        )
+        .addStringOption((option) => option.setName("input").setDescription("Text to convert").setRequired(true))
     ),
   async execute(interaction) {
     const subcommand = interaction.options.getSubcommand();

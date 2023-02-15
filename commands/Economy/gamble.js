@@ -32,10 +32,7 @@ module.exports = {
             .setName("choice")
             .setDescription("Heads or Tails?")
             .setRequired(true)
-            .addChoices(
-              { name: "Heads", value: "heads" },
-              { name: "Tails", value: "tails" }
-            )
+            .addChoices({ name: "Heads", value: "heads" }, { name: "Tails", value: "tails" })
         )
     )
     .addSubcommand((subcommand) =>

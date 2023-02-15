@@ -16,9 +16,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("use")
     .setDescription("Use an item from your inventory.")
-    .addStringOption((option) =>
-      option.setName("item").setDescription("The item to use").setRequired(true)
-    ),
+    .addStringOption((option) => option.setName("item").setDescription("The item to use").setRequired(true)),
   async execute(interaction) {
     const itemInput = interaction.options.getString("item");
     const data = await EconomySchema.findOne({
@@ -32,9 +30,7 @@ module.exports = {
       });
     }
 
-    const itemIndex = data.Inventory.findIndex(
-      (item) => item.name.toLowerCase() === itemInput.toLowerCase()
-    );
+    const itemIndex = data.Inventory.findIndex((item) => item.name.toLowerCase() === itemInput.toLowerCase());
 
     if (itemIndex === -1) {
       return interaction.reply({

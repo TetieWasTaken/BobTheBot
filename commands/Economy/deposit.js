@@ -15,11 +15,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("deposit")
     .setDescription("Deposit money from your wallet into your bank")
-    .addSubcommand((subcommand) =>
-      subcommand
-        .setName("all")
-        .setDescription("Deposit all your money into your bank")
-    )
+    .addSubcommand((subcommand) => subcommand.setName("all").setDescription("Deposit all your money into your bank"))
     .addSubcommand((subcommand) =>
       subcommand
         .setName("amount")

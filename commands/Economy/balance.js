@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const EconomySchema = require("../../models/EconomyModel");
 const { genGradient } = require("../../utils/genGradient");
 
@@ -20,12 +16,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("balance")
     .setDescription("Checks someone's balance")
-    .addUserOption((option) =>
-      option
-        .setName("user")
-        .setDescription("The user to check")
-        .setRequired(false)
-    ),
+    .addUserOption((option) => option.setName("user").setDescription("The user to check").setRequired(false)),
   async execute(interaction) {
     const user = interaction.options.getUser("user") ?? interaction.user;
 
@@ -61,13 +52,7 @@ module.exports = {
     } else {
       let replyEmbed = new EmbedBuilder()
         .setTitle(`balance of ${user.username}#${user.discriminator}`)
-        .setColor(
-          genGradient(
-            "#ff0000",
-            "#00ff00",
-            Math.min(data.NetWorth / 1000000, 1)
-          )
-        )
+        .setColor(genGradient("#ff0000", "#00ff00", Math.min(data.NetWorth / 1000000, 1)))
         .addFields(
           {
             name: "🏦  Bank",

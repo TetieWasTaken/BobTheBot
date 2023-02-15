@@ -1,15 +1,8 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 
 const requiredBotPerms = {
   type: "flags",
-  key: [
-    PermissionFlagsBits.ReadMessageHistory,
-    PermissionFlagsBits.AddReactions,
-  ],
+  key: [PermissionFlagsBits.ReadMessageHistory, PermissionFlagsBits.AddReactions],
 };
 
 const requiredUserPerms = {
@@ -18,13 +11,9 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("capybara")
-    .setDescription("Get a random capybara image"),
+  data: new SlashCommandBuilder().setName("capybara").setDescription("Get a random capybara image"),
   async execute(interaction) {
-    const img = await fetch("https://api.capy.lol/v1/capybara?json=true").then(
-      (res) => res.json()
-    );
+    const img = await fetch("https://api.capy.lol/v1/capybara?json=true").then((res) => res.json());
 
     const embed = new EmbedBuilder()
       .setTitle("Okay I pull up")

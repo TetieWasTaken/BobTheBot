@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const GuildSchema = require("../../models/GuildModel");
 const fs = require("fs");
 
@@ -25,10 +21,7 @@ module.exports = {
         .setName("command")
         .setDescription("Disables a command")
         .addStringOption((option) =>
-          option
-            .setName("command")
-            .setDescription("The command to disable")
-            .setRequired(true)
+          option.setName("command").setDescription("The command to disable").setRequired(true)
         )
     )
     .addSubcommand((subcommand) =>
@@ -36,10 +29,7 @@ module.exports = {
         .setName("category")
         .setDescription("Disables a category")
         .addStringOption((option) =>
-          option
-            .setName("category")
-            .setDescription("The category to disable")
-            .setRequired(true)
+          option.setName("category").setDescription("The category to disable").setRequired(true)
         )
     ),
   async execute(interaction) {
@@ -75,9 +65,7 @@ module.exports = {
         } else if (command == "disable" || command == "enable") {
           cmdEmbed = new EmbedBuilder()
             .setTitle(":x: Unable to disable command")
-            .setDescription(
-              `Command \`${command}\` cannot be disabled or enabled!`
-            )
+            .setDescription(`Command \`${command}\` cannot be disabled or enabled!`)
             .setColor("#FF0000");
         } else if (guildData.DisabledCommands.includes(command)) {
           cmdEmbed = new EmbedBuilder()
@@ -115,15 +103,11 @@ module.exports = {
         let commandCount = 0;
         let disabledCommandsArray = [];
 
-        const commands = fs
-          .readdirSync(`./commands/${category}`)
-          .filter((file) => file.endsWith(".js"));
+        const commands = fs.readdirSync(`./commands/${category}`).filter((file) => file.endsWith(".js"));
 
         for (const file of commands) {
           const command = require(`../${category}/${file}`);
-          const commandFile = interaction.client.commands.get(
-            command.data.name
-          );
+          const commandFile = interaction.client.commands.get(command.data.name);
           if (commandFile) {
             if (guildData.DisabledCommands.includes(command.data.name)) {
               continue;
@@ -141,16 +125,12 @@ module.exports = {
         if (commandCount === 0) {
           catEmbed = new EmbedBuilder()
             .setTitle(":x: No commands were disabled!")
-            .setDescription(
-              `All commands in category \`${category}\` are already disabled!`
-            )
+            .setDescription(`All commands in category \`${category}\` are already disabled!`)
             .setColor(0xff0000);
         } else {
           catEmbed = new EmbedBuilder()
             .setTitle(`:white_check_mark: Disabled ${commandCount} commands!`)
-            .setDescription(
-              `Disabled commands: \`${disabledCommandsArray.join("`, `")}\``
-            )
+            .setDescription(`Disabled commands: \`${disabledCommandsArray.join("`, `")}\``)
             .setColor(0x00ff00);
         }
 

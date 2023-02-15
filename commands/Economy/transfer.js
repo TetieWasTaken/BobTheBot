@@ -30,10 +30,7 @@ module.exports = {
             .setMaxValue(99999)
         )
         .addUserOption((option) =>
-          option
-            .setName("user")
-            .setDescription("The user to transfer Bobbucks to")
-            .setRequired(true)
+          option.setName("user").setDescription("The user to transfer Bobbucks to").setRequired(true)
         )
     )
     .addSubcommand((subcommand) =>
@@ -41,16 +38,10 @@ module.exports = {
         .setName("item")
         .setDescription("Transfer an item to another user")
         .addStringOption((option) =>
-          option
-            .setName("item")
-            .setDescription("The name of the item to transfer")
-            .setRequired(true)
+          option.setName("item").setDescription("The name of the item to transfer").setRequired(true)
         )
         .addUserOption((option) =>
-          option
-            .setName("user")
-            .setDescription("The user to transfer the item to")
-            .setRequired(true)
+          option.setName("user").setDescription("The user to transfer the item to").setRequired(true)
         )
     ),
   async execute(interaction) {
@@ -113,20 +104,13 @@ module.exports = {
       const itemName = interaction.options.getString("item");
 
       const item = await requestItemData(itemName);
-      if (!item)
-        return raiseMiscellaneousError(
-          interaction,
-          "Item not found",
-          "The item you specified was not found."
-        );
+      if (!item) return raiseMiscellaneousError(interaction, "Item not found", "The item you specified was not found.");
 
       const userData = await EconomySchema.findOne({
         UserId: interaction.user.id,
       });
 
-      const userItem = userData.Inventory.find(
-        (i) => i.id === itemName.toLowerCase().replace(/\s+/g, "")
-      );
+      const userItem = userData.Inventory.find((i) => i.id === itemName.toLowerCase().replace(/\s+/g, ""));
       if (!userItem) {
         return interaction.reply({
           content: ":wrench: You don't own this item",
@@ -141,9 +125,7 @@ module.exports = {
       if (targetData) {
         const itemId = item.id;
 
-        const itemIndex = targetData.Inventory.findIndex(
-          (item) => item.id === itemId
-        );
+        const itemIndex = targetData.Inventory.findIndex((item) => item.id === itemId);
 
         if (itemIndex !== -1) {
           let item = targetData.Inventory[itemIndex];

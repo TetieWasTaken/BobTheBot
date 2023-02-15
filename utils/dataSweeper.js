@@ -6,8 +6,7 @@ const loop = (client) => {
   cron.schedule(
     "0 12 * * 6",
     () => {
-      if (!client.isReady())
-        return console.log("Client not ready, skipping sweep");
+      if (!client.isReady()) return console.log("Client not ready, skipping sweep");
       sweep(client);
     },
     {

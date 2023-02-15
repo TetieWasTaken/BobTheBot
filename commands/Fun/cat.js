@@ -1,15 +1,8 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 
 const requiredBotPerms = {
   type: "flags",
-  key: [
-    PermissionFlagsBits.ReadMessageHistory,
-    PermissionFlagsBits.AddReactions,
-  ],
+  key: [PermissionFlagsBits.ReadMessageHistory, PermissionFlagsBits.AddReactions],
 };
 
 const requiredUserPerms = {
@@ -18,9 +11,7 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("meow")
-    .setDescription("Get a random cat image!"),
+  data: new SlashCommandBuilder().setName("meow").setDescription("Get a random cat image!"),
   async execute(interaction) {
     const embed = new EmbedBuilder()
       .setTitle("Meow!")

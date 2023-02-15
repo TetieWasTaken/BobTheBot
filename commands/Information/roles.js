@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -15,9 +11,7 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("roles")
-    .setDescription("Returns a list of all roles in the guild"),
+  data: new SlashCommandBuilder().setName("roles").setDescription("Returns a list of all roles in the guild"),
   async execute(interaction) {
     const roles = await Promise.resolve(
       interaction.guild.roles.fetch().then((roles) => {

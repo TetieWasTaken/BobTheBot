@@ -1,9 +1,4 @@
-const {
-  SlashCommandBuilder,
-  EmbedBuilder,
-  PermissionsBitField,
-  PermissionFlagsBits,
-} = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, PermissionsBitField, PermissionFlagsBits } = require("discord.js");
 const fs = require("fs");
 
 const requiredBotPerms = {
@@ -20,22 +15,13 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("diagnose")
     .setDescription("Diagnose a command")
-    .addStringOption((option) =>
-      option
-        .setName("command")
-        .setDescription("The command to diagnose")
-        .setRequired(true)
-    ),
+    .addStringOption((option) => option.setName("command").setDescription("The command to diagnose").setRequired(true)),
   async execute(interaction) {
     const command = interaction.options.getString("command");
 
-    const commandFolders = fs
-      .readdirSync("./commands")
-      .filter((item) => !/(^|\/)\.[^/.]/g.test(item));
+    const commandFolders = fs.readdirSync("./commands").filter((item) => !/(^|\/)\.[^/.]/g.test(item));
     for (const folder of commandFolders) {
-      const commandFiles = fs
-        .readdirSync(`./commands/${folder}`)
-        .filter((file) => file.endsWith(".js"));
+      const commandFiles = fs.readdirSync(`./commands/${folder}`).filter((file) => file.endsWith(".js"));
       for (const file of commandFiles) {
         const commandFile = require(`../../commands/${folder}/${file}`);
         if (commandFile.data.name === command) {
@@ -45,21 +31,13 @@ module.exports = {
           let replyEmbed = new EmbedBuilder();
 
           for (i = 0; i < requiredBotPerms.key.length; i++) {
-            if (
-              !interaction.guild.members.me.permissions.has(
-                requiredBotPerms.key[i]
-              )
-            ) {
-              let missingPermission = new PermissionsBitField(
-                requiredBotPerms.key[i]
-              ).toArray();
+            if (!interaction.guild.members.me.permissions.has(requiredBotPerms.key[i])) {
+              let missingPermission = new PermissionsBitField(requiredBotPerms.key[i]).toArray();
 
               replyEmbed = new EmbedBuilder()
                 .setColor(0xff0000)
                 .setTitle(`❌ Diagnosed command \`${commandFile.data.name}\``)
-                .setDescription(
-                  `Error! I am missing the following permissions: \`${missingPermission}\``
-                )
+                .setDescription(`Error! I am missing the following permissions: \`${missingPermission}\``)
                 .setFooter({
                   text: "Believe this is a mistake? Report it on our discord server!",
                 });

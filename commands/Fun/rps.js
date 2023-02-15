@@ -96,11 +96,7 @@ module.exports = {
         }
       }
 
-      replyMessageArray.push(
-        `\`ROUND ${i + 1}:\` ${userChoises[i]} vs ${botChoice} - \`${
-          result[i]
-        }\``
-      );
+      replyMessageArray.push(`\`ROUND ${i + 1}:\` ${userChoises[i]} vs ${botChoice} - \`${result[i]}\``);
 
       interaction.editReply({
         content: `${replyMessageArray.join("\n")}`,

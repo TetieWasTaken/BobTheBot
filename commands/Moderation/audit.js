@@ -1,9 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  AuditLogEvent,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, AuditLogEvent, EmbedBuilder } = require("discord.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -17,29 +12,18 @@ const requiredUserPerms = {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("audit")
-    .setDescription(
-      "Displays the audit log for the server, for you lazy people"
-    )
+    .setDescription("Displays the audit log for the server, for you lazy people")
     .addStringOption((option) =>
       option
         .setName("type")
-        .setDescription(
-          "The type of audit log to display, seperated by dashes (ex: channel-create)"
-        )
+        .setDescription("The type of audit log to display, seperated by dashes (ex: channel-create)")
         .setRequired(false)
     )
     .addUserOption((option) =>
-      option
-        .setName("user")
-        .setDescription("The user to filter the audit log for")
-        .setRequired(false)
+      option.setName("user").setDescription("The user to filter the audit log for").setRequired(false)
     )
     .addIntegerOption((option) =>
-      option
-        .setName("limit")
-        .setDescription("The amount of audit logs to display")
-        .setRequired(false)
-        .setMaxValue(5)
+      option.setName("limit").setDescription("The amount of audit logs to display").setRequired(false).setMaxValue(5)
     ),
   async execute(interaction) {
     const type = interaction.options.getString("type") ?? null;
@@ -76,10 +60,7 @@ module.exports = {
       user: user,
     });
 
-    let replyEmbed = new EmbedBuilder()
-      .setTitle("Audit Log")
-      .setColor("#FF0000")
-      .setTimestamp();
+    let replyEmbed = new EmbedBuilder().setTitle("Audit Log").setColor("#FF0000").setTimestamp();
 
     if (auditLogs.entries.size === 0) {
       replyEmbed.setDescription("No audit logs found!");

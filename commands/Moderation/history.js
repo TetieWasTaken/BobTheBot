@@ -1,9 +1,4 @@
-const {
-  SlashCommandBuilder,
-  EmbedBuilder,
-  PermissionFlagsBits,
-  time,
-} = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, time } = require("discord.js");
 const InfractionsSchema = require("../../models/InfractionsModel");
 
 const requiredBotPerms = {
@@ -20,12 +15,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("history")
     .setDescription("Check a user's infraction history")
-    .addUserOption((option) =>
-      option
-        .setName("target")
-        .setDescription("member to view history of")
-        .setRequired(true)
-    ),
+    .addUserOption((option) => option.setName("target").setDescription("member to view history of").setRequired(true)),
   async execute(interaction) {
     const member = interaction.options.getMember("target");
 
@@ -51,8 +41,7 @@ module.exports = {
 
     if (data) {
       punishmentArray = data.Punishments.map(
-        (punishment) =>
-          `\`ID\`: ${punishment.CaseId}, \`${punishment.PunishType}\`: ${punishment.Reason}`
+        (punishment) => `\`ID\`: ${punishment.CaseId}, \`${punishment.PunishType}\`: ${punishment.Reason}`
       );
       if (punishmentArray.length == 0) {
         punishmentArray.push("No active infractions.");
@@ -73,10 +62,7 @@ module.exports = {
         },
         {
           name: `Active infraction`,
-          value: `This member is timed out until: ${time(
-            member.communicationDisabledUntil,
-            "f"
-          )}`,
+          value: `This member is timed out until: ${time(member.communicationDisabledUntil, "f")}`,
           inline: false,
         }
       )

@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const { convertMS } = require("../../utils/convertMS.js");
 
 const requiredBotPerms = {
@@ -16,9 +12,7 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("stats")
-    .setDescription("Receive statistics about the bot"),
+  data: new SlashCommandBuilder().setName("stats").setDescription("Receive statistics about the bot"),
   async execute(interaction) {
     let milliseconds = interaction.client.uptime;
 
@@ -31,10 +25,7 @@ module.exports = {
 
     const replyEmbed = new EmbedBuilder()
       .setColor(interaction.guild.members.me.displayHexColor)
-      .setTitle(
-        `${interaction.client.user.username}#${interaction.client.user.discriminator}` +
-          botNickname
-      )
+      .setTitle(`${interaction.client.user.username}#${interaction.client.user.discriminator}` + botNickname)
       .setDescription("🧮 Statistics about the bot")
       .addFields(
         {

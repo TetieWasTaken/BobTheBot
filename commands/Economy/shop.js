@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const fs = require("fs");
 
 const requiredBotPerms = {
@@ -19,12 +15,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("shop")
     .setDescription("View the shop")
-    .addIntegerOption((option) =>
-      option
-        .setName("page")
-        .setDescription("The page to view")
-        .setRequired(false)
-    ),
+    .addIntegerOption((option) => option.setName("page").setDescription("The page to view").setRequired(false)),
   async execute(interaction) {
     let page = interaction.options.getInteger("page") ?? 1;
 
@@ -36,10 +27,7 @@ module.exports = {
         if (!item.buyable) itemsJSON.splice(itemsJSON.indexOf(item), 1);
       });
 
-      page =
-        page > Math.ceil(itemsJSON.length / 5)
-          ? Math.ceil(itemsJSON.length / 5)
-          : page;
+      page = page > Math.ceil(itemsJSON.length / 5) ? Math.ceil(itemsJSON.length / 5) : page;
 
       const shopEmbed = new EmbedBuilder()
         .setAuthor({ name: "Shop" })
@@ -55,9 +43,7 @@ module.exports = {
         if (itemsJSON[i + (page - 1) * 5]) {
           id++;
           shopEmbed.addFields({
-            name: `${itemsJSON[i + (page - 1) * 5].name} — ₳${
-              itemsJSON[i + (page - 1) * 5].price
-            }`,
+            name: `${itemsJSON[i + (page - 1) * 5].name} — ₳${itemsJSON[i + (page - 1) * 5].price}`,
             value: `*${itemsJSON[i + (page - 1) * 5].description}*`,
             inline: false,
           });

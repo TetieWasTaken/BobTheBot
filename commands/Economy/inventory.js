@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const EconomySchema = require("../../models/EconomyModel");
 const { requestItemData } = require("../../utils/requestItemData");
 
@@ -20,17 +16,9 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("inventory")
     .setDescription("View your inventory")
-    .addIntegerOption((option) =>
-      option
-        .setName("page")
-        .setDescription("The page you want to view")
-        .setRequired(false)
-    )
+    .addIntegerOption((option) => option.setName("page").setDescription("The page you want to view").setRequired(false))
     .addUserOption((option) =>
-      option
-        .setName("user")
-        .setDescription("The user you want to view the inventory of")
-        .setRequired(false)
+      option.setName("user").setDescription("The user you want to view the inventory of").setRequired(false)
     ),
   async execute(interaction) {
     const page = interaction.options.getInteger("page") ?? 1;
@@ -69,9 +57,7 @@ module.exports = {
       for (let i = 0; i < 5; i++) {
         if (data.Inventory[i + (page - 1) * 5]) {
           try {
-            itemData = await requestItemData(
-              data.Inventory[i + (page - 1) * 5].id
-            );
+            itemData = await requestItemData(data.Inventory[i + (page - 1) * 5].id);
           } catch (err) {
             console.log(err);
             inventoryEmbed.addFields({

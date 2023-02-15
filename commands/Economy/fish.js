@@ -13,9 +13,7 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("fish")
-    .setDescription("Go fishing for some cash"),
+  data: new SlashCommandBuilder().setName("fish").setDescription("Go fishing for some cash"),
   cooldownTime: 60 * 2 * 1000,
   async execute(interaction) {
     const data = await EconomySchema.findOne({
@@ -23,25 +21,10 @@ module.exports = {
     });
 
     if (!data || !data.Inventory.find((item) => item.id === "fishingrod")) {
-      return raiseMiscellaneousError(
-        interaction,
-        "Property Error",
-        "You need a fishing rod to go fishing!"
-      );
+      return raiseMiscellaneousError(interaction, "Property Error", "You need a fishing rod to go fishing!");
     }
 
-    const items = [
-      "Shark",
-      "Tuna",
-      "Salmon",
-      "Cod",
-      "Bass",
-      "Trout",
-      "Sardine",
-      "Herring",
-      "Anchovy",
-      "Shoe",
-    ];
+    const items = ["Shark", "Tuna", "Salmon", "Cod", "Bass", "Trout", "Sardine", "Herring", "Anchovy", "Shoe"];
 
     const randomItem = Math.floor(Math.random() * 9) + 1;
     const randomAmount = Math.floor(Math.random() * 50) + 30;
@@ -60,9 +43,7 @@ module.exports = {
 
     const rodBreak = Math.floor(Math.random() * 49) + 1;
     if (rodBreak === 1) {
-      const rodIndex = data.Inventory.findIndex(
-        (item) => item.name === "Fishing Rod"
-      );
+      const rodIndex = data.Inventory.findIndex((item) => item.name === "Fishing Rod");
       data.NetWorth += randomAmount - data.Inventory[rodIndex].price;
       data.Inventory.splice(rodIndex, 1);
       data.Wallet += randomAmount;

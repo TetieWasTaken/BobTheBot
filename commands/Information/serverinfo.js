@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -15,9 +11,7 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("serverinfo")
-    .setDescription("Receive information about the current guild"),
+  data: new SlashCommandBuilder().setName("serverinfo").setDescription("Receive information about the current guild"),
   async execute(interaction) {
     let serverIcon = interaction.guild.iconURL();
     let boostCount = interaction.guild.premiumSubscriptionCount;
@@ -51,9 +45,7 @@ module.exports = {
           value: `
           *Roles:* \`${interaction.guild.roles.cache.size - 1}\`
                 *Boost tier:* \`${boostTier}\`
-                *Channels:* \`${
-                  interaction.guild.channels.channelCountWithoutThreads
-                }\``,
+                *Channels:* \`${interaction.guild.channels.channelCountWithoutThreads}\``,
           inline: true,
         }
       )

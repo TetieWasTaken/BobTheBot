@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const GuildSchema = require("../../models/GuildModel");
 const fs = require("fs");
 
@@ -25,10 +21,7 @@ module.exports = {
         .setName("command")
         .setDescription("Enables a command")
         .addStringOption((option) =>
-          option
-            .setName("command")
-            .setDescription("The command to enable")
-            .setRequired(true)
+          option.setName("command").setDescription("The command to enable").setRequired(true)
         )
     )
     .addSubcommand((subcommand) =>
@@ -36,10 +29,7 @@ module.exports = {
         .setName("category")
         .setDescription("Enables a category")
         .addStringOption((option) =>
-          option
-            .setName("category")
-            .setDescription("The category to enable")
-            .setRequired(true)
+          option.setName("category").setDescription("The category to enable").setRequired(true)
         )
     ),
   async execute(interaction) {
@@ -67,9 +57,7 @@ module.exports = {
             .setDescription(`Command \`${command}\` is already enabled!`)
             .setColor("#FF0000");
         } else {
-          guildData.DisabledCommands = guildData.DisabledCommands.filter(
-            (cmd) => cmd !== command
-          );
+          guildData.DisabledCommands = guildData.DisabledCommands.filter((cmd) => cmd !== command);
 
           await guildData.save();
 
@@ -90,9 +78,7 @@ module.exports = {
 
         let catEmbed;
         if (categories.includes(category)) {
-          const commands = fs
-            .readdirSync(`./commands/${category}`)
-            .filter((file) => file.endsWith(".js"));
+          const commands = fs.readdirSync(`./commands/${category}`).filter((file) => file.endsWith(".js"));
 
           let commandCount = 0;
           let disabledCommandsArray = [];
@@ -102,9 +88,7 @@ module.exports = {
             if (guildData.DisabledCommands.includes(command.data.name)) {
               commandCount++;
               disabledCommandsArray.push(command.data.name);
-              guildData.DisabledCommands = guildData.DisabledCommands.filter(
-                (cmd) => cmd !== command.data.name
-              );
+              guildData.DisabledCommands = guildData.DisabledCommands.filter((cmd) => cmd !== command.data.name);
             }
           }
 
@@ -113,16 +97,12 @@ module.exports = {
           if (commandCount === 0) {
             catEmbed = new EmbedBuilder()
               .setTitle(":x: No commands were enabled!")
-              .setDescription(
-                `All commands in category \`${category}\` are already enabled!`
-              )
+              .setDescription(`All commands in category \`${category}\` are already enabled!`)
               .setColor(0xff0000);
           } else {
             catEmbed = new EmbedBuilder()
               .setTitle(`:white_check_mark: Enabled ${commandCount} commands!`)
-              .setDescription(
-                `Enabled commands: \`${disabledCommandsArray.join("`, `")}\``
-              )
+              .setDescription(`Enabled commands: \`${disabledCommandsArray.join("`, `")}\``)
               .setColor(0x00ff00);
           }
         } else {

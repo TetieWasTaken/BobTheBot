@@ -1,10 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-  ChannelType,
-  time,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, ChannelType, time } = require("discord.js");
 
 const requiredBotPerms = {
   type: "flags",

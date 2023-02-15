@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 require("dotenv").config();
 
 const requiredBotPerms = {
@@ -20,17 +16,12 @@ module.exports = {
     .setName("weather")
     .setDescription("Get the weather of a city")
     .addStringOption((option) =>
-      option
-        .setName("city")
-        .setDescription("The city you want to get the weather of (Ex: London)")
-        .setRequired(true)
+      option.setName("city").setDescription("The city you want to get the weather of (Ex: London)").setRequired(true)
     )
     .addIntegerOption((option) =>
       option
         .setName("hour")
-        .setDescription(
-          "The hour you want to get the weather of in UTC timezone (Ex: 12, 18, 6)"
-        )
+        .setDescription("The hour you want to get the weather of in UTC timezone (Ex: 12, 18, 6)")
         .setMinValue(0)
         .setMaxValue(23)
         .setRequired(false)
@@ -110,16 +101,12 @@ module.exports = {
           },
           {
             name: "Weather interpretation",
-            value: `${
-              interpretationCodes[weatherData.current_weather.weathercode]
-            }`,
+            value: `${interpretationCodes[weatherData.current_weather.weathercode]}`,
             inline: true,
           }
         )
         .setFooter({
-          text: `Powered by OpenMeteo, Generation time: ${weatherData.generationtime_ms.toPrecision(
-            2
-          )}ms`,
+          text: `Powered by OpenMeteo, Generation time: ${weatherData.generationtime_ms.toPrecision(2)}ms`,
         });
 
       return await interaction.reply({ embeds: [replyEmbed] });
@@ -134,9 +121,7 @@ module.exports = {
 
       userDate.setUTCHours(hour, 0, 0, 0);
 
-      const arrayIndex = weatherData.hourly.time.indexOf(
-        userDate.getTime() / 1000
-      );
+      const arrayIndex = weatherData.hourly.time.indexOf(userDate.getTime() / 1000);
 
       if (arrayIndex == -1) {
         return interaction.reply({
@@ -182,16 +167,12 @@ module.exports = {
           },
           {
             name: "Weather interpretation",
-            value: `${
-              interpretationCodes[weatherData.hourly.weathercode[arrayIndex]]
-            }`,
+            value: `${interpretationCodes[weatherData.hourly.weathercode[arrayIndex]]}`,
             inline: false,
           }
         )
         .setFooter({
-          text: `Powered by OpenMeteo, Generation time: ${weatherData.generationtime_ms.toPrecision(
-            2
-          )}ms`,
+          text: `Powered by OpenMeteo, Generation time: ${weatherData.generationtime_ms.toPrecision(2)}ms`,
         });
 
       return await interaction.reply({ embeds: [replyEmbed] });

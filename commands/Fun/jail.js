@@ -20,33 +20,19 @@ module.exports = {
         .setName("color")
         .setDescription("Generate a jail image")
 
-        .addUserOption((option) =>
-          option
-            .setName("user")
-            .setDescription("The user to trigger")
-            .setRequired(false)
-        )
+        .addUserOption((option) => option.setName("user").setDescription("The user to trigger").setRequired(false))
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("grayscale")
         .setDescription("Generate a light youtube comment")
-        .addUserOption((option) =>
-          option
-            .setName("user")
-            .setDescription("The user to trigger")
-            .setRequired(false)
-        )
+        .addUserOption((option) => option.setName("user").setDescription("The user to trigger").setRequired(false))
     ),
   async execute(interaction) {
     const user = interaction.options.getUser("user") ?? interaction.user;
-    const grayscale =
-      interaction.options.getSubcommand() === "grayscale" ? true : false;
+    const grayscale = interaction.options.getSubcommand() === "grayscale" ? true : false;
 
-    let jail = await canvacord.Canvas.jail(
-      user.displayAvatarURL({ format: "png", dynamic: true }),
-      grayscale
-    );
+    let jail = await canvacord.Canvas.jail(user.displayAvatarURL({ format: "png", dynamic: true }), grayscale);
 
     if (jail instanceof canvacord.Canvas) {
       let jail = await jail.toBuffer();

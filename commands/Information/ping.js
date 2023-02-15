@@ -11,9 +11,7 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("ping")
-    .setDescription("Returns the bots's latency"),
+  data: new SlashCommandBuilder().setName("ping").setDescription("Returns the bots's latency"),
   async execute(interaction) {
     const sent = await interaction.reply({
       content: "Pinging...",
@@ -21,9 +19,7 @@ module.exports = {
       ephemeral: true,
     });
     await interaction.editReply(
-      `:heartbeat: Websocket heartbeat: \`${
-        interaction.client.ws.ping
-      }ms\`.\n:comet: Rountrip Latency: \`${
+      `:heartbeat: Websocket heartbeat: \`${interaction.client.ws.ping}ms\`.\n:comet: Rountrip Latency: \`${
         sent.createdTimestamp - interaction.createdTimestamp
       }ms\``
     );

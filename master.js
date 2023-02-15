@@ -30,9 +30,7 @@ db.connect(client);
 
 timerStart = Date.now();
 
-const commandFolders = fs
-  .readdirSync("./commands/")
-  .filter((item) => !/(^|\/)\.[^/.]/g.test(item));
+const commandFolders = fs.readdirSync("./commands/").filter((item) => !/(^|\/)\.[^/.]/g.test(item));
 const commands = [];
 
 console.log(`\n————————————————————————————————————————————————\n`);
@@ -47,9 +45,7 @@ let config = {
 };
 
 for (const folder of commandFolders) {
-  const commandFiles = fs
-    .readdirSync(`./commands/${folder}`)
-    .filter((file) => file.endsWith(".js"));
+  const commandFiles = fs.readdirSync(`./commands/${folder}`).filter((file) => file.endsWith(".js"));
   for (const file of commandFiles) {
     try {
       const command = require(`./commands/${folder}/${file}`);
@@ -82,9 +78,7 @@ timerStart = Date.now();
 
 const componentFolders = fs.readdirSync(`./components`);
 for (const compfolder of componentFolders) {
-  const componentFiles = fs
-    .readdirSync(`./components/${compfolder}`)
-    .filter((file) => file.endsWith(".js"));
+  const componentFiles = fs.readdirSync(`./components/${compfolder}`).filter((file) => file.endsWith(".js"));
 
   switch (compfolder) {
     case "buttons":
@@ -120,9 +114,7 @@ config = {
 
 timerStart = Date.now();
 
-const eventFiles = fs
-  .readdirSync("./events")
-  .filter((file) => file.endsWith(".js"));
+const eventFiles = fs.readdirSync("./events").filter((file) => file.endsWith(".js"));
 
 for (const file of eventFiles) {
   try {

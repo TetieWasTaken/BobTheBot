@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const LevelSchema = require("../../models/LevelModel");
 
 const requiredBotPerms = {
@@ -19,12 +15,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("rank")
     .setDescription("Returns xp and rank of given user in the server")
-    .addUserOption((option) =>
-      option
-        .setName("target")
-        .setDescription("User to display rank of")
-        .setRequired(false)
-    ),
+    .addUserOption((option) => option.setName("target").setDescription("User to display rank of").setRequired(false)),
   async execute(interaction) {
     let user = interaction.options.getUser("target") ?? interaction.user;
 

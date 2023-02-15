@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 
 const requiredBotPerms = {
   type: "flags",
@@ -18,12 +14,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("roleinfo")
     .setDescription("Receive information about a role")
-    .addRoleOption((option) =>
-      option
-        .setName("target")
-        .setDescription("role to target")
-        .setRequired(true)
-    ),
+    .addRoleOption((option) => option.setName("target").setDescription("role to target").setRequired(true)),
   async execute(interaction) {
     const target = interaction.options.getRole("target");
     let permissionsArray = target.permissions.toArray();

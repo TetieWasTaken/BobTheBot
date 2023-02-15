@@ -15,12 +15,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("pixelate")
     .setDescription("Pixelate someone's avatar")
-    .addUserOption((option) =>
-      option
-        .setName("user")
-        .setDescription("The user to pixelate")
-        .setRequired(false)
-    )
+    .addUserOption((option) => option.setName("user").setDescription("The user to pixelate").setRequired(false))
     .addIntegerOption((option) =>
       option
         .setName("amount")
@@ -35,10 +30,7 @@ module.exports = {
 
     amount = amount - 1;
 
-    let pixelate = await canvacord.Canvas.pixelate(
-      user.displayAvatarURL({ format: "png", dynamic: true }),
-      amount
-    );
+    let pixelate = await canvacord.Canvas.pixelate(user.displayAvatarURL({ format: "png", dynamic: true }), amount);
 
     if (pixelate instanceof canvacord.Canvas) {
       let pixelate = await pixelate.toBuffer();

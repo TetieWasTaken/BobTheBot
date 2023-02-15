@@ -21,12 +21,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("dictionary")
     .setDescription("Search for a word in the dictionary")
-    .addStringOption((option) =>
-      option
-        .setName("word")
-        .setDescription("Word to search for")
-        .setRequired(true)
-    ),
+    .addStringOption((option) => option.setName("word").setDescription("Word to search for").setRequired(true)),
   async execute(interaction) {
     const input = interaction.options.getString("word");
     const regex = /^[a-zA-Z]+$/;
@@ -40,9 +35,7 @@ module.exports = {
 
     await interaction.deferReply();
 
-    const result = await fetch(
-      `https://api.dictionaryapi.dev/api/v2/entries/en/${input}`
-    ).then((res) => res.json());
+    const result = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${input}`).then((res) => res.json());
 
     const totalPages = result[0].meanings[0].definitions.length;
 
@@ -71,11 +64,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setColor("#0099ff")
       .setTitle(result[0].word)
-      .setURL(
-        result[0].phonetics[0].audio.length > 0
-          ? result[0].phonetics[0].audio
-          : null
-      )
+      .setURL(result[0].phonetics[0].audio.length > 0 ? result[0].phonetics[0].audio : null)
       .setDescription(result[0].meanings[0].definitions[0].definition)
       .addFields(
         {

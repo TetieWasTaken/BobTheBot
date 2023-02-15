@@ -14,12 +14,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("unban")
     .setDescription("Unbans a user from the current guild")
-    .addStringOption((option) =>
-      option
-        .setName("userid")
-        .setDescription("discord id for unban")
-        .setRequired(true)
-    ),
+    .addStringOption((option) => option.setName("userid").setDescription("discord id for unban").setRequired(true)),
   async execute(interaction) {
     const userId = interaction.options.getString("userid");
 

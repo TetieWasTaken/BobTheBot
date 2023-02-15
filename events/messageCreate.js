@@ -12,9 +12,7 @@ module.exports = {
     //https://www.desmos.com/calculator/6lbyqqpk4u
     //Special thanks to @That_Guy977#5882 for helping me with this formula
 
-    const bonusXP = Math.floor(
-      Math.min(210 - 115040 / (messageLength + 550), 50)
-    );
+    const bonusXP = Math.floor(Math.min(210 - 115040 / (messageLength + 550), 50));
     const randomNum = Math.floor(Math.random() * 21 + 15);
     const xpToAdd = randomNum + bonusXP;
 
@@ -39,10 +37,7 @@ module.exports = {
       if (UserXP >= xpNeeded) {
         ++UserLevel;
 
-        await LevelSchema.updateOne(
-          { GuildId: message.guild.id, UserId: author.id },
-          { UserLevel, UserXP }
-        );
+        await LevelSchema.updateOne({ GuildId: message.guild.id, UserId: author.id }, { UserLevel, UserXP });
       }
     }
 
