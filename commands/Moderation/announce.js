@@ -51,6 +51,17 @@ module.exports = {
   async execute(interaction) {
     const channel = interaction.options.getChannel("channel");
 
+    if (!channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.SendMessages))
+      return interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor(0xff0000)
+            .setTitle(`Announcement failed`)
+            .setDescription(`I do not have permissions to send messages in <#${channel.id}>!`),
+        ],
+        ephemeral: true,
+      });
+
     if (interaction.options.getSubcommand() === "embed") {
       const modal = new ModalBuilder().setCustomId("announce-embed-modal").setTitle("Announce Embed");
 
@@ -129,42 +140,43 @@ module.exports = {
             });
 
           const colors = {
-            Default: 0x000000,
-            White: 0xffffff,
-            Aqua: 0x1abc9c,
-            Green: 0x57f287,
-            Blue: 0x3498db,
-            Yellow: 0xfee75c,
-            Purple: 0x9b59b6,
-            LuminousVividPink: 0xe91e63,
-            Fuchsia: 0xeb459e,
-            Gold: 0xf1c40f,
-            Orange: 0xe67e22,
-            Red: 0xed4245,
-            Grey: 0x95a5a6,
-            Navy: 0x34495e,
-            DarkAqua: 0x11806a,
-            DarkGreen: 0x1f8b4c,
-            DarkBlue: 0x206694,
-            DarkPurple: 0x71368a,
-            DarkVividPink: 0xad1457,
-            DarkGold: 0xc27c0e,
-            DarkOrange: 0xa84300,
-            DarkRed: 0x992d22,
-            DarkGrey: 0x979c9f,
-            DarkerGrey: 0x7f8c8d,
-            LightGrey: 0xbcc0c0,
-            DarkNavy: 0x2c3e50,
-            Blurple: 0x5865f2,
-            Greyple: 0x99aab5,
-            DarkButNotBlack: 0x2c2f33,
-            NotQuiteBlack: 0x23272a,
+            default: 0x000000,
+            white: 0xffffff,
+            aqua: 0x1abc9c,
+            green: 0x57f287,
+            blue: 0x3498db,
+            yellow: 0xfee75c,
+            purple: 0x9b59b6,
+            luminousvividpink: 0xe91e63,
+            fuchsia: 0xeb459e,
+            gold: 0xf1c40f,
+            orange: 0xe67e22,
+            red: 0xed4245,
+            grey: 0x95a5a6,
+            navy: 0x34495e,
+            darkaqua: 0x11806a,
+            darkgreen: 0x1f8b4c,
+            darkblue: 0x206694,
+            darkpurple: 0x71368a,
+            darkvividpink: 0xad1457,
+            darkgold: 0xc27c0e,
+            darkorange: 0xa84300,
+            darkred: 0x992d22,
+            darkgrey: 0x979c9f,
+            darkergrey: 0x7f8c8d,
+            lightgrey: 0xbcc0c0,
+            darknavy: 0x2c3e50,
+            blurple: 0x5865f2,
+            greyple: 0x99aab5,
+            darkbutnotblack: 0x2c2f33,
+            notquiteblack: 0x23272a,
           };
 
-          // From Discord.JS
+          // Discord.JS ColorResolvable
           if (typeof color === "string") {
-            if (color === "Random") color = Math.floor(Math.random() * (0xffffff + 1));
-            else if (color === "Default") color = 0;
+            color = color.toLowerCase().replace(" ", "");
+            if (color === "random") color = Math.floor(Math.random() * (0xffffff + 1));
+            else if (color === "default") color = 0;
             else color = colors[color] ?? parseInt(color.replace("#", ""), 16);
           } else if (Array.isArray(color)) {
             color = (color[0] << 16) + (color[1] << 8) + color[2];
@@ -206,13 +218,7 @@ module.exports = {
           });
         })
         .catch(async (err) => {
-          if (!channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.SendMessages)) {
-            const replyEmbed = new EmbedBuilder()
-              .setColor(0xff0000)
-              .setTitle(`Announcement failed`)
-              .setDescription(`I do not have permissions to send messages in <#${channel.id}>!`);
-            interaction.followUp({ embeds: [replyEmbed], ephemeral: true });
-          } else if (err.message.endsWith("time")) {
+          if (err.message.endsWith("time")) {
             const replyEmbed = new EmbedBuilder()
               .setColor(0xff0000)
               .setTitle(`Announcement failed`)
@@ -229,13 +235,6 @@ module.exports = {
         });
     } else if (interaction.options.getSubcommand() === "message") {
       const message = interaction.options.getString("message");
-
-      if (!channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.SendMessages)) {
-        return interaction.reply({
-          content: ":wrench: I do not have permissions to send messages in this channel!",
-          ephemeral: true,
-        });
-      }
 
       channel.send(message);
 
