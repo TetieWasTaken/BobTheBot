@@ -14,7 +14,10 @@ const requiredUserPerms = {
 };
 
 function getChoices() {
-  const choises = fs.readdirSync("./commands").filter((item) => !/(^|\/)\.[^/.]/g.test(item));
+  const choises = fs
+    .readdirSync("./commands")
+    .filter((item) => !/(^|\/)\.[^/.]/g.test(item))
+    .filter((item) => item !== "context-menu");
 
   return choises.map((choice) => {
     return { name: choice, value: choice };
@@ -22,7 +25,10 @@ function getChoices() {
 }
 
 function getCommands() {
-  const categories = fs.readdirSync("./commands").filter((item) => !/(^|\/)\.[^/.]/g.test(item));
+  const categories = fs
+    .readdirSync("./commands")
+    .filter((item) => !/(^|\/)\.[^/.]/g.test(item))
+    .filter((item) => item !== "context-menu");
 
   const commands = [];
 
