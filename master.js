@@ -45,8 +45,24 @@ let config = {
 };
 
 for (const folder of commandFolders) {
-  const commandFiles = fs.readdirSync(`./commands/${folder}`).filter((file) => file.endsWith(".js"));
+  const commandFiles = fs.readdirSync(`./commands/${folder}`);
   for (const file of commandFiles) {
+    if (!file.endsWith(".js")) {
+      const subFiles = fs.readdirSync(`./commands/${folder}/${file}`);
+      for (const subFile of subFiles) {
+        try {
+          const command = require(`./commands/${folder}/${file}/${subFile}`);
+          commands.push(command.data.toJSON());
+          client.commands.set(command.data.name, command);
+          cnslTable.push([`/${command.data.name}`, "✅"]);
+        } catch (error) {
+          console.log(error);
+          cnslTable.push([`${file}`, "❌"]);
+        }
+      }
+      continue;
+    }
+
     try {
       const command = require(`./commands/${folder}/${file}`);
       commands.push(command.data.toJSON());

@@ -7,60 +7,6 @@ module.exports = {
   once: false,
   async execute(interaction) {
     if (interaction.isCommand()) {
-      if (interaction.isMessageContextMenuCommand()) {
-        const guildData = await GuildSchema.findOne({
-          GuildId: interaction.guild.id,
-        });
-
-        if (guildData && guildData.GuildLogChannel !== null) {
-          const logChannel = await Promise.resolve(interaction.guild.channels.fetch(guildData.GuildLogChannel));
-
-          let userNickname = ` (${interaction.member.nickname})`;
-          if (userNickname == " (null)") {
-            userNickname = "";
-          }
-
-          logChannel.send({
-            embeds: [
-              new EmbedBuilder()
-                .setColor(0xff6333)
-                .setAuthor({
-                  name: `${interaction.user.tag}` + userNickname + " | Message reported",
-                  iconURL: `${interaction.member.user.displayAvatarURL()}`,
-                })
-                .addFields(
-                  {
-                    name: `Channel`,
-                    value: `${interaction.channel}`,
-                    inline: false,
-                  },
-                  {
-                    name: `Message`,
-                    value: `${interaction.targetMessage.content}`,
-                    inline: false,
-                  },
-                  {
-                    name: `ID`,
-                    value: `\`\`\`ini\nUser = ${interaction.user.id}\nID = ${interaction.id}\`\`\``,
-                    inline: false,
-                  }
-                )
-                .setTimestamp(),
-            ],
-          });
-
-          return interaction.reply({
-            content: `Message reported successfully.\n\`\`\`${interaction.targetMessage.content}\`\`\``,
-            ephemeral: true,
-          });
-        } else {
-          return interaction.reply({
-            content: "Unable to report message: this server has not set up a logging channel.",
-            ephemeral: true,
-          });
-        }
-      }
-
       const client = interaction.client;
 
       const command = client.commands.get(interaction.commandName);
@@ -138,7 +84,7 @@ module.exports = {
         });
       }
 
-      if (guildData && guildData.GuildLogChannel !== null) {
+      if (guildData && guildData.GuildLogChannel !== null && interaction.isChatInputCommand()) {
         const logChannel = await Promise.resolve(interaction.guild.channels.fetch(guildData.GuildLogChannel));
 
         let userNickname = ` (${interaction.member.nickname})`;
