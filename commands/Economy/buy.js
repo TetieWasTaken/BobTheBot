@@ -59,7 +59,12 @@ module.exports = {
         data.Wallet -= item.price;
         data.save();
         return interaction.reply({
-          content: `You have bought a \`${item.name.replace(/:.*?:/g, "").slice(1)}\` for ₳\`${item.price}\` Bobbucks`,
+          content: `You have bought a \`${item.name
+            .replace(/:.*?:/g, "")
+            .replace(
+              /(\u00a9\s|\u00ae\s|[\u2000-\u3300]\s|\ud83c[\ud000-\udfff]\s|\ud83d[\ud000-\udfff]\s|\ud83e[\ud000-\udfff])(\s)?/,
+              ""
+            )}\` for ₳\`${item.price}\` Bobbucks`,
         });
       }
     });

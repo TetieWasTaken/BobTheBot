@@ -51,7 +51,7 @@ module.exports = {
       )
       .setColor(0x00ff00);
 
-    if (!itemInfo.note) descriptionEmbed.spliceFields(-1, 1);
+    if (!itemInfo.note) itemEmbed.spliceFields(-1, 1);
 
     return interaction.reply({
       embeds: [itemEmbed],

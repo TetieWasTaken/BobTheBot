@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const EconomySchema = require("../../models/EconomyModel");
-const { useItem } = require("../../utils/useItem.js");
+const { useItem } = require("../../utils/useItem");
+const { requestItemData } = require("../../utils/requestItemData");
 
 const requiredBotPerms = {
   type: "flags",
@@ -30,7 +31,7 @@ module.exports = {
       });
     }
 
-    const itemIndex = data.Inventory.findIndex((item) => item.name.toLowerCase() === itemInput.toLowerCase());
+    const itemIndex = data.Inventory.findIndex((item) => item.id === itemInput.toLowerCase());
 
     if (itemIndex === -1) {
       return interaction.reply({
@@ -39,7 +40,7 @@ module.exports = {
       });
     }
 
-    const item = data.Inventory[itemIndex];
+    const item = await requestItemData(itemInput);
 
     if (!item.useable) {
       return interaction.reply({
