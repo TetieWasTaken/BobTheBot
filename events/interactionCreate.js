@@ -83,68 +83,6 @@ module.exports = {
           ephemeral: true,
         });
       }
-
-      if (guildData && guildData.GuildLogChannel !== null && interaction.isChatInputCommand()) {
-        const logChannel = await Promise.resolve(interaction.guild.channels.fetch(guildData.GuildLogChannel));
-
-        let userNickname = ` (${interaction.member.nickname})`;
-        let repliedMessage = await Promise.resolve(interaction.fetchReply());
-        repliedMessage = repliedMessage.toString();
-
-        const loggingEmojis = [
-          ":gift: G",
-          ":gift: R",
-          ":hammer:",
-          ":athletic_shoe:",
-          ":mute:",
-          ":unmute:",
-          "rabbit2",
-          ":turtle:",
-          "sloth",
-          ":scales:",
-          ":unlock:",
-          ":lock:",
-          ":warning:",
-          ":mag:",
-          ":slot_machine:",
-          ":card_index:",
-          ":mega:",
-        ];
-
-        if (!loggingEmojis.some((elem) => repliedMessage.startsWith(elem))) {
-          return;
-        }
-
-        if (userNickname == " (null)") {
-          userNickname = "";
-        }
-
-        const logEmbed = new EmbedBuilder()
-          .setColor(0xff6333)
-          .setAuthor({
-            name: `${interaction.user.tag}` + userNickname + " | Command executed",
-            iconURL: `${interaction.member.user.displayAvatarURL()}`,
-          })
-          .addFields(
-            {
-              name: `Channel`,
-              value: `${interaction.channel}`,
-              inline: false,
-            },
-            {
-              name: `Command executed`,
-              value: `\`${interaction.commandName}\``,
-              inline: false,
-            },
-            {
-              name: `ID`,
-              value: `\`\`\`ini\nUser = ${interaction.user.id}\nID = ${interaction.id}\`\`\``,
-              inline: false,
-            }
-          )
-          .setTimestamp();
-        logChannel.send({ embeds: [logEmbed] });
-      }
     } else if (interaction.isAutocomplete()) {
       const command = interaction.client.commands.get(interaction.commandName);
 
