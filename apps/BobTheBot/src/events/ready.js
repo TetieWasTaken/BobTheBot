@@ -6,7 +6,7 @@ const { table } = require("table");
 module.exports = {
   name: "ready",
   once: true,
-  async execute(client, commands) {
+  async execute(client, interactions) {
     // This Promise is required to make sure the WebSocket is fully ready before proceeding
     await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -50,11 +50,11 @@ module.exports = {
       try {
         if (process.env.ENV === "production") {
           await rest.put(Routes.applicationCommands(CLIENT_ID), {
-            body: commands,
+            body: interactions,
           });
         } else {
           await rest.put(Routes.applicationGuildCommands(CLIENT_ID, process.env.GUILD_ID), {
-            body: commands,
+            body: interactions,
           });
         }
 
@@ -69,7 +69,7 @@ module.exports = {
         };
 
         const registerTable = [
-          ["Commands", `${commands.length}`],
+          ["Commands", `${interactions.length}`],
           ["Scope", `${process.env.ENV === "production" ? "Global" : "Guild"}`],
           process.env.ENV === "production"
             ? ["Servers", `${client.guilds.cache.size}`]

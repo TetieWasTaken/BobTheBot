@@ -20,7 +20,7 @@ const client = new Client({
   partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 });
 
-client.commands = new Collection();
+client.interactions = new Collection();
 client.buttons = new Collection();
 client.cooldowns = new Collection();
 client.timings = new Collection();
@@ -30,8 +30,8 @@ db.connect(client);
 
 timerStart = Date.now();
 
-const commandFolders = fs.readdirSync("./src/commands/").filter((item) => !/(^|\/)\.[^/.]/g.test(item));
-const commands = [];
+const commandFolders = fs.readdirSync("./src/interactions/").filter((item) => !/(^|\/)\.[^/.]/g.test(item));
+const interactions = [];
 
 console.log(`\n————————————————————————————————————————————————\n`);
 
@@ -45,15 +45,15 @@ let config = {
 };
 
 for (const folder of commandFolders) {
-  const commandFiles = fs.readdirSync(`./src/commands/${folder}`);
+  const commandFiles = fs.readdirSync(`./src/interactions/${folder}`);
   for (const file of commandFiles) {
     if (!file.endsWith(".js")) {
-      const subFiles = fs.readdirSync(`./src/commands/${folder}/${file}`);
+      const subFiles = fs.readdirSync(`./src/interactions/${folder}/${file}`);
       for (const subFile of subFiles) {
         try {
-          const command = require(`./commands/${folder}/${file}/${subFile}`);
-          commands.push(command.data.toJSON());
-          client.commands.set(command.data.name, command);
+          const command = require(`./interactions/${folder}/${file}/${subFile}`);
+          interactions.push(command.data.toJSON());
+          client.interactions.set(command.data.name, command);
           cnslTable.push([`/${command.data.name}`, "✅"]);
         } catch (error) {
           console.log(error);
@@ -64,9 +64,9 @@ for (const folder of commandFolders) {
     }
 
     try {
-      const command = require(`./commands/${folder}/${file}`);
-      commands.push(command.data.toJSON());
-      client.commands.set(command.data.name, command);
+      const command = require(`./interactions/${folder}/${file}`);
+      interactions.push(command.data.toJSON());
+      client.interactions.set(command.data.name, command);
       cnslTable.push([`/${command.data.name}`, "✅"]);
     } catch (error) {
       console.log(error);
@@ -137,9 +137,9 @@ for (const file of eventFiles) {
     const event = require(`./events/${file}`);
 
     if (event.once) {
-      client.once(event.name, (...args) => event.execute(...args, commands));
+      client.once(event.name, (...args) => event.execute(...args, interactions));
     } else {
-      client.on(event.name, (...args) => event.execute(...args, commands));
+      client.on(event.name, (...args) => event.execute(...args, interactions));
     }
     cnslTable.push([`${event.name}`, "✅"]);
   } catch (error) {

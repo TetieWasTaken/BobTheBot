@@ -19,13 +19,13 @@ module.exports = {
   async execute(interaction) {
     const command = interaction.options.getString("command");
 
-    const commandFolders = fs.readdirSync("./commands").filter((item) => !/(^|\/)\.[^/.]/g.test(item));
+    const commandFolders = fs.readdirSync("./interactions").filter((item) => !/(^|\/)\.[^/.]/g.test(item));
     for (const folder of commandFolders) {
-      const commandFiles = fs.readdirSync(`./commands/${folder}`).filter((file) => file.endsWith(".js"));
+      const commandFiles = fs.readdirSync(`./interactions/${folder}`).filter((file) => file.endsWith(".js"));
       for (const file of commandFiles) {
-        const commandFile = require(`../../commands/${folder}/${file}`);
+        const commandFile = require(`../../interactions/${folder}/${file}`);
         if (commandFile.data.name === command) {
-          let requiredBotPerms = require(`../../commands/${folder}/${file}`);
+          let requiredBotPerms = require(`../../interactions/${folder}/${file}`);
           requiredBotPerms = requiredBotPerms.requiredBotPerms;
 
           let replyEmbed = new EmbedBuilder();

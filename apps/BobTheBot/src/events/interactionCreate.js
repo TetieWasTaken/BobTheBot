@@ -9,7 +9,7 @@ module.exports = {
     if (interaction.isCommand()) {
       const client = interaction.client;
 
-      const command = client.commands.get(interaction.commandName);
+      const command = client.interactions.get(interaction.commandName);
 
       if (!command) return;
 
@@ -84,7 +84,7 @@ module.exports = {
         });
       }
     } else if (interaction.isAutocomplete()) {
-      const command = interaction.client.commands.get(interaction.commandName);
+      const command = interaction.client.interactions.get(interaction.commandName);
 
       if (!command) {
         console.error(`No command matching ${interaction.commandName} was found.`);

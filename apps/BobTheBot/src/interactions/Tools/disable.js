@@ -53,7 +53,7 @@ module.exports = {
     switch (subcommand) {
       case "command":
         const command = interaction.options.getString("command");
-        const commandFile = interaction.client.commands.get(command);
+        const commandFile = interaction.client.interactions.get(command);
 
         let cmdEmbed;
 
@@ -87,7 +87,7 @@ module.exports = {
         break;
       case "category":
         const category = interaction.options.getString("category");
-        const categories = fs.readdirSync("./commands");
+        const categories = fs.readdirSync("./interactions");
 
         for (cat in categories) {
           categories[cat] = categories[cat].toLowerCase();
@@ -103,11 +103,11 @@ module.exports = {
         let commandCount = 0;
         let disabledCommandsArray = [];
 
-        const commands = fs.readdirSync(`./commands/${category}`).filter((file) => file.endsWith(".js"));
+        const interactions = fs.readdirSync(`./interactions/${category}`).filter((file) => file.endsWith(".js"));
 
-        for (const file of commands) {
+        for (const file of interactions) {
           const command = require(`../${category}/${file}`);
-          const commandFile = interaction.client.commands.get(command.data.name);
+          const commandFile = interaction.client.interactions.get(command.data.name);
           if (commandFile) {
             if (guildData.DisabledCommands.includes(command.data.name)) {
               continue;
@@ -124,13 +124,13 @@ module.exports = {
 
         if (commandCount === 0) {
           catEmbed = new EmbedBuilder()
-            .setTitle(":x: No commands were disabled!")
-            .setDescription(`All commands in category \`${category}\` are already disabled!`)
+            .setTitle(":x: No interactions were disabled!")
+            .setDescription(`All interactions in category \`${category}\` are already disabled!`)
             .setColor(0xff0000);
         } else {
           catEmbed = new EmbedBuilder()
-            .setTitle(`:white_check_mark: Disabled ${commandCount} commands!`)
-            .setDescription(`Disabled commands: \`${disabledCommandsArray.join("`, `")}\``)
+            .setTitle(`:white_check_mark: Disabled ${commandCount} interactions!`)
+            .setDescription(`Disabled interactions: \`${disabledCommandsArray.join("`, `")}\``)
             .setColor(0x00ff00);
         }
 

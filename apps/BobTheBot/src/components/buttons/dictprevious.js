@@ -1,4 +1,4 @@
-const dictdata = require("../../commands/Tools/dictionary.js");
+const dictdata = require("../../interactions/Tools/dictionary.js");
 const { editDictPage } = require("../../utils/editDictPage.js");
 
 module.exports = {

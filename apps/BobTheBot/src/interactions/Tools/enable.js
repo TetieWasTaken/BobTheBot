@@ -42,7 +42,7 @@ module.exports = {
     switch (subcommand) {
       case "command":
         const command = interaction.options.getString("command");
-        const commandFile = interaction.client.commands.get(command);
+        const commandFile = interaction.client.interactions.get(command);
 
         let cmdEmbed;
 
@@ -74,16 +74,16 @@ module.exports = {
         break;
       case "category":
         const category = interaction.options.getString("category");
-        const categories = fs.readdirSync("./commands");
+        const categories = fs.readdirSync("./interactions");
 
         let catEmbed;
         if (categories.includes(category)) {
-          const commands = fs.readdirSync(`./commands/${category}`).filter((file) => file.endsWith(".js"));
+          const interactions = fs.readdirSync(`./interactions/${category}`).filter((file) => file.endsWith(".js"));
 
           let commandCount = 0;
           let disabledCommandsArray = [];
 
-          for (const file of commands) {
+          for (const file of interactions) {
             const command = require(`../${category}/${file}`);
             if (guildData.DisabledCommands.includes(command.data.name)) {
               commandCount++;

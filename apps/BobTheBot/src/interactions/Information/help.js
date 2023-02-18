@@ -15,7 +15,7 @@ const requiredUserPerms = {
 
 function getChoices() {
   const choises = fs
-    .readdirSync("./src/commands")
+    .readdirSync("./src/interactions")
     .filter((item) => !/(^|\/)\.[^/.]/g.test(item))
     .filter((item) => item !== "context-menu");
 
@@ -26,14 +26,14 @@ function getChoices() {
 
 function getCommands() {
   const categories = fs
-    .readdirSync("./commands")
+    .readdirSync("./interactions")
     .filter((item) => !/(^|\/)\.[^/.]/g.test(item))
     .filter((item) => item !== "context-menu");
 
-  const commands = [];
+  const interactions = [];
 
   for (let category of categories) {
-    const commandFiles = fs.readdirSync(`./src/commands/${category}`).filter((file) => file.endsWith(".js"));
+    const commandFiles = fs.readdirSync(`./src/interactions/${category}`).filter((file) => file.endsWith(".js"));
 
     for (let file of commandFiles) {
       category = capitalizeFirst(category);
@@ -41,11 +41,11 @@ function getCommands() {
       let commandName = require(`../${category}/${file}`);
       commandName = commandName.data.name;
       commandName = capitalizeFirst(commandName);
-      commands.push(`${category}: ${commandName}`);
+      interactions.push(`${category}: ${commandName}`);
     }
   }
 
-  return commands;
+  return interactions;
 }
 
 module.exports = {
@@ -126,7 +126,7 @@ module.exports = {
           .setColor(0x00ff00)
           .setTitle(`Help for ${category}`);
 
-        const categoryCommands = fs.readdirSync(`./commands/${category}`).filter((file) => file.endsWith(".js"));
+        const categoryCommands = fs.readdirSync(`./interactions/${category}`).filter((file) => file.endsWith(".js"));
 
         let descriptionArray = [];
 
@@ -147,7 +147,7 @@ module.exports = {
         commandQuery = query.replace(commandRegExp, "").trim().toLowerCase().slice(2);
         categoryQuery = query.replace(categoryRegExp, "").trim().toLowerCase().slice(0, -1);
 
-        const command = interaction.client.commands.get(commandQuery);
+        const command = interaction.client.interactions.get(commandQuery);
 
         if (!command) {
           return interaction.reply({
