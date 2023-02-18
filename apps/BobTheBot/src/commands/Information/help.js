@@ -15,7 +15,7 @@ const requiredUserPerms = {
 
 function getChoices() {
   const choises = fs
-    .readdirSync("./commands")
+    .readdirSync("./src/commands")
     .filter((item) => !/(^|\/)\.[^/.]/g.test(item))
     .filter((item) => item !== "context-menu");
 
@@ -33,7 +33,7 @@ function getCommands() {
   const commands = [];
 
   for (let category of categories) {
-    const commandFiles = fs.readdirSync(`./commands/${category}`).filter((file) => file.endsWith(".js"));
+    const commandFiles = fs.readdirSync(`./src/commands/${category}`).filter((file) => file.endsWith(".js"));
 
     for (let file of commandFiles) {
       category = capitalizeFirst(category);

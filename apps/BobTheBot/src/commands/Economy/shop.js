@@ -19,7 +19,7 @@ module.exports = {
   async execute(interaction) {
     let page = interaction.options.getInteger("page") ?? 1;
 
-    fs.readFile("./docs/items.json", (err, data) => {
+    fs.readFile("./resources/items.json", (err, data) => {
       if (err) throw err;
       const itemsJSON = JSON.parse(data);
 

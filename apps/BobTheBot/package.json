@@ -4,7 +4,7 @@
   "description": "enhances discord moderation",
   "main": "master.js",
   "scripts": {
-    "start": "node master.js"
+    "start": "node src/index.js"
   },
   "author": "Tetie#4242",
   "license": "ISC",

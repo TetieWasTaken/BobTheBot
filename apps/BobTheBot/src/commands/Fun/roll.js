@@ -21,7 +21,7 @@ module.exports = {
   async execute(interaction) {
     const amount = interaction.options.getInteger("amount") ?? 1;
 
-    diceFolder = fs.readdirSync("./docs/dice_images");
+    diceFolder = fs.readdirSync("./resources/dice_images");
     let fileDirArray = [];
 
     await interaction.reply({ content: "Rolling dice...", ephemeral: true });
@@ -32,7 +32,7 @@ module.exports = {
         fileDirArray = [];
         for (let i = 0; i < amount; i++) {
           randomNum = Math.floor(Math.random() * 6);
-          fileDirArray.push("./docs/dice_images/" + diceFolder[randomNum]);
+          fileDirArray.push("./resources/dice_images/" + diceFolder[randomNum]);
         }
 
         interaction.editReply({
@@ -44,7 +44,7 @@ module.exports = {
         fileDirArray = [];
         for (let i = 0; i < amount; i++) {
           randomNum = Math.floor(Math.random() * 6);
-          fileDirArray.push("./docs/dice_images/" + diceFolder[randomNum]);
+          fileDirArray.push("./resources/dice_images/" + diceFolder[randomNum]);
         }
 
         interaction.editReply({

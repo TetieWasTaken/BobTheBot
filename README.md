@@ -35,7 +35,7 @@ This guide does not include how to set up your bot, you can follow [this guide](
 
 1. Clone this repository using the following command: `git clone https://github.com/TetieWasTaken/BobTheBot.git`.
 2. Run `npm install` to install all the required dependencies.
-3. Add a .env file in the root with the following;
+3. Add a .env file in `apps/BobTheBot/src` with the following;
 
 ```
 BOT_TOKEN = <YOUR_BOT_TOKEN>
@@ -46,7 +46,8 @@ ENV = production
 
 To configure your bot locally, you need to remove `ENV = production` and add: `GUILD_ID = <YOUR_LOCAL_GUILD_ID>`
 
-4. Run `npm run start` or `node master.js` and the bot should be up and running!
+4. cd into the `apps/BobTheBot/src/` directory
+5. Run `npm run start` or `node index.js` to start up the bot!
 
 ###### If you're using this software, please follow the terms of the [Apache License below](#%EF%B8%8F-license)
 

@@ -17,7 +17,7 @@ module.exports = {
     .setDescription("Ask the magic 8ball a question")
     .addStringOption((option) => option.setName("question").setDescription("The question to ask").setRequired(true)),
   async execute(interaction) {
-    eightballTxt = fs.readFileSync("./docs/8ballresponses.txt");
+    eightballTxt = fs.readFileSync("./resources/8ballresponses.txt");
     eightballTxt = eightballTxt.toString();
     eightballTxt = eightballTxt.split("\n");
     randomNum = Math.floor(Math.random() * 20);

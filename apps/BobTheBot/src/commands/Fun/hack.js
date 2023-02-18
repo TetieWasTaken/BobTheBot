@@ -36,10 +36,10 @@ module.exports = {
       content: `:computer: Hacking <@${user.id}>...`,
     });
 
-    emailTxt = fs.readFileSync("./docs/hackdocs/emailextensions.txt");
+    emailTxt = fs.readFileSync("./resources/hackdocs/emailextensions.txt");
     emailTxt = emailTxt.toString();
     emailTxt = emailTxt.split("\n");
-    passwordsTxt = fs.readFileSync("./docs/hackdocs/passwords.txt");
+    passwordsTxt = fs.readFileSync("./resources/hackdocs/passwords.txt");
     passwordsTxt = passwordsTxt.toString();
     passwordsTxt = passwordsTxt.split("\n");
     randomNum = Math.floor(Math.random() * 100);
