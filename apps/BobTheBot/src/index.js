@@ -7,7 +7,8 @@ const { logTimings } = require("./utils/logTimings");
 
 let timerStart;
 
-const { Client, Collection } = require("discord.js");
+const { Client, Options, Collection } = require("discord.js");
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -17,7 +18,23 @@ const client = new Client({
     GatewayIntentBits.GuildMessageReactions,
     GatewayIntentBits.MessageContent,
   ],
-  partials: [Partials.Message, Partials.Channel, Partials.Reaction],
+  partials: [Partials.Message, Partials.Channel],
+  makeCache: Options.cacheWithLimits({
+    ...Options.defaultMakeCacheSettings,
+    MessageManager: 100,
+    GuildMemberManager: {
+      maxSize: 150,
+      keepOverLimit: (member) => member.id === client.user.id,
+    },
+    ReactionManager: 0,
+  }),
+  sweepers: {
+    ...Options.DefaultSweeperSettings,
+    messages: {
+      interval: 3600,
+      lifetime: 1800,
+    },
+  },
 });
 
 client.interactions = new Collection();
