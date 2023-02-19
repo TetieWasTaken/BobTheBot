@@ -1,6 +1,6 @@
 # Terms of Service
 
-Last Updated: 2023-02-17
+Last Updated: 2023-02-19
 
 ## Introduction and accepting the terms
 
@@ -10,9 +10,15 @@ These Terms of Service (“Terms”), which include and hereby incorporate the [
 
 By using any of our services you agree to follow the following conditions without any objections, except with prior written permission by us. We reserve the right to revoke or block access to our service at any time if you don't adhere to these conditions, violate our Terms of Service in any way, or for whatever reason we deem valid without justification.
 
+## Definitions
+
+- “Bob,” “We,” and “Us” refer to our organisation, contractors, affiliates, and employees.
+- “The User,” “You,” and “Your” refer to the individual person, company or organization that has used or is using our Service or Website; that is in a guild with “Bob,” “We,” or “Us”.
+- “Website” refers to our website located at [blank]().
+
 ## Essential conditions
 
-The key words "MUST NOT", "SHALL NOT", "MAY" in all of the following portions of this document are to be interpreted as described in [RFC2119](https://www.rfc-editor.org/rfc/rfc2119.txt).
+The keywords "MUST NOT", "SHALL NOT", and "MAY" in all of the following portions of this document are to be interpreted as described in [RFC2119](https://www.rfc-editor.org/rfc/rfc2119.txt).
 
 ### When using Bob
 
@@ -28,9 +34,9 @@ Inviting, using and participating in guilds with Bob constitutes your agreement 
 ### Bob's Trademark and Branding
 
 - MUST NOT be used in a way that is harmful to the brand, such as attempting to deceive a user and attempt to cause any harm to another user or any other malicious intent.
-- MUST NOT be used for commercial usages, or any other forms of advertising without written permission.
+- MUST NOT be used for commercial usage or any other forms of advertising without written permission.
 - MUST NOT be used in a way that suggests you are part of our organisation or services, or that our organisation is endorsing you in any way.
-- SHOULD NOT be modified including changing the colors, dimension, or combining it with other elements.
+- SHOULD NOT be modified including changing the colours, dimensions, or combining it with other elements.
 
 ## Disclaimer of Warranty
 
@@ -38,7 +44,7 @@ THE SERVICES AND THE MATERIALS ARE PROVIDED "AS IS" AND “AS AVAILABLE” WITHO
 
 ## Limitation of Liability
 
-TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT, WILL WE BE LIABLE TO YOU OR TO ANY THIRD PERSON FOR ANY CONSEQUENTIAL, INCIDENTAL, SPECIAL, PUNITIVE OR OTHER INDIRECT DAMAGES, INCLUDING ANY LOST PROFITS OR LOST DATA, ARISING FROM YOUR USE OF THE SERVICE OR OTHER MATERIALS ON, ACCESSED THROUGH OR DOWNLOADED FROM THE SERVICE, WHETHER BASED ON WARRANTY, CONTRACT, TORT, OR ANY OTHER LEGAL THEORY, AND WHETHER OR NOT THE TEAM HAS BEEN ADVISED OF THE POSSIBILITY OF THESE DAMAGES. THE LIMITATIONS AND DISCLAIMERS IN THESE TERMS DO NOT PURPORT TO LIMIT LIABILITY OR ALTER RIGHTS THAT CANNOT BE EXCLUDED UNDER APPLICABLE LAW. SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF IMPLIED WARRANTIES OR LIMITATION OF LIABILITY FOR INCIDENTAL OR CONSEQUENTIAL DAMAGES, WHICH MEANS THAT SOME OF THE ABOVE DISCLAIMERS AND LIMITATIONS MAY NOT APPLY TO YOU. IN THESE JURISDICTIONS, Bob'S LIABILITY WILL BE LIMITED TO THE GREATEST EXTENT PERMITTED BY LAW. YOU SPECIFICALLY ACKNOWLEDGE THAT WE SHALL NOT BE LIABLE FOR USER CONTENT, INCLUDING WITHOUT LIMITATION YOUR CONTENT, OR THE DEFAMATORY, OFFENSIVE, OR ILLEGAL CONDUCT OF ANY THIRD PARTY AND THAT THE RISK OF HARM OR DAMAGE FROM THE FOREGOING RESTS ENTIRELY WITH YOU.
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT, WILL WE BE LIABLE TO YOU OR ANY THIRD PERSON FOR ANY CONSEQUENTIAL, INCIDENTAL, SPECIAL, PUNITIVE OR OTHER INDIRECT DAMAGES, INCLUDING ANY LOST PROFITS OR LOST DATA, ARISING FROM YOUR USE OF THE SERVICE OR OTHER MATERIALS ON, ACCESSED THROUGH OR DOWNLOADED FROM THE SERVICE, WHETHER BASED ON WARRANTY, CONTRACT, TORT, OR ANY OTHER LEGAL THEORY, AND WHETHER OR NOT THE TEAM HAS BEEN ADVISED OF THE POSSIBILITY OF THESE DAMAGES. THE LIMITATIONS AND DISCLAIMERS IN THESE TERMS DO NOT PURPORT TO LIMIT LIABILITY OR ALTER RIGHTS THAT CANNOT BE EXCLUDED UNDER APPLICABLE LAW. SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF IMPLIED WARRANTIES OR LIMITATION OF LIABILITY FOR INCIDENTAL OR CONSEQUENTIAL DAMAGES, WHICH MEANS THAT SOME OF THE ABOVE DISCLAIMERS AND LIMITATIONS MAY NOT APPLY TO YOU. IN THESE JURISDICTIONS, Bob'S LIABILITY WILL BE LIMITED TO THE GREATEST EXTENT PERMITTED BY LAW. YOU SPECIFICALLY ACKNOWLEDGE THAT WE SHALL NOT BE LIABLE FOR USER CONTENT, INCLUDING WITHOUT LIMITATION YOUR CONTENT, OR THE DEFAMATORY, OFFENSIVE, OR ILLEGAL CONDUCT OF ANY THIRD PARTY AND THAT THE RISK OF HARM OR DAMAGE FROM THE FOREGOING RESTS ENTIRELY WITH YOU.
 
 ## Indemnification
 
