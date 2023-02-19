@@ -1,5 +1,4 @@
-CHANGELOG.md
+*.md
 LICENSE
 resources/**
 !resources/*.json
-.github/**
