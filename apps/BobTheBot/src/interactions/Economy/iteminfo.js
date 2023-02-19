@@ -49,7 +49,7 @@ module.exports = {
         },
         { name: "Note", value: `*${itemInfo.note ?? "N/A"}*`, inline: false }
       )
-      .setColor(0x00ff00);
+      .setColor(0x57f287);
 
     if (!itemInfo.note) itemEmbed.spliceFields(-1, 1);
 

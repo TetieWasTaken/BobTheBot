@@ -39,7 +39,7 @@ module.exports = {
         .setFooter({
           text: `Page 1/1`,
         })
-        .setColor(0x00ff00);
+        .setColor(0x57f287);
 
       return interaction.reply({
         embeds: [inventoryEmbed],
@@ -53,7 +53,7 @@ module.exports = {
         .setFooter({
           text: `Page ${page}/${Math.ceil(data.Inventory.length / 5)}`,
         })
-        .setColor(0x00ff00);
+        .setColor(0x57f287);
       for (let i = 0; i < 5; i++) {
         if (data.Inventory[i + (page - 1) * 5]) {
           try {

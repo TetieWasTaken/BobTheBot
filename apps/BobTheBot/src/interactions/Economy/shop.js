@@ -35,7 +35,7 @@ module.exports = {
           { text: `Page ${page} of ${Math.ceil(itemsJSON.length / 5)}` },
           { iconURL: interaction.user.avatarURL }
         )
-        .setColor(0x00ff00);
+        .setColor(0x57f287);
 
       for (let i = 0; i < 5; i++) {
         if (itemsJSON[i + (page - 1) * 5]) {

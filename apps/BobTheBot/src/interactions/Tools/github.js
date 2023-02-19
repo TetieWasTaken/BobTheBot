@@ -56,7 +56,7 @@ module.exports = {
 
         try {
           const embed = new EmbedBuilder()
-            .setColor("#5865F2")
+            .setColor("0x5865F2")
             .setAuthor({
               name: res.login,
               url: res.html_url,
@@ -136,7 +136,7 @@ module.exports = {
 
         try {
           const embed = new EmbedBuilder()
-            .setColor("#5865F2")
+            .setColor("0x5865F2")
             .setAuthor({
               name: res.owner.login,
               url: res.owner.html_url,

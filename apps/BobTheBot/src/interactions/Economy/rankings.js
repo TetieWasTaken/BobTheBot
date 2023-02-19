@@ -19,7 +19,7 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setTitle("Leaderboard")
-      .setColor(0x00ff00)
+      .setColor(0x57f287)
       .setFooter({
         text: `Requested by ${interaction.user.tag}`,
         iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}`,

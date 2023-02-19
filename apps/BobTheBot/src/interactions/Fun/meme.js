@@ -26,7 +26,7 @@ module.exports = {
       .setURL(`https://reddit.com/r/memes`)
       .setImage(image)
       .setFooter({ text: `Posted by u/${author}` })
-      .setColor(0x00ff00)
+      .setColor(0x57f287)
       .setTimestamp();
 
     await interaction.reply({ embeds: [replyEmbed], ephemeral: true });

@@ -61,17 +61,17 @@ module.exports = {
           cmdEmbed = new EmbedBuilder()
             .setTitle(":x: Command not found")
             .setDescription(`Command \`${command}\` does not exist!`)
-            .setColor("#FF0000");
+            .setColor(0xed4245);
         } else if (command == "disable" || command == "enable") {
           cmdEmbed = new EmbedBuilder()
             .setTitle(":x: Unable to disable command")
             .setDescription(`Command \`${command}\` cannot be disabled or enabled!`)
-            .setColor("#FF0000");
+            .setColor(0xed4245);
         } else if (guildData.DisabledCommands.includes(command)) {
           cmdEmbed = new EmbedBuilder()
             .setTitle(":x: Command already disabled")
             .setDescription(`Command \`${command}\` is already disabled!`)
-            .setColor("#FF0000");
+            .setColor(0xed4245);
         } else {
           guildData.DisabledCommands.push(command);
           await guildData.save();
@@ -79,7 +79,7 @@ module.exports = {
           cmdEmbed = new EmbedBuilder()
             .setTitle(":white_check_mark: Command Disabled")
             .setDescription(`Command \`${command}\` has been disabled!`)
-            .setColor("#00FF00");
+            .setColor("0x57f287");
         }
 
         interaction.reply({ embeds: [cmdEmbed], ephemeral: true });
@@ -127,12 +127,12 @@ module.exports = {
           catEmbed = new EmbedBuilder()
             .setTitle(":x: No interactions were disabled!")
             .setDescription(`All interactions in category \`${category}\` are already disabled!`)
-            .setColor(0xff0000);
+            .setColor(0xed4245);
         } else {
           catEmbed = new EmbedBuilder()
             .setTitle(`:white_check_mark: Disabled ${commandCount} interactions!`)
             .setDescription(`Disabled interactions: \`${disabledCommandsArray.join("`, `")}\``)
-            .setColor(0x00ff00);
+            .setColor(0x57f287);
         }
 
         interaction.reply({

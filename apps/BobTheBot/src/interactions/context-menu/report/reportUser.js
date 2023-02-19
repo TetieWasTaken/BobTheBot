@@ -77,7 +77,7 @@ module.exports = {
             const reportChannel = interaction.guild.channels.cache.get(guildData.GuildLogChannel);
 
             const reportEmbed = new EmbedBuilder()
-              .setColor(0xff0000)
+              .setColor(0xed4245)
               .setAuthor({ name: `${interaction.user.tag}`, iconURL: `${interaction.member.displayAvatarURL()}` })
               .setTitle(`User reported | ${interaction.channel.name}`)
               .setURL(`https://discord.com/users/${interaction.targetUser.id}`)
@@ -98,7 +98,7 @@ module.exports = {
               reportChannel.send({ embeds: [reportEmbed] });
             } catch (err) {
               const replyEmbed = new EmbedBuilder()
-                .setColor(0xff0000)
+                .setColor(0xed4245)
                 .setTitle(`Report failed`)
                 .setDescription(
                   `I was unable to send the report to the report channel. Please check the permissions and try again.`
@@ -130,14 +130,14 @@ module.exports = {
       .catch((err) => {
         if (err.message.endsWith("time")) {
           const replyEmbed = new EmbedBuilder()
-            .setColor(0xff0000)
+            .setColor(0xed4245)
             .setTitle(`Report user failed`)
             .setDescription(`You took too long to respond. Please try again.`);
           interaction.followUp({ embeds: [replyEmbed], ephemeral: true });
         } else {
           console.log(err);
           const replyEmbed = new EmbedBuilder()
-            .setColor(0xff0000)
+            .setColor(0xed4245)
             .setTitle(`Report user failed`)
             .setDescription(`An error occurred. Please try again.`);
           interaction.followUp({ embeds: [replyEmbed], ephemeral: true });

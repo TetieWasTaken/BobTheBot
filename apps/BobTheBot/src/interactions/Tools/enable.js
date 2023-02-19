@@ -50,12 +50,12 @@ module.exports = {
           cmdEmbed = new EmbedBuilder()
             .setTitle(":x: Command not found!")
             .setDescription(`Command \`${command}\` does not exist!`)
-            .setColor("#FF0000");
+            .setColor(0xed4245);
         } else if (!guildData.DisabledCommands.includes(command)) {
           cmdEmbed = new EmbedBuilder()
             .setTitle(":x: Command already enabled!")
             .setDescription(`Command \`${command}\` is already enabled!`)
-            .setColor("#FF0000");
+            .setColor(0xed4245);
         } else {
           guildData.DisabledCommands = guildData.DisabledCommands.filter((cmd) => cmd !== command);
 
@@ -64,7 +64,7 @@ module.exports = {
           cmdEmbed = new EmbedBuilder()
             .setTitle(":white_check_mark: Command enabled!")
             .setDescription(`Command \`${command}\` has been enabled!`)
-            .setColor("#00FF00");
+            .setColor("0x57f287");
         }
 
         interaction.reply({
@@ -99,18 +99,18 @@ module.exports = {
             catEmbed = new EmbedBuilder()
               .setTitle(":x: No commands were enabled!")
               .setDescription(`All commands in category \`${category}\` are already enabled!`)
-              .setColor(0xff0000);
+              .setColor(0xed4245);
           } else {
             catEmbed = new EmbedBuilder()
               .setTitle(`:white_check_mark: Enabled ${commandCount} commands!`)
               .setDescription(`Enabled commands: \`${disabledCommandsArray.join("`, `")}\``)
-              .setColor(0x00ff00);
+              .setColor(0x57f287);
           }
         } else {
           catEmbed = new EmbedBuilder()
             .setTitle(":x: Unknown category!")
             .setDescription(`Category \`${category}\` does not exist!`)
-            .setColor(0xff0000);
+            .setColor(0xed4245);
         }
 
         interaction.reply({

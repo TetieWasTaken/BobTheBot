@@ -80,7 +80,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle("Item Sold")
       .setDescription(`You sold ${amount} ${itemObject.name} for ${itemObject.price * amount} coins`)
-      .setColor("#00FF00")
+      .setColor("0x57f287")
       .setTimestamp();
 
     interaction.reply({

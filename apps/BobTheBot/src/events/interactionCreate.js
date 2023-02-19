@@ -20,7 +20,7 @@ module.exports = {
       if (guildData && guildData.DisabledCommands) {
         if (guildData.DisabledCommands.includes(interaction.commandName)) {
           const embed = new EmbedBuilder()
-            .setColor(0xff0000)
+            .setColor(0xed4245)
             .setTitle(":x: Command Disabled")
             .setDescription(`This command has been disabled by the server administrators.`)
             .setFooter({

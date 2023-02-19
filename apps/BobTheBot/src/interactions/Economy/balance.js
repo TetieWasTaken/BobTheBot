@@ -27,7 +27,7 @@ module.exports = {
     if (!data) {
       let replyEmbed = new EmbedBuilder()
         .setTitle(`Balance of ${user.username}#${user.discriminator}`)
-        .setColor("#ff0000")
+        .setColor(0xed4245)
         .addFields(
           {
             name: "🏦  Bank",
@@ -52,7 +52,7 @@ module.exports = {
     } else {
       let replyEmbed = new EmbedBuilder()
         .setTitle(`balance of ${user.username}#${user.discriminator}`)
-        .setColor(genGradient("#ff0000", "#00ff00", Math.min(data.NetWorth / 1000000, 1)))
+        .setColor(genGradient("#ff0000", "#57f287", Math.min(data.NetWorth / 1000000, 1)))
         .addFields(
           {
             name: "🏦  Bank",

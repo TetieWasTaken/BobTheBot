@@ -131,7 +131,7 @@ module.exports = {
 
         let catEmbed = new EmbedBuilder()
           .setAuthor({ name: category })
-          .setColor(0x00ff00)
+          .setColor(0x57f287)
           .setTitle(`Help for ${category}`);
 
         const categoryCommands = fs.readdirSync(`./interactions/${category}`).filter((file) => file.endsWith(".js"));
@@ -166,7 +166,7 @@ module.exports = {
           .setAuthor({
             name: capitalizeFirst(commandQuery),
           })
-          .setColor(0x00ff00)
+          .setColor(0x57f287)
           .setTitle(`Help for ${capitalizeFirst(commandQuery)}`)
           .setDescription(command.data.description)
           .addFields({ name: "Usage", value: `\`/${command.data.name}\`` });

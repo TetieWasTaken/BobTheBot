@@ -35,7 +35,7 @@ module.exports = {
               let missingPermission = new PermissionsBitField(requiredBotPerms.key[i]).toArray();
 
               replyEmbed = new EmbedBuilder()
-                .setColor(0xff0000)
+                .setColor(0xed4245)
                 .setTitle(`❌ Diagnosed command \`${commandFile.data.name}\``)
                 .setDescription(`Error! I am missing the following permissions: \`${missingPermission}\``)
                 .setFooter({
@@ -47,7 +47,7 @@ module.exports = {
           }
 
           replyEmbed = new EmbedBuilder()
-            .setColor(0x00ff00)
+            .setColor(0x57f287)
             .setTitle(`✅ Diagnosed command \`${commandFile.data.name}\``)
             .setDescription(`No anomalies found`)
             .setFooter({

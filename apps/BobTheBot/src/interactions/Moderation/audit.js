@@ -60,7 +60,7 @@ module.exports = {
       user: user,
     });
 
-    let replyEmbed = new EmbedBuilder().setTitle("Audit Log").setColor("#FF0000").setTimestamp();
+    let replyEmbed = new EmbedBuilder().setTitle("Audit Log").setColor(0xed4245).setTimestamp();
 
     if (auditLogs.entries.size === 0) {
       replyEmbed.setDescription("No audit logs found!");
