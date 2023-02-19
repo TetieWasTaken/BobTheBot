@@ -5,6 +5,6 @@
     "lint-staged": "^13.1.2"
   },
   "scripts": {
-    "prepare": "husky install"
+    "lint-staged": "./node_modules/.bin/lint-staged"
   }
 }

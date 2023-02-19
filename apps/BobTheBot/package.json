@@ -6,7 +6,7 @@
     "start": "node src/index.js",
     "dev": "npm run deploy && npm run start",
     "deploy": "node src/deploy.js",
-    "lint": "./node_modules/.bin/eslint ./",
+    "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write ."
   },
