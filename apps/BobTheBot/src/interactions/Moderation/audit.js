@@ -67,7 +67,7 @@ module.exports = {
       return interaction.reply({ embeds: [replyEmbed] });
     }
 
-    for (i = 0; i < auditLogs.entries.size; i++) {
+    for (let i = 0; i < auditLogs.entries.size; i++) {
       const auditLog = auditLogs.entries.at(i);
       const { executor, target, targetType, actionType } = auditLog;
 

@@ -122,7 +122,7 @@ module.exports = {
             ephemeral: true,
           });
         }
-      case "repository":
+      case "repository": {
         const repository = interaction.options.getString("repository");
 
         res = await fetch(`https://api.github.com/repos/${user}/${repository}`).then((res) => res.json());
@@ -182,6 +182,7 @@ module.exports = {
             ephemeral: true,
           });
         }
+      }
     }
   },
   requiredBotPerms: requiredBotPerms,

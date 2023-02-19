@@ -46,9 +46,11 @@ module.exports = {
       case "MD5":
         string = createHash("md5").update(string).digest("hex");
         break;
-      case "salt":
+      case "salt": {
         const salt = randomBytes(16).toString("hex");
         string = scryptSync(string, salt, 64).toString("hex");
+        break;
+      }
     }
     interaction.reply({
       content: `\`${input}\` --> **${algorithm}** --> \`${string}\``,

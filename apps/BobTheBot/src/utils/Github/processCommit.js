@@ -11,6 +11,7 @@ let output = "Failed";
 
 try {
   if (!commitMsg) {
+    output = "Failed";
   } else if (!commitMsg.match(commitMsgRegex)) {
     output = "Invalid";
   } else if (!commitMsg.match(importantCommitMsgRegex)) {
@@ -18,7 +19,9 @@ try {
   } else {
     output = "Important";
   }
-} catch (e) {}
+} catch (e) {
+  console.error(e);
+}
 
 fs.writeFileSync(process.env.GITHUB_OUTPUT, `commit=${output}`);
 console.log(`Successfully wrote ${output} to $GITHUB_OUTPUT`);

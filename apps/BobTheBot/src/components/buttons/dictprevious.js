@@ -7,6 +7,7 @@ module.exports = {
   },
   async execute(interaction) {
     let footer = interaction.message.embeds[0].data.footer.text.match(/(\d+)/);
+    let currentPage;
     if (footer) {
       currentPage = parseInt(footer[0]) - 2;
     } else {

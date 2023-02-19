@@ -65,7 +65,7 @@ module.exports = {
           content: `${text.replace(/[aeiou]/gi, "")}`,
           ephemeral: true,
         });
-      case "1337":
+      case "1337": {
         const embed = new EmbedBuilder()
           .addFields(
             {
@@ -91,6 +91,7 @@ module.exports = {
           embeds: [embed],
           ephemeral: true,
         });
+      }
       default:
         return interaction.reply({
           content: "Unknown subcommand",

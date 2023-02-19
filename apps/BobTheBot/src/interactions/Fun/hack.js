@@ -36,20 +36,16 @@ module.exports = {
       content: `:computer: Hacking <@${user.id}>...`,
     });
 
-    emailTxt = fs.readFileSync("./resources/hackdocs/emailextensions.txt");
-    emailTxt = emailTxt.toString();
-    emailTxt = emailTxt.split("\n");
-    passwordsTxt = fs.readFileSync("./resources/hackdocs/passwords.txt");
-    passwordsTxt = passwordsTxt.toString();
-    passwordsTxt = passwordsTxt.split("\n");
-    randomNum = Math.floor(Math.random() * 100);
+    const emailTxt = fs.readFileSync("./resources/hackdocs/emailextensions.txt").toString().split("\n");
+    const passwordsTxt = fs.readFileSync("./resources/hackdocs/passwords.txt").toString().split("\n");
+    const randomNum = Math.floor(Math.random() * 100);
 
     const randomEmail = emailTxt[randomNum];
     const randomPassword = passwordsTxt[randomNum];
 
     const username = user.username;
 
-    replyArray = [
+    const replyArray = [
       ":e_mail: Finding email... `12,5%`",
       `:e_mail: Email found! \`${username.replace(/\s/g, "")}${randomEmail}\` \`25%\``,
       ":asterisk: Finding password... `37,5%`",

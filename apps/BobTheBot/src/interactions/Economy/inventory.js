@@ -57,7 +57,13 @@ module.exports = {
       for (let i = 0; i < 5; i++) {
         if (data.Inventory[i + (page - 1) * 5]) {
           try {
-            itemData = await requestItemData(data.Inventory[i + (page - 1) * 5].id);
+            const itemData = await requestItemData(data.Inventory[i + (page - 1) * 5].id);
+
+            inventoryEmbed.addFields({
+              name: `${itemData.name} — ${data.Inventory[i].amount}`,
+              value: `*ID* \`${data.Inventory[i].id}\` — ${itemData.type}`,
+              inline: false,
+            });
           } catch (err) {
             console.log(err);
             inventoryEmbed.addFields({
@@ -67,12 +73,6 @@ module.exports = {
             });
             continue;
           }
-
-          inventoryEmbed.addFields({
-            name: `${itemData.name} — ${data.Inventory[i].amount}`,
-            value: `*ID* \`${data.Inventory[i].id}\` — ${itemData.type}`,
-            inline: false,
-          });
         }
       }
       return interaction.reply({

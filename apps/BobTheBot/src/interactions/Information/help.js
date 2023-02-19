@@ -26,7 +26,7 @@ function getChoices() {
 
 function getCommands() {
   const categories = fs
-    .readdirSync("./interactions")
+    .readdirSync("./src/interactions")
     .filter((item) => !/(^|\/)\.[^/.]/g.test(item))
     .filter((item) => item !== "context-menu");
 
@@ -46,6 +46,14 @@ function getCommands() {
   }
 
   return interactions;
+}
+
+function getBotPerms(perm, i) {
+  return i.guild.members.me.permissions.has(perm) ? "+ " : "- ";
+}
+
+function getUserPerms(perm, i) {
+  return i.member.permissions.has(perm) ? "+ " : "- ";
 }
 
 module.exports = {
@@ -81,7 +89,7 @@ module.exports = {
     const choices = getCommands();
     let levChoices = [];
 
-    const choicesRegExp = /^.*(?=(\:))/g;
+    const choicesRegExp = /^.*(?=(:))/g;
 
     for (let i = 0; i < choices.length; i++) {
       levChoices.push(choices[i].replace(choicesRegExp, ""));
@@ -108,7 +116,7 @@ module.exports = {
       finalChoices.push(choices[index]);
     }
 
-    response = finalChoices.map((choice) => ({ name: choice, value: choice }));
+    let response = finalChoices.map((choice) => ({ name: choice, value: choice }));
 
     if (response.length >= 15) {
       response = response.slice(0, 15);
@@ -118,7 +126,7 @@ module.exports = {
   },
   async execute(interaction) {
     switch (interaction.options.getSubcommand()) {
-      case "category":
+      case "category": {
         const category = interaction.options.getString("category");
 
         let catEmbed = new EmbedBuilder()
@@ -140,12 +148,11 @@ module.exports = {
 
         await interaction.reply({ embeds: [catEmbed] });
         break;
-      case "command":
+      }
+      case "command": {
         const query = interaction.options.getString("query");
-        const commandRegExp = /^.*(?=(\:))/g;
-        const categoryRegExp = /[^:]*$/g;
-        commandQuery = query.replace(commandRegExp, "").trim().toLowerCase().slice(2);
-        categoryQuery = query.replace(categoryRegExp, "").trim().toLowerCase().slice(0, -1);
+        const commandRegExp = /^.*(?=(:))/g;
+        const commandQuery = query.replace(commandRegExp, "").trim().toLowerCase().slice(2);
 
         const command = interaction.client.interactions.get(commandQuery);
 
@@ -166,7 +173,7 @@ module.exports = {
 
         if (command.data.options.length > 0) {
           let optionsString = "";
-          if (command.data.options[0].hasOwnProperty("options")) {
+          if (Object.prototype.hasOwnProperty.call(command.data.options[0], "options")) {
             optionsString = command.data.options
               .map((subcommand) => {
                 return (
@@ -202,22 +209,15 @@ module.exports = {
 
         let botPermsArray = [];
         let userPermsArray = [];
-
-        function getBotPerms(perm) {
-          return interaction.guild.members.me.permissions.has(perm) ? "+ " : "- ";
-        }
-
-        function getUserPerms(perm) {
-          return interaction.member.permissions.has(perm) ? "+ " : "- ";
-        }
+        let hasPerm;
 
         for (let perm of command.requiredBotPerms.key) {
-          hasPerm = getBotPerms(perm);
+          hasPerm = getBotPerms(perm, interaction);
           botPermsArray.push(hasPerm + new PermissionsBitField(perm).toArray());
         }
 
         for (let perm of command.requiredUserPerms.key) {
-          hasPerm = getUserPerms(perm);
+          hasPerm = getUserPerms(perm, interaction);
           userPermsArray.push(hasPerm + new PermissionsBitField(perm).toArray());
         }
 
@@ -241,6 +241,7 @@ module.exports = {
 
         await interaction.reply({ embeds: [embed] });
         break;
+      }
     }
   },
   requiredBotPerms: requiredBotPerms,

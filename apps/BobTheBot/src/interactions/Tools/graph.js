@@ -41,7 +41,7 @@ module.exports = {
     let yValue = [];
     let xValue = [];
 
-    for (x = 0; x < pointAmount; x++) {
+    for (let x = 0; x < pointAmount; x++) {
       yValue.push(expr.evaluate({ x: x }));
       xValue.push(x);
     }

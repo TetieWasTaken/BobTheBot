@@ -30,7 +30,7 @@ module.exports = {
 
           let replyEmbed = new EmbedBuilder();
 
-          for (i = 0; i < requiredBotPerms.key.length; i++) {
+          for (let i = 0; i < requiredBotPerms.key.length; i++) {
             if (!interaction.guild.members.me.permissions.has(requiredBotPerms.key[i])) {
               let missingPermission = new PermissionsBitField(requiredBotPerms.key[i]).toArray();
 

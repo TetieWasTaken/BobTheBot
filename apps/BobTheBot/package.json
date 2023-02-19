@@ -19,5 +19,8 @@
     "mongoose": "^6.7.0",
     "node-cron": "^3.0.2",
     "table": "^6.8.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.34.0"
   }
 }

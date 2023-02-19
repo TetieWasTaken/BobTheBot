@@ -7,11 +7,12 @@ module.exports = {
   async execute(initMessage, newMessage) {
     if (newMessage.author.bot) return;
 
-    guildData = await GuildSchema.findOne({
+    const guildData = await GuildSchema.findOne({
       GuildId: newMessage.guild.id,
     });
+
     if (guildData && guildData.GuildLogChannel !== null) {
-      const logChannel = await Promise.resolve(interaction.guild.channels.fetch(guildData.GuildLogChannel));
+      const logChannel = await Promise.resolve(newMessage.guild.channels.fetch(guildData.GuildLogChannel));
 
       let userNickname = ` (${newMessage.member.nickname})`;
       if (userNickname == " (null)") {

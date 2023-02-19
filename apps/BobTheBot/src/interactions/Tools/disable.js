@@ -51,7 +51,7 @@ module.exports = {
     }
 
     switch (subcommand) {
-      case "command":
+      case "command": {
         const command = interaction.options.getString("command");
         const commandFile = interaction.client.interactions.get(command);
 
@@ -85,11 +85,12 @@ module.exports = {
         interaction.reply({ embeds: [cmdEmbed], ephemeral: true });
 
         break;
-      case "category":
+      }
+      case "category": {
         const category = interaction.options.getString("category");
         const categories = fs.readdirSync("./interactions");
 
-        for (cat in categories) {
+        for (let cat in categories) {
           categories[cat] = categories[cat].toLowerCase();
         }
 
@@ -120,7 +121,7 @@ module.exports = {
 
         await guildData.save();
 
-        let embed;
+        let catEmbed;
 
         if (commandCount === 0) {
           catEmbed = new EmbedBuilder()
@@ -139,6 +140,7 @@ module.exports = {
           ephemeral: true,
         });
         break;
+      }
       default:
         return interaction.reply({
           content: "Unknown subcommand!",

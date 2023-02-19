@@ -7,9 +7,10 @@ module.exports = {
   async execute(message) {
     if (message.author.bot) return;
 
-    guildData = await GuildSchema.findOne({
+    const guildData = await GuildSchema.findOne({
       GuildId: message.guild.id,
     });
+
     if (guildData && guildData.GuildLogChannel !== null) {
       const logChannel = await Promise.resolve(message.guild.channels.fetch(guildData.GuildLogChannel));
 

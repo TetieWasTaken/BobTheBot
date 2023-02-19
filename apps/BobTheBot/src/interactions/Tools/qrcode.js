@@ -25,7 +25,7 @@ module.exports = {
   async execute(interaction) {
     const text = interaction.options.getString("url");
     const baseURL = "http://api.qrserver.com/v1";
-    const regex = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+    const regex = /[(http(s)?)://(www.)?a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/;
 
     if (!text.match(regex)) {
       interaction.reply({
@@ -39,7 +39,7 @@ module.exports = {
 
     const replyEmbed = new EmbedBuilder()
       .setColor("ffffff")
-      .setTitle(`QR Code for ${text}`)
+      .setTitle(`QR Code for ${text.replace("https://", "").replace("http://", "")}`)
       .setImage(encodedURL)
       .setFooter({ text: `Try it out, it works!` })
       .setTimestamp();

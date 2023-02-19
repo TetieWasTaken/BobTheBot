@@ -40,7 +40,7 @@ module.exports = {
     });
 
     switch (subcommand) {
-      case "command":
+      case "command": {
         const command = interaction.options.getString("command");
         const commandFile = interaction.client.interactions.get(command);
 
@@ -72,7 +72,8 @@ module.exports = {
           ephemeral: true,
         });
         break;
-      case "category":
+      }
+      case "category": {
         const category = interaction.options.getString("category");
         const categories = fs.readdirSync("./interactions");
 
@@ -117,6 +118,7 @@ module.exports = {
           ephemeral: true,
         });
         break;
+      }
       default:
         return interaction.reply({
           content: ":x: Unknown subcommand!",

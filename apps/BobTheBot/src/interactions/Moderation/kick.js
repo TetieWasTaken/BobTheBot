@@ -32,35 +32,22 @@ module.exports = {
     if (highestUserRole.position >= interaction.guild.members.me.roles.highest.position)
       return raiseBotHierarchyError(interaction);
 
+    const userMsg = await member
+      .send(`👟 You have been kicked from \`${interaction.guild.name}\` for \`${reason}\``)
+      .catch(() => null);
+
     try {
-      await member.send(`:athletic_shoe: You have been kicked from \`${interaction.guild.name}\` for \`${reason}\``);
+      member.kick(reason);
     } catch (error) {
-      // Ignore error
-    } finally {
-      try {
-        member.kick(reason);
-      } catch (error) {
-        try {
-          member.timeout({
-            reason: "Failed to kick member",
-            time: 1000 * 60 * 60 * 24 * 7,
-          });
-          return interaction.reply({
-            content: `:wrench: I was unable to kick \`${member.user.tag}\` for an unknown reason. Please try again later\n\n**Note:** This user has been timed out as a result of this failed action.`,
-            ephemeral: true,
-          });
-        } catch (error) {
-          console.error(error);
-          return interaction.reply({
-            content: `:wrench: I was unable to kick \`${member.user.tag}\` for an unknown reason. Please try again later`,
-            ephemeral: true,
-          });
-        }
-      }
+      userMsg?.delete();
+      return interaction.reply({
+        content: `❌  I was unable to kick \`${member.user.tag}\``,
+        ephemeral: true,
+      });
     }
 
-    interaction.reply({
-      content: `:athletic_shoe:  \`${member.user.tag}\` has been kicked for \`${reason}\``,
+    return interaction.reply({
+      content: `👟  \`${member.user.tag}\` has been kicked for \`${reason}\``,
       ephemeral: true,
     });
   },

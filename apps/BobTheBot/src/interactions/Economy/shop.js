@@ -37,11 +37,8 @@ module.exports = {
         )
         .setColor(0x00ff00);
 
-      let id = 0;
-
       for (let i = 0; i < 5; i++) {
         if (itemsJSON[i + (page - 1) * 5]) {
-          id++;
           shopEmbed.addFields({
             name: `${itemsJSON[i + (page - 1) * 5].name} — ₳${itemsJSON[i + (page - 1) * 5].price}`,
             value: `*${itemsJSON[i + (page - 1) * 5].description}*`,
