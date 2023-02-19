@@ -31,7 +31,6 @@ db.connect(client);
 timerStart = Date.now();
 
 const commandFolders = fs.readdirSync("./src/interactions/").filter((item) => !/(^|\/)\.[^/.]/g.test(item));
-const interactions = [];
 
 console.log(`\n————————————————————————————————————————————————\n`);
 
@@ -52,7 +51,6 @@ for (const folder of commandFolders) {
       for (const subFile of subFiles) {
         try {
           const command = require(`./interactions/${folder}/${file}/${subFile}`);
-          interactions.push(command.data.toJSON());
           client.interactions.set(command.data.name, command);
           cnslTable.push([`/${command.data.name}`, "✅"]);
         } catch (error) {
@@ -65,7 +63,6 @@ for (const folder of commandFolders) {
 
     try {
       const command = require(`./interactions/${folder}/${file}`);
-      interactions.push(command.data.toJSON());
       client.interactions.set(command.data.name, command);
       cnslTable.push([`/${command.data.name}`, "✅"]);
     } catch (error) {
@@ -137,9 +134,9 @@ for (const file of eventFiles) {
     const event = require(`./events/${file}`);
 
     if (event.once) {
-      client.once(event.name, (...args) => event.execute(...args, interactions));
+      client.once(event.name, (...args) => event.execute(...args));
     } else {
-      client.on(event.name, (...args) => event.execute(...args, interactions));
+      client.on(event.name, (...args) => event.execute(...args));
     }
     cnslTable.push([`${event.name}`, "✅"]);
   } catch (error) {
@@ -154,7 +151,7 @@ client.timings.set("Events", Date.now() - timerStart);
 
 console.log(`————————————————————————————————————————————————\n`);
 
-if (client.timings.size === 5) {
+if (client.timings.size === 4) {
   logTimings(client.timings);
 }
 

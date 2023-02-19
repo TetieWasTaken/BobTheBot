@@ -1,12 +1,11 @@
 require("dotenv").config();
-const { REST, Routes, ActivityType } = require("discord.js");
-const { logTimings } = require("../utils/logTimings");
+const { ActivityType } = require("discord.js");
 const { table } = require("table");
 
 module.exports = {
   name: "ready",
   once: true,
-  async execute(client, interactions) {
+  async execute(client) {
     // This Promise is required to make sure the WebSocket is fully ready before proceeding
     await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -36,9 +35,9 @@ module.exports = {
       ["Ping", `${await client.ws.ping}ms`],
     ];
 
-    await console.log(table(cnslTable, config), "\n————————————————————————————————————————————————\n");
+    console.log(table(cnslTable, config), "\n————————————————————————————————————————————————\n");
 
-    const timerStart = Date.now();
+    /*const timerStart = Date.now();
 
     const CLIENT_ID = client.user.id;
 
@@ -80,17 +79,17 @@ module.exports = {
 
         client.timings.set("Registering", Date.now() - timerStart);
 
-        if (client.timings.size === 5) {
+        if (client.timings.size === 4) {
           logTimings(client.timings);
         }
       } catch (err) {
         if (err) console.log(err);
       }
-    })();
+    })();*/
 
-    /*client.user.setPresence({
+    client.user.setPresence({
       activities: [{ name: `discord`, type: ActivityType.Watching }],
       status: "online",
-    });*/
+    });
   },
 };
