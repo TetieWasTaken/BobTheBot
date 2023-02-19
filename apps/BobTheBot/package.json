@@ -1,0 +1,34 @@
+{
+  "name": "bobthebot",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "npm run deploy && npm run start",
+    "deploy": "node src/deploy.js",
+    "lint": "./node_modules/.bin/eslint ./",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write ."
+  },
+  "author": "Tetie#4242",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "canvacord": "^5.4.8",
+    "chartjs-node-canvas": "^4.1.6",
+    "damerau-levenshtein": "^1.0.8",
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "expr-eval": "^2.0.2",
+    "ffmpeg-static": "^5.1.0",
+    "mongoose": "^6.7.0",
+    "node-cron": "^3.0.2",
+    "table": "^6.8.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.34.0",
+    "prettier": "^2.8.4"
+  },
+  "engines": {
+    "node": ">=16.9.0"
+  }
+}
