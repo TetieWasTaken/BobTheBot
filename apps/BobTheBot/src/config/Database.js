@@ -11,6 +11,8 @@ class Database {
   connect(client) {
     const timerStart = Date.now();
 
+    mongoose.set("strictQuery", true);
+
     mongoose
       .connect(process.env.MONGO_DATABASETOKEN, {
         useNewUrlParser: true,
