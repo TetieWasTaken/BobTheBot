@@ -45,7 +45,7 @@ module.exports = {
         const confirmButton = new ButtonBuilder()
           .setCustomId("confirm-button")
           .setLabel("Confirm")
-          .setStyle(ButtonStyle.Success);
+          .setStyle(ButtonStyle.Danger);
 
         const discordButton = new ButtonBuilder()
           .setLabel("Report to Discord")
