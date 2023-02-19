@@ -1,4 +1,4 @@
 {
-  "*": "prettier --ignore-unknown --write",
-  "**/src/**.js": "eslint --ext js --fix"
+  "*": "prettier --ignore-unknown --write apps/**/src/**/*",
+  "apps/**/src/**/*.js": "./node_modules/.bin/eslint apps/**/src/**/*.js --fix --ignore-pattern node_modules/"
 }

@@ -34,7 +34,7 @@ module.exports = {
         .addUserOption((option) => option.setName("user").setDescription("The user to trigger").setRequired(false))
     ),
   async execute(interaction) {
-    const comment = interaction.options.getString("comment");
+    /*const comment = interaction.options.getString("comment");
     const user = interaction.options.getUser("user") ?? interaction.user;
     const dark = interaction.options.getSubcommand() === "dark" ? true : false;
 
@@ -51,7 +51,7 @@ module.exports = {
 
     interaction.reply({
       files: [youtube],
-    });
+    });*/
   },
   requiredBotPerms: requiredBotPerms,
   requiredUserPerms: requiredUserPerms,

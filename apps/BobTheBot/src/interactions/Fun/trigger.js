@@ -17,7 +17,7 @@ module.exports = {
     .setDescription("Trigger someone's avatar")
     .addUserOption((option) => option.setName("user").setDescription("The user to trigger").setRequired(false)),
   async execute(interaction) {
-    const user = interaction.options.getUser("user") ?? interaction.user;
+    /*const user = interaction.options.getUser("user") ?? interaction.user;
 
     let faceplam = await canvacord.Canvas.trigger(user.displayAvatarURL({ format: "png", dynamic: true }));
 
@@ -27,7 +27,7 @@ module.exports = {
 
     interaction.reply({
       files: [faceplam],
-    });
+    });*/
   },
   requiredBotPerms: requiredBotPerms,
   requiredUserPerms: requiredUserPerms,

@@ -29,7 +29,7 @@ module.exports = {
         .addUserOption((option) => option.setName("user").setDescription("The user to trigger").setRequired(false))
     ),
   async execute(interaction) {
-    const user = interaction.options.getUser("user") ?? interaction.user;
+    /*const user = interaction.options.getUser("user") ?? interaction.user;
     const grayscale = interaction.options.getSubcommand() === "grayscale" ? true : false;
 
     let jail = await canvacord.Canvas.jail(user.displayAvatarURL({ format: "png", dynamic: true }), grayscale);
@@ -40,7 +40,7 @@ module.exports = {
 
     interaction.reply({
       files: [jail],
-    });
+    });*/
   },
   requiredBotPerms: requiredBotPerms,
   requiredUserPerms: requiredUserPerms,

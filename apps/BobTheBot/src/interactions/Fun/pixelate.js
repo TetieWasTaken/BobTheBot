@@ -25,7 +25,7 @@ module.exports = {
         .setMaxValue(50)
     ),
   async execute(interaction) {
-    const user = interaction.options.getUser("user") ?? interaction.user;
+    /*const user = interaction.options.getUser("user") ?? interaction.user;
     let amount = interaction.options.getInteger("amount") ?? 6;
 
     amount = amount - 1;
@@ -38,7 +38,7 @@ module.exports = {
 
     interaction.reply({
       files: [pixelate],
-    });
+    });*/
   },
   requiredBotPerms: requiredBotPerms,
   requiredUserPerms: requiredUserPerms,
