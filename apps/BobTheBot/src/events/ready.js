@@ -37,56 +37,6 @@ module.exports = {
 
     console.log(table(cnslTable, config), "\n————————————————————————————————————————————————\n");
 
-    /*const timerStart = Date.now();
-
-    const CLIENT_ID = client.user.id;
-
-    const rest = new REST({
-      version: "10",
-    }).setToken(process.env.BOT_TOKEN);
-
-    (async () => {
-      try {
-        if (process.env.ENV === "production") {
-          await rest.put(Routes.applicationCommands(CLIENT_ID), {
-            body: interactions,
-          });
-        } else {
-          await rest.put(Routes.applicationGuildCommands(CLIENT_ID, process.env.GUILD_ID), {
-            body: interactions,
-          });
-        }
-
-        const registerConfig = {
-          header: {
-            alignment: "center",
-            content: `Commands registered`,
-          },
-          columnDefault: {
-            width: 20,
-          },
-        };
-
-        const registerTable = [
-          ["Commands", `${interactions.length}`],
-          ["Scope", `${process.env.ENV === "production" ? "Global" : "Guild"}`],
-          process.env.ENV === "production"
-            ? ["Servers", `${client.guilds.cache.size}`]
-            : ["Guild", `${process.env.GUILD_ID}`],
-        ];
-
-        await console.log(table(registerTable, registerConfig));
-
-        client.timings.set("Registering", Date.now() - timerStart);
-
-        if (client.timings.size === 4) {
-          logTimings(client.timings);
-        }
-      } catch (err) {
-        if (err) console.log(err);
-      }
-    })();*/
-
     client.user.setPresence({
       activities: [{ name: `discord`, type: ActivityType.Watching }],
       status: "online",
