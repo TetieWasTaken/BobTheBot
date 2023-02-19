@@ -2,7 +2,7 @@ const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("disc
 
 const requiredBotPerms = {
   type: "flags",
-  key: [PermissionFlagsBits.ReadMessageHistory, PermissionFlagsBits.AddReactions],
+  key: [],
 };
 
 const requiredUserPerms = {
