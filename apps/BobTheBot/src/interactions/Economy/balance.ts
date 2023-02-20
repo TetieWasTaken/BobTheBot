@@ -1,6 +1,5 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const EconomySchema = require("../../models/EconomyModel");
-const { genGradient } = require("../../utils/genGradient");
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import EconomySchema from "../../models/EconomyModel.js";
 
 const requiredBotPerms = {
   type: "flags",
@@ -16,8 +15,8 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("balance")
     .setDescription("Checks someone's balance")
-    .addUserOption((option) => option.setName("user").setDescription("The user to check").setRequired(false)),
-  async execute(interaction) {
+    .addUserOption((option: any) => option.setName("user").setDescription("The user to check").setRequired(false)),
+  async execute(interaction: ChatInputCommandInteraction) {
     const user = interaction.options.getUser("user") ?? interaction.user;
 
     const data = await EconomySchema.findOne({
@@ -50,26 +49,23 @@ module.exports = {
         embeds: [replyEmbed],
       });
     } else {
-      let replyEmbed = new EmbedBuilder()
-        .setTitle(`balance of ${user.username}#${user.discriminator}`)
-        .setColor(genGradient("#ff0000", "#57f287", Math.min(data.NetWorth / 1000000, 1)))
-        .addFields(
-          {
-            name: "🏦  Bank",
-            value: `₳ ${data.Bank}`,
-            inline: true,
-          },
-          {
-            name: "💰  Wallet",
-            value: `₳ ${data.Wallet}`,
-            inline: true,
-          },
-          {
-            name: "📈  Net Worth",
-            value: `₳ ${data.NetWorth}`,
-            inline: false,
-          }
-        );
+      let replyEmbed = new EmbedBuilder().setTitle(`balance of ${user.username}#${user.discriminator}`).addFields(
+        {
+          name: "🏦  Bank",
+          value: `₳ ${data.Bank}`,
+          inline: true,
+        },
+        {
+          name: "💰  Wallet",
+          value: `₳ ${data.Wallet}`,
+          inline: true,
+        },
+        {
+          name: "📈  Net Worth",
+          value: `₳ ${data.NetWorth}`,
+          inline: false,
+        }
+      );
 
       return interaction.reply({
         embeds: [replyEmbed],
