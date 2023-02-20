@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const economySchema = new mongoose.Schema({
   UserId: String,
@@ -9,4 +9,4 @@ const economySchema = new mongoose.Schema({
   Inventory: Array,
 });
 
-module.exports = mongoose.model("EconomyModel", economySchema);
+export default mongoose.model("EconomyModel", economySchema);
