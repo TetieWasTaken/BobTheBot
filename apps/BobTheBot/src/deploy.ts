@@ -3,7 +3,7 @@ const { REST, Routes } = require("discord.js");
 const fs = require("fs");
 const { table } = require("table");
 
-const commandFolders = fs.readdirSync("./src/interactions/").filter((item: any) => !/(^|\/)\.[^/.]/g.test(item));
+const commandFolders = fs.readdirSync("./src/interactions/").filter((item: string) => !/(^|\/)\.[^/.]/g.test(item));
 const interactions = [];
 
 for (const folder of commandFolders) {
