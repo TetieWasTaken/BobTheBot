@@ -39,7 +39,9 @@ module.exports = {
         const replyEmbed = new EmbedBuilder()
           .setColor(0x2f3136)
           .setAuthor({ name: `${interaction.user.tag}`, iconURL: `${interaction.member.displayAvatarURL()}` })
-          .setDescription(`${interaction.targetMessage.content}`)
+          .setDescription(
+            `${interaction.targetMessage.content.length > 0 ? interaction.targetMessage.content : "No content"}`
+          )
           .setFooter({ text: `#${interaction.channel.name}` })
           .setTimestamp(interaction.targetMessage.createdAt);
 
@@ -118,9 +120,11 @@ module.exports = {
                 .setColor(0x57f287)
                 .setAuthor({
                   name: `${interaction.targetMessage.author.tag} (${interaction.targetMessage.author.id})`,
-                  iconURL: `${interaction.targetMessage.user.displayAvatarURL()}`,
+                  iconURL: `${interaction.targetMessage.author.displayAvatarURL()}`,
                 })
-                .setDescription(`${interaction.targetMessage.content}`)
+                .setDescription(
+                  `${interaction.targetMessage.content.length > 0 ? interaction.targetMessage.content : "No content"}`
+                )
                 .setFooter({ text: `#${interaction.channel.name}` })
                 .setTimestamp(interaction.targetMessage.createdAt);
 
