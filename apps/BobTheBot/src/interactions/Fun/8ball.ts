@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
+import type { ChatInputCommandInteraction } from "discord.js";
 const fs = require("fs");
 
 const requiredBotPerms = {
@@ -15,8 +16,10 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("8ball")
     .setDescription("Ask the magic 8ball a question")
-    .addStringOption((option) => option.setName("question").setDescription("The question to ask").setRequired(true)),
-  async execute(interaction) {
+    .addStringOption((option: any) =>
+      option.setName("question").setDescription("The question to ask").setRequired(true)
+    ),
+  async execute(interaction: ChatInputCommandInteraction) {
     const eightballTxt = fs.readFileSync("./resources/8ballresponses.txt").toString().split("\n");
     const randomNum = Math.floor(Math.random() * 20);
 

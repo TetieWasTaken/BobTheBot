@@ -15,7 +15,7 @@ const requiredUserPerms = {
 
 function getChoices() {
   const choises = fs
-    .readdirSync("./src/interactions")
+    .readdirSync("./dist/interactions")
     .filter((item) => !/(^|\/)\.[^/.]/g.test(item))
     .filter((item) => item !== "context-menu");
 
@@ -26,14 +26,14 @@ function getChoices() {
 
 function getCommands() {
   const categories = fs
-    .readdirSync("./src/interactions")
+    .readdirSync("./dist/interactions")
     .filter((item) => !/(^|\/)\.[^/.]/g.test(item))
     .filter((item) => item !== "context-menu");
 
   const interactions = [];
 
   for (let category of categories) {
-    const commandFiles = fs.readdirSync(`./src/interactions/${category}`).filter((file) => file.endsWith(".js"));
+    const commandFiles = fs.readdirSync(`./dist/interactions/${category}`).filter((file) => file.endsWith(".js"));
 
     for (let file of commandFiles) {
       category = capitalizeFirst(category);

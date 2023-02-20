@@ -4,11 +4,13 @@ const { logTimings } = require("../utils/logTimings");
 const { table } = require("table");
 
 class Database {
+  connection: any;
+
   constructor() {
     this.connection = null;
   }
 
-  connect(client) {
+  connect(client: any) {
     const timerStart = Date.now();
 
     mongoose.set("strictQuery", true);
@@ -27,8 +29,12 @@ class Database {
 
         require("../utils/dataSweeper").loop(client);
 
+        type States = {
+          [key: number]: string;
+        };
+
         // Unable to get the states out of mongoose.connection, temporary hardcode.
-        const states = {
+        const states: States = {
           0: "disconnected",
           1: "connected",
           2: "connecting",
@@ -53,7 +59,7 @@ class Database {
 
         console.log(table(cnslTable, config), "\n————————————————————————————————————————————————\n");
       })
-      .catch((err) => {
+      .catch((err: any) => {
         console.error(err);
       });
   }

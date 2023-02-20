@@ -3,16 +3,17 @@ const { REST, Routes } = require("discord.js");
 const fs = require("fs");
 const { table } = require("table");
 
-const commandFolders = fs.readdirSync("./src/interactions/").filter((item) => !/(^|\/)\.[^/.]/g.test(item));
+const commandFolders = fs.readdirSync("./src/interactions/").filter((item: any) => !/(^|\/)\.[^/.]/g.test(item));
 const interactions = [];
 
 for (const folder of commandFolders) {
   const commandFiles = fs.readdirSync(`./src/interactions/${folder}`);
   for (const file of commandFiles) {
-    if (!file.endsWith(".js")) {
+    if (!file.endsWith(".js") && !file.endsWith(".ts")) {
       const subFiles = fs.readdirSync(`./src/interactions/${folder}/${file}`);
       for (const subFile of subFiles) {
         try {
+          subFile.replace(".ts", ".js");
           const command = require(`./interactions/${folder}/${file}/${subFile}`);
           interactions.push(command.data.toJSON());
         } catch (error) {
@@ -23,7 +24,7 @@ for (const folder of commandFolders) {
     }
 
     try {
-      const command = require(`./interactions/${folder}/${file}`);
+      const command = require(`./interactions/${folder}/${file.replace(".ts", ".js")}`);
       interactions.push(command.data.toJSON());
     } catch (error) {
       console.log(error);

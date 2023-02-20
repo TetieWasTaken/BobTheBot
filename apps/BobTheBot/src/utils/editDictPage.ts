@@ -1,7 +1,7 @@
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
 
 module.exports = {
-  editDictPage: async (interaction, result, currentPage, totalPages) => {
+  editDictPage: async (interaction: any, result: any, currentPage: number, totalPages: number) => {
     await interaction.deferUpdate();
 
     if (currentPage !== 0) {

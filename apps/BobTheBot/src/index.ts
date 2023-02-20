@@ -24,7 +24,7 @@ const client = new Client({
     MessageManager: 100,
     GuildMemberManager: {
       maxSize: 150,
-      keepOverLimit: (member) => member.id === client.user.id,
+      keepOverLimit: (member: any) => member.id === client.user.id,
     },
     ReactionManager: 0,
   }),
@@ -47,7 +47,7 @@ db.connect(client);
 
 timerStart = Date.now();
 
-const commandFolders = fs.readdirSync("./src/interactions/").filter((item) => !/(^|\/)\.[^/.]/g.test(item));
+const commandFolders = fs.readdirSync("./src/interactions/").filter((item: any) => !/(^|\/)\.[^/.]/g.test(item));
 
 console.log(`\n————————————————————————————————————————————————\n`);
 
@@ -62,7 +62,8 @@ let config = {
 
 for (const folder of commandFolders) {
   const commandFiles = fs.readdirSync(`./src/interactions/${folder}`);
-  for (const file of commandFiles) {
+  for (let file of commandFiles) {
+    file = file.replace(".ts", ".js");
     if (!file.endsWith(".js")) {
       const subFiles = fs.readdirSync(`./src/interactions/${folder}/${file}`);
       for (const subFile of subFiles) {
@@ -108,11 +109,14 @@ timerStart = Date.now();
 
 const componentFolders = fs.readdirSync(`./src/components`);
 for (const compfolder of componentFolders) {
-  const componentFiles = fs.readdirSync(`./src/components/${compfolder}`).filter((file) => file.endsWith(".js"));
+  const componentFiles = fs
+    .readdirSync(`./src/components/${compfolder}`)
+    .filter((file: string) => file.endsWith(".js") || file.endsWith(".ts"));
 
   switch (compfolder) {
     case "buttons":
-      for (const file of componentFiles) {
+      for (let file of componentFiles) {
+        file = file.replace(".ts", ".js");
         try {
           const button = require(`./components/${compfolder}/${file}`);
           client.buttons.set(button.data.name, button);
@@ -144,16 +148,17 @@ config = {
 
 timerStart = Date.now();
 
-const eventFiles = fs.readdirSync("./src/events").filter((file) => file.endsWith(".js"));
+const eventFiles = fs.readdirSync("./src/events").filter((file: any) => file.endsWith(".js") || file.endsWith(".ts"));
 
-for (const file of eventFiles) {
+for (let file of eventFiles) {
+  file = file.replace(".ts", ".js");
   try {
     const event = require(`./events/${file}`);
 
     if (event.once) {
-      client.once(event.name, (...args) => event.execute(...args));
+      client.once(event.name, (...args: any) => event.execute(...args));
     } else {
-      client.on(event.name, (...args) => event.execute(...args));
+      client.on(event.name, (...args: any) => event.execute(...args));
     }
     cnslTable.push([`${event.name}`, "✅"]);
   } catch (error) {
@@ -172,7 +177,7 @@ if (client.timings.size === 4) {
   logTimings(client.timings);
 }
 
-client.on("error", (error) => {
+client.on("error", (error: any) => {
   console.error("The WebSocket encountered an error:", error);
 });
 

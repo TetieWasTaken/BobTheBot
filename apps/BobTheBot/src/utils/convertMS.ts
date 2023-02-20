@@ -1,8 +1,8 @@
-function padTo2Digits(num) {
+function padTo2Digits(num: string | number) {
   return num.toString().padStart(2, "0");
 }
 module.exports = {
-  convertMS: (milliseconds) => {
+  convertMS: (milliseconds: number) => {
     let seconds = Math.floor(milliseconds / 1000);
     let minutes = Math.floor(seconds / 60);
     let hours = Math.floor(minutes / 60);

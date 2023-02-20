@@ -1,8 +1,11 @@
+import type { Client } from "discord.js";
+import type { Collection } from "mongoose";
+
 const cron = require("node-cron");
 const { table } = require("table");
 const mongoose = require("mongoose");
 
-const loop = (client) => {
+const loop = (client: Client) => {
   cron.schedule(
     "0 12 * * 6",
     () => {
@@ -16,7 +19,7 @@ const loop = (client) => {
   );
 };
 
-const sweep = async (client) => {
+const sweep = async (client: Client) => {
   const connection = mongoose.connection;
 
   const config = {
@@ -28,7 +31,7 @@ const sweep = async (client) => {
 
   let cnslTable = [["Collection", "Deleted"]];
 
-  const deleteDocs = async (collection, queryFn) => {
+  const deleteDocs = async (collection: Collection, queryFn: any) => {
     let count = 0;
     for await (const doc of collection.find()) {
       if (queryFn(doc)) {
@@ -40,17 +43,17 @@ const sweep = async (client) => {
   };
 
   const collections = {
-    economymodels: { queryFn: (doc) => doc.NetWorth <= 0, label: "Economy" },
+    economymodels: { queryFn: (doc: any) => doc.NetWorth <= 0, label: "Economy" },
     levelmodels: {
-      queryFn: (doc) => !client.guilds.cache.get(doc.GuildId),
+      queryFn: (doc: any) => !client.guilds.cache.get(doc.GuildId),
       label: "Levels",
     },
     infractionsmodels: {
-      queryFn: (doc) => !client.guilds.cache.get(doc.GuildId),
+      queryFn: (doc: any) => !client.guilds.cache.get(doc.GuildId),
       label: "Infractions",
     },
     guildmodels: {
-      queryFn: (doc) => !client.guilds.cache.get(doc.GuildId),
+      queryFn: (doc: any) => !client.guilds.cache.get(doc.GuildId),
       label: "Guilds",
     },
   };

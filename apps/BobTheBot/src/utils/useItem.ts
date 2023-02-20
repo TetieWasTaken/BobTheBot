@@ -1,5 +1,12 @@
-const itemHandlers = {
-  placeholder: (interaction, item, data) => {
+import type { ChatInputCommandInteraction, InteractionResponse } from "discord.js";
+
+type ItemHandlerMap = Record<
+  string,
+  (interaction: ChatInputCommandInteraction, item: any, data: any) => Promise<InteractionResponse<boolean>>
+>;
+
+const itemHandlers: ItemHandlerMap = {
+  placeholder: (interaction: ChatInputCommandInteraction, item: any, data: any) => {
     const reward = Math.floor(Math.random() * 1000) + 1;
 
     data.Inventory[item.name] -= 1;
@@ -11,7 +18,7 @@ const itemHandlers = {
       ephemeral: true,
     });
   },
-  chicken: (interaction, item, data) => {
+  chicken: (interaction: ChatInputCommandInteraction, item: any, data: any) => {
     switch (item.name) {
       case "Chicken":
         data.Multiplier = 1.2;
@@ -40,7 +47,7 @@ const itemHandlers = {
 };
 
 module.exports = {
-  useItem: function (interaction, item, data) {
+  useItem: function (interaction: ChatInputCommandInteraction, item: any, data: any) {
     const handler = itemHandlers[item.name.toLowerCase()];
     if (handler) {
       return handler(interaction, item, data);
@@ -52,4 +59,3 @@ module.exports = {
     }
   },
 };
-//

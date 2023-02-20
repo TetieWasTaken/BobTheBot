@@ -1,8 +1,10 @@
+import type { Collection } from "discord.js";
+
 const { table } = require("table");
 
 module.exports = {
-  logTimings: (timings) => {
-    timings = timings.sort((a, b) => b - a);
+  logTimings: (timings: Collection<String, number>) => {
+    timings = timings.sort((a: number, b: number) => b - a);
     let config = {
       header: {
         alignment: "center",
