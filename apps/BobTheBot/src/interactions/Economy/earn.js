@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const EconomySchema = require("../../models/EconomyModel");
-const { genGradient } = require("../../utils/genGradient");
 
 const requiredBotPerms = {
   type: "flags",
@@ -77,7 +76,6 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setAuthor({ name: randomResponse.name })
-      .setColor(genGradient("#ff0000", "#57f287", Math.min(randomResponse.randomAmount / 150, 1)))
       .setDescription(randomResponse.value.replace("${randomAmount}", randomResponse.randomAmount));
 
     return interaction.reply({ embeds: [embed] });
