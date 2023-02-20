@@ -1,3 +1,5 @@
+import type { ExtendedClient } from "../utils/types/index.js";
+
 const mongoose = require("mongoose");
 require("dotenv").config();
 const { logTimings } = require("../utils/logTimings");
@@ -10,7 +12,7 @@ class Database {
     this.connection = null;
   }
 
-  connect(client: any) {
+  connect(client: ExtendedClient) {
     const timerStart = Date.now();
 
     mongoose.set("strictQuery", true);

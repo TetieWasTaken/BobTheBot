@@ -1,3 +1,5 @@
+import type { GuildMember } from "discord.js";
+
 require("dotenv").config();
 const fs = require("fs");
 const Database = require("./config/Database");
@@ -7,9 +9,10 @@ const { logTimings } = require("./utils/logTimings");
 
 let timerStart;
 
-const { Client, Options, Collection } = require("discord.js");
+const { Options } = require("discord.js");
+import { ExtendedClient } from "./utils/types/index.js";
 
-const client = new Client({
+const client = new ExtendedClient({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
@@ -24,7 +27,7 @@ const client = new Client({
     MessageManager: 100,
     GuildMemberManager: {
       maxSize: 150,
-      keepOverLimit: (member: any) => member.id === client.user.id,
+      keepOverLimit: (member: GuildMember) => member.id === client.user.id,
     },
     ReactionManager: 0,
   }),
@@ -37,17 +40,12 @@ const client = new Client({
   },
 });
 
-client.interactions = new Collection();
-client.buttons = new Collection();
-client.cooldowns = new Collection();
-client.timings = new Collection();
-
 const db = new Database();
 db.connect(client);
 
 timerStart = Date.now();
 
-const commandFolders = fs.readdirSync("./src/interactions/").filter((item: any) => !/(^|\/)\.[^/.]/g.test(item));
+const commandFolders = fs.readdirSync("./src/interactions/").filter((item: string) => !/(^|\/)\.[^/.]/g.test(item));
 
 console.log(`\n————————————————————————————————————————————————\n`);
 
@@ -148,7 +146,9 @@ config = {
 
 timerStart = Date.now();
 
-const eventFiles = fs.readdirSync("./src/events").filter((file: any) => file.endsWith(".js") || file.endsWith(".ts"));
+const eventFiles = fs
+  .readdirSync("./src/events")
+  .filter((file: string) => file.endsWith(".js") || file.endsWith(".ts"));
 
 for (let file of eventFiles) {
   file = file.replace(".ts", ".js");
@@ -156,9 +156,9 @@ for (let file of eventFiles) {
     const event = require(`./events/${file}`);
 
     if (event.once) {
-      client.once(event.name, (...args: any) => event.execute(...args));
+      client.once(event.name, (...args: any[]) => event.execute(...args));
     } else {
-      client.on(event.name, (...args: any) => event.execute(...args));
+      client.on(event.name, (...args: any[]) => event.execute(...args));
     }
     cnslTable.push([`${event.name}`, "✅"]);
   } catch (error) {
@@ -177,7 +177,7 @@ if (client.timings.size === 4) {
   logTimings(client.timings);
 }
 
-client.on("error", (error: any) => {
+client.on("error", (error: Error) => {
   console.error("The WebSocket encountered an error:", error);
 });
 
