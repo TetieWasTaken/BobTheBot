@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
-const economySchema = new mongoose.Schema({
+const EconomySchema = new Schema({
   UserId: String,
   Bank: Number,
   Wallet: Number,
@@ -9,4 +9,4 @@ const economySchema = new mongoose.Schema({
   Inventory: Array,
 });
 
-export default mongoose.model("EconomyModel", economySchema);
+export default model("EconomyModel", EconomySchema);
