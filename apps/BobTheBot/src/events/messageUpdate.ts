@@ -1,29 +1,28 @@
-const GuildSchema = require("../models/GuildModel");
-const { EmbedBuilder } = require("discord.js");
+import { Message, EmbedBuilder } from "discord.js";
+import GuildSchema from "../models/GuildModel";
 
 module.exports = {
   name: "messageUpdate",
   once: false,
-  async execute(initMessage, newMessage) {
+  async execute(initMessage: Message, newMessage: Message): Promise<void> {
     if (newMessage.author.bot) return;
+    if (!newMessage.guild) return;
 
     const guildData = await GuildSchema.findOne({
       GuildId: newMessage.guild.id,
     });
 
     if (guildData && guildData.GuildLogChannel !== null) {
-      const logChannel = await Promise.resolve(newMessage.guild.channels.fetch(guildData.GuildLogChannel));
-
-      let userNickname = ` (${newMessage.member.nickname})`;
-      if (userNickname == " (null)") {
-        userNickname = "";
-      }
+      const logChannelId = guildData?.GuildLogChannel;
+      if (!logChannelId) return;
+      const logChannel = await newMessage.guild.channels.fetch(logChannelId);
+      if (!logChannel || !logChannel.isTextBased()) return;
 
       const logEmbed = new EmbedBuilder()
         .setColor(0xfff033)
         .setAuthor({
-          name: `${newMessage.author.tag}` + userNickname + " | Message edited",
-          iconURL: `${newMessage.member.user.displayAvatarURL()}`,
+          name: `${newMessage.author.tag} (${newMessage.member?.id}) | Message edited`,
+          iconURL: `${newMessage.member?.user.displayAvatarURL()}`,
         })
         .addFields(
           {
@@ -43,7 +42,7 @@ module.exports = {
           },
           {
             name: `ID`,
-            value: `\`\`\`ini\nUser = ${newMessage.member.id}\nID = ${newMessage.id}\`\`\``,
+            value: `\`\`\`ini\nUser = ${newMessage.member?.id}\nID = ${newMessage.id}\`\`\``,
             inline: false,
           }
         )
