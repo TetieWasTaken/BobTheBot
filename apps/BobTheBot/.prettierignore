@@ -2,3 +2,4 @@
 LICENSE
 resources/**
 !resources/*.json
+dist/**
