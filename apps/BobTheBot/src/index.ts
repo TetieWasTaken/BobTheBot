@@ -1,18 +1,15 @@
-import type { GuildMember } from "discord.js";
+import dotenv from "dotenv";
+import fs from "fs";
+import { table, TableUserConfig } from "table";
 
-require("dotenv").config();
-const fs = require("fs");
-const Database = require("./config/Database");
-const { Partials, GatewayIntentBits } = require("discord.js");
-const { table } = require("table");
-const { logTimings } = require("./utils/logTimings");
-
-let timerStart;
-
-const { Options } = require("discord.js");
+import Database from "./config/Database";
+import { Partials, GatewayIntentBits, Options, GuildMember } from "discord.js";
 import { ExtendedClient } from "./utils/types/index.js";
+import { logTimings } from "./utils/logTimings";
 
-const client = new ExtendedClient({
+dotenv.config();
+
+const client: ExtendedClient = new ExtendedClient({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
@@ -23,7 +20,7 @@ const client = new ExtendedClient({
   ],
   partials: [Partials.Message, Partials.Channel],
   makeCache: Options.cacheWithLimits({
-    ...Options.defaultMakeCacheSettings,
+    ...Options.DefaultMakeCacheSettings,
     MessageManager: 100,
     GuildMemberManager: {
       maxSize: 150,
@@ -43,7 +40,7 @@ const client = new ExtendedClient({
 const db = new Database();
 db.connect(client);
 
-timerStart = Date.now();
+let timerStart = Date.now();
 
 const commandFolders = fs.readdirSync("./src/interactions/").filter((item: string) => !/(^|\/)\.[^/.]/g.test(item));
 
@@ -51,7 +48,7 @@ console.log(`\n—————————————————————�
 
 let cnslTable = [["Command", "Status"]];
 
-let config = {
+let config: TableUserConfig = {
   header: {
     alignment: "center",
     content: "Commands",

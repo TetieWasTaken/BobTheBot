@@ -5,7 +5,7 @@ require("dotenv").config();
 const { logTimings } = require("../utils/logTimings");
 const { table } = require("table");
 
-class Database {
+export default class Database {
   connection: any;
 
   constructor() {
@@ -66,5 +66,3 @@ class Database {
       });
   }
 }
-
-module.exports = Database;
