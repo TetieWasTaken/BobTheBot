@@ -1,9 +1,10 @@
-const LevelSchema = require("../models/LevelModel");
+import type { Message } from "discord.js";
+import { LevelModel } from "../models/index.js";
 
 module.exports = {
   name: "messageCreate",
   once: false,
-  async execute(message) {
+  async execute(message: Message) {
     const author = message.author;
     const messageLength = message.content.length;
 
@@ -16,11 +17,11 @@ module.exports = {
     const randomNum = Math.floor(Math.random() * 21 + 15);
     const xpToAdd = randomNum + bonusXP;
 
-    const getxpNeededXP = (UserLevel) => 50 * UserLevel ** 2 + 50;
+    const getxpNeededXP = (UserLevel: number) => 50 * UserLevel ** 2 + 50;
 
-    let data = await LevelSchema.findOneAndUpdate(
+    let data = await LevelModel.findOneAndUpdate(
       {
-        GuildId: message.guild.id,
+        GuildId: message.guild?.id,
         UserId: author.id,
       },
       {
@@ -32,18 +33,20 @@ module.exports = {
 
     if (data) {
       let { UserXP, UserLevel } = data;
+      if (!UserXP) UserXP = 0;
+      if (!UserLevel) UserLevel = 0;
+
       let xpNeeded = getxpNeededXP(UserLevel + 1);
 
       if (UserXP >= xpNeeded) {
         ++UserLevel;
-
-        await LevelSchema.updateOne({ GuildId: message.guild.id, UserId: author.id }, { UserLevel, UserXP });
+        await LevelModel.updateOne({ GuildId: message.guild?.id, UserId: author.id }, { UserLevel, UserXP });
       }
     }
 
     if (!data) {
-      let data = new LevelSchema({
-        GuildId: message.guild.id,
+      let data = new LevelModel({
+        GuildId: message.guild?.id,
         UserId: author.id,
         UserXP: xpToAdd,
         UserLevel: 0,
