@@ -1,67 +1,100 @@
-const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
+import { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, ButtonInteraction } from "discord.js";
 
-module.exports = {
-  editDictPage: async (interaction: any, result: any, currentPage: number, totalPages: number) => {
-    await interaction.deferUpdate();
+interface IResult {
+  word: string;
+  phonetics: {
+    text: string;
+    audio: string;
+  }[];
+  meanings: {
+    partOfSpeech: string;
+    definitions: {
+      definition: string;
+      synonyms: string[] | string;
+      antonyms: string[] | string;
+      example: string | undefined;
+    }[];
+  }[];
+}
 
-    if (currentPage !== 0) {
-      if (currentPage < 1) {
-        currentPage = totalPages - 1;
-      } else if (currentPage >= totalPages) {
-        currentPage = 0;
+interface IEditDictPageProps {
+  interaction: ButtonInteraction;
+  result: IResult[];
+  currentPage: number;
+  totalPages: number;
+}
+
+export async function editDictPage({ interaction, result, currentPage, totalPages }: IEditDictPageProps) {
+  await interaction.deferUpdate();
+
+  if (!result[0]) return interaction.editReply("No results found");
+
+  if (currentPage !== 0) {
+    if (currentPage < 1) {
+      currentPage = totalPages - 1;
+    } else if (currentPage >= totalPages) {
+      currentPage = 0;
+    }
+  }
+
+  const currentDefinition = result[0]?.meanings[0]?.definitions[currentPage];
+
+  if (!currentDefinition) return interaction.editReply("No results found");
+
+  if (currentDefinition.synonyms.length === 0) {
+    currentDefinition.synonyms = "None";
+  }
+
+  if (currentDefinition.antonyms.length === 0) {
+    currentDefinition.antonyms = "None";
+  }
+
+  if (currentDefinition.example === undefined) {
+    currentDefinition.example = "None";
+  }
+
+  const firstPhonetic = result[0]?.phonetics[0];
+  const audioUrl = firstPhonetic?.audio ?? null;
+
+  const embed = new EmbedBuilder()
+    .setColor(0x0099ff)
+    .setTitle(result[0].word)
+    .setURL(audioUrl)
+    .setDescription(currentDefinition.definition)
+    .addFields(
+      {
+        name: "Synonyms",
+        value: `${currentDefinition.synonyms}`,
+        inline: true,
+      },
+      {
+        name: "Antonyms",
+        value: `${currentDefinition.antonyms}`,
+        inline: true,
+      },
+      {
+        name: "Example",
+        value: `${currentDefinition.example}`,
+        inline: false,
       }
-    }
-
-    if (result[0].meanings[0].definitions[currentPage].synonyms.length === 0) {
-      result[0].meanings[0].definitions[currentPage].synonyms = "None";
-    }
-    if (result[0].meanings[0].definitions[currentPage].antonyms.length === 0) {
-      result[0].meanings[0].definitions[currentPage].antonyms = "None";
-    }
-    if (result[0].meanings[0].definitions[currentPage].example === undefined) {
-      result[0].meanings[0].definitions[currentPage].example = "None";
-    }
-
-    const embed = new EmbedBuilder()
-      .setColor("0x0099ff")
-      .setTitle(result[0].word)
-      .setURL(result[0].phonetics[0].audio.length > 0 ? result[0].phonetics[0].audio : null)
-      .setDescription(result[0].meanings[0].definitions[currentPage].definition)
-      .addFields(
-        {
-          name: "Synonyms",
-          value: result[0].meanings[0].definitions[currentPage].synonyms,
-          inline: true,
-        },
-        {
-          name: "Antonyms",
-          value: result[0].meanings[0].definitions[currentPage].antonyms,
-          inline: true,
-        },
-        {
-          name: "Example",
-          value: result[0].meanings[0].definitions[currentPage].example,
-          inline: false,
-        }
-      )
-      .setTimestamp()
-      .setFooter({
-        text: `Page ${currentPage + 1}/${totalPages}`,
-      });
-    const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId("dictprevious")
-        .setLabel("Previous")
-        .setEmoji("◀️")
-        .setStyle(ButtonStyle.Secondary)
-        .setDisabled(false),
-      new ButtonBuilder()
-        .setCustomId("dictnext")
-        .setLabel("Next")
-        .setEmoji("▶️")
-        .setStyle(ButtonStyle.Secondary)
-        .setDisabled(false)
-    );
-    return interaction.editReply({ embeds: [embed], components: [row] });
-  },
-};
+    )
+    .setTimestamp()
+    .setFooter({
+      text: `Page ${currentPage + 1}/${totalPages}`,
+    });
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setCustomId("dictprevious")
+      .setLabel("Previous")
+      .setEmoji("◀️")
+      .setStyle(ButtonStyle.Secondary)
+      .setDisabled(false),
+    new ButtonBuilder()
+      .setCustomId("dictnext")
+      .setLabel("Next")
+      .setEmoji("▶️")
+      .setStyle(ButtonStyle.Secondary)
+      .setDisabled(false)
+  );
+  return interaction.editReply({ embeds: [embed], components: [row] });
+}
