@@ -1,20 +1,22 @@
-const GuildSchema = require("../models/GuildModel");
+import type { BaseInteraction } from "discord.js";
+
+import { GuildModel } from "../models/index.js";
 const { EmbedBuilder } = require("discord.js");
 const { raiseUserPermissionsError, raiseBotPermissionsError } = require("../utils/returnError.js");
+
+import type { ExtendedClient } from "../utils/types/index.js";
 
 module.exports = {
   name: "interactionCreate",
   once: false,
-  async execute(interaction) {
+  async execute(interaction: BaseInteraction, client: ExtendedClient) {
     if (interaction.isCommand()) {
-      const client = interaction.client;
-
       const command = client.interactions.get(interaction.commandName);
 
-      if (!command) return;
+      if (!command || !interaction.inGuild()) return;
 
-      const guildData = await GuildSchema.findOne({
-        GuildId: interaction.guild.id,
+      const guildData = await GuildModel.findOne({
+        GuildId: interaction.guild?.id,
       });
 
       if (guildData && guildData.DisabledCommands) {
@@ -55,9 +57,15 @@ module.exports = {
         }, cooldownTime);
       }
 
+      if (!interaction.inCachedGuild()) {
+        return interaction.reply({
+          content: "An unexpected error occured. Please try again later.\nREASON: Guild failed to cache.",
+          ephemeral: true,
+        });
+      }
       if (command.requiredUserPerms?.key.length > 0) {
         for (const userPerm of command.requiredUserPerms.key) {
-          if (!interaction.member.permissions.has(userPerm)) {
+          if (!interaction.member?.permissions.has(userPerm)) {
             return raiseUserPermissionsError(interaction, userPerm);
           }
         }
@@ -65,7 +73,7 @@ module.exports = {
 
       if (command.requiredBotPerms?.key.length > 0) {
         for (const botPerm of command.requiredBotPerms.key) {
-          if (!interaction.guild.members.me.permissions.has(botPerm)) {
+          if (!interaction.guild?.members.me?.permissions.has(botPerm)) {
             return raiseBotPermissionsError(interaction, botPerm);
           }
         }
@@ -84,7 +92,7 @@ module.exports = {
         });
       }
     } else if (interaction.isAutocomplete()) {
-      const command = interaction.client.interactions.get(interaction.commandName);
+      const command = client.interactions.get(interaction.commandName);
 
       if (!command) {
         console.error(`No command matching ${interaction.commandName} was found.`);
@@ -98,13 +106,13 @@ module.exports = {
         console.error(error);
       }
     } else if (interaction.isButton()) {
-      if (interaction.message.interaction.user.id !== interaction.user.id)
+      if (interaction.message.interaction?.user.id !== interaction.user.id)
         return interaction.reply({
           content: "This button is not for you!",
           ephemeral: true,
         });
 
-      const button = interaction.client.buttons.get(interaction.customId);
+      const button = client.buttons.get(interaction.customId);
       if (!button) return new Error("No code for button!");
 
       try {
@@ -125,7 +133,7 @@ module.exports = {
           .addFields(
             {
               name: `Guild ID`,
-              value: `${interaction.guild.id}`,
+              value: `${interaction.guild?.id ?? "No guild ID found"}`,
               inline: true,
             },
             {
@@ -140,9 +148,9 @@ module.exports = {
 
         await interaction.reply({ embeds: [replyEmbed], ephemeral: true });
 
-        await GuildSchema.findOneAndUpdate(
+        await GuildModel.findOneAndUpdate(
           {
-            GuildId: interaction.guild.id,
+            GuildId: interaction.guild?.id,
           },
           {
             GuildLogChannel: logChannelId,
