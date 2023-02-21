@@ -1,29 +1,27 @@
-const GuildSchema = require("../models/GuildModel");
-const { EmbedBuilder } = require("discord.js");
+import { Message, EmbedBuilder } from "discord.js";
+import { GuildModel } from "../models/index.js";
 
 module.exports = {
   name: "messageDelete",
   once: false,
-  async execute(message) {
+  async execute(message: Message) {
     if (message.author.bot) return;
 
-    const guildData = await GuildSchema.findOne({
-      GuildId: message.guild.id,
+    const guildData = await GuildModel.findOne({
+      GuildId: message.guild?.id,
     });
 
     if (guildData && guildData.GuildLogChannel !== null) {
-      const logChannel = await Promise.resolve(message.guild.channels.fetch(guildData.GuildLogChannel));
-
-      let userNickname = ` (${message.member.nickname ?? ""})`;
-      if (userNickname == " (null)") {
-        userNickname = "";
-      }
+      const logChannelId = guildData?.GuildLogChannel;
+      if (!logChannelId) return;
+      const logChannel = await message.guild?.channels.fetch(logChannelId);
+      if (!logChannel || !logChannel.isTextBased()) return;
 
       const logEmbed = new EmbedBuilder()
         .setColor(0xffa800)
         .setAuthor({
-          name: `${message.author.tag}` + userNickname + " | Message deleted",
-          iconURL: `${message.member.user.displayAvatarURL()}`,
+          name: `${message.author.tag} (${message.author.id}) | Message deleted`,
+          iconURL: `${message.member?.user.displayAvatarURL()}`,
         })
         .addFields(
           {
@@ -38,7 +36,7 @@ module.exports = {
           },
           {
             name: `ID`,
-            value: `\`\`\`ini\nUser = ${message.member.id}\nID = ${message.id}\`\`\``,
+            value: `\`\`\`ini\nUser = ${message.member?.id}\nID = ${message.id}\`\`\``,
             inline: false,
           }
         )
