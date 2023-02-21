@@ -46,16 +46,14 @@ const itemHandlers: ItemHandlerMap = {
   },
 };
 
-module.exports = {
-  useItem: function (interaction: ChatInputCommandInteraction, item: any, data: any) {
-    const handler = itemHandlers[item.name.toLowerCase()];
-    if (handler) {
-      return handler(interaction, item, data);
-    } else {
-      return interaction.reply({
-        content: `You cannot use item: ${item.name}`,
-        ephemeral: true,
-      });
-    }
-  },
-};
+export function useItem(interaction: ChatInputCommandInteraction, item: any, data: any) {
+  const handler = itemHandlers[item.name.toLowerCase()];
+  if (handler) {
+    return handler(interaction, item, data);
+  } else {
+    return interaction.reply({
+      content: `You cannot use item: ${item.name}`,
+      ephemeral: true,
+    });
+  }
+}
