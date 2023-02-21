@@ -29,7 +29,7 @@ export default class Database {
         }
         this.connection = mongoose.connection;
 
-        require("../utils/dataSweeper").loop(client);
+        require("../utils/dataSweeper").loop(client, this.connection);
 
         type States = {
           [key: number]: string;

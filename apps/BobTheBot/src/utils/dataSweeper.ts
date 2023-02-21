@@ -1,16 +1,19 @@
-import type { Client } from "discord.js";
-import type { Collection } from "mongoose";
+import type { ExtendedClient } from "./types/index.js";
+import type { Connection, Collection } from "mongoose";
+import { table, TableUserConfig } from "table";
+import cron from "node-cron";
 
-const cron = require("node-cron");
-const { table } = require("table");
-const mongoose = require("mongoose");
+interface ICollection {
+  queryFn: (doc: any) => boolean;
+  label: string;
+}
 
-const loop = (client: Client) => {
+const loop = (client: ExtendedClient, connection: Connection) => {
   cron.schedule(
     "0 12 * * 6",
     () => {
       if (!client.isReady()) return console.log("Client not ready, skipping sweep");
-      sweep(client);
+      sweep(client, connection);
     },
     {
       scheduled: true,
@@ -19,19 +22,18 @@ const loop = (client: Client) => {
   );
 };
 
-const sweep = async (client: Client) => {
-  const connection = mongoose.connection;
-
-  const config = {
+const sweep = async (client: ExtendedClient, connection: Connection): Promise<void> => {
+  const config: TableUserConfig = {
     header: {
       alignment: "center",
       content: "Sweeping database",
     },
   };
 
-  let cnslTable = [["Collection", "Deleted"]];
+  let cnslTable: (string | number)[][] = [["Collection", "Deleted"]];
 
-  const deleteDocs = async (collection: Collection, queryFn: any) => {
+  const deleteDocs = async (collection: Collection<any> | undefined, queryFn: any) => {
+    if (!collection) return 0;
     let count = 0;
     for await (const doc of collection.find()) {
       if (queryFn(doc)) {
@@ -42,7 +44,7 @@ const sweep = async (client: Client) => {
     return count;
   };
 
-  const collections = {
+  const collections: Record<string, ICollection> = {
     economymodels: { queryFn: (doc: any) => doc.NetWorth <= 0, label: "Economy" },
     levelmodels: {
       queryFn: (doc: any) => !client.guilds.cache.get(doc.GuildId),
