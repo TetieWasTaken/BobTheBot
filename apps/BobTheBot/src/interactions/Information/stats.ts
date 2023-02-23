@@ -1,31 +1,24 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const { convertMS } = require("../../utils/convertMS.js");
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { convertMS } from "../../utils/index.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
   data: new SlashCommandBuilder().setName("stats").setDescription("Receive statistics about the bot"),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     let milliseconds = interaction.client.uptime;
 
-    const botMember = interaction.guild.members.me;
-
-    let botNickname = ` (${botMember.nickname ?? "null"})`;
-    if (botNickname == " (null)") {
-      botNickname = "";
-    }
-
     const replyEmbed = new EmbedBuilder()
-      .setColor(interaction.guild.members.me.displayHexColor)
-      .setTitle(`${interaction.client.user.username}#${interaction.client.user.discriminator}` + botNickname)
+      .setColor(interaction.guild?.members?.me?.displayHexColor ?? 0x5865f2)
+      .setTitle(`${interaction.client.user.tag} (${interaction.client.user.id}))`)
       .setDescription("🧮 Statistics about the bot")
       .addFields(
         {
