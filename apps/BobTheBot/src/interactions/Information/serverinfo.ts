@@ -1,20 +1,19 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
   data: new SlashCommandBuilder().setName("serverinfo").setDescription("Receive information about the current guild"),
-  async execute(interaction) {
-    let serverIcon = interaction.guild.iconURL();
-    let boostCount = interaction.guild.premiumSubscriptionCount;
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    let boostCount = interaction.guild.premiumSubscriptionCount ?? 0;
     let boostTier = 0;
 
     if (boostCount >= 2) {
@@ -28,9 +27,8 @@ module.exports = {
     const fetchedOwner = await Promise.resolve(interaction.guild.fetchOwner());
 
     const replyEmbed = new EmbedBuilder()
-      .setColor(interaction.guild.members.me.displayHexColor)
-      .setAuthor({ name: `${interaction.guild.name}`, iconURL: serverIcon })
-      .setThumbnail(serverIcon)
+      .setColor(interaction.guild?.members?.me?.displayHexColor ?? 0x5865f2)
+      .setAuthor({ name: `${interaction.guild.name}`, iconURL: interaction.guild.iconURL() ?? undefined })
       .addFields(
         {
           name: "General information",
