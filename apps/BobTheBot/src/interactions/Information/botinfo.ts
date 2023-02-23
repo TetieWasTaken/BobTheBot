@@ -47,7 +47,7 @@ module.exports = {
           inline: true,
         }
       )
-      .setColor(interaction?.guild?.members?.me?.displayHexColor ?? 0x5865f2)
+      .setColor(interaction.guild?.members?.me?.displayHexColor ?? 0x5865f2)
       .setFooter({
         text: `${interaction.client.user.id}`,
         iconURL: interaction.user.avatarURL() ?? undefined,

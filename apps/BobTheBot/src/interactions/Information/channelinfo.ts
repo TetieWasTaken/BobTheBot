@@ -21,7 +21,7 @@ module.exports = {
       return interaction.reply({ content: "Something went wrong getting the current channel", ephemeral: true });
 
     const replyEmbed = new EmbedBuilder()
-      .setColor(interaction?.guild?.members?.me?.displayHexColor ?? 0x5865f2)
+      .setColor(interaction.guild?.members?.me?.displayHexColor ?? 0x5865f2)
       .setAuthor({
         name: `${channel.name}`,
         iconURL: interaction.guild.iconURL() ?? undefined,
