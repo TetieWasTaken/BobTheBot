@@ -1,14 +1,14 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const wait = require("node:timers/promises").setTimeout;
+import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import { setTimeout } from "node:timers/promises";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -48,7 +48,7 @@ module.exports = {
           { name: "scissors", value: ":scissors:" }
         )
     ),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const choice = interaction.options.getString("choice");
     const choice2 = interaction.options.getString("choice2");
     const choice3 = interaction.options.getString("choice3");
@@ -101,7 +101,7 @@ module.exports = {
       interaction.editReply({
         content: `${replyMessageArray.join("\n")}`,
       });
-      await wait(2000);
+      await new Promise((resolve: any) => setTimeout(resolve, 2000));
     }
 
     const playerScore = result.filter((x) => x === "PLAYER").length;
