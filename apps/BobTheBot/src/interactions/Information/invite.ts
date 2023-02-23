@@ -12,7 +12,7 @@ const requiredUserPerms = {
 
 module.exports = {
   data: new SlashCommandBuilder().setName("invite").setDescription("Receive an invite link for the bot"),
-  async execute(interaction: ChatInputCommandInteraction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const replyEmbed = new EmbedBuilder()
       .setTitle("Invite BobTheBot")
       .setDescription(
