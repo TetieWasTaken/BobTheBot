@@ -1,18 +1,18 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
   data: new SlashCommandBuilder().setName("roles").setDescription("Returns a list of all roles in the guild"),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const roles = await Promise.resolve(
       interaction.guild.roles.fetch().then((roles) => {
         return roles
@@ -22,7 +22,7 @@ module.exports = {
       })
     );
     const replyEmbed = new EmbedBuilder()
-      .setColor(interaction.guild.members.me.displayHexColor)
+      .setColor(interaction.guild?.members?.me?.displayHexColor ?? 0x5865f2)
       .addFields({
         name: "Roles",
         value: `${roles}`,
