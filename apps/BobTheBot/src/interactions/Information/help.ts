@@ -30,38 +30,24 @@ const requiredUserPerms = {
 };
 
 function getChoices() {
-  const choises = fs
+  return fs
     .readdirSync("./dist/interactions")
     .filter((item: string) => !/(^|\/)\.[^/.]/g.test(item))
-    .filter((item: string) => item !== "context-menu");
-
-  return choises.map((choice: string) => {
-    return { name: choice, value: choice };
-  });
+    .filter((item: string) => item !== "context-menu")
+    .map((choice: string) => ({ name: choice, value: choice }));
 }
 
 function getCommands() {
   const categories = fs
     .readdirSync("./dist/interactions")
-    .filter((item: string) => !/(^|\/)\.[^/.]/g.test(item))
-    .filter((item: string) => item !== "context-menu");
+    .filter((item) => !/(^|\/)\.[^/.]/g.test(item) && item !== "context-menu");
 
-  const interactions = [];
-
-  for (let category of categories) {
-    const commandFiles = fs.readdirSync(`./dist/interactions/${category}`).filter((file) => file.endsWith(".js"));
-
-    for (const file of commandFiles) {
-      category = capitalizeFirst(category);
-
-      let commandName = require(`../${category}/${file}`);
-      commandName = commandName.data.name;
-      commandName = capitalizeFirst(commandName);
-      interactions.push(`${category}: ${commandName}`);
-    }
-  }
-
-  return interactions;
+  return categories.flatMap((category) =>
+    fs
+      .readdirSync(`./dist/interactions/${category}`)
+      .filter((file) => file.endsWith(".js"))
+      .map((file) => `${capitalizeFirst(category)}: ${capitalizeFirst(require(`../${category}/${file}`).data.name)}`)
+  );
 }
 
 function getBotPerms(perm: bigint, i: ChatInputCommandInteraction<"cached">) {
