@@ -1,6 +1,6 @@
 import { EmbedBuilder, PermissionsBitField, ChatInputCommandInteraction } from "discord.js";
 
-export function raiseUserPermissionsError(interaction: ChatInputCommandInteraction, permission: bigint) {
+export function raiseUserPermissionsError(interaction: ChatInputCommandInteraction<"cached">, permission: bigint) {
   const embed = new EmbedBuilder()
     .setTitle(`Permissions Error  •  \`/${interaction.commandName}\``)
     .setDescription(`:x: You do not have the \`${new PermissionsBitField(permission).toArray()}\` permission!`)
@@ -8,7 +8,7 @@ export function raiseUserPermissionsError(interaction: ChatInputCommandInteracti
   return interaction.reply({ embeds: [embed], ephemeral: true });
 }
 
-export function raiseBotPermissionsError(interaction: ChatInputCommandInteraction, permission: bigint) {
+export function raiseBotPermissionsError(interaction: ChatInputCommandInteraction<"cached">, permission: bigint) {
   const embed = new EmbedBuilder()
     .setTitle(`Permissions Error  •  \`/${interaction.commandName}\``)
     .setDescription(`:x: I do not have the \`${new PermissionsBitField(permission).toArray()}\` permission!`)
@@ -16,7 +16,7 @@ export function raiseBotPermissionsError(interaction: ChatInputCommandInteractio
   return interaction.reply({ embeds: [embed], ephemeral: true });
 }
 
-export function raiseUserHierarchyError(interaction: ChatInputCommandInteraction) {
+export function raiseUserHierarchyError(interaction: ChatInputCommandInteraction<"cached">) {
   const embed = new EmbedBuilder()
     .setTitle(`Hierarchy Error  •  \`/${interaction.commandName}\``)
     .setDescription(":x: You cannot perform this action on a member with a higher or equal role than you!")
@@ -24,7 +24,7 @@ export function raiseUserHierarchyError(interaction: ChatInputCommandInteraction
   return interaction.reply({ embeds: [embed], ephemeral: true });
 }
 
-export function raiseBotHierarchyError(interaction: ChatInputCommandInteraction) {
+export function raiseBotHierarchyError(interaction: ChatInputCommandInteraction<"cached">) {
   const embed = new EmbedBuilder()
     .setTitle(`Hierarchy Error  •  \`/${interaction.commandName}\``)
     .setDescription(":x: I cannot perform this action on a member with a higher or equal role than me!")
@@ -33,7 +33,7 @@ export function raiseBotHierarchyError(interaction: ChatInputCommandInteraction)
 }
 
 export function raiseMiscellaneousError(
-  interaction: ChatInputCommandInteraction,
+  interaction: ChatInputCommandInteraction<"cached">,
   errTitle: string,
   description: string
 ) {

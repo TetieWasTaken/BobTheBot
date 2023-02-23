@@ -13,7 +13,7 @@ const requiredUserPerms = {
 
 module.exports = {
   data: new SlashCommandBuilder().setName("dadjoke").setDescription("Receive a random dad joke!"),
-  async execute(interaction: ChatInputCommandInteraction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const dadJokesTxt = fs.readFileSync("./resources/dadjokes.txt").toString().split("\n");
     const randomNum = Math.floor(Math.random() * 710);
 

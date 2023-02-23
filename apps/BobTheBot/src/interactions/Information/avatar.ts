@@ -15,8 +15,7 @@ module.exports = {
     .setName("avatar")
     .setDescription("Returns the avatar of the user specified")
     .addUserOption((option) => option.setName("target").setDescription("user to target").setRequired(false)),
-  async execute(interaction: ChatInputCommandInteraction) {
-    if (!interaction.inCachedGuild()) return;
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     let member = interaction.options.getMember("target") ?? interaction.member;
 
     if (!member) return;

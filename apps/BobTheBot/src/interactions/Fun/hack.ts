@@ -17,7 +17,7 @@ module.exports = {
     .setDescription("Hacks a user (fake)")
     .addUserOption((option) => option.setName("target").setDescription("user to target").setRequired(true)),
   cooldownTime: 10 * 1000,
-  async execute(interaction: ChatInputCommandInteraction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const user = interaction.options.getUser("target");
 
     if (!user) return interaction.reply({ content: "Something went wrong, try again", ephemeral: true });

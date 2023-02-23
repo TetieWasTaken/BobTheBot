@@ -18,7 +18,7 @@ module.exports = {
     .addIntegerOption((option) =>
       option.setName("amount").setDescription("Amount of dice to roll").setMaxValue(6).setRequired(false)
     ),
-  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction<"cached">): Promise<void> {
     const amount = interaction.options.getInteger("amount") ?? 1;
 
     const diceFolder = fs.readdirSync("./resources/dice_images");

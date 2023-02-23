@@ -2,11 +2,11 @@ import type { ChatInputCommandInteraction, InteractionResponse } from "discord.j
 
 type ItemHandlerMap = Record<
   string,
-  (interaction: ChatInputCommandInteraction, item: any, data: any) => Promise<InteractionResponse<boolean>>
+  (interaction: ChatInputCommandInteraction<"cached">, item: any, data: any) => Promise<InteractionResponse<boolean>>
 >;
 
 const itemHandlers: ItemHandlerMap = {
-  placeholder: (interaction: ChatInputCommandInteraction, item: any, data: any) => {
+  placeholder: (interaction: ChatInputCommandInteraction<"cached">, item: any, data: any) => {
     const reward = Math.floor(Math.random() * 1000) + 1;
 
     data.Inventory[item.name] -= 1;
@@ -18,7 +18,7 @@ const itemHandlers: ItemHandlerMap = {
       ephemeral: true,
     });
   },
-  chicken: (interaction: ChatInputCommandInteraction, item: any, data: any) => {
+  chicken: (interaction: ChatInputCommandInteraction<"cached">, item: any, data: any) => {
     switch (item.name) {
       case "Chicken":
         data.Multiplier = 1.2;
@@ -46,7 +46,7 @@ const itemHandlers: ItemHandlerMap = {
   },
 };
 
-export function useItem(interaction: ChatInputCommandInteraction, item: any, data: any) {
+export function useItem(interaction: ChatInputCommandInteraction<"cached">, item: any, data: any) {
   const handler = itemHandlers[item.name.toLowerCase()];
   if (handler) {
     return handler(interaction, item, data);

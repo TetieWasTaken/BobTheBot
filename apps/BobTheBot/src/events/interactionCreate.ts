@@ -63,6 +63,7 @@ module.exports = {
           ephemeral: true,
         });
       }
+
       if (command.requiredUserPerms?.key.length > 0) {
         for (const userPerm of command.requiredUserPerms.key) {
           if (!interaction.member?.permissions.has(userPerm)) {

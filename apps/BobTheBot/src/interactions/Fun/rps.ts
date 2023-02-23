@@ -48,7 +48,7 @@ module.exports = {
           { name: "scissors", value: ":scissors:" }
         )
     ),
-  async execute(interaction: ChatInputCommandInteraction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const choice = interaction.options.getString("choice");
     const choice2 = interaction.options.getString("choice2");
     const choice3 = interaction.options.getString("choice3");
