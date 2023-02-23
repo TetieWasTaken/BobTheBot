@@ -1,13 +1,13 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -15,10 +15,10 @@ module.exports = {
     .setName("roleinfo")
     .setDescription("Receive information about a role")
     .addRoleOption((option) => option.setName("target").setDescription("role to target").setRequired(true)),
-  async execute(interaction) {
-    const target = interaction.options.getRole("target");
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    const target = interaction.options.getRole("target", true);
     let permissionsArray = target.permissions.toArray();
-    permissionsArray = permissionsArray.filter((e) =>
+    permissionsArray = permissionsArray.filter((e: string) =>
       [
         "KickMembers",
         "BanMembers",
