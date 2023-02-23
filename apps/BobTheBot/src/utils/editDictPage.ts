@@ -1,6 +1,6 @@
 import { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, ButtonInteraction } from "discord.js";
 
-interface IResult {
+export interface IResult {
   word: string;
   phonetics: {
     text: string;
@@ -54,7 +54,8 @@ export async function editDictPage({ interaction, result, currentPage, totalPage
   }
 
   const firstPhonetic = result[0]?.phonetics[0];
-  const audioUrl = firstPhonetic?.audio ?? null;
+
+  const audioUrl = firstPhonetic?.audio && firstPhonetic?.audio?.length > 0 ? firstPhonetic?.audio : null;
 
   const embed = new EmbedBuilder()
     .setColor(0x0099ff)
