@@ -1,14 +1,16 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-require("dotenv").config();
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -26,7 +28,7 @@ module.exports = {
         .setMaxValue(23)
         .setRequired(false)
     ),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const city = interaction.options.getString("city");
     const hour = interaction.options.getInteger("hour");
 
@@ -41,7 +43,7 @@ module.exports = {
       });
     }
 
-    const interpretationCodes = {
+    const interpretationCodes: Record<number, string> = {
       0: "Clear sky",
       1: "Mainly clear",
       2: "Partly cloudy",
@@ -80,7 +82,7 @@ module.exports = {
       // Example data: https://api.open-meteo.com/v1/forecast?latitude=51.5&longitude=-0.120000124&current_weather=true&timeformat=unixtime
 
       const replyEmbed = new EmbedBuilder()
-        .setColor("ffffff")
+        .setColor(0xffffff)
         .setTitle(`${city}`)
         .setDescription(`Current weather`)
         .addFields(
@@ -131,7 +133,7 @@ module.exports = {
       }
 
       const replyEmbed = new EmbedBuilder()
-        .setColor("ffffff")
+        .setColor(0xffffff)
         .setTitle(`${city}`)
         .setDescription(`Weather at ${hour}:00 UTC`)
         .addFields(
