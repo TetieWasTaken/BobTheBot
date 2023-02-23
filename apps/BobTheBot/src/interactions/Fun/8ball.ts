@@ -1,15 +1,14 @@
-const { SlashCommandBuilder } = require("discord.js");
-import type { ChatInputCommandInteraction } from "discord.js";
-const fs = require("fs");
+import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
+import fs from "fs";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
