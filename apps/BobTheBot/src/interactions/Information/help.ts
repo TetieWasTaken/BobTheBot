@@ -8,10 +8,9 @@ import {
   ApplicationCommandOptionData,
 } from "discord.js";
 import fs from "fs";
-const damerau = require("damerau-levenshtein");
-const { capitalizeFirst } = require("../../utils/capitalizeFirst.js");
+import { capitalizeFirst, ExtendedClient } from "../../utils/index.js";
 
-import type { ExtendedClient } from "../../utils/types/index.js";
+const damerau = require("damerau-levenshtein");
 
 interface ILevenshteinResponse {
   steps: number;

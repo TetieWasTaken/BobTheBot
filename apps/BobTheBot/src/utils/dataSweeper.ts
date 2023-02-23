@@ -1,4 +1,4 @@
-import type { ExtendedClient } from "./types/index.js";
+import type { ExtendedClient } from "./index.js";
 import type { Connection, Collection } from "mongoose";
 import { table, TableUserConfig } from "table";
 import cron from "node-cron";

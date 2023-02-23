@@ -4,8 +4,7 @@ import { table, TableUserConfig } from "table";
 
 import Database from "./config/Database";
 import { Partials, GatewayIntentBits, Options, GuildMember } from "discord.js";
-import { ExtendedClient } from "./utils/types/index.js";
-import { logTimings } from "./utils/logTimings";
+import { logTimings, ExtendedClient } from "./utils/index.js";
 
 dotenv.config();
 

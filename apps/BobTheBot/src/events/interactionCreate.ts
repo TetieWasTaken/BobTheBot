@@ -4,7 +4,7 @@ import { GuildModel } from "../models/index.js";
 const { EmbedBuilder } = require("discord.js");
 const { raiseUserPermissionsError, raiseBotPermissionsError } = require("../utils/returnError.js");
 
-import type { ExtendedClient } from "../utils/types/index.js";
+import type { ExtendedClient } from "../utils/index.js";
 
 module.exports = {
   name: "interactionCreate",

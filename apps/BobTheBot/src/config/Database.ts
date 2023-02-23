@@ -1,9 +1,10 @@
-import type { ExtendedClient } from "../utils/types/index.js";
+import { ExtendedClient, logTimings } from "../utils/index.js";
 
-const mongoose = require("mongoose");
-require("dotenv").config();
-const { logTimings } = require("../utils/logTimings");
-const { table } = require("table");
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import { table, TableUserConfig } from "table";
+
+dotenv.config();
 
 export default class Database {
   connection: any;
@@ -13,15 +14,14 @@ export default class Database {
   }
 
   connect(client: ExtendedClient) {
+    if (!process.env.MONGO_DATABASETOKEN) return console.error("[ERR] No database token provided.");
+
     const timerStart = Date.now();
 
     mongoose.set("strictQuery", true);
 
     mongoose
-      .connect(process.env.MONGO_DATABASETOKEN, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      })
+      .connect(process.env.MONGO_DATABASETOKEN)
       .then(() => {
         client.timings.set("Mongoose", Date.now() - timerStart);
         if (client.timings.size === 4) {
@@ -44,7 +44,7 @@ export default class Database {
           99: "uninitialized",
         };
 
-        const config = {
+        const config: TableUserConfig = {
           header: {
             alignment: "center",
             content: `${this.connection._connectionOptions.driverInfo.name} v${this.connection._connectionOptions.driverInfo.version}`,
