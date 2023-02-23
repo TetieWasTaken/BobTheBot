@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+import { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder } from "discord.js";
 
 const requiredBotPerms = {
   type: "flags",
@@ -12,13 +12,13 @@ const requiredUserPerms = {
 
 module.exports = {
   data: new SlashCommandBuilder().setName("capybara").setDescription("Get a random capybara image"),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const img = await fetch("https://api.capy.lol/v1/capybara?json=true").then((res) => res.json());
 
     const embed = new EmbedBuilder()
       .setTitle("Okay I pull up")
       .setImage(`${img.data.url}`)
-      .setColor(interaction.guild.members.me.displayHexColor)
+      .setColor(interaction.guild?.members?.me?.displayHexColor ?? 0x5865f2)
       .setFooter({
         text: `Requested by ${interaction.user.tag}`,
         iconURL: `${interaction.user.displayAvatarURL()}`,
