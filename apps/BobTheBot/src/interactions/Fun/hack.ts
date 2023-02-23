@@ -1,14 +1,14 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const fs = require("fs");
+import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import fs from "fs";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -17,8 +17,10 @@ module.exports = {
     .setDescription("Hacks a user (fake)")
     .addUserOption((option) => option.setName("target").setDescription("user to target").setRequired(true)),
   cooldownTime: 10 * 1000,
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const user = interaction.options.getUser("target");
+
+    if (!user) return interaction.reply({ content: "Something went wrong, try again", ephemeral: true });
 
     if (user.bot) {
       return interaction.reply({
@@ -59,10 +61,9 @@ module.exports = {
       `:computer: <@${user.id}> has been hacked!`,
     ];
     let i = 0;
-    let replyInterval = await setInterval(() => {
+    let replyInterval = setInterval(() => {
       if (i < replyArray.length) {
-        let editReplyMessage = [replyArray[i]];
-        editReplyMessage = editReplyMessage.toString();
+        let editReplyMessage = [replyArray[i]].toString();
         interaction.editReply({
           content: editReplyMessage,
         });
@@ -71,6 +72,8 @@ module.exports = {
         clearInterval(replyInterval);
       }
     }, 2500);
+
+    return;
   },
   requiredBotPerms: requiredBotPerms,
   requiredUserPerms: requiredUserPerms,
