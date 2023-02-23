@@ -82,7 +82,7 @@ module.exports = {
 
       try {
         console.time(`Command ${interaction.commandName} executed in`);
-        await command.execute(interaction);
+        await command.execute(interaction, client);
         console.timeEnd(`Command ${interaction.commandName} executed in`);
       } catch (err) {
         console.log(`Command ${interaction.commandName} failed to execute.\n\n${interaction}`);

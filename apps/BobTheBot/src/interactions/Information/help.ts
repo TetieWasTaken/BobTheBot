@@ -1,25 +1,41 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, PermissionsBitField } = require("discord.js");
-const fs = require("fs");
+import {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  PermissionsBitField,
+  ChatInputCommandInteraction,
+  AutocompleteInteraction,
+  ApplicationCommandSubCommandData,
+  ApplicationCommandOptionData,
+} from "discord.js";
+import fs from "fs";
 const damerau = require("damerau-levenshtein");
 const { capitalizeFirst } = require("../../utils/capitalizeFirst.js");
 
+import type { ExtendedClient } from "../../utils/types/index.js";
+
+interface ILevenshteinResponse {
+  steps: number;
+  relative: number;
+  similarity: number;
+}
+
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 function getChoices() {
   const choises = fs
     .readdirSync("./dist/interactions")
-    .filter((item) => !/(^|\/)\.[^/.]/g.test(item))
-    .filter((item) => item !== "context-menu");
+    .filter((item: string) => !/(^|\/)\.[^/.]/g.test(item))
+    .filter((item: string) => item !== "context-menu");
 
-  return choises.map((choice) => {
+  return choises.map((choice: string) => {
     return { name: choice, value: choice };
   });
 }
@@ -27,15 +43,15 @@ function getChoices() {
 function getCommands() {
   const categories = fs
     .readdirSync("./dist/interactions")
-    .filter((item) => !/(^|\/)\.[^/.]/g.test(item))
-    .filter((item) => item !== "context-menu");
+    .filter((item: string) => !/(^|\/)\.[^/.]/g.test(item))
+    .filter((item: string) => item !== "context-menu");
 
   const interactions = [];
 
   for (let category of categories) {
     const commandFiles = fs.readdirSync(`./dist/interactions/${category}`).filter((file) => file.endsWith(".js"));
 
-    for (let file of commandFiles) {
+    for (const file of commandFiles) {
       category = capitalizeFirst(category);
 
       let commandName = require(`../${category}/${file}`);
@@ -48,11 +64,11 @@ function getCommands() {
   return interactions;
 }
 
-function getBotPerms(perm, i) {
-  return i.guild.members.me.permissions.has(perm) ? "+ " : "- ";
+function getBotPerms(perm: bigint, i: ChatInputCommandInteraction<"cached">) {
+  return i.guild.members.me?.permissions.has(perm) ? "+ " : "- ";
 }
 
-function getUserPerms(perm, i) {
+function getUserPerms(perm: bigint, i: ChatInputCommandInteraction<"cached">) {
   return i.member.permissions.has(perm) ? "+ " : "- ";
 }
 
@@ -84,39 +100,50 @@ module.exports = {
             .setAutocomplete(true)
         )
     ),
-  async autocomplete(interaction) {
+  async autocomplete(interaction: AutocompleteInteraction<"cached">) {
     const query = interaction.options.getFocused();
     const choices = getCommands();
     let levChoices = [];
 
+    if (!choices) return await interaction.respond([]);
+
     const choicesRegExp = /^.*(?=(:))/g;
 
     for (let i = 0; i < choices.length; i++) {
-      levChoices.push(choices[i].replace(choicesRegExp, ""));
-      levChoices[i] = levChoices[i].trim().toLowerCase().slice(2);
+      levChoices.push(choices[i]!.replace(choicesRegExp, ""));
+      levChoices[i] = levChoices[i]!.trim().toLowerCase().slice(2);
     }
 
     const filtered = levChoices.filter((choice) => {
-      let lev = damerau(choice, query);
+      let lev: ILevenshteinResponse = damerau(choice, query);
       if (query.length > 2) return lev.relative <= 0.75;
       else if (query.length > 1) return lev.relative <= 0.8;
       else return lev.relative <= 1;
     });
 
     const sorted = filtered.sort((a, b) => {
-      let levA = damerau(a, query).relative;
-      let levB = damerau(b, query).relative;
+      let levA: ILevenshteinResponse = damerau(a, query);
+      let levB: ILevenshteinResponse = damerau(b, query);
 
-      return levA - levB;
+      return levA.relative - levB.relative;
     });
 
     const finalChoices = [];
     for (let i = 0; i < sorted.length; i++) {
-      const index = levChoices.indexOf(sorted[i]);
+      if (!sorted[i]) continue;
+      const index = levChoices.indexOf(sorted[i]!);
       finalChoices.push(choices[index]);
     }
 
-    let response = finalChoices.map((choice) => ({ name: choice, value: choice }));
+    let response = [];
+
+    for (let i = 0; i < sorted.length; i++) {
+      const index = levChoices.indexOf(sorted[i]!);
+      const choice = choices[index];
+      if (choice && choice.length > 0) {
+        response.push({ name: choice, value: choice });
+      }
+    }
 
     if (response.length >= 15) {
       response = response.slice(0, 15);
@@ -124,17 +151,19 @@ module.exports = {
 
     await interaction.respond(response);
   },
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">, client: ExtendedClient) {
     switch (interaction.options.getSubcommand()) {
       case "category": {
-        const category = interaction.options.getString("category");
+        const category = interaction.options.getString("category", true);
 
         let catEmbed = new EmbedBuilder()
           .setAuthor({ name: category })
           .setColor(0x57f287)
           .setTitle(`Help for ${category}`);
 
-        const categoryCommands = fs.readdirSync(`./interactions/${category}`).filter((file) => file.endsWith(".js"));
+        const categoryCommands = fs
+          .readdirSync(`./src/interactions/${category}`)
+          .filter((file) => file.endsWith(".js"));
 
         let descriptionArray = [];
 
@@ -146,15 +175,14 @@ module.exports = {
 
         catEmbed.setDescription(descriptionArray.join("\n"));
 
-        await interaction.reply({ embeds: [catEmbed] });
-        break;
+        return await interaction.reply({ embeds: [catEmbed] });
       }
       case "command": {
-        const query = interaction.options.getString("query");
+        const query = interaction.options.getString("query", true);
         const commandRegExp = /^.*(?=(:))/g;
         const commandQuery = query.replace(commandRegExp, "").trim().toLowerCase().slice(2);
 
-        const command = interaction.client.interactions.get(commandQuery);
+        const command = client.interactions.get(commandQuery);
 
         if (!command) {
           return interaction.reply({
@@ -175,20 +203,22 @@ module.exports = {
           let optionsString = "";
           if (Object.prototype.hasOwnProperty.call(command.data.options[0], "options")) {
             optionsString = command.data.options
-              .map((subcommand) => {
-                return (
-                  `\`${subcommand.name}\` - ${subcommand.description}\n` +
-                  `↳${subcommand.options
-                    .map((option) => {
-                      return `    \`${option.name}\` - ${option.description}`;
-                    })
-                    .join("\n↳")}`
-                );
+              .map((subcommand: ApplicationCommandSubCommandData) => {
+                if (subcommand.options)
+                  return (
+                    `\`${subcommand.name}\` - ${subcommand.description}\n` +
+                    `↳${subcommand.options
+                      .map((option) => {
+                        return `    \`${option.name}\` - ${option.description}`;
+                      })
+                      .join("\n↳")}`
+                  );
+                else return `\`${subcommand.name}\` - ${subcommand.description}`;
               })
               .join("\n\n");
           } else {
             optionsString = command.data.options
-              .map((option) => {
+              .map((option: ApplicationCommandOptionData) => {
                 return `\`${option.name}\` - ${option.description}`;
               })
               .join("\n");
@@ -239,8 +269,10 @@ module.exports = {
           });
         }
 
-        await interaction.reply({ embeds: [embed] });
-        break;
+        return await interaction.reply({ embeds: [embed] });
+      }
+      default: {
+        return;
       }
     }
   },
