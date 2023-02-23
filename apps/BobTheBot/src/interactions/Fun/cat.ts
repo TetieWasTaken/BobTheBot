@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+import { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder } from "discord.js";
 
 const requiredBotPerms = {
   type: "flags",
@@ -12,11 +12,11 @@ const requiredUserPerms = {
 
 module.exports = {
   data: new SlashCommandBuilder().setName("meow").setDescription("Get a random cat image!"),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const embed = new EmbedBuilder()
       .setTitle("Meow!")
       .setImage(`https://cataas.com/cat?${Date.now()}`)
-      .setColor(interaction.guild.members.me.displayHexColor)
+      .setColor(interaction.guild?.members?.me?.displayHexColor ?? 0x5865f2)
       .setTimestamp()
       .setFooter({
         text: `Requested by ${interaction.user.tag}`,
