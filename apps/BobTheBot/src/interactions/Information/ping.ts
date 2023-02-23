@@ -1,18 +1,18 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
   data: new SlashCommandBuilder().setName("ping").setDescription("Returns the bots's latency"),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const sent = await interaction.reply({
       content: "Pinging...",
       fetchReply: true,
