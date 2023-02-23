@@ -1,18 +1,18 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
   data: new SlashCommandBuilder().setName("meme").setDescription("Sends a random meme from r/memes"),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const data = await fetch(`https://www.reddit.com/r/memes/random/.json`).then((res) => {
       return res.json();
     });
