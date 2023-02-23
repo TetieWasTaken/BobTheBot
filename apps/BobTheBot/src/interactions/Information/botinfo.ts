@@ -1,23 +1,27 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, version } = require("discord.js");
-let mongoose = require("mongoose");
+import { SlashCommandBuilder, EmbedBuilder, version, ChatInputCommandInteraction } from "discord.js";
+import mongoose from "mongoose";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
   data: new SlashCommandBuilder().setName("botinfo").setDescription("Receive information about the bot"),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    const releases = await fetch("https://api.github.com/repos/TetieWasTaken/BobTheBot/releases").then((res) =>
+      res.json()
+    );
+
     const replyEmbed = new EmbedBuilder()
       .setAuthor({
         name: "BobTheBot",
-        iconUrl: interaction.guild.members.me.user.avatarURL,
+        iconURL: interaction.client.user?.avatarURL() ?? undefined,
       })
       .addFields(
         {
@@ -39,14 +43,14 @@ module.exports = {
         },
         {
           name: `Version`,
-          value: `Pre-Alpha 0.0.1`, // Placeholder version, will be changed later
+          value: `${releases[0]?.name ?? "No releases found"}`, // Placeholder version, will be changed later
           inline: true,
         }
       )
-      .setColor(interaction.guild.members.me.displayHexColor)
+      .setColor(interaction?.guild?.members?.me?.displayHexColor ?? 0x5865f2)
       .setFooter({
         text: `${interaction.client.user.id}`,
-        iconUrl: interaction.user.avatarURL,
+        iconURL: interaction.user.avatarURL() ?? undefined,
       })
       .setTimestamp();
     interaction.reply({
