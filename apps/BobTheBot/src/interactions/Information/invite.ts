@@ -1,6 +1,4 @@
-import type { ChatInputCommandInteraction } from "discord.js";
-
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
