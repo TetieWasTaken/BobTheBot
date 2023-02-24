@@ -1,4 +1,4 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   ChannelType,
@@ -7,16 +7,17 @@ const {
   TextInputStyle,
   ActionRowBuilder,
   EmbedBuilder,
-} = require("discord.js");
+  ChatInputCommandInteraction,
+} from "discord.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.Administrator],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.Administrator] as const,
 };
 
 module.exports = {
@@ -48,8 +49,10 @@ module.exports = {
         )
         .addStringOption((option) => option.setName("message").setDescription("Message to announce").setRequired(true))
     ),
-  async execute(interaction) {
-    const channel = interaction.options.getChannel("channel");
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    const channel = interaction.options.getChannel("channel", true);
+
+    if (!interaction.guild.members.me) return interaction.reply({ content: "Something went wrong", ephemeral: true });
 
     if (!channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.SendMessages))
       return interaction.reply({
@@ -107,11 +110,11 @@ module.exports = {
         .setRequired(false)
         .setStyle(TextInputStyle.Short);
 
-      const firstActionRow = new ActionRowBuilder().addComponents(titleInput);
-      const secondActionRow = new ActionRowBuilder().addComponents(descriptionInput);
-      const thirdActionRow = new ActionRowBuilder().addComponents(authorNameInput);
-      const fourthActionRow = new ActionRowBuilder().addComponents(footerTextInput);
-      const fifthActionRow = new ActionRowBuilder().addComponents(colorInput);
+      const firstActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(titleInput);
+      const secondActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(descriptionInput);
+      const thirdActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(authorNameInput);
+      const fourthActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(footerTextInput);
+      const fifthActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(colorInput);
 
       modal.addComponents(firstActionRow, secondActionRow, thirdActionRow, fourthActionRow, fifthActionRow);
 
@@ -124,7 +127,7 @@ module.exports = {
           const description = i.fields.getTextInputValue("description-input");
           const authorName = i.fields.getTextInputValue("author-name-input");
           const footerText = i.fields.getTextInputValue("footer-text-input");
-          let color =
+          let color: any =
             i.fields.getTextInputValue("color-input").length > 0
               ? i.fields.getTextInputValue("color-input")
               : "Default";
@@ -139,7 +142,7 @@ module.exports = {
               ],
             });
 
-          const colors = {
+          const colors: Record<string, number> = {
             default: 0x000000,
             white: 0xffffff,
             aqua: 0x1abc9c,
@@ -206,10 +209,11 @@ module.exports = {
           const embed = new EmbedBuilder()
             .setTitle(title.length > 0 ? title : null)
             .setDescription(description.length > 0 ? description : null)
-            .setAuthor({ name: authorName.length > 0 ? authorName : null })
-            .setFooter({ text: footerText.length > 0 ? footerText : null })
+            .setAuthor({ name: authorName.length > 0 ? authorName : "" })
+            .setFooter({ text: footerText.length > 0 ? footerText : "" })
             .setColor(color);
 
+          // @ts-ignore
           channel.send({ embeds: [embed] });
 
           return i.reply({
@@ -223,19 +227,20 @@ module.exports = {
               .setColor(0xed4245)
               .setTitle(`Announcement failed`)
               .setDescription(`You took too long to respond. Please try again.`);
-            interaction.followUp({ embeds: [replyEmbed], ephemeral: true });
+            return interaction.followUp({ embeds: [replyEmbed], ephemeral: true });
           } else {
             console.log(err);
             const replyEmbed = new EmbedBuilder()
               .setColor(0xed4245)
               .setTitle(`Announcement failed`)
               .setDescription(`An error occurred. Please try again.`);
-            interaction.followUp({ embeds: [replyEmbed], ephemeral: true });
+            return interaction.followUp({ embeds: [replyEmbed], ephemeral: true });
           }
         });
     } else if (interaction.options.getSubcommand() === "message") {
       const message = interaction.options.getString("message");
 
+      // @ts-ignore
       channel.send(message);
 
       return interaction.reply({
@@ -243,6 +248,8 @@ module.exports = {
         ephemeral: true,
       });
     }
+
+    return;
   },
   requiredBotPerms: requiredBotPerms,
   requiredUserPerms: requiredUserPerms,
