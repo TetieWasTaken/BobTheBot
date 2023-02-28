@@ -2,13 +2,13 @@ import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction }
 import { raiseUserHierarchyError, raiseBotHierarchyError } from "../../utils/index.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.BanMembers],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.BanMembers] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.BanMembers],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.BanMembers] as const,
 };
 
 module.exports = {

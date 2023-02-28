@@ -2,13 +2,13 @@ import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "
 import EconomySchema from "../../models/EconomyModel.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
