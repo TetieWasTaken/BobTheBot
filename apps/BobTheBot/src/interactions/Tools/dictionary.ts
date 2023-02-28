@@ -1,20 +1,20 @@
-const {
+import {
   SlashCommandBuilder,
-  PermissionFlagsBits,
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-} = require("discord.js");
+  ChatInputCommandInteraction,
+} from "discord.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -22,8 +22,8 @@ module.exports = {
     .setName("dictionary")
     .setDescription("Search for a word in the dictionary")
     .addStringOption((option) => option.setName("word").setDescription("Word to search for").setRequired(true)),
-  async execute(interaction) {
-    const input = interaction.options.getString("word");
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    const input = interaction.options.getString("word", true);
     const regex = /^[a-zA-Z]+$/;
 
     if (!input.match(regex)) {
@@ -45,7 +45,6 @@ module.exports = {
     if (result.status === 404 || result.title === "No Definitions Found") {
       return interaction.editReply({
         content: "Word not found",
-        ephemeral: true,
       });
     }
 
@@ -62,7 +61,7 @@ module.exports = {
     // Warning: Synonyms and antonyms are not working properly
 
     const embed = new EmbedBuilder()
-      .setColor("0x0099ff")
+      .setColor(0x0099ff)
       .setTitle(result[0].word)
       .setURL(result[0].phonetics[0].audio.length > 0 ? result[0].phonetics[0].audio : null)
       .setDescription(result[0].meanings[0].definitions[0].definition)
@@ -94,7 +93,7 @@ module.exports = {
       });
 
     if (result[0].meanings[0].definitions.length !== 1) {
-      const row = new ActionRowBuilder().addComponents(
+      const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
         new ButtonBuilder()
           .setCustomId("dictprevious")
           .setLabel("Previous")
