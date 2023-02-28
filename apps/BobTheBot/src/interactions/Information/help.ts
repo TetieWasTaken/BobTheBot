@@ -6,6 +6,9 @@ import {
   AutocompleteInteraction,
   ApplicationCommandSubCommandData,
   ApplicationCommandOptionData,
+  ApplicationCommand,
+  Collection,
+  Snowflake,
 } from "discord.js";
 import fs from "fs";
 import { capitalizeFirst, ExtendedClient } from "../../utils/index.js";
@@ -148,15 +151,21 @@ module.exports = {
           .setTitle(`Help for ${category}`);
 
         const categoryCommands = fs
-          .readdirSync(`./src/interactions/${category}`)
+          .readdirSync(`./dist/interactions/${category}`)
           .filter((file) => file.endsWith(".js"));
 
         let descriptionArray = [];
 
+        const commands: Collection<Snowflake, ApplicationCommand> = await client.application.commands.fetch();
+
         for (let file of categoryCommands) {
           let command = require(`../${category}/${file}`);
 
-          descriptionArray.push(`\`/${command.data.name}\` - ${command.data.description}`);
+          const commandId = commands.find(
+            (applicationCommand: ApplicationCommand) => applicationCommand.name === command.data.name
+          )?.id as string;
+
+          descriptionArray.push(`</${command.data.name}:${commandId}> - ${command.data.description}`);
         }
 
         catEmbed.setDescription(descriptionArray.join("\n"));
