@@ -1,6 +1,6 @@
-import { EmbedBuilder, PermissionsBitField, ChatInputCommandInteraction } from "discord.js";
+import { EmbedBuilder, PermissionsBitField, ChatInputCommandInteraction, CommandInteraction } from "discord.js";
 
-export function raiseUserPermissionsError(interaction: ChatInputCommandInteraction<"cached">, permission: bigint) {
+export function raiseUserPermissionsError(interaction: CommandInteraction<"cached">, permission: bigint) {
   const embed = new EmbedBuilder()
     .setTitle(`Permissions Error  •  \`/${interaction.commandName}\``)
     .setDescription(`:x: You do not have the \`${new PermissionsBitField(permission).toArray()}\` permission!`)
@@ -8,7 +8,7 @@ export function raiseUserPermissionsError(interaction: ChatInputCommandInteracti
   return interaction.reply({ embeds: [embed], ephemeral: true });
 }
 
-export function raiseBotPermissionsError(interaction: ChatInputCommandInteraction<"cached">, permission: bigint) {
+export function raiseBotPermissionsError(interaction: CommandInteraction<"cached">, permission: bigint) {
   const embed = new EmbedBuilder()
     .setTitle(`Permissions Error  •  \`/${interaction.commandName}\``)
     .setDescription(`:x: I do not have the \`${new PermissionsBitField(permission).toArray()}\` permission!`)
