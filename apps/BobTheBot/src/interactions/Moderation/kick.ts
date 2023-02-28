@@ -1,14 +1,14 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const { raiseUserHierarchyError, raiseBotHierarchyError } = require("../../utils/returnError.js");
+import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, Role } from "discord.js";
+import { raiseUserHierarchyError, raiseBotHierarchyError } from "../../utils/index.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.KickMembers],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.KickMembers] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.KickMembers],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.KickMembers] as const,
 };
 
 module.exports = {
@@ -19,15 +19,17 @@ module.exports = {
     .addStringOption((option) =>
       option.setName("reason").setDescription("reason for kick").setMaxLength(255).setRequired(false)
     ),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const member = interaction.options.getMember("target");
     let reason = interaction.options.getString("reason") ?? "No reason provided";
 
-    const authorMember = await interaction.guild.members.fetch(interaction.user.id);
+    if (!member || !interaction.guild.members.me)
+      return interaction.reply({ content: "Something went wrong", ephemeral: true });
 
-    const highestUserRole = member.roles.highest;
+    const highestUserRole: Role = member.roles.highest;
 
-    if (highestUserRole.position >= authorMember.roles.highest.position) return raiseUserHierarchyError(interaction);
+    if (highestUserRole.position >= interaction.member.roles.highest.position)
+      return raiseUserHierarchyError(interaction);
 
     if (highestUserRole.position >= interaction.guild.members.me.roles.highest.position)
       return raiseBotHierarchyError(interaction);
