@@ -1,16 +1,16 @@
-const InfractionsSchema = require("../../models/InfractionsModel");
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction } from "discord.js";
+import { InfractionsModel } from "../../models/index.js";
+import { raiseUserHierarchyError, raiseBotHierarchyError } from "../../utils/index.js";
 const ms = require("ms");
-const { raiseUserHierarchyError, raiseBotHierarchyError } = require("../../utils/returnError.js");
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.ModerateMembers],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.ModerateMembers] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.ModerateMembers],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.ModerateMembers] as const,
 };
 
 module.exports = {
@@ -27,10 +27,13 @@ module.exports = {
     .addStringOption((option) =>
       option.setName("reason").setDescription("reason to mute").setMaxLength(255).setRequired(false)
     ),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const member = interaction.options.getMember("target");
     let duration = interaction.options.getString("duration");
     let reason = interaction.options.getString("reason") ?? "No reason provided";
+
+    if (!member || !interaction.guild.members.me)
+      return interaction.reply({ content: "Something went wrong", ephemeral: true });
 
     const authorMember = await interaction.guild.members.fetch(interaction.user.id);
 
@@ -58,7 +61,7 @@ module.exports = {
       });
     }
 
-    let data = await InfractionsSchema.findOne({
+    let data = await InfractionsModel.findOne({
       GuildId: interaction.guild.id,
       UserId: member.id,
     });
@@ -73,7 +76,7 @@ module.exports = {
       });
       data.save();
     } else if (!data) {
-      let newData = new InfractionsSchema({
+      let newData = new InfractionsModel({
         GuildId: interaction.guild.id,
         UserId: member.id,
         Punishments: [
@@ -93,7 +96,7 @@ module.exports = {
         console.log(err);
       });
 
-    interaction.reply({
+    return interaction.reply({
       content: `:mute:  \`${member.user.tag}\` has been muted for \`${reason}\``,
       ephemeral: true,
     });
