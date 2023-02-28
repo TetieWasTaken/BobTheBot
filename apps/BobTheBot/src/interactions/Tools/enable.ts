@@ -1,15 +1,36 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const GuildSchema = require("../../models/GuildModel");
-const fs = require("fs");
+import {
+  SlashCommandBuilder,
+  PermissionFlagsBits,
+  EmbedBuilder,
+  ChatInputCommandInteraction,
+  AutocompleteInteraction,
+} from "discord.js";
+import { GuildModel } from "../../models/index.js";
+import { capitalizeFirst, getCategories, damerAutocomplete } from "../../utils/index.js";
+import { Color } from "../../constants.js";
+import fs from "fs";
+
+function getCommands() {
+  const categories = fs
+    .readdirSync("./dist/interactions")
+    .filter((item) => !/(^|\/)\.[^/.]/g.test(item) && item !== "context-menu");
+
+  return categories.flatMap((category) =>
+    fs
+      .readdirSync(`./dist/interactions/${category}`)
+      .filter((file) => file.endsWith(".js"))
+      .map((file) => `${capitalizeFirst(category)}: ${capitalizeFirst(require(`../${category}/${file}`).data.name)}`)
+  );
+}
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.Administrator],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.Administrator] as const,
 };
 
 module.exports = {
@@ -21,7 +42,7 @@ module.exports = {
         .setName("command")
         .setDescription("Enables a command")
         .addStringOption((option) =>
-          option.setName("command").setDescription("The command to enable").setRequired(true)
+          option.setName("command").setDescription("The command to enable").setRequired(true).setAutocomplete(true)
         )
     )
     .addSubcommand((subcommand) =>
@@ -29,33 +50,53 @@ module.exports = {
         .setName("category")
         .setDescription("Enables a category")
         .addStringOption((option) =>
-          option.setName("category").setDescription("The category to enable").setRequired(true)
+          option
+            .setName("category")
+            .setDescription("The category to enable")
+            .setRequired(true)
+            .addChoices(...getCategories())
         )
     ),
-  async execute(interaction) {
+  async autocomplete(interaction: AutocompleteInteraction<"cached">) {
+    const query = interaction.options.getFocused();
+    const choices = getCommands();
+
+    return await interaction.respond(damerAutocomplete(query, choices));
+  },
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const subcommand = interaction.options.getSubcommand();
 
-    let guildData = await GuildSchema.findOne({
+    let guildData = await GuildModel.findOne({
       guildId: interaction.guild.id,
     });
 
+    if (!guildData) {
+      return interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setTitle(":x: Already enabled!")
+            .setDescription(`This command or category is already enabled!`)
+            .setFooter({ text: "To save performance, I cannot tell you what you specified" })
+            .setColor(Color.DiscordDanger),
+        ],
+        ephemeral: true,
+      });
+    }
+
     switch (subcommand) {
       case "command": {
-        const command = interaction.options.getString("command");
-        const commandFile = interaction.client.interactions.get(command);
+        let command = interaction.options.getString("command", true);
 
-        let cmdEmbed;
+        const index = command.indexOf(":");
+        if (index >= 0) command = command.substring(index + 2).toLowerCase();
 
-        if (!commandFile) {
-          cmdEmbed = new EmbedBuilder()
-            .setTitle(":x: Command not found!")
-            .setDescription(`Command \`${command}\` does not exist!`)
-            .setColor(0xed4245);
-        } else if (!guildData.DisabledCommands.includes(command)) {
+        let cmdEmbed: EmbedBuilder;
+
+        if (!guildData.DisabledCommands.includes(command)) {
           cmdEmbed = new EmbedBuilder()
             .setTitle(":x: Command already enabled!")
             .setDescription(`Command \`${command}\` is already enabled!`)
-            .setColor(0xed4245);
+            .setColor(Color.DiscordDanger);
         } else {
           guildData.DisabledCommands = guildData.DisabledCommands.filter((cmd) => cmd !== command);
 
@@ -64,22 +105,21 @@ module.exports = {
           cmdEmbed = new EmbedBuilder()
             .setTitle(":white_check_mark: Command enabled!")
             .setDescription(`Command \`${command}\` has been enabled!`)
-            .setColor("0x57f287");
+            .setColor(Color.DiscordSuccess);
         }
 
-        interaction.reply({
+        return interaction.reply({
           embeds: [cmdEmbed],
           ephemeral: true,
         });
-        break;
       }
       case "category": {
-        const category = interaction.options.getString("category");
-        const categories = fs.readdirSync("./interactions");
+        const category = interaction.options.getString("category", true);
+        const categories = fs.readdirSync("./dist/interactions");
 
         let catEmbed;
         if (categories.includes(category)) {
-          const interactions = fs.readdirSync(`./interactions/${category}`).filter((file) => file.endsWith(".js"));
+          const interactions = fs.readdirSync(`./dist/interactions/${category}`).filter((file) => file.endsWith(".js"));
 
           let commandCount = 0;
           let disabledCommandsArray = [];
@@ -99,25 +139,24 @@ module.exports = {
             catEmbed = new EmbedBuilder()
               .setTitle(":x: No commands were enabled!")
               .setDescription(`All commands in category \`${category}\` are already enabled!`)
-              .setColor(0xed4245);
+              .setColor(Color.DiscordDanger);
           } else {
             catEmbed = new EmbedBuilder()
               .setTitle(`:white_check_mark: Enabled ${commandCount} commands!`)
               .setDescription(`Enabled commands: \`${disabledCommandsArray.join("`, `")}\``)
-              .setColor(0x57f287);
+              .setColor(Color.DiscordSuccess);
           }
         } else {
           catEmbed = new EmbedBuilder()
             .setTitle(":x: Unknown category!")
             .setDescription(`Category \`${category}\` does not exist!`)
-            .setColor(0xed4245);
+            .setColor(Color.DiscordDanger);
         }
 
-        interaction.reply({
+        return interaction.reply({
           embeds: [catEmbed],
           ephemeral: true,
         });
-        break;
       }
       default:
         return interaction.reply({
