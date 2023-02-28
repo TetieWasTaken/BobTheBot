@@ -88,6 +88,8 @@ module.exports = {
           ephemeral: true,
         });
       });
+
+    return;
   },
   requiredBotPerms: requiredBotPerms,
   requiredUserPerms: requiredUserPerms,
