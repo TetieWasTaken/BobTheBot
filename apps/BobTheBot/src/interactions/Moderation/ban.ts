@@ -1,5 +1,5 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const { raiseUserHierarchyError, raiseBotHierarchyError } = require("../../utils/returnError.js");
+import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction } from "discord.js";
+import { raiseUserHierarchyError, raiseBotHierarchyError } from "../../utils/index.js";
 
 const requiredBotPerms = {
   type: "flags",
@@ -19,9 +19,12 @@ module.exports = {
     .addStringOption((option) =>
       option.setName("reason").setDescription("reason for ban").setMaxLength(255).setRequired(false)
     ),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const member = interaction.options.getMember("target");
     let reason = interaction.options.getString("reason") ?? "No reason provided";
+
+    if (!member || !interaction.guild.members.me)
+      return interaction.reply({ content: "Something went wrong", ephemeral: true });
 
     const authorMember = await interaction.guild.members.fetch(interaction.user.id);
 
@@ -39,16 +42,11 @@ module.exports = {
     } catch (error) {
       console.error(error);
       try {
-        await member.kick({
-          reason: reason,
-        });
+        await member.kick(reason);
       } catch (error) {
         console.error(error);
         try {
-          await member.timeout({
-            reason: reason,
-            time: 1000 * 60 * 60 * 24 * 7,
-          });
+          await member.timeout(1000 * 60 * 60 * 24 * 7, reason);
         } catch (error) {
           console.error(error);
           return interaction.reply({
@@ -67,7 +65,7 @@ module.exports = {
       });
     }
 
-    interaction.reply({
+    return interaction.reply({
       content: `:hammer:  \`${member.user.tag}\` has been banned for \`${reason}\``,
       ephemeral: true,
     });
