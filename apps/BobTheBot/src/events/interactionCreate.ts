@@ -1,10 +1,7 @@
-import type { BaseInteraction } from "discord.js";
-
-import { GuildModel } from "../models/index.js";
-const { EmbedBuilder } = require("discord.js");
-const { raiseUserPermissionsError, raiseBotPermissionsError } = require("../utils/returnError.js");
-
+import { EmbedBuilder, BaseInteraction } from "discord.js";
+import { raiseUserPermissionsError, raiseBotPermissionsError } from "../utils/index.js";
 import type { ExtendedClient } from "../utils/index.js";
+import { GuildModel } from "../models/index.js";
 
 module.exports = {
   name: "interactionCreate",
