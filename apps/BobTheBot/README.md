@@ -26,7 +26,7 @@ Bob The Bot is a simple, competitive, community driven [Discord.js](https://gith
 
 3: Click 'Continue', and then 'Authorise'
 
-[serverselect]: docs/step_2.png "Select the server"
+[serverselect]: ../../.github/assets/step_2.png "Select the server"
 
 # 📦 How to build
 
