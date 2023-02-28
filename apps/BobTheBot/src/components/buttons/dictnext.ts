@@ -1,6 +1,6 @@
 import type { ButtonInteraction } from "discord.js";
 
-import dictdata from "../../interactions/Tools/dictionary.js";
+const dictdata = require("../../interactions/Tools/dictionary.js");
 import { editDictPage, IResult } from "../../utils/index.js";
 
 module.exports = {
