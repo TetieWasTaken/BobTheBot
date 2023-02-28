@@ -1,14 +1,15 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, time } = require("discord.js");
-const InfractionsSchema = require("../../models/InfractionsModel");
+import { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, time, ChatInputCommandInteraction } from "discord.js";
+import { InfractionsModel } from "../../models/index.js";
+import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.ManageMessages],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.ManageMessages] as const,
 };
 
 module.exports = {
@@ -16,25 +17,22 @@ module.exports = {
     .setName("history")
     .setDescription("Check a user's infraction history")
     .addUserOption((option) => option.setName("target").setDescription("member to view history of").setRequired(true)),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const member = interaction.options.getMember("target");
 
-    let data = await InfractionsSchema.findOne({
+    if (!member) return interaction.reply({ content: "Something went wrong", ephemeral: true });
+
+    let data = await InfractionsModel.findOne({
       GuildId: interaction.guild.id,
       UserId: member.id,
     });
     if (!data) {
-      data = new InfractionsSchema({
+      data = new InfractionsModel({
         GuildId: interaction.guild.id,
         UserId: member.id,
         Punishments: [],
       });
       data.save();
-    }
-
-    let isCommunicationDisabledBool = false;
-    if (member.isCommunicationDisabled() == true) {
-      isCommunicationDisabledBool = true;
     }
 
     let punishmentArray = ["No active infractions."];
@@ -52,27 +50,24 @@ module.exports = {
     }
 
     const replyEmbed = new EmbedBuilder()
-      .setColor(interaction.guild.members.me.displayHexColor)
+      .setColor(interaction.guild.members?.me?.displayHexColor ?? Color.DiscordPrimary)
       .setTitle(`History for ${member.displayName}`)
-      .addFields(
-        {
-          name: `Infractions`,
-          value: punishmentArray.join("\n"),
-          inline: true,
-        },
-        {
-          name: `Active infraction`,
-          value: `This member is timed out until: ${time(member.communicationDisabledUntil, "f")}`,
-          inline: false,
-        }
-      )
+      .addFields({
+        name: `Infractions`,
+        value: punishmentArray.join("\n"),
+        inline: true,
+      })
       .setTimestamp();
 
-    if (!isCommunicationDisabledBool) {
-      replyEmbed.spliceFields(-1, 1);
+    if (member.communicationDisabledUntil) {
+      replyEmbed.addFields({
+        name: `Active infraction`,
+        value: `This member is timed out until: ${time(member.communicationDisabledUntil, "f")}`,
+        inline: false,
+      });
     }
 
-    interaction.reply({
+    return interaction.reply({
       embeds: [replyEmbed],
     });
   },
