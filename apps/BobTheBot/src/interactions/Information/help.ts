@@ -77,7 +77,7 @@ module.exports = {
     const query = interaction.options.getFocused();
     const choices = getCommands();
 
-    await interaction.respond(damerAutocomplete(query, choices));
+    return await interaction.respond(damerAutocomplete(query, choices));
   },
   async execute(interaction: ChatInputCommandInteraction<"cached">, client: ExtendedClient) {
     switch (interaction.options.getSubcommand()) {
