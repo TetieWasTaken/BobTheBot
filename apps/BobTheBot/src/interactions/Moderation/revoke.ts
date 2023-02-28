@@ -1,14 +1,14 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const InfractionsSchema = require("../../models/InfractionsModel");
+import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction } from "discord.js";
+import { InfractionsModel } from "../../models/index.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.ManageMessages],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.ManageMessages] as const,
 };
 
 module.exports = {
@@ -19,11 +19,11 @@ module.exports = {
     .addIntegerOption((option) =>
       option.setName("caseid").setDescription("case id of the warn to clear").setRequired(true)
     ),
-  async execute(interaction) {
-    const user = interaction.options.getUser("target");
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    const user = interaction.options.getUser("target", true);
     const caseId = interaction.options.getInteger("caseid");
 
-    let data = await InfractionsSchema.findOneAndUpdate(
+    let data = await InfractionsModel.findOneAndUpdate(
       {
         "GuildId": interaction.guild.id,
         "UserId": user.id,
@@ -39,7 +39,7 @@ module.exports = {
       });
     }
 
-    interaction.reply({
+    return interaction.reply({
       content: `:card_index: Cleared infraction with case id \`${caseId}\``,
       ephemeral: true,
     });
