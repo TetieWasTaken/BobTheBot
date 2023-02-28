@@ -1,13 +1,13 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction } from "discord.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.ManageChannels],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.ManageChannels] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.ManageChannels],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.ManageChannels] as const,
 };
 
 module.exports = {
@@ -17,8 +17,10 @@ module.exports = {
     .addIntegerOption((option) =>
       option.setName("duration").setDescription("duration of the slowmode in seconds (0 to disable)").setRequired(true)
     ),
-  async execute(interaction) {
-    let duration = interaction.options.getInteger("duration");
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    let duration = interaction.options.getInteger("duration", true);
+
+    if (!interaction.channel) return interaction.reply({ content: "Something went wrong", ephemeral: true });
 
     if (duration >= 21601) {
       duration = 21600;
@@ -43,7 +45,7 @@ module.exports = {
       reply = `:sloth: Slowmode has been set to ${duration} seconds!`;
     }
 
-    interaction.reply({
+    return interaction.reply({
       content: `${reply}`,
       ephemeral: true,
     });
