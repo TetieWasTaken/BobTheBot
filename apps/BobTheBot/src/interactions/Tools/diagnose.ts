@@ -1,14 +1,14 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionsBitField, PermissionFlagsBits } = require("discord.js");
-const fs = require("fs");
+import { SlashCommandBuilder, EmbedBuilder, PermissionsBitField, ChatInputCommandInteraction } from "discord.js";
+import fs from "fs";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -16,8 +16,11 @@ module.exports = {
     .setName("diagnose")
     .setDescription("Diagnose a command")
     .addStringOption((option) => option.setName("command").setDescription("The command to diagnose").setRequired(true)),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const command = interaction.options.getString("command");
+
+    if (!interaction.guild.members.me)
+      return interaction.reply({ content: ":x: I am not in this guild!", ephemeral: true });
 
     const commandFolders = fs.readdirSync("./interactions").filter((item) => !/(^|\/)\.[^/.]/g.test(item));
     for (const folder of commandFolders) {
@@ -58,7 +61,8 @@ module.exports = {
         }
       }
     }
-    interaction.reply({
+
+    return interaction.reply({
       content: `:wrench: Command not found, try again.`,
       ephemeral: true,
     });
