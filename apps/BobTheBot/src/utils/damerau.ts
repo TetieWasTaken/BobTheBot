@@ -55,7 +55,7 @@ export function damerAutocomplete(query: string, choices: readonly string[]): IA
     const index = choice.indexOf(":");
     if (index >= 0) {
       const levChoice = choice
-        .substring(index + 1)
+        .substring(index + 2)
         .trim()
         .toLowerCase();
       levChoices.push(levChoice);
