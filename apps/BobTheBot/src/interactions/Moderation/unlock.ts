@@ -1,18 +1,21 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, ChannelType } from "discord.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.ManageChannels],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.ManageChannels] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.ManageChannels],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.ManageChannels] as const,
 };
 
 module.exports = {
   data: new SlashCommandBuilder().setName("unlock").setDescription("unlock the current channel"),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    if (!interaction.channel?.isTextBased() || interaction.channel.type !== ChannelType.GuildText)
+      return interaction.reply({ content: "Something went wrong", ephemeral: true });
+
     const modRole = interaction.guild.roles.cache.find((role) =>
       ["moderator", "mod", "Moderator", "Mod"].includes(role.name)
     );
@@ -36,7 +39,7 @@ module.exports = {
       });
     }
 
-    interaction.reply({
+    return interaction.reply({
       content: `:unlock: Channel unlocked!`,
       ephemeral: true,
     });
