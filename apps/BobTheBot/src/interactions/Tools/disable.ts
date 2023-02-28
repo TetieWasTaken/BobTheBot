@@ -1,15 +1,36 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const GuildSchema = require("../../models/GuildModel");
-const fs = require("fs");
+import {
+  SlashCommandBuilder,
+  PermissionFlagsBits,
+  EmbedBuilder,
+  ChatInputCommandInteraction,
+  AutocompleteInteraction,
+} from "discord.js";
+import { GuildModel } from "../../models/index.js";
+import { Color } from "../../constants.js";
+import { damerAutocomplete, capitalizeFirst, getCategories, ExtendedClient } from "../../utils/index.js";
+import fs from "fs";
+
+function getCommands() {
+  const categories = fs
+    .readdirSync("./dist/interactions")
+    .filter((item) => !/(^|\/)\.[^/.]/g.test(item) && item !== "context-menu");
+
+  return categories.flatMap((category) =>
+    fs
+      .readdirSync(`./dist/interactions/${category}`)
+      .filter((file) => file.endsWith(".js"))
+      .map((file) => `${capitalizeFirst(category)}: ${capitalizeFirst(require(`../${category}/${file}`).data.name)}`)
+  );
+}
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.Administrator],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.Administrator] as const,
 };
 
 module.exports = {
@@ -21,7 +42,7 @@ module.exports = {
         .setName("command")
         .setDescription("Disables a command")
         .addStringOption((option) =>
-          option.setName("command").setDescription("The command to disable").setRequired(true)
+          option.setName("command").setDescription("The command to disable").setRequired(true).setAutocomplete(true)
         )
     )
     .addSubcommand((subcommand) =>
@@ -29,18 +50,28 @@ module.exports = {
         .setName("category")
         .setDescription("Disables a category")
         .addStringOption((option) =>
-          option.setName("category").setDescription("The category to disable").setRequired(true)
+          option
+            .setName("category")
+            .setDescription("The category to disable")
+            .setRequired(true)
+            .addChoices(...getCategories())
         )
     ),
-  async execute(interaction) {
+  async autocomplete(interaction: AutocompleteInteraction<"cached">) {
+    const query = interaction.options.getFocused();
+    const choices = getCommands();
+
+    return await interaction.respond(damerAutocomplete(query, choices));
+  },
+  async execute(interaction: ChatInputCommandInteraction<"cached">, client: ExtendedClient) {
     const subcommand = interaction.options.getSubcommand();
 
-    let guildData = await GuildSchema.findOne({
+    let guildData = await GuildModel.findOne({
       guildId: interaction.guild.id,
     });
 
     if (!guildData) {
-      guildData = new GuildSchema({
+      guildData = new GuildModel({
         GuildId: interaction.guild.id,
         DisabledCommands: [],
       });
@@ -52,26 +83,23 @@ module.exports = {
 
     switch (subcommand) {
       case "command": {
-        const command = interaction.options.getString("command");
-        const commandFile = interaction.client.interactions.get(command);
+        let command = interaction.options.getString("command", true);
 
-        let cmdEmbed;
+        const index = command.indexOf(":");
+        if (index >= 0) command = command.substring(index + 2).toLowerCase();
 
-        if (!commandFile) {
-          cmdEmbed = new EmbedBuilder()
-            .setTitle(":x: Command not found")
-            .setDescription(`Command \`${command}\` does not exist!`)
-            .setColor(0xed4245);
-        } else if (command == "disable" || command == "enable") {
+        let cmdEmbed: EmbedBuilder;
+
+        if (command == "disable" || command == "enable") {
           cmdEmbed = new EmbedBuilder()
             .setTitle(":x: Unable to disable command")
             .setDescription(`Command \`${command}\` cannot be disabled or enabled!`)
-            .setColor(0xed4245);
+            .setColor(Color.DiscordDanger);
         } else if (guildData.DisabledCommands.includes(command)) {
           cmdEmbed = new EmbedBuilder()
             .setTitle(":x: Command already disabled")
             .setDescription(`Command \`${command}\` is already disabled!`)
-            .setColor(0xed4245);
+            .setColor(Color.DiscordDanger);
         } else {
           guildData.DisabledCommands.push(command);
           await guildData.save();
@@ -79,7 +107,7 @@ module.exports = {
           cmdEmbed = new EmbedBuilder()
             .setTitle(":white_check_mark: Command Disabled")
             .setDescription(`Command \`${command}\` has been disabled!`)
-            .setColor("0x57f287");
+            .setColor(Color.DiscordSuccess);
         }
 
         interaction.reply({ embeds: [cmdEmbed], ephemeral: true });
@@ -87,28 +115,16 @@ module.exports = {
         break;
       }
       case "category": {
-        const category = interaction.options.getString("category");
-        const categories = fs.readdirSync("./interactions");
-
-        for (let cat in categories) {
-          categories[cat] = categories[cat].toLowerCase();
-        }
-
-        if (!categories.includes(category.toLowerCase())) {
-          return interaction.reply({
-            content: `:x: Category \`${category}\` does not exist!`,
-            ephemeral: true,
-          });
-        }
+        const category = interaction.options.getString("category", true);
 
         let commandCount = 0;
         let disabledCommandsArray = [];
 
-        const interactions = fs.readdirSync(`./interactions/${category}`).filter((file) => file.endsWith(".js"));
+        const interactions = fs.readdirSync(`./dist/interactions/${category}`).filter((file) => file.endsWith(".js"));
 
         for (const file of interactions) {
           const command = require(`../${category}/${file}`);
-          const commandFile = interaction.client.interactions.get(command.data.name);
+          const commandFile = client.interactions.get(command.data.name);
           if (commandFile) {
             if (guildData.DisabledCommands.includes(command.data.name)) {
               continue;
@@ -127,19 +143,18 @@ module.exports = {
           catEmbed = new EmbedBuilder()
             .setTitle(":x: No interactions were disabled!")
             .setDescription(`All interactions in category \`${category}\` are already disabled!`)
-            .setColor(0xed4245);
+            .setColor(Color.DiscordDanger);
         } else {
           catEmbed = new EmbedBuilder()
             .setTitle(`:white_check_mark: Disabled ${commandCount} interactions!`)
             .setDescription(`Disabled interactions: \`${disabledCommandsArray.join("`, `")}\``)
-            .setColor(0x57f287);
+            .setColor(Color.DiscordSuccess);
         }
 
-        interaction.reply({
+        return interaction.reply({
           embeds: [catEmbed],
           ephemeral: true,
         });
-        break;
       }
       default:
         return interaction.reply({
@@ -147,6 +162,7 @@ module.exports = {
           ephemeral: true,
         });
     }
+    return;
   },
   requiredBotPerms: requiredBotPerms,
   requiredUserPerms: requiredUserPerms,
