@@ -11,7 +11,7 @@ import {
   Snowflake,
 } from "discord.js";
 import fs from "fs";
-import { capitalizeFirst, ExtendedClient } from "../../utils/index.js";
+import { capitalizeFirst, getCategories, ExtendedClient } from "../../utils/index.js";
 import { Color } from "../../constants.js";
 
 const damerau = require("damerau-levenshtein");
@@ -31,14 +31,6 @@ const requiredUserPerms = {
   type: "flags" as const,
   key: [] as const,
 };
-
-function getChoices() {
-  return fs
-    .readdirSync("./dist/interactions")
-    .filter((item: string) => !/(^|\/)\.[^/.]/g.test(item))
-    .filter((item: string) => item !== "context-menu")
-    .map((choice: string) => ({ name: choice, value: choice }));
-}
 
 function getCommands() {
   const categories = fs
@@ -74,7 +66,7 @@ module.exports = {
             .setName("category")
             .setDescription("The category you want help from")
             .setRequired(true)
-            .addChoices(...getChoices())
+            .addChoices(...getCategories())
         )
     )
     .addSubcommand((subcommand) =>
