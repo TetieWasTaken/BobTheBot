@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -26,7 +27,7 @@ module.exports = {
       .setURL(`https://reddit.com/r/memes`)
       .setImage(image)
       .setFooter({ text: `Posted by u/${author}` })
-      .setColor(0x57f287)
+      .setColor(Color.DiscordSuccess)
       .setTimestamp();
 
     await interaction.reply({ embeds: [replyEmbed], ephemeral: true });

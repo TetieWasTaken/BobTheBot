@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { Color } from "../../constants.js";
 import { convertMS } from "../../utils/index.js";
 
 const requiredBotPerms = {
@@ -17,7 +18,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle("⏱️ Uptime")
       .setDescription(`${convertMS(interaction.client.uptime)}`)
-      .setColor(interaction.guild?.members?.me?.displayHexColor ?? 0x5865f2)
+      .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary)
       .setFooter({ text: `${interaction.client.uptime}ms` });
 
     return await interaction.reply({ embeds: [embed] });

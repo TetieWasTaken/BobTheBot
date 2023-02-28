@@ -9,6 +9,7 @@ import {
 } from "discord.js";
 import fs from "fs";
 import { capitalizeFirst, ExtendedClient } from "../../utils/index.js";
+import { Color } from "../../constants.js";
 
 const damerau = require("damerau-levenshtein");
 
@@ -143,7 +144,7 @@ module.exports = {
 
         let catEmbed = new EmbedBuilder()
           .setAuthor({ name: category })
-          .setColor(0x57f287)
+          .setColor(Color.DiscordSuccess)
           .setTitle(`Help for ${category}`);
 
         const categoryCommands = fs
@@ -179,7 +180,7 @@ module.exports = {
           .setAuthor({
             name: capitalizeFirst(commandQuery),
           })
-          .setColor(0x57f287)
+          .setColor(Color.DiscordSuccess)
           .setTitle(`Help for ${capitalizeFirst(commandQuery)}`)
           .setDescription(command.data.description)
           .addFields({ name: "Usage", value: `\`/${command.data.name}\`` });

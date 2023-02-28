@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -18,7 +19,7 @@ module.exports = {
       .setDescription(
         "[**Click here to invite BobTheBot to your server**](https://discord.com/api/oauth2/authorize?client_id=1036359071508484237&permissions=8&scope=bot%20applications.commands)"
       )
-      .setColor(interaction.guild?.members?.me?.displayHexColor ?? 0x5865f2)
+      .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary)
       .setTimestamp();
     interaction.reply({
       embeds: [replyEmbed],

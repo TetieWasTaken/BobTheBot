@@ -1,4 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder, ChannelType, time } from "discord.js";
+import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -21,7 +22,7 @@ module.exports = {
       return interaction.reply({ content: "Something went wrong getting the current channel", ephemeral: true });
 
     const replyEmbed = new EmbedBuilder()
-      .setColor(interaction.guild?.members?.me?.displayHexColor ?? 0x5865f2)
+      .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary)
       .setAuthor({
         name: `${channel.name}`,
         iconURL: interaction.guild.iconURL() ?? undefined,

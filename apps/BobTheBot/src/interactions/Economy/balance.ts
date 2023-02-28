@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
 import EconomySchema from "../../models/EconomyModel.js";
+import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -26,7 +27,7 @@ module.exports = {
     if (!data) {
       let replyEmbed = new EmbedBuilder()
         .setTitle(`Balance of ${user.username}#${user.discriminator}`)
-        .setColor(0xed4245)
+        .setColor(Color.DiscordDanger)
         .addFields(
           {
             name: "🏦  Bank",

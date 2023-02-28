@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { Color } from "../../constants.js";
 import { LevelModel } from "../../models/index.js";
 
 const requiredBotPerms = {
@@ -25,7 +26,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle("Leaderboard")
       .setDescription(mappedData.toString())
-      .setColor(interaction.guild?.members?.me?.displayHexColor ?? 0x5865f2);
+      .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary);
     interaction.reply({ embeds: [embed] });
   },
   requiredBotPerms: requiredBotPerms,

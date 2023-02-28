@@ -1,4 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder } from "discord.js";
+import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -17,7 +18,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle("Woof!")
       .setImage(res.url)
-      .setColor(interaction.guild?.members?.me?.displayHexColor ?? 0x5865f2)
+      .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary)
       .setTimestamp()
       .setFooter({
         text: `Requested by ${interaction.user.tag}`,

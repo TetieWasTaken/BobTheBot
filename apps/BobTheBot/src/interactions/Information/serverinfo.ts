@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -27,7 +28,7 @@ module.exports = {
     const fetchedOwner = await Promise.resolve(interaction.guild.fetchOwner());
 
     const replyEmbed = new EmbedBuilder()
-      .setColor(interaction.guild?.members?.me?.displayHexColor ?? 0x5865f2)
+      .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary)
       .setAuthor({ name: `${interaction.guild.name}`, iconURL: interaction.guild.iconURL() ?? undefined })
       .addFields(
         {

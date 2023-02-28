@@ -3,6 +3,7 @@ import { raiseUserPermissionsError, raiseBotPermissionsError } from "../utils/in
 import type { ExtendedClient } from "../utils/index.js";
 import { GuildModel } from "../models/index.js";
 
+import { Color } from "../constants.js";
 module.exports = {
   name: "interactionCreate",
   once: false,
@@ -19,7 +20,7 @@ module.exports = {
       if (guildData && guildData.DisabledCommands) {
         if (guildData.DisabledCommands.includes(interaction.commandName)) {
           const embed = new EmbedBuilder()
-            .setColor(0xed4245)
+            .setColor(Color.DiscordDanger)
             .setTitle(":x: Command Disabled")
             .setDescription(`This command has been disabled by the server administrators.`)
             .setFooter({

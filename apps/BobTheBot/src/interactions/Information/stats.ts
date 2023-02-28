@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { Color } from "../../constants.js";
 import { convertMS } from "../../utils/index.js";
 
 const requiredBotPerms = {
@@ -17,7 +18,7 @@ module.exports = {
     let milliseconds = interaction.client.uptime;
 
     const replyEmbed = new EmbedBuilder()
-      .setColor(interaction.guild?.members?.me?.displayHexColor ?? 0x5865f2)
+      .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary)
       .setTitle(`${interaction.client.user.tag} (${interaction.client.user.id}))`)
       .setDescription("🧮 Statistics about the bot")
       .addFields(

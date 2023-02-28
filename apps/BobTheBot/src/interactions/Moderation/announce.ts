@@ -10,6 +10,8 @@ import {
   ChatInputCommandInteraction,
 } from "discord.js";
 
+import { Color } from "../../constants.js";
+
 const requiredBotPerms = {
   type: "flags" as const,
   key: [] as const,
@@ -58,7 +60,7 @@ module.exports = {
       return interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .setColor(0xed4245)
+            .setColor(Color.DiscordDanger)
             .setTitle(`Announcement failed`)
             .setDescription(`I do not have permissions to send messages in <#${channel.id}>!`),
         ],
@@ -138,7 +140,7 @@ module.exports = {
                 new EmbedBuilder()
                   .setTitle("Content Error")
                   .setDescription("You must provide at least one field to announce an embed")
-                  .setColor(0xed4245),
+                  .setColor(Color.DiscordDanger),
               ],
             });
 
@@ -191,7 +193,7 @@ module.exports = {
                 new EmbedBuilder()
                   .setTitle("Color Range Error")
                   .setDescription("Color must be within the range 0 - 16777215 (0xFFFFFF): " + color)
-                  .setColor(0xed4245),
+                  .setColor(Color.DiscordDanger),
               ],
               ephemeral: true,
             });
@@ -201,7 +203,7 @@ module.exports = {
                 new EmbedBuilder()
                   .setTitle("Color Convert Error")
                   .setDescription("Unable to convert color to a number: " + color)
-                  .setColor(0xed4245),
+                  .setColor(Color.DiscordDanger),
               ],
               ephemeral: true,
             });
@@ -224,14 +226,14 @@ module.exports = {
         .catch(async (err) => {
           if (err.message.endsWith("time")) {
             const replyEmbed = new EmbedBuilder()
-              .setColor(0xed4245)
+              .setColor(Color.DiscordDanger)
               .setTitle(`Announcement failed`)
               .setDescription(`You took too long to respond. Please try again.`);
             return interaction.followUp({ embeds: [replyEmbed], ephemeral: true });
           } else {
             console.log(err);
             const replyEmbed = new EmbedBuilder()
-              .setColor(0xed4245)
+              .setColor(Color.DiscordDanger)
               .setTitle(`Announcement failed`)
               .setDescription(`An error occurred. Please try again.`);
             return interaction.followUp({ embeds: [replyEmbed], ephemeral: true });

@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { Color } from "../../constants.js";
 import { LevelModel } from "../../models/index.js";
 
 const requiredBotPerms = {
@@ -44,7 +45,7 @@ module.exports = {
     let xpNeeded = 50 * (userLevel + 1) ** 2 + 50;
 
     const rankEmbed = new EmbedBuilder()
-      .setColor(interaction.guild?.members?.me?.displayHexColor ?? 0x5865f2)
+      .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary)
       .setAuthor({
         name: `${user.tag} (${user.id})`,
         iconURL: `${user.displayAvatarURL()}`,
