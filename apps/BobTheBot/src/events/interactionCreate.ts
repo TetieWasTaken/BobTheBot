@@ -94,15 +94,14 @@ module.exports = {
       const command = client.interactions.get(interaction.commandName);
 
       if (!command) {
-        console.error(`No command matching ${interaction.commandName} was found.`);
-        return;
+        return console.error(`No command matching ${interaction.commandName} was found.`);
       }
 
       try {
         await command.autocomplete(interaction);
       } catch (error) {
         console.log(`Autocomplete ${interaction.commandName} failed to execute.\n\n${interaction}`);
-        console.error(error);
+        return console.error(error);
       }
     } else if (interaction.isButton()) {
       if (interaction.message.interaction?.user.id !== interaction.user.id)
