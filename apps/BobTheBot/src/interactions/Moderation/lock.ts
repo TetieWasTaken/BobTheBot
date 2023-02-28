@@ -1,18 +1,21 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, ChannelType } from "discord.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.ManageChannels],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.ManageChannels] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.ManageChannels],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.ManageChannels] as const,
 };
 
 module.exports = {
   data: new SlashCommandBuilder().setName("lock").setDescription("Lock the current channel"),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    if (!interaction.channel?.isTextBased() || interaction.channel.type !== ChannelType.GuildText)
+      return interaction.reply({ content: "Something went wrong", ephemeral: true });
+
     const modRole = interaction.guild.roles.cache.find((role) =>
       ["moderator", "mod", "Moderator", "Mod"].includes(role.name)
     );
@@ -22,7 +25,7 @@ module.exports = {
       .edit(interaction.guild.id, {
         SendMessages: false,
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         console.error(err);
       });
     if (!(typeof modRole === "undefined")) {
@@ -36,7 +39,7 @@ module.exports = {
       });
     }
 
-    interaction.reply({
+    return interaction.reply({
       content: `:lock: Channel locked!`,
       ephemeral: true,
     });
