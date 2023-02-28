@@ -11,16 +11,8 @@ import {
   Snowflake,
 } from "discord.js";
 import fs from "fs";
-import { capitalizeFirst, getCategories, ExtendedClient } from "../../utils/index.js";
+import { damerAutocomplete, capitalizeFirst, getCategories, ExtendedClient } from "../../utils/index.js";
 import { Color } from "../../constants.js";
-
-const damerau = require("damerau-levenshtein");
-
-interface ILevenshteinResponse {
-  steps: number;
-  relative: number;
-  similarity: number;
-}
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -84,53 +76,8 @@ module.exports = {
   async autocomplete(interaction: AutocompleteInteraction<"cached">) {
     const query = interaction.options.getFocused();
     const choices = getCommands();
-    let levChoices = [];
 
-    if (!choices) return await interaction.respond([]);
-
-    const choicesRegExp = /^.*(?=(:))/g;
-
-    for (let i = 0; i < choices.length; i++) {
-      levChoices.push(choices[i]!.replace(choicesRegExp, ""));
-      levChoices[i] = levChoices[i]!.trim().toLowerCase().slice(2);
-    }
-
-    const filtered = levChoices.filter((choice) => {
-      let lev: ILevenshteinResponse = damerau(choice, query);
-      if (query.length > 2) return lev.relative <= 0.75;
-      else if (query.length > 1) return lev.relative <= 0.8;
-      else return lev.relative <= 1;
-    });
-
-    const sorted = filtered.sort((a, b) => {
-      let levA: ILevenshteinResponse = damerau(a, query);
-      let levB: ILevenshteinResponse = damerau(b, query);
-
-      return levA.relative - levB.relative;
-    });
-
-    const finalChoices = [];
-    for (let i = 0; i < sorted.length; i++) {
-      if (!sorted[i]) continue;
-      const index = levChoices.indexOf(sorted[i]!);
-      finalChoices.push(choices[index]);
-    }
-
-    let response = [];
-
-    for (let i = 0; i < sorted.length; i++) {
-      const index = levChoices.indexOf(sorted[i]!);
-      const choice = choices[index];
-      if (choice && choice.length > 0) {
-        response.push({ name: choice, value: choice });
-      }
-    }
-
-    if (response.length >= 15) {
-      response = response.slice(0, 15);
-    }
-
-    await interaction.respond(response);
+    await interaction.respond(damerAutocomplete(query, choices));
   },
   async execute(interaction: ChatInputCommandInteraction<"cached">, client: ExtendedClient) {
     switch (interaction.options.getSubcommand()) {
