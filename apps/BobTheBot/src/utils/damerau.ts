@@ -30,7 +30,7 @@ function damerau(a: string, b: string): IDamerauResponse {
       if (b.charAt(i - 1) === a.charAt(j - 1)) {
         matrix[i]![j]! = matrix[i - 1]![j - 1]!;
       } else {
-        matrix[i]![j] = Math.min(matrix[i - 1]![j - 1]! + 1, Math.min(matrix[i]![j - 1]! + 1, matrix[i - 1]![j]! + 1));
+        matrix[i]![j] = Math.min(matrix[i - 1]![j - 1]! + 1, Math.min(matrix[i]![j - 1]! + 1, matrix[i - 1]![j]! + 1)); // TODO: Tweak substitution and insertion/deletion costs
       }
     }
 
@@ -44,6 +44,35 @@ function damerau(a: string, b: string): IDamerauResponse {
   const similarity = 1 - relative ?? 0;
 
   return { steps, relative, similarity };
+}
+
+function quickSort(arr: string[], left: number, right: number, query: string) {
+  if (left >= right) return;
+
+  const pivot = arr[Math.floor((left + right) / 2)];
+  let i = left;
+  let j = right;
+
+  while (i <= j) {
+    while (damerau(arr[i]!, query).relative < damerau(pivot!, query).relative) {
+      i++;
+    }
+
+    while (damerau(arr[j]!, query).relative > damerau(pivot!, query).relative) {
+      j--;
+    }
+
+    if (i <= j) {
+      const temp = arr[i];
+      arr[i] = arr[j]!;
+      arr[j] = temp!;
+      i++;
+      j--;
+    }
+  }
+
+  quickSort(arr, left, j, query);
+  quickSort(arr, i, right, query);
 }
 
 export function damerAutocomplete(query: string, choices: readonly string[]): IAutocompleteResponse[] {
@@ -69,12 +98,8 @@ export function damerAutocomplete(query: string, choices: readonly string[]): IA
     else return lev.relative <= 1;
   });
 
-  const sorted = filtered.sort((a, b) => {
-    let levA: IDamerauResponse = damerau(a, query);
-    let levB: IDamerauResponse = damerau(b, query);
-
-    return levA.relative - levB.relative;
-  });
+  const sorted = [...filtered];
+  quickSort(sorted, 0, sorted.length - 1, query);
 
   const finalChoices = [];
   for (const choice of sorted) {
