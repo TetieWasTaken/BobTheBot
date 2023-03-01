@@ -1,14 +1,14 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require("discord.js");
-const LevelSchema = require("../../models/LevelModel");
+import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction } from "discord.js";
+import { LevelModel } from "../../models/index.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.Administrator],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.Administrator] as const,
 };
 
 module.exports = {
@@ -19,9 +19,9 @@ module.exports = {
     .addIntegerOption((option) =>
       option.setName("rank").setDescription("The rank to set the user to").setRequired(true)
     ),
-  async execute(interaction) {
-    const user = interaction.options.getUser("target");
-    const rank = interaction.options.getInteger("rank");
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    const user = interaction.options.getUser("target", true);
+    const rank = interaction.options.getInteger("rank", true);
 
     if (rank <= 0) {
       return interaction.reply({
@@ -30,14 +30,15 @@ module.exports = {
       });
     }
 
-    const xpForLevel = (desiredRank) => 50 * (desiredRank + 1) ** 2 + 50;
+    const xpForLevel = (desiredRank: number) => 50 * (desiredRank + 1) ** 2 + 50;
 
-    let data = await LevelSchema.findOneAndUpdate(
+    let data = await LevelModel.findOneAndUpdate(
       { GuildId: interaction.guild.id, UserId: user.id },
       { UserXP: xpForLevel(rank), UserLevel: rank }
     );
+
     if (!data) {
-      data = new LevelSchema({
+      data = new LevelModel({
         GuildId: interaction.guild.id,
         UserId: user.id,
         UserXP: xpForLevel(rank),
@@ -45,7 +46,8 @@ module.exports = {
       });
       data.save();
     }
-    interaction.reply({
+
+    return interaction.reply({
       content: `:slot_machine: Set \`${user.tag}\`'s rank to ${rank}!`,
       ephemeral: true,
     });
