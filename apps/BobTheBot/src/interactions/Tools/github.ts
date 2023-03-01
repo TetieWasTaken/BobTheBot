@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { Color } from "../../constants.js";
 
 interface IGithubUser {
   message: string;
@@ -177,7 +178,7 @@ module.exports = {
 
         try {
           const embed = new EmbedBuilder()
-            .setColor(0x5865f2)
+            .setColor(Color.DiscordPrimary)
             .setAuthor({
               name: res.login,
               url: res.html_url,
@@ -258,7 +259,7 @@ module.exports = {
 
         try {
           const embed = new EmbedBuilder()
-            .setColor(0x5865f2)
+            .setColor(Color.DiscordPrimary)
             .setAuthor({
               name: res.owner.login,
               url: res.owner.html_url,
