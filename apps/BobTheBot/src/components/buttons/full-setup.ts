@@ -1,10 +1,10 @@
-const { ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle } = require("discord.js");
+import { ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, ButtonInteraction } from "discord.js";
 
 module.exports = {
   data: {
     name: "full-setup",
   },
-  async execute(interaction) {
+  async execute(interaction: ButtonInteraction) {
     const modal = new ModalBuilder().setCustomId("full-setup-modal").setTitle("Full Setup");
 
     const logChannelIdInput = new TextInputBuilder()
@@ -16,7 +16,7 @@ module.exports = {
       .setLabel("Enter the channel ID the bot should log to")
       .setStyle(TextInputStyle.Short);
 
-    const firstActionRow = new ActionRowBuilder().addComponents(logChannelIdInput);
+    const firstActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(logChannelIdInput);
 
     modal.addComponents(firstActionRow);
 
