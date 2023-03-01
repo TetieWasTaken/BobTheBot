@@ -1,13 +1,14 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+import { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.AddReactions],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.AddReactions] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.ManageMessages],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.ManageMessages] as const,
 };
 
 module.exports = {
@@ -45,7 +46,7 @@ module.exports = {
       option.setName("option9").setDescription("Add a poll option (min 2 max 9)").setRequired(false)
     ),
   cooldownTime: 20 * 1000,
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const message = interaction.options.getString("message");
     const option1 = interaction.options.getString("option1");
     const option2 = interaction.options.getString("option2");
@@ -60,7 +61,7 @@ module.exports = {
     const optionsFiltered = options.filter((option) => option !== null);
 
     const pollEmbed = new EmbedBuilder()
-      .setColor(interaction.guild.members.me.displayHexColor)
+      .setColor(interaction.guild.members.me?.displayHexColor ?? Color.DiscordPrimary)
       .setTitle(`${message}`)
       .addFields(
         {
@@ -123,7 +124,7 @@ module.exports = {
       fetchReply: true,
     });
     for (let i = 1; i <= optionsFiltered.length; i++) {
-      interactionMessage.react(reactions[i]);
+      if (reactions[i]) interactionMessage.react(reactions[i]!);
       await new Promise((resolve) => setTimeout(resolve, 500));
     }
   },
