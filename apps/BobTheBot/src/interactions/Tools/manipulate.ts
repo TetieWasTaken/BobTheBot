@@ -1,13 +1,14 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -42,9 +43,9 @@ module.exports = {
         .setDescription("Convert text to 1337 (leet)")
         .addStringOption((option) => option.setName("input").setDescription("Text to convert").setRequired(true))
     ),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const subcommand = interaction.options.getSubcommand();
-    const text = interaction.options.getString("input");
+    const text = interaction.options.getString("input", true);
 
     switch (subcommand) {
       case "reverse":
@@ -85,7 +86,7 @@ module.exports = {
               inline: false,
             }
           )
-          .setColor(interaction.guild.members.me.displayHexColor);
+          .setColor(interaction.guild.members.me?.displayHexColor ?? Color.DiscordPrimary);
 
         return interaction.reply({
           embeds: [embed],
