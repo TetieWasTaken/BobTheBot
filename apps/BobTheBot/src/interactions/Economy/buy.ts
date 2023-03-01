@@ -1,16 +1,15 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const EconomySchema = require("../../models/EconomyModel");
-const { requestItemData } = require("../../utils/requestItemData");
-const { raiseMiscellaneousError } = require("../../utils/returnError");
+import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import { EconomyModel } from "../../models/index.js";
+import { requestItemData, raiseMiscellaneousError } from "../../utils/index.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -18,8 +17,8 @@ module.exports = {
     .setName("buy")
     .setDescription("Buy an item from the shop")
     .addStringOption((option) => option.setName("item").setDescription("The item to buy").setRequired(true)),
-  async execute(interaction) {
-    const itemName = interaction.options.getString("item");
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    const itemName = interaction.options.getString("item", true);
 
     const item = await requestItemData(itemName);
     if (!item) return raiseMiscellaneousError(interaction, "Item not found", "The item you specified was not found.");
@@ -30,15 +29,18 @@ module.exports = {
         ephemeral: true,
       });
 
-    EconomySchema.findOne({
+    EconomyModel.findOne({
       UserId: interaction.user.id,
     }).then((data) => {
-      if (!data) {
+      if (!data || !data.Wallet) {
         return interaction.reply({
           content: "You do not have enough money to buy this item",
           ephemeral: true,
         });
       }
+
+      if (!item.price) return; // Temporary fix, see IItem interface
+
       if (data.Wallet < item.price) {
         return interaction.reply({
           content: "You do not have enough money in your wallet to buy this item",
