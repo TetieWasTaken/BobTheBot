@@ -62,7 +62,7 @@ for (const folder of commandFolders) {
       const subFiles = fs.readdirSync(`./src/interactions/${folder}/${file}`);
       for (const subFile of subFiles) {
         try {
-          const command = require(`./interactions/${folder}/${file}/${subFile}`);
+          const command = require(`./interactions/${folder}/${file}/${subFile.replace(".ts", ".js")}`);
           client.interactions.set(command.data.name, command);
           cnslTable.push([`/${command.data.name}`, "✅"]);
         } catch (error) {

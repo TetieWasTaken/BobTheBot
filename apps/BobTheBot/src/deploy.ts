@@ -13,8 +13,7 @@ for (const folder of commandFolders) {
       const subFiles = fs.readdirSync(`./src/interactions/${folder}/${file}`);
       for (const subFile of subFiles) {
         try {
-          subFile.replace(".ts", ".js");
-          const command = require(`./interactions/${folder}/${file}/${subFile}`);
+          const command = require(`./interactions/${folder}/${file}/${subFile.replace(".ts", ".js")}`);
           interactions.push(command.data.toJSON());
         } catch (error) {
           console.log(error);
