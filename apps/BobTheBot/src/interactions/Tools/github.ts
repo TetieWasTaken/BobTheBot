@@ -1,13 +1,136 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+
+interface IGithubUser {
+  message: string;
+  login: string;
+  id: number;
+  node_id: string;
+  avatar_url: string;
+  gravatar_id: string;
+  url: string;
+  html_url: string;
+  followers_url: string;
+  following_url: string;
+  gists_url: string;
+  starred_url: string;
+  subscriptions_url: string;
+  organizations_url: string;
+  repos_url: string;
+  events_url: string;
+  received_events_url: string;
+  type: string;
+  site_admin: boolean;
+  name: string | null;
+  company: string | null;
+  blog: string;
+  location: string | null;
+  email: string | null;
+  hireable: boolean | null;
+  bio: string | null;
+  twitter_username: string | null;
+  public_repos: number;
+  public_gists: number;
+  followers: number;
+  following: number;
+  created_at: string;
+  updated_at: string;
+}
+
+interface IGithubRepository {
+  message: string;
+  id: number;
+  node_id: string;
+  name: string;
+  full_name: string;
+  private: boolean;
+  owner: IGithubUser;
+  html_url: string;
+  description: string | null;
+  fork: boolean;
+  url: string;
+  forks_url: string;
+  keys_url: string;
+  collaborators_url: string;
+  teams_url: string;
+  hooks_url: string;
+  issue_events_url: string;
+  events_url: string;
+  assignees_url: string;
+  branches_url: string;
+  tags_url: string;
+  blobs_url: string;
+  git_tags_url: string;
+  git_refs_url: string;
+  trees_url: string;
+  statuses_url: string;
+  languages_url: string;
+  stargazers_url: string;
+  contributors_url: string;
+  subscribers_url: string;
+  subscription_url: string;
+  commits_url: string;
+  git_commits_url: string;
+  comments_url: string;
+  issue_comment_url: string;
+  contents_url: string;
+  compare_url: string;
+  merges_url: string;
+  archive_url: string;
+  downloads_url: string;
+  issues_url: string;
+  pulls_url: string;
+  milestones_url: string;
+  notifications_url: string;
+  labels_url: string;
+  releases_url: string;
+  deployments_url: string;
+  created_at: string;
+  updated_at: string;
+  pushed_at: string;
+  git_url: string;
+  ssh_url: string;
+  clone_url: string;
+  svn_url: string;
+  homepage: string | null;
+  size: number;
+  stargazers_count: number;
+  watchers_count: number;
+  language: string | null;
+  has_issues: boolean;
+  has_projects: boolean;
+  has_downloads: boolean;
+  has_wiki: boolean;
+  has_pages: boolean;
+  forks_count: number;
+  mirror_url: string | null;
+  archived: boolean;
+  disabled: boolean;
+  open_issues_count: number;
+  license: {
+    key: string;
+    name: string;
+    spdx_id: string;
+    url: string;
+    node_id: string;
+  } | null;
+  allow_forking: boolean;
+  forks: number;
+  open_issues: number;
+  watchers: number;
+  default_branch: string;
+  temp_clone_token: string | null;
+  network_count: number;
+  subscribers_count: number;
+}
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -36,16 +159,14 @@ module.exports = {
             .setRequired(true)
         )
     ),
-  async execute(interaction) {
-    const user = interaction.options.getString("user").toLowerCase();
-
-    let res;
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    const user = interaction.options.getString("user", true).toLowerCase();
 
     const subcommand = interaction.options.getSubcommand();
 
     switch (subcommand) {
       case "user":
-        res = await fetch(`https://api.github.com/users/${user}`).then((res) => res.json());
+        const res: IGithubUser = await fetch(`https://api.github.com/users/${user}`).then((res) => res.json());
 
         if (res.message) {
           return interaction.reply({
@@ -56,7 +177,7 @@ module.exports = {
 
         try {
           const embed = new EmbedBuilder()
-            .setColor("0x5865F2")
+            .setColor(0x5865f2)
             .setAuthor({
               name: res.login,
               url: res.html_url,
@@ -115,8 +236,7 @@ module.exports = {
             });
 
           return interaction.reply({ embeds: [embed], ephemeral: true });
-        } catch (error) {
-          console.log(error);
+        } catch (err) {
           return interaction.reply({
             content: "An error occurred while trying to retrieve the user information.",
             ephemeral: true,
@@ -125,7 +245,9 @@ module.exports = {
       case "repository": {
         const repository = interaction.options.getString("repository");
 
-        res = await fetch(`https://api.github.com/repos/${user}/${repository}`).then((res) => res.json());
+        const res: IGithubRepository = await fetch(`https://api.github.com/repos/${user}/${repository}`).then((res) =>
+          res.json()
+        );
 
         if (res.message) {
           return interaction.reply({
@@ -136,7 +258,7 @@ module.exports = {
 
         try {
           const embed = new EmbedBuilder()
-            .setColor("0x5865F2")
+            .setColor(0x5865f2)
             .setAuthor({
               name: res.owner.login,
               url: res.owner.html_url,
@@ -182,6 +304,9 @@ module.exports = {
             ephemeral: true,
           });
         }
+      }
+      default: {
+        return;
       }
     }
   },
