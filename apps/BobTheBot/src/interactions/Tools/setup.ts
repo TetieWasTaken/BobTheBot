@@ -1,27 +1,29 @@
-const {
+import {
   SlashCommandBuilder,
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
   PermissionFlagsBits,
-} = require("discord.js");
-const GuildSchema = require("../../models/GuildModel");
+  ChatInputCommandInteraction,
+} from "discord.js";
+import { GuildModel } from "../../models/index.js";
+import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [PermissionFlagsBits.Administrator],
+  type: "flags" as const,
+  key: [PermissionFlagsBits.Administrator] as const,
 };
 
 module.exports = {
   data: new SlashCommandBuilder().setName("setup").setDescription("Set up the bot for your server"),
-  async execute(interaction) {
-    let data = await GuildSchema.findOne({
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    let data = await GuildModel.findOne({
       GuildId: interaction.guild.id,
     });
 
@@ -33,7 +35,7 @@ module.exports = {
 
     if (!data) {
       GuildLogChannelResponse = "Not set";
-      data = new GuildSchema({
+      data = new GuildModel({
         GuildId: interaction.guild.id,
         GuildLogChannel: "Not set",
       });
@@ -41,7 +43,7 @@ module.exports = {
     }
 
     const replyEmbed = new EmbedBuilder()
-      .setColor(interaction.guild.members.me.displayHexColor)
+      .setColor(interaction.guild.members.me?.displayHexColor ?? Color.DiscordPrimary)
       .setTitle(`Current server data`)
       .addFields(
         {
@@ -59,9 +61,9 @@ module.exports = {
 
     const button = new ButtonBuilder().setCustomId("full-setup").setLabel("Full Setup").setStyle(ButtonStyle.Primary);
 
-    interaction.reply({
+    return interaction.reply({
       embeds: [replyEmbed],
-      components: [new ActionRowBuilder().addComponents(button)],
+      components: [new ActionRowBuilder<ButtonBuilder>().addComponents(button)],
     });
   },
   requiredBotPerms: requiredBotPerms,
