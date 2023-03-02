@@ -1,14 +1,14 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const EconomySchema = require("../../models/EconomyModel");
+import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import { EconomyModel } from "../../models/index.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -70,19 +70,21 @@ module.exports = {
         )
     ),
   cooldownTime: 60 * 5 * 1000,
-  async execute(interaction) {
-    let amount = interaction.options.getInteger("amount");
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    let amount = interaction.options.getInteger("amount", true);
 
-    let data = await EconomySchema.findOne({
+    let data = await EconomyModel.findOne({
       UserId: interaction.user.id,
     });
 
-    if (!data || data.Wallet < amount) {
+    if (!data || !data.Wallet || data.Wallet < amount) {
       return interaction.reply({
         content: "You don't have enough money to gamble!",
         ephemeral: true,
       });
     }
+
+    data.NetWorth ??= 0;
 
     if (interaction.options.getSubcommand() === "coinflip") {
       const choice = interaction.options.getString("choice");
@@ -151,8 +153,11 @@ module.exports = {
         data.Wallet -= amount;
         data.NetWorth -= amount;
       }
+    } else {
+      return;
     }
-    data.save();
+
+    return data.save();
   },
   requiredBotPerms: requiredBotPerms,
   requiredUserPerms: requiredUserPerms,
