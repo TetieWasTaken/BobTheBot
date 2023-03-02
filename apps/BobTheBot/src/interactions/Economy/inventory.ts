@@ -1,15 +1,15 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const EconomySchema = require("../../models/EconomyModel");
-const { requestItemData } = require("../../utils/requestItemData");
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { EconomyModel } from "../../models/index.js";
+import { requestItemData } from "../../utils/requestItemData";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -20,12 +20,12 @@ module.exports = {
     .addUserOption((option) =>
       option.setName("user").setDescription("The user you want to view the inventory of").setRequired(false)
     ),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const page = interaction.options.getInteger("page") ?? 1;
     const user = interaction.options.getUser("user") ?? interaction.user;
     const member = interaction.options.getMember("user") ?? interaction.member;
 
-    const data = await EconomySchema.findOne({
+    const data = await EconomyModel.findOne({
       UserId: user.id,
     });
 
@@ -58,6 +58,8 @@ module.exports = {
         if (data.Inventory[i + (page - 1) * 5]) {
           try {
             const itemData = await requestItemData(data.Inventory[i + (page - 1) * 5].id);
+
+            if (!itemData) return;
 
             inventoryEmbed.addFields({
               name: `${itemData.name} — ${data.Inventory[i].amount}`,
