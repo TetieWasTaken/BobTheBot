@@ -1,20 +1,20 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const EconomySchema = require("../../models/EconomyModel");
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { EconomyModel } from "../../models/index.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
   data: new SlashCommandBuilder().setName("earn").setDescription("Earn some money"),
   cooldownTime: 60 * 2 * 1000,
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const responses = {
       data: [
         {
@@ -50,9 +50,9 @@ module.exports = {
       ],
     };
 
-    const randomResponse = responses.data[Math.floor(Math.random() * responses.data.length)];
+    const randomResponse = responses.data[Math.floor(Math.random() * responses.data.length)]!;
 
-    let data = await EconomySchema.findOneAndUpdate(
+    let data = await EconomyModel.findOneAndUpdate(
       {
         UserId: interaction.user.id,
       },
@@ -65,7 +65,7 @@ module.exports = {
     );
 
     if (!data) {
-      data = new EconomySchema({
+      data = new EconomyModel({
         UserId: interaction.user.id,
         Bank: 0,
         Wallet: randomResponse.randomAmount,
@@ -76,7 +76,7 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setAuthor({ name: randomResponse.name })
-      .setDescription(randomResponse.value.replace("${randomAmount}", randomResponse.randomAmount));
+      .setDescription(randomResponse.value.replace("${randomAmount}", `${randomResponse.randomAmount}`));
 
     return interaction.reply({ embeds: [embed] });
   },
