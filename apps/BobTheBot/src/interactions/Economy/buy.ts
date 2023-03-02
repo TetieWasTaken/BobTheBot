@@ -40,7 +40,7 @@ module.exports = {
           });
         }
 
-        if (data.Wallet < item.price!) {
+        if (data.Wallet < item.price) {
           return interaction.reply({
             content: "You do not have enough money in your wallet to buy this item",
             ephemeral: true,
@@ -58,7 +58,7 @@ module.exports = {
             data.Inventory[itemIndex] = item;
           }
 
-          data.Wallet -= item.price!;
+          data.Wallet -= item.price;
           data.save();
 
           return interaction.reply({
