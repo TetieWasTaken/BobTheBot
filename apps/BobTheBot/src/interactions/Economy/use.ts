@@ -1,16 +1,15 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const EconomySchema = require("../../models/EconomyModel");
-const { useItem } = require("../../utils/useItem");
-const { requestItemData } = require("../../utils/requestItemData");
+import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
+import { EconomyModel } from "../../models/index.js";
+import { useItem, requestItemData } from "../../utils/index.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -18,9 +17,9 @@ module.exports = {
     .setName("use")
     .setDescription("Use an item from your inventory.")
     .addStringOption((option) => option.setName("item").setDescription("The item to use").setRequired(true)),
-  async execute(interaction) {
-    const itemInput = interaction.options.getString("item");
-    const data = await EconomySchema.findOne({
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    const itemInput = interaction.options.getString("item", true);
+    const data = await EconomyModel.findOne({
       UserId: interaction.user.id,
     });
 
@@ -42,7 +41,7 @@ module.exports = {
 
     const item = await requestItemData(itemInput);
 
-    if (!item.useable) {
+    if (!item?.usable) {
       return interaction.reply({
         content: `You cannot use this item!`,
         ephemeral: true,
@@ -50,7 +49,7 @@ module.exports = {
     }
 
     useItem(interaction, item, data);
-    data.save();
+    return data.save();
   },
   requiredBotPerms: requiredBotPerms,
   requiredUserPerms: requiredUserPerms,
