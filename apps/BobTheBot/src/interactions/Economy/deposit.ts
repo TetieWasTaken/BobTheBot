@@ -1,14 +1,14 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const EconomySchema = require("../../models/EconomyModel");
+import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import { EconomyModel } from "../../models/index.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -29,19 +29,21 @@ module.exports = {
             .setMaxValue(1000000)
         )
     ),
-  async execute(interaction) {
-    let amount = interaction.options.getInteger("amount");
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    let amount = interaction.options.getInteger("amount", true);
 
-    const data = await EconomySchema.findOne({
+    const data = await EconomyModel.findOne({
       UserId: interaction.user.id,
     });
 
-    if (!data) {
+    if (!data || !data.Wallet) {
       return interaction.reply({
         content: "You do not have enough money in your wallet to deposit!",
         ephemeral: true,
       });
     }
+
+    if (!data.Bank) data.Bank = 0;
 
     if (interaction.options.getSubcommand() === "all") {
       amount = data.Wallet;
