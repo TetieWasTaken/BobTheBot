@@ -8,8 +8,8 @@ interface IItem {
   type: string;
   sellable: boolean;
   buyable: boolean;
-  usable: boolean;
   price: number | undefined;
+  usable: boolean;
   usage: string;
 }
 

@@ -31,45 +31,55 @@ module.exports = {
 
     EconomyModel.findOne({
       UserId: interaction.user.id,
-    }).then((data) => {
-      if (!data || !data.Wallet) {
-        return interaction.reply({
-          content: "You do not have enough money to buy this item",
-          ephemeral: true,
-        });
-      }
+    })
+      .then((data) => {
+        if (!data || !data.Wallet) {
+          return interaction.reply({
+            content: "You do not have enough money to buy this item",
+            ephemeral: true,
+          });
+        }
 
-      if (!item.price) return; // Temporary fix, see IItem interface
-
-      if (data.Wallet < item.price) {
-        return interaction.reply({
-          content: "You do not have enough money in your wallet to buy this item",
-          ephemeral: true,
-        });
-      } else {
-        const itemIndex = data.Inventory.findIndex((item) => item.id === itemName.toLowerCase().replace(/\s+/g, ""));
-        if (itemIndex === -1) {
-          data.Inventory.push({
-            id: item.id,
-            amount: 1,
+        if (data.Wallet < item.price!) {
+          return interaction.reply({
+            content: "You do not have enough money in your wallet to buy this item",
+            ephemeral: true,
           });
         } else {
-          let item = data.Inventory[itemIndex];
-          item.amount++;
-          data.Inventory[itemIndex] = item;
+          const itemIndex = data.Inventory.findIndex((item) => item.id === itemName.toLowerCase().replace(/\s+/g, ""));
+          if (itemIndex === -1) {
+            data.Inventory.push({
+              id: item.id,
+              amount: 1,
+            });
+          } else {
+            let item = data.Inventory[itemIndex];
+            item.amount++;
+            data.Inventory[itemIndex] = item;
+          }
+
+          data.Wallet -= item.price!;
+          data.save();
+
+          return interaction.reply({
+            content: `You have bought a \`${item.name
+              .replace(/:.*?:/g, "")
+              .replace(
+                /(\u00a9\s|\u00ae\s|[\u2000-\u3300]\s|\ud83c[\ud000-\udfff]\s|\ud83d[\ud000-\udfff]\s|\ud83e[\ud000-\udfff])(\s)?/,
+                ""
+              )}\` for ₳\`${item.price}\` Bobbucks`,
+          });
         }
-        data.Wallet -= item.price;
-        data.save();
+      })
+      .catch((err) => {
+        console.error(err);
         return interaction.reply({
-          content: `You have bought a \`${item.name
-            .replace(/:.*?:/g, "")
-            .replace(
-              /(\u00a9\s|\u00ae\s|[\u2000-\u3300]\s|\ud83c[\ud000-\udfff]\s|\ud83d[\ud000-\udfff]\s|\ud83e[\ud000-\udfff])(\s)?/,
-              ""
-            )}\` for ₳\`${item.price}\` Bobbucks`,
+          content: "An error occurred while trying to buy this item",
+          ephemeral: true,
         });
-      }
-    });
+      });
+
+    return;
   },
   requiredBotPerms: requiredBotPerms,
   requiredUserPerms: requiredUserPerms,
