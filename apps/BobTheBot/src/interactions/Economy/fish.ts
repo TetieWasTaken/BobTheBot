@@ -1,28 +1,31 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const EconomySchema = require("../../models/EconomyModel");
-const { raiseMiscellaneousError } = require("../../utils/returnError");
+import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import { EconomyModel } from "../../models/index.js";
+import { raiseMiscellaneousError } from "../../utils/index.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
   data: new SlashCommandBuilder().setName("fish").setDescription("Go fishing for some cash"),
   cooldownTime: 60 * 2 * 1000,
-  async execute(interaction) {
-    const data = await EconomySchema.findOne({
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    const data = await EconomyModel.findOne({
       UserId: interaction.user.id,
     });
 
     if (!data || !data.Inventory.find((item) => item.id === "fishingrod")) {
       return raiseMiscellaneousError(interaction, "Property Error", "You need a fishing rod to go fishing!");
     }
+
+    data.NetWorth ??= 0;
+    data.Wallet ??= 0;
 
     const items = ["Shark", "Tuna", "Salmon", "Cod", "Bass", "Trout", "Sardine", "Herring", "Anchovy", "Shoe"];
 
@@ -44,11 +47,13 @@ module.exports = {
     const rodBreak = Math.floor(Math.random() * 49) + 1;
     if (rodBreak === 1) {
       const rodIndex = data.Inventory.findIndex((item) => item.name === "Fishing Rod");
+
       data.NetWorth += randomAmount - data.Inventory[rodIndex].price;
       data.Inventory.splice(rodIndex, 1);
       data.Wallet += randomAmount;
       data.NetWorth += randomAmount;
       data.save();
+
       return interaction.reply({
         content: `You went fishing and caught a ${items[randomItem]}! Unfortunately, your fishing rod broke and you lost it. The pawn shop gave you ₳${randomAmount} Bobbucks for it.`,
       });
@@ -56,6 +61,7 @@ module.exports = {
       data.Wallet += randomAmount;
       data.NetWorth += randomAmount;
       data.save();
+
       return interaction.reply({
         content: `${sellResponses[randomSellResponse]}`,
       });
