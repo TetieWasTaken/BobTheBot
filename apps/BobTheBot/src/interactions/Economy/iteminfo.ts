@@ -1,15 +1,14 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const { requestItemData } = require("../../utils/requestItemData");
-const { raiseMiscellaneousError } = require("../../utils/returnError");
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { requestItemData, raiseMiscellaneousError } from "../../utils/index.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -17,8 +16,8 @@ module.exports = {
     .setName("iteminfo")
     .setDescription("View information about an item")
     .addStringOption((option) => option.setName("item").setDescription("The id of the item to view").setRequired(true)),
-  async execute(interaction) {
-    const item = interaction.options.getString("item");
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    const item = interaction.options.getString("item", true);
     const itemInfo = await requestItemData(item);
 
     if (!itemInfo)
