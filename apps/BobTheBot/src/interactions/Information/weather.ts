@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { Color } from "../../constants.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -82,7 +83,7 @@ module.exports = {
       // Example data: https://api.open-meteo.com/v1/forecast?latitude=51.5&longitude=-0.120000124&current_weather=true&timeformat=unixtime
 
       const replyEmbed = new EmbedBuilder()
-        .setColor(0xffffff)
+        .setColor(Color.DiscordEmbedBackground)
         .setTitle(`${city}`)
         .setDescription(`Current weather`)
         .addFields(
@@ -133,7 +134,7 @@ module.exports = {
       }
 
       const replyEmbed = new EmbedBuilder()
-        .setColor(0xffffff)
+        .setColor(Color.DiscordEmbedBackground)
         .setTitle(`${city}`)
         .setDescription(`Weather at ${hour}:00 UTC`)
         .addFields(

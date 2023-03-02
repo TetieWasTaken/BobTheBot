@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, PermissionsBitField, ChatInputCommandInteraction } from "discord.js";
+import { Color } from "../../constants.js";
 import fs from "fs";
 
 const requiredBotPerms = {
@@ -38,7 +39,7 @@ module.exports = {
               let missingPermission = new PermissionsBitField(requiredBotPerms.key[i]).toArray();
 
               replyEmbed = new EmbedBuilder()
-                .setColor(0xed4245)
+                .setColor(Color.DiscordDanger)
                 .setTitle(`❌ Diagnosed command \`${commandFile.data.name}\``)
                 .setDescription(`Error! I am missing the following permissions: \`${missingPermission}\``)
                 .setFooter({
@@ -50,7 +51,7 @@ module.exports = {
           }
 
           replyEmbed = new EmbedBuilder()
-            .setColor(0x57f287)
+            .setColor(Color.DiscordSuccess)
             .setTitle(`✅ Diagnosed command \`${commandFile.data.name}\``)
             .setDescription(`No anomalies found`)
             .setFooter({

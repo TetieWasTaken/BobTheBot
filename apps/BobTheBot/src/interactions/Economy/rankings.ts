@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
 import { EconomyModel } from "../../models/index.js";
+import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -22,7 +23,7 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setTitle("Leaderboard")
-      .setColor(0x57f287)
+      .setColor(Color.DiscordPrimary)
       .setFooter({
         text: `Requested by ${interaction.user.tag}`,
         iconURL: `${interaction.user.displayAvatarURL()}`,

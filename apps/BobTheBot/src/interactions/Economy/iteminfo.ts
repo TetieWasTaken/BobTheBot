@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
 import { requestItemData, raiseMiscellaneousError } from "../../utils/index.js";
+import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -48,7 +49,7 @@ module.exports = {
         },
         { name: "Note", value: `*${itemInfo.note ?? "N/A"}*`, inline: false }
       )
-      .setColor(0x57f287);
+      .setColor(Color.DiscordEmbedBackground);
 
     if (!itemInfo.note) itemEmbed.spliceFields(-1, 1);
 

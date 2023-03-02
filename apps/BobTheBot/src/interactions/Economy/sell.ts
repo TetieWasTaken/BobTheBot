@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
 import { EconomyModel } from "../../models/index.js";
 import { requestItemData, raiseMiscellaneousError } from "../../utils/index.js";
+import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -82,7 +83,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle("Item Sold")
       .setDescription(`You sold ${amount} ${itemObject.name} for ${itemObject.price! * amount} coins`)
-      .setColor(0x57f287)
+      .setColor(Color.DiscordSuccess)
       .setTimestamp();
 
     return interaction.reply({

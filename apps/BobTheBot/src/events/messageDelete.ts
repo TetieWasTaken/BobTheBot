@@ -1,5 +1,6 @@
-import { Message, EmbedBuilder } from "discord.js";
+import { EmbedBuilder, Message } from "discord.js";
 import { GuildModel } from "../models/index.js";
+import { Color } from "../constants.js";
 
 module.exports = {
   name: "messageDelete",
@@ -18,7 +19,7 @@ module.exports = {
       if (!logChannel || !logChannel.isTextBased()) return;
 
       const logEmbed = new EmbedBuilder()
-        .setColor(0xffa800)
+        .setColor(Color.DiscordDanger)
         .setAuthor({
           name: `${message.author.tag} (${message.author.id}) | Message deleted`,
           iconURL: `${message.member?.user.displayAvatarURL()}`,

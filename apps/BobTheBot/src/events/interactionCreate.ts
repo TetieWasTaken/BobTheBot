@@ -2,8 +2,8 @@ import { EmbedBuilder, BaseInteraction } from "discord.js";
 import { raiseUserPermissionsError, raiseBotPermissionsError } from "../utils/index.js";
 import type { ExtendedClient } from "../utils/index.js";
 import { GuildModel } from "../models/index.js";
-
 import { Color } from "../constants.js";
+
 module.exports = {
   name: "interactionCreate",
   once: false,
@@ -126,7 +126,7 @@ module.exports = {
         const logChannelId = interaction.fields.getTextInputValue("logChannelIdInput");
 
         const replyEmbed = new EmbedBuilder()
-          .setColor(0xffffff)
+          .setColor(Color.DiscordEmbedBackground)
           .setTitle(`Setup completed`)
           .addFields(
             {

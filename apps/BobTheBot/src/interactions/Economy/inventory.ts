@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
 import { EconomyModel } from "../../models/index.js";
-import { requestItemData } from "../../utils/requestItemData";
+import { requestItemData } from "../../utils/index.js";
+import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -39,7 +40,7 @@ module.exports = {
         .setFooter({
           text: `Page 1/1`,
         })
-        .setColor(0x57f287);
+        .setColor(Color.DiscordWarning);
 
       return interaction.reply({
         embeds: [inventoryEmbed],
@@ -53,7 +54,7 @@ module.exports = {
         .setFooter({
           text: `Page ${page}/${Math.ceil(data.Inventory.length / 5)}`,
         })
-        .setColor(0x57f287);
+        .setColor(Color.DiscordEmbedBackground);
       for (let i = 0; i < 5; i++) {
         if (data.Inventory[i + (page - 1) * 5]) {
           try {

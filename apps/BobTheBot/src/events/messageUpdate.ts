@@ -1,5 +1,6 @@
-import { Message, EmbedBuilder } from "discord.js";
+import { EmbedBuilder, Message } from "discord.js";
 import GuildSchema from "../models/GuildModel";
+import { Color } from "../constants.js";
 
 module.exports = {
   name: "messageUpdate",
@@ -19,7 +20,7 @@ module.exports = {
       if (!logChannel || !logChannel.isTextBased()) return;
 
       const logEmbed = new EmbedBuilder()
-        .setColor(0xfff033)
+        .setColor(Color.DiscordWarning)
         .setAuthor({
           name: `${newMessage.author.tag} (${newMessage.member?.id}) | Message edited`,
           iconURL: `${newMessage.member?.user.displayAvatarURL()}`,
