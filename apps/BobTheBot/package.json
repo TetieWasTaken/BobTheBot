@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "npm run deploy && npm run start",
-    "deploy": "node src/deploy.js",
+    "start": "node dist/index.js",
+    "deploy": "node dist/deploy.js",
+    "build:clean": "del-cli dist",
+    "build:ts": "tsc",
+    "build": "npm run build:clean && npm run build:ts",
+    "dev": "npm run build && npm run deploy && npm run start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write ."
@@ -13,17 +16,19 @@
   "author": "Tetie#4242",
   "license": "Apache-2.0",
   "dependencies": {
-    "chartjs-node-canvas": "^4.1.6",
-    "damerau-levenshtein": "^1.0.8",
+    "@types/node-cron": "^3.0.7",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
-    "expr-eval": "^2.0.2",
     "ffmpeg-static": "^5.1.0",
-    "mongoose": "^6.7.0",
+    "mongoose": "^6.9.2",
     "node-cron": "^3.0.2",
     "table": "^6.8.1"
   },
+  "overrides": {
+    "discord-api-types": "0.37.20"
+  },
   "devDependencies": {
+    "del-cli": "^5.0.0",
     "eslint": "^8.34.0",
     "prettier": "^2.8.4"
   },

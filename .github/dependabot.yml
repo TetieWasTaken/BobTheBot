@@ -1,0 +1,34 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    assignees:
+      - "tetiewastaken"
+    reviewers:
+      - "tetiewastaken"
+    labels:
+      - "priority: low"
+  - package-ecosystem: "npm"
+    directory: "/apps/bobthebot/"
+    schedule:
+      interval: "daily"
+      time: "12:00"
+      timezone: "Europe/London"
+    assignees:
+      - "tetiewastaken"
+    reviewers:
+      - "tetiewastaken"
+    labels:
+      - "priority: medium"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    assignees:
+      - "tetiewastaken"
+    reviewers:
+      - "tetiewastaken"
+    labels:
+      - "priority: low"
