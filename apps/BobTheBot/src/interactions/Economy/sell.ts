@@ -1,16 +1,15 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const EconomySchema = require("../../models/EconomyModel");
-const { requestItemData } = require("../../utils/requestItemData");
-const { raiseMiscellaneousError } = require("../../utils/returnError");
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import { EconomyModel } from "../../models/index.js";
+import { requestItemData, raiseMiscellaneousError } from "../../utils/index.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -36,11 +35,11 @@ module.exports = {
           option.setName("item").setDescription("The item you want to sell").setRequired(true)
         )
     ),
-  async execute(interaction) {
-    const item = interaction.options.getString("item");
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    const item = interaction.options.getString("item", true);
     const amount = interaction.options.getInteger("amount") ?? 1;
 
-    const data = await EconomySchema.findOne({
+    const data = await EconomyModel.findOne({
       userId: interaction.user.id,
     });
 
@@ -50,6 +49,7 @@ module.exports = {
         ephemeral: true,
       });
     }
+
     const object = data.Inventory.find((object) => object.id === item.toLowerCase().replace(/\s+/g, ""));
     if (!object) {
       return interaction.reply({
@@ -68,22 +68,24 @@ module.exports = {
     if (!itemObject)
       return raiseMiscellaneousError(interaction, "Item not found", "The item you specified was not found.");
 
+    if (!itemObject.sellable) return interaction.reply({ content: "🚫 You cannot sell this item", ephemeral: true });
+
     if (object.amount === amount) {
       data.Inventory.splice(data.Inventory.indexOf(object), 1);
     } else {
       object.amount -= amount;
     }
 
-    data.Wallet += itemObject.price * amount;
+    data.Wallet = (data.Wallet ?? 0) + (itemObject.price ?? 0) * amount;
     data.save();
 
     const embed = new EmbedBuilder()
       .setTitle("Item Sold")
-      .setDescription(`You sold ${amount} ${itemObject.name} for ${itemObject.price * amount} coins`)
-      .setColor("0x57f287")
+      .setDescription(`You sold ${amount} ${itemObject.name} for ${itemObject.price! * amount} coins`)
+      .setColor(0x57f287)
       .setTimestamp();
 
-    interaction.reply({
+    return interaction.reply({
       embeds: [embed],
       ephemeral: true,
     });
