@@ -1,16 +1,15 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const EconomySchema = require("../../models/EconomyModel");
-const { requestItemData } = require("../../utils/requestItemData");
-const { raiseMiscellaneousError } = require("../../utils/returnError");
+import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
+import { EconomyModel } from "../../models/index.js";
+import { requestItemData, raiseMiscellaneousError, IItem } from "../../utils/index.js";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -44,12 +43,12 @@ module.exports = {
           option.setName("user").setDescription("The user to transfer the item to").setRequired(true)
         )
     ),
-  async execute(interaction) {
-    const target = interaction.options.getUser("user");
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+    const target = interaction.options.getUser("user", true);
 
     const subcommand = interaction.options.getSubcommand();
     if (subcommand === "bobbucks") {
-      const amount = interaction.options.getInteger("amount");
+      const amount = interaction.options.getInteger("amount", true);
       if (target.id === interaction.user.id) {
         return interaction.reply({
           content: ":wrench: Unable to transfer bobbucks to yourself",
@@ -63,21 +62,27 @@ module.exports = {
         });
       }
 
-      const userData = await EconomySchema.findOne({
+      const userData = await EconomyModel.findOne({
         UserId: interaction.user.id,
       });
-      let targetData = await EconomySchema.findOne({
+      let targetData = await EconomyModel.findOne({
         UserId: target.id,
       });
 
-      if (!userData || userData.Wallet < amount) {
+      if (!userData || (userData?.Wallet ?? 0 < amount)) {
         return interaction.reply({
           content: ":wrench: You don't have this much bobbucks in your wallet",
           ephemeral: true,
         });
       }
 
+      userData.Wallet ??= 0;
+      userData.NetWorth ??= 0;
+
       if (targetData) {
+        targetData.Wallet ??= 0;
+        targetData.NetWorth ??= 0;
+
         userData.Wallet -= amount;
         userData.NetWorth -= amount;
         await userData.save();
@@ -85,7 +90,7 @@ module.exports = {
         targetData.NetWorth += amount;
         await targetData.save();
       } else {
-        targetData = new EconomySchema({
+        targetData = new EconomyModel({
           UserId: target.id,
           Wallet: amount,
           Bank: 0,
@@ -101,14 +106,21 @@ module.exports = {
         ephemeral: true,
       });
     } else if (subcommand === "item") {
-      const itemName = interaction.options.getString("item");
+      const itemName = interaction.options.getString("item", true);
 
       const item = await requestItemData(itemName);
       if (!item) return raiseMiscellaneousError(interaction, "Item not found", "The item you specified was not found.");
 
-      const userData = await EconomySchema.findOne({
+      const userData = await EconomyModel.findOne({
         UserId: interaction.user.id,
       });
+
+      if (!userData) {
+        return interaction.reply({
+          content: ":wrench: You don't own this item",
+          ephemeral: true,
+        });
+      }
 
       const userItem = userData.Inventory.find((i) => i.id === itemName.toLowerCase().replace(/\s+/g, ""));
       if (!userItem) {
@@ -118,14 +130,14 @@ module.exports = {
         });
       }
 
-      let targetData = await EconomySchema.findOne({
+      let targetData = await EconomyModel.findOne({
         UserId: target.id,
       });
 
       if (targetData) {
         const itemId = item.id;
 
-        const itemIndex = targetData.Inventory.findIndex((item) => item.id === itemId);
+        const itemIndex = targetData.Inventory.findIndex((item: IItem) => item.id === itemId);
 
         if (itemIndex !== -1) {
           let item = targetData.Inventory[itemIndex];
@@ -135,7 +147,7 @@ module.exports = {
           targetData.Inventory.push(itemName);
         }
       } else {
-        targetData = new EconomySchema({
+        targetData = new EconomyModel({
           UserId: target.id,
           Wallet: 0,
           Bank: 0,
@@ -147,14 +159,15 @@ module.exports = {
               type: item.type,
               sellable: item.sellable,
               buyable: item.buyable,
-              useable: item.useable,
               price: item.price,
+              useable: item.usable,
               id: item.id,
               amount: 1,
             },
           ],
         });
       }
+
       targetData.save();
       userData.Inventory.splice(userData.Inventory.indexOf(itemName), 1);
       userData.save();
@@ -163,6 +176,8 @@ module.exports = {
         content: `:gift: Successfully transferred \`${itemName}\` to ${target.tag}`,
         ephemeral: true,
       });
+    } else {
+      return;
     }
   },
   requiredBotPerms: requiredBotPerms,
