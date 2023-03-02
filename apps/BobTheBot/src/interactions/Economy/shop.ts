@@ -1,14 +1,15 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const fs = require("fs");
+import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
+import type { IItem } from "../../utils/index.js";
+import fs from "fs";
 
 const requiredBotPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 const requiredUserPerms = {
-  type: "flags",
-  key: [],
+  type: "flags" as const,
+  key: [] as const,
 };
 
 module.exports = {
@@ -16,14 +17,14 @@ module.exports = {
     .setName("shop")
     .setDescription("View the shop")
     .addIntegerOption((option) => option.setName("page").setDescription("The page to view").setRequired(false)),
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction<"cached">) {
     let page = interaction.options.getInteger("page") ?? 1;
 
     fs.readFile("./resources/items.json", (err, data) => {
       if (err) throw err;
-      const itemsJSON = JSON.parse(data);
+      const itemsJSON = JSON.parse(data.toString());
 
-      itemsJSON.forEach((item) => {
+      itemsJSON.forEach((item: IItem) => {
         if (!item.buyable) itemsJSON.splice(itemsJSON.indexOf(item), 1);
       });
 
@@ -31,10 +32,10 @@ module.exports = {
 
       const shopEmbed = new EmbedBuilder()
         .setAuthor({ name: "Shop" })
-        .setFooter(
-          { text: `Page ${page} of ${Math.ceil(itemsJSON.length / 5)}` },
-          { iconURL: interaction.user.avatarURL }
-        )
+        .setFooter({
+          text: `Page ${page} of ${Math.ceil(itemsJSON.length / 5)}`,
+          iconURL: `${interaction.user.avatarURL}`,
+        })
         .setColor(0x57f287);
 
       for (let i = 0; i < 5; i++) {
