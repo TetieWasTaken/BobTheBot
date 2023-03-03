@@ -10,46 +10,7 @@
 	</p>
 </div>
 
-# 👽 About
-
-Bob The Bot is a simple, competitive, community driven [Discord.js](https://github.com/discordjs) bot.
-
-#### WARNING: THIS BOT IS NOT DONE YET! THIS BOT IS NOT BEING HOSTED, DO NOT EXPECT THE BOT TO RESPOND.
-
-## Adding this bot to your discord server
-
-1: Paste this link in your browser <br />
-`https://discord.com/api/oauth2/authorize?client_id=1036359071508484237&permissions=8&scope=bot%20applications.commands`
-
-2: Select the server you want to add the bot to <br />
-![Image failed to load][serverselect]
-
-3: Click 'Continue', and then 'Authorise'
-
-[serverselect]: .github/assets/step_2.png "Select the server"
-
-# 📦 How to build
-
-If you want to use this code in your own project/bot, you can follow the steps below.
-This guide does not include how to set up your bot, you can follow [this guide](https://discordjs.guide/preparations/setting-up-a-bot-application.html#setting-up-a-bot-application) for more information
-
-1. Clone this repository using the following command: `git clone https://github.com/TetieWasTaken/BobTheBot.git`.
-2. Run `npm install` to install all the required dependencies.
-3. Add a .env file in `apps/BobTheBot/src` with the following;
-
-```
-BOT_TOKEN = <YOUR_BOT_TOKEN>
-MONGO_DATABASETOKEN = <mongodb+srv://<YOUR_USERNAME>:<YOUR_PASSWORD>@<CONNECTION_URL>?retryWrites=true&w=majority>
-WEATHER_API_KEY = <YOUR_OPENWEATHERMAP_API_KEY>
-ENV = production
-```
-
-To configure your bot locally, you need to remove `ENV = production` and add: `GUILD_ID = <YOUR_LOCAL_GUILD_ID>`
-
-4. cd into the `apps/BobTheBot/src/` directory
-5. Run `npm run start` or `node index.js` to start up the bot!
-
-###### If you're using this software, please follow the terms of the [Apache License below](#%EF%B8%8F-license)
+# Unfinished
 
 <!--Title start
 This template is licensed under the MIT license (https://choosealicense.com/licenses/mit/).
