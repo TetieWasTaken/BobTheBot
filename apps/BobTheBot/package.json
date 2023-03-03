@@ -20,7 +20,7 @@
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "ffmpeg-static": "^5.1.0",
-    "mongoose": "^6.9.2",
+    "mongoose": "^7.0.0",
     "node-cron": "^3.0.2",
     "table": "^6.8.1"
   },
