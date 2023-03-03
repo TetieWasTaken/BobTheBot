@@ -70,7 +70,7 @@ module.exports = {
           fetchReply: true,
         });
 
-        const confirmCollector = await reply.createMessageComponentCollector({
+        const confirmCollector = reply.createMessageComponentCollector({
           filter: (i) => i.customId === "confirm-button",
           time: 60 * 1000,
         });
