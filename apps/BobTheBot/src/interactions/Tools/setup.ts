@@ -6,6 +6,11 @@ import {
   ButtonStyle,
   PermissionFlagsBits,
   ChatInputCommandInteraction,
+  ButtonInteraction,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+  ModalSubmitInteraction,
 } from "discord.js";
 import { GuildModel } from "../../models/index.js";
 import { Color } from "../../constants.js";
@@ -61,10 +66,88 @@ module.exports = {
 
     const button = new ButtonBuilder().setCustomId("full-setup").setLabel("Full Setup").setStyle(ButtonStyle.Primary);
 
-    return interaction.reply({
+    const reply = await interaction.reply({
       embeds: [replyEmbed],
       components: [new ActionRowBuilder<ButtonBuilder>().addComponents(button)],
+      ephemeral: true,
+      fetchReply: true,
     });
+
+    const buttonCollector = reply.createMessageComponentCollector({
+      filter: (i) => i.customId === "full-setup",
+      time: 60 * 1000,
+    });
+
+    buttonCollector
+      .on("collect", async (buttonI: ButtonInteraction) => {
+        const modal = new ModalBuilder().setCustomId("full-setup-modal").setTitle("Full Setup");
+
+        const logChannelIdInput = new TextInputBuilder()
+          .setMaxLength(19)
+          .setMinLength(16)
+          .setPlaceholder("1036359877473341563")
+          .setRequired(true)
+          .setCustomId("logChannelIdInput")
+          .setLabel("Enter the channel ID the bot should log to")
+          .setStyle(TextInputStyle.Short);
+
+        const firstActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(logChannelIdInput);
+
+        modal.addComponents(firstActionRow);
+
+        await buttonI.showModal(modal).catch(() => {
+          return buttonI.reply({
+            content: `Something went wrong!`,
+          });
+        });
+
+        buttonI
+          .awaitModalSubmit({ filter: (i) => i.customId === "full-setup-modal", time: 5 * 60 * 1000 })
+          .then(async (modalI: ModalSubmitInteraction) => {
+            const logChannelId = modalI.fields.getTextInputValue("logChannelIdInput");
+
+            const replyEmbed = new EmbedBuilder()
+              .setColor(Color.DiscordEmbedBackground)
+              .setTitle(`Setup completed`)
+              .addFields(
+                {
+                  name: `Guild ID`,
+                  value: `${modalI.guild?.id ?? "No guild ID found"}`,
+                  inline: true,
+                },
+                {
+                  name: `Logging channel`,
+                  value: `<#${logChannelId}>`,
+                  inline: true,
+                }
+              )
+              .setFooter({
+                text: "Incorrect information? Re-run the setup command.",
+              });
+
+            await GuildModel.findOneAndUpdate(
+              {
+                GuildId: modalI.guild?.id,
+              },
+              {
+                GuildLogChannel: logChannelId,
+              }
+            ).catch(() => {
+              return modalI.reply({ content: "An error occurred while saving the data.", ephemeral: true });
+            });
+
+            return await modalI.reply({ embeds: [replyEmbed], ephemeral: true });
+          })
+          .catch((err) => {
+            console.error(err);
+            return buttonI.reply({ content: "Setup timed out.", ephemeral: true });
+          });
+      })
+      .on("end", () => {
+        return void interaction.editReply({
+          components: [],
+        });
+      });
   },
   requiredBotPerms: requiredBotPerms,
   requiredUserPerms: requiredUserPerms,

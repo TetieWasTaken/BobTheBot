@@ -119,42 +119,8 @@ module.exports = {
         console.log(`Button ${interaction.customId} failed to execute.\n\n${interaction}`);
         console.log(err);
       }
-    }
-
-    if (interaction.isModalSubmit()) {
-      if (interaction.customId === "full-setup-modal") {
-        const logChannelId = interaction.fields.getTextInputValue("logChannelIdInput");
-
-        const replyEmbed = new EmbedBuilder()
-          .setColor(Color.DiscordEmbedBackground)
-          .setTitle(`Setup completed`)
-          .addFields(
-            {
-              name: `Guild ID`,
-              value: `${interaction.guild?.id ?? "No guild ID found"}`,
-              inline: true,
-            },
-            {
-              name: `Logging channel`,
-              value: `<#${logChannelId}>`,
-              inline: true,
-            }
-          )
-          .setFooter({
-            text: "Incorrect information? Re-run the setup command.",
-          });
-
-        await interaction.reply({ embeds: [replyEmbed], ephemeral: true });
-
-        await GuildModel.findOneAndUpdate(
-          {
-            GuildId: interaction.guild?.id,
-          },
-          {
-            GuildLogChannel: logChannelId,
-          }
-        );
-      }
+    } else {
+      return console.error("Unknown interaction type");
     }
   },
 };
