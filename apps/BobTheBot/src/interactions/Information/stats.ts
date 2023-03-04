@@ -29,7 +29,7 @@ module.exports = {
         },
         {
           name: `Users`,
-          value: `\`${interaction.client.users.cache.size}\``,
+          value: `\`${interaction.client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)}\``,
           inline: true,
         },
         {
