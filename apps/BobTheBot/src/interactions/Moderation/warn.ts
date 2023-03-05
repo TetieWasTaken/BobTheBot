@@ -20,7 +20,8 @@ module.exports = {
     .addStringOption((option) =>
       option.setName("reason").setDescription("reason for warn").setMaxLength(255).setRequired(false)
     )
-    .setDMPermission(false),
+    .setDMPermission(false)
+    .setDefaultMemberPermissions(...requiredUserPerms.key),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const user = interaction.options.getUser("target", true);
     let reason = interaction.options.getString("reason") ?? "No reason provided";

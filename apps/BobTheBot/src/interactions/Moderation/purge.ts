@@ -21,7 +21,8 @@ module.exports = {
         .setRequired(true)
         .setMinValue(1)
         .setMaxValue(100)
-    ),
+    )
+    .setDefaultMemberPermissions(...requiredUserPerms.key),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const amount = interaction.options.getInteger("amount", true);
 

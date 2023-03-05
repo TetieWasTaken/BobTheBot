@@ -18,7 +18,8 @@ module.exports = {
     .addUserOption((option) => option.setName("target").setDescription("The user to set the rank of").setRequired(true))
     .addIntegerOption((option) =>
       option.setName("rank").setDescription("The rank to set the user to").setRequired(true)
-    ),
+    )
+    .setDefaultMemberPermissions(...requiredUserPerms.key),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const user = interaction.options.getUser("target", true);
     const rank = interaction.options.getInteger("rank", true);

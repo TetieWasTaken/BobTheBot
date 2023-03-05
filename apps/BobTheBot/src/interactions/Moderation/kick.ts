@@ -18,7 +18,8 @@ module.exports = {
     .addUserOption((option) => option.setName("target").setDescription("member to kick").setRequired(true))
     .addStringOption((option) =>
       option.setName("reason").setDescription("reason for kick").setMaxLength(255).setRequired(false)
-    ),
+    )
+    .setDefaultMemberPermissions(...requiredUserPerms.key),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const member = interaction.options.getMember("target");
     let reason = interaction.options.getString("reason") ?? "No reason provided";

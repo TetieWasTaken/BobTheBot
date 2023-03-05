@@ -15,7 +15,8 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("unmute")
     .setDescription("Removes a user from timeout")
-    .addUserOption((option) => option.setName("target").setDescription("member to mute").setRequired(true)),
+    .addUserOption((option) => option.setName("target").setDescription("member to mute").setRequired(true))
+    .setDefaultMemberPermissions(...requiredUserPerms.key),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const member = interaction.options.getMember("target");
 

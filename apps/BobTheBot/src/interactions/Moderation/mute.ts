@@ -26,7 +26,8 @@ module.exports = {
     )
     .addStringOption((option) =>
       option.setName("reason").setDescription("reason to mute").setMaxLength(255).setRequired(false)
-    ),
+    )
+    .setDefaultMemberPermissions(...requiredUserPerms.key),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const member = interaction.options.getMember("target");
     let duration = interaction.options.getString("duration");

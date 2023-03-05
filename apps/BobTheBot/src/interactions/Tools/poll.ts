@@ -44,7 +44,8 @@ module.exports = {
     )
     .addStringOption((option) =>
       option.setName("option9").setDescription("Add a poll option (min 2 max 9)").setRequired(false)
-    ),
+    )
+    .setDefaultMemberPermissions(...requiredUserPerms.key),
   cooldownTime: 20 * 1000,
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const message = interaction.options.getString("message");

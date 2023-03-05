@@ -16,7 +16,8 @@ module.exports = {
     .setDescription("Change the current channel's slowmode")
     .addIntegerOption((option) =>
       option.setName("duration").setDescription("duration of the slowmode in seconds (0 to disable)").setRequired(true)
-    ),
+    )
+    .setDefaultMemberPermissions(...requiredUserPerms.key),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     let duration = interaction.options.getInteger("duration", true);
 

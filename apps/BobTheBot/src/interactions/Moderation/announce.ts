@@ -50,7 +50,8 @@ module.exports = {
             .addChannelTypes(ChannelType.GuildText)
         )
         .addStringOption((option) => option.setName("message").setDescription("Message to announce").setRequired(true))
-    ),
+    )
+    .setDefaultMemberPermissions(...requiredUserPerms.key),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const channel = interaction.options.getChannel("channel", true);
 

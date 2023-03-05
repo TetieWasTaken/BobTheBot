@@ -26,7 +26,10 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("setup").setDescription("Set up the bot for your server"),
+  data: new SlashCommandBuilder()
+    .setName("setup")
+    .setDescription("Set up the bot for your server")
+    .setDefaultMemberPermissions(...requiredUserPerms.key),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     let data = await GuildModel.findOne({
       GuildId: interaction.guild.id,
