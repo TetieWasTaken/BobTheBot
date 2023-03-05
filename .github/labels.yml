@@ -1,13 +1,5 @@
 # Descriptions are not added as labels are self-explanatory
 
-# Priorities
-- name: "priority: high"
-  color: "D93F0B"
-- name: "priority: medium"
-  color: "FBCA04"
-- name: "priority: low"
-  color: "0E8A16"
-
 # Statuses
 - name: "identified"
   color: "C0E895"
