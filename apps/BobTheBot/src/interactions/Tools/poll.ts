@@ -11,41 +11,26 @@ const requiredUserPerms = {
   key: [PermissionFlagsBits.ManageMessages] as const,
 };
 
+const command = new SlashCommandBuilder()
+  .setName("poll")
+  .setDescription("Start a poll")
+  .addStringOption((option) =>
+    option.setName("message").setDescription("message to display on the poll").setRequired(true)
+  );
+
+for (let i = 1; i <= 9; i++) {
+  command.addStringOption((option) =>
+    option
+      .setName(`option${i}`)
+      .setDescription(`Add a poll option (min 2 max 9)`)
+      .setRequired(i <= 2 ? true : false)
+  );
+}
+
+command.setDefaultMemberPermissions(...requiredUserPerms.key);
+
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("poll")
-    .setDescription("Start a poll")
-    .addStringOption((option) =>
-      option.setName("message").setDescription("message to display on the poll").setRequired(true)
-    )
-    .addStringOption((option) =>
-      option.setName("option1").setDescription("Add a poll option (min 2 max 9)").setRequired(true)
-    )
-    .addStringOption((option) =>
-      option.setName("option2").setDescription("Add a poll option (min 2 max 9)").setRequired(true)
-    )
-    .addStringOption((option) =>
-      option.setName("option3").setDescription("Add a poll option (min 2 max 9)").setRequired(false)
-    )
-    .addStringOption((option) =>
-      option.setName("option4").setDescription("Add a poll option (min 2 max 9)").setRequired(false)
-    )
-    .addStringOption((option) =>
-      option.setName("option5").setDescription("Add a poll option (min 2 max 9)").setRequired(false)
-    )
-    .addStringOption((option) =>
-      option.setName("option6").setDescription("Add a poll option (min 2 max 9)").setRequired(false)
-    )
-    .addStringOption((option) =>
-      option.setName("option7").setDescription("Add a poll option (min 2 max 9)").setRequired(false)
-    )
-    .addStringOption((option) =>
-      option.setName("option8").setDescription("Add a poll option (min 2 max 9)").setRequired(false)
-    )
-    .addStringOption((option) =>
-      option.setName("option9").setDescription("Add a poll option (min 2 max 9)").setRequired(false)
-    )
-    .setDefaultMemberPermissions(...requiredUserPerms.key),
+  data: command,
   cooldownTime: 20 * 1000,
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const message = interaction.options.getString("message");
