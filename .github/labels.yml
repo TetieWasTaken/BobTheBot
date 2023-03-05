@@ -25,6 +25,8 @@
   color: "62CFE7"
 - name: "apps: bot"
   color: "62CFE7"
+- name: "github"
+  color: "62CFE7"
 
 # Semver
 - name: "semver: major"
@@ -47,8 +49,6 @@
   color: "D0CFCA"
 - name: "dependency"
   color: "4968C6"
-- name: "github related"
-  color: "A761CC"
 - name: "security"
   color: "B81B1B"
 - name: "invalid"
