@@ -1,7 +1,7 @@
 require("dotenv").config();
 const { REST, Routes } = require("discord.js");
 const fs = require("fs");
-const { table } = require("table");
+import { logger } from "./utils/index.js";
 
 const commandFolders = fs.readdirSync("./src/interactions/").filter((item: string) => !/(^|\/)\.[^/.]/g.test(item));
 const interactions = [];
@@ -16,7 +16,7 @@ for (const folder of commandFolders) {
           const command = require(`./interactions/${folder}/${file}/${subFile.replace(".ts", ".js")}`);
           interactions.push(command.data.toJSON());
         } catch (error) {
-          console.log(error);
+          logger.error(error);
         }
       }
       continue;
@@ -26,7 +26,7 @@ for (const folder of commandFolders) {
       const command = require(`./interactions/${folder}/${file.replace(".ts", ".js")}`);
       interactions.push(command.data.toJSON());
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   }
 }
@@ -45,23 +45,8 @@ const rest = new REST({
       });
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 
-  const registerConfig = {
-    header: {
-      alignment: "center",
-      content: `Commands registered`,
-    },
-    columnDefault: {
-      width: 20,
-    },
-  };
-
-  const registerTable = [
-    ["Commands", `${interactions.length}`],
-    ["Scope", `${process.env.ENV === "production" ? "Global" : "Guild"}`],
-  ];
-
-  console.log(table(registerTable, registerConfig));
+  logger.info(`Successfully registered ${interactions.length} application commands.`);
 })();

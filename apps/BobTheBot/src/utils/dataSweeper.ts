@@ -1,6 +1,5 @@
-import type { ExtendedClient } from "./index.js";
+import { logger, type ExtendedClient } from "./index.js";
 import type { Connection, Collection } from "mongoose";
-import { table, TableUserConfig } from "table";
 import cron from "node-cron";
 
 interface ICollection {
@@ -8,29 +7,25 @@ interface ICollection {
   label: string;
 }
 
-const loop = (client: ExtendedClient, connection: Connection) => {
+export function sweeperLoop(client: ExtendedClient, connection: Connection) {
+  logger.info("Starting database sweep loop");
   cron.schedule(
     "0 12 * * 6",
-    () => {
-      if (!client.isReady()) return console.log("Client not ready, skipping sweep");
-      sweep(client, connection);
+    async () => {
+      if (!client.isReady()) return logger.warn("Client is not ready, skipping sweep");
+      await sweep(client, connection);
     },
     {
       scheduled: true,
       timezone: "Europe/London",
     }
   );
-};
+}
 
-const sweep = async (client: ExtendedClient, connection: Connection): Promise<void> => {
-  const config: TableUserConfig = {
-    header: {
-      alignment: "center",
-      content: "Sweeping database",
-    },
-  };
+async function sweep(client: ExtendedClient, connection: Connection): Promise<void> {
+  logger.info("Sweeping database");
 
-  let cnslTable: (string | number)[][] = [["Collection", "Deleted"]];
+  let info: string[][] = [["Collection", "Deleted"]];
 
   const deleteDocs = async (collection: Collection<any> | undefined, queryFn: any) => {
     if (!collection) return 0;
@@ -63,10 +58,8 @@ const sweep = async (client: ExtendedClient, connection: Connection): Promise<vo
   for (const [name, { queryFn, label }] of Object.entries(collections)) {
     const collection = connection.collections[name];
     const count = await deleteDocs(collection, queryFn);
-    cnslTable.push([label, `${count} guilds`]);
+    info.push([label, `${count} guilds`]);
   }
 
-  console.log(table(cnslTable, config));
-};
-
-module.exports = { loop };
+  logger.info({ table: info }, "Database sweep completed");
+}

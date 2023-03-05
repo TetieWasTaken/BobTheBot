@@ -141,8 +141,7 @@ module.exports = {
 
             return await modalI.reply({ embeds: [replyEmbed], ephemeral: true });
           })
-          .catch((err) => {
-            console.error(err);
+          .catch(() => {
             return buttonI.reply({ content: "Setup timed out.", ephemeral: true });
           });
       })

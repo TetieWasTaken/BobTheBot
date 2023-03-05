@@ -1,8 +1,7 @@
-import { ExtendedClient, logTimings } from "../utils/index.js";
+import { logger, sweeperLoop, ExtendedClient } from "../utils/index.js";
 
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { table, TableUserConfig } from "table";
 
 dotenv.config();
 
@@ -14,7 +13,7 @@ export default class Database {
   }
 
   connect(client: ExtendedClient) {
-    if (!process.env.MONGO_DATABASETOKEN) return console.error("[ERR] No database token provided.");
+    if (!process.env.MONGO_DATABASETOKEN) return logger.error("No database token provided");
 
     const timerStart = Date.now();
 
@@ -23,20 +22,14 @@ export default class Database {
     mongoose
       .connect(process.env.MONGO_DATABASETOKEN)
       .then(() => {
-        client.timings.set("Mongoose", Date.now() - timerStart);
-        if (client.timings.size === 4) {
-          logTimings(client.timings);
-        }
+        logger.info(`Connected to database in ${Date.now() - timerStart}ms`);
+
         this.connection = mongoose.connection;
 
-        require("../utils/dataSweeper").loop(client, this.connection);
-
-        type States = {
-          [key: number]: string;
-        };
+        sweeperLoop(client, this.connection);
 
         // Unable to get the states out of mongoose.connection, temporary hardcode.
-        const states: States = {
+        const states: Record<number, string> = {
           0: "disconnected",
           1: "connected",
           2: "connecting",
@@ -44,25 +37,18 @@ export default class Database {
           99: "uninitialized",
         };
 
-        const config: TableUserConfig = {
-          header: {
-            alignment: "center",
-            content: `${this.connection._connectionOptions.driverInfo.name} v${this.connection._connectionOptions.driverInfo.version}`,
+        logger.debug(
+          {
+            state: states[this.connection.readyState],
+            port: this.connection.port,
+            host: this.connection.host,
+            database: this.connection.name,
           },
-        };
-
-        const cnslTable = [
-          ["State", `${states[this.connection.readyState]}`],
-          ["Port", `${this.connection.port}`],
-          ["Host", `${this.connection.host}`],
-          ["Database", `${this.connection.name}`],
-          ["Collections", `${Object.keys(this.connection.collections).length}`],
-        ];
-
-        console.log(table(cnslTable, config), "\n————————————————————————————————————————————————\n");
+          "Database connection info"
+        );
       })
-      .catch((err: any) => {
-        console.error(err);
+      .catch((err: Error) => {
+        logger.error(`Error connecting to database: ${err.message}`);
       });
   }
 }

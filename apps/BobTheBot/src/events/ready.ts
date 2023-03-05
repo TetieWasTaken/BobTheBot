@@ -1,6 +1,6 @@
 import { Client, ActivityType } from "discord.js";
 import dotenv from "dotenv";
-import { table, TableUserConfig } from "table";
+import { logger } from "../utils/index.js";
 
 dotenv.config();
 
@@ -8,15 +8,9 @@ module.exports = {
   name: "ready",
   once: true,
   async execute(client: Client): Promise<void> {
+    logger.info("Client is ready");
     // This Promise is required to make sure the WebSocket is fully ready before proceeding
     await new Promise((resolve) => setTimeout(resolve, 50));
-
-    const config: TableUserConfig = {
-      header: {
-        alignment: "center",
-        content: "Client is ready!",
-      },
-    };
 
     const WSStatus: { [key: number]: string } = {
       0: "Ready",
@@ -30,22 +24,26 @@ module.exports = {
       8: "Resuming",
     };
 
-    const cnslTable = [
-      ["WS Status", `${WSStatus[client.ws.status]}`],
-      ["Logged in as", `${client.user?.tag}`],
-      ["ID", `${client.user?.id}`],
-      ["Ping", `${client.ws.ping}ms`],
-    ];
-
-    console.log(table(cnslTable, config), "\n————————————————————————————————————————————————\n");
+    logger.debug(
+      {
+        WSStatus: WSStatus[client.ws.status],
+        User: client.user?.tag,
+        ID: client.user?.id,
+        ping: `${client.ws.ping}ms`,
+      },
+      "Client status"
+    );
 
     try {
       client.user?.setPresence({
         activities: [{ name: `discord`, type: ActivityType.Watching }],
         status: "online",
       });
+
+      logger.info("Presence set");
+      logger.debug({ name: `discord`, type: `Watching`, status: `online` }, "Ready");
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   },
 };

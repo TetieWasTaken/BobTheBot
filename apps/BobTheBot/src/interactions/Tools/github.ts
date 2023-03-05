@@ -299,7 +299,6 @@ module.exports = {
             });
           return interaction.reply({ embeds: [embed], ephemeral: true });
         } catch (error) {
-          console.log(error);
           return interaction.reply({
             content: "An error occurred while trying to retrieve the repository information.",
             ephemeral: true,

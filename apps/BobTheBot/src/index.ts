@@ -1,10 +1,9 @@
 import dotenv from "dotenv";
 import fs from "fs";
-import { table, TableUserConfig } from "table";
 
 import Database from "./config/Database";
-import { Partials, GatewayIntentBits, Options, GuildMember } from "discord.js";
-import { logTimings, ExtendedClient } from "./utils/index.js";
+import { Partials, GatewayIntentBits, Options, GuildMember, RateLimitData } from "discord.js";
+import { logger, ExtendedClient } from "./utils/index.js";
 
 dotenv.config();
 
@@ -43,16 +42,7 @@ let timerStart = Date.now();
 
 const commandFolders = fs.readdirSync("./src/interactions/").filter((item: string) => !/(^|\/)\.[^/.]/g.test(item));
 
-console.log(`\n————————————————————————————————————————————————\n`);
-
-let cnslTable = [["Command", "Status"]];
-
-let config: TableUserConfig = {
-  header: {
-    alignment: "center",
-    content: "Commands",
-  },
-};
+let counter = 0;
 
 for (const folder of commandFolders) {
   const commandFiles = fs.readdirSync(`./src/interactions/${folder}`);
@@ -64,10 +54,9 @@ for (const folder of commandFolders) {
         try {
           const command = require(`./interactions/${folder}/${file}/${subFile.replace(".ts", ".js")}`);
           client.interactions.set(command.data.name, command);
-          cnslTable.push([`/${command.data.name}`, "✅"]);
+          counter++;
         } catch (error) {
-          console.log(error);
-          cnslTable.push([`${file}`, "❌"]);
+          logger.error(`Error loading command ${subFile}: ${error}`);
         }
       }
       continue;
@@ -76,29 +65,16 @@ for (const folder of commandFolders) {
     try {
       const command = require(`./interactions/${folder}/${file}`);
       client.interactions.set(command.data.name, command);
-      cnslTable.push([`/${command.data.name}`, "✅"]);
+      counter++;
     } catch (error) {
-      console.log(error);
-      cnslTable.push([`${file}`, "❌"]);
+      logger.error(`Error loading command ${file}: ${error}`);
     }
   }
 }
 
-console.log(table(cnslTable, config));
+logger.info(`Loaded ${counter} interactions in ${Date.now() - timerStart}ms`);
 
-client.timings.set("Commands", Date.now() - timerStart);
-
-console.log(`————————————————————————————————————————————————\n`);
-
-cnslTable = [["Component", "Status"]];
-
-config = {
-  header: {
-    alignment: "center",
-    content: "Components",
-  },
-};
-
+counter = 0;
 timerStart = Date.now();
 
 const componentFolders = fs.readdirSync(`./src/components`);
@@ -114,10 +90,9 @@ for (const compfolder of componentFolders) {
         try {
           const button = require(`./components/${compfolder}/${file}`);
           client.buttons.set(button.data.name, button);
-          cnslTable.push([`${button.data.name}`, "✅"]);
+          counter++;
         } catch (error) {
-          console.log(error);
-          cnslTable.push([`${file}`, "❌"]);
+          logger.error(`Error loading button ${file}: ${error}`);
         }
       }
       break;
@@ -126,20 +101,9 @@ for (const compfolder of componentFolders) {
   }
 }
 
-console.log(table(cnslTable, config));
+logger.info(`Loaded ${counter} components in ${Date.now() - timerStart}ms`);
 
-client.timings.set("Components", Date.now() - timerStart);
-
-console.log(`————————————————————————————————————————————————\n`);
-
-cnslTable = [["Event", "Status"]];
-config = {
-  header: {
-    alignment: "center",
-    content: "Events",
-  },
-};
-
+counter = 0;
 timerStart = Date.now();
 
 const eventFiles = fs
@@ -156,27 +120,20 @@ for (let file of eventFiles) {
     } else {
       client.on(event.name, (...args: any[]) => event.execute(...args, client));
     }
-    cnslTable.push([`${event.name}`, "✅"]);
+    counter++;
   } catch (error) {
-    console.log(error);
-    cnslTable.push([`${file}`, "❌"]);
+    logger.error(`Error loading event ${file}: ${error}`);
   }
 }
 
-console.log(table(cnslTable, config));
-
-client.timings.set("Events", Date.now() - timerStart);
-
-console.log(`————————————————————————————————————————————————\n`);
-
-if (client.timings.size === 4) {
-  logTimings(client.timings);
-}
+logger.info(`Loaded ${counter} events in ${Date.now() - timerStart}ms`);
 
 client.on("error", (error: Error) => {
-  console.error("The WebSocket encountered an error:", error);
+  logger.error("The WebSocket encountered an error:", error);
 });
 
-client.rest.on("rateLimited", console.log);
+client.rest.on("rateLimited", (info: RateLimitData) => {
+  logger.warn(`Rate limited for ${info.timeToReset}ms on route ${info.route}`);
+});
 
 client.login(process.env.BOT_TOKEN);

@@ -28,8 +28,11 @@ module.exports = {
       .edit(interaction.guild.id, {
         SendMessages: null,
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
+        return interaction.reply({
+          content: `:x: Something went wrong while unlocking the channel`,
+          ephemeral: true,
+        });
       });
     if (!(typeof modRole === "undefined")) {
       interaction.channel.permissionOverwrites.edit(modRole, {

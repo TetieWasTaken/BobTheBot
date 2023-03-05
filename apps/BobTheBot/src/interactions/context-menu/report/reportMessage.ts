@@ -12,6 +12,7 @@ import {
 } from "discord.js";
 import { GuildModel } from "../../../models/index.js";
 import { Color } from "../../../constants.js";
+import { logger } from "../../../utils/index.js";
 
 module.exports = {
   data: new ContextMenuCommandBuilder().setName("Report Message").setType(ApplicationCommandType.Message),
@@ -175,7 +176,7 @@ module.exports = {
             .setDescription(`You took too long to respond. Please try again.`);
           return interaction.followUp({ embeds: [replyEmbed], ephemeral: true });
         } else {
-          console.log(err);
+          logger.error(err);
           const replyEmbed = new EmbedBuilder()
             .setColor(Color.DiscordDanger)
             .setTitle(`Report user failed`)

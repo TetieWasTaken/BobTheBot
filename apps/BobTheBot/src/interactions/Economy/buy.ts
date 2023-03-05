@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 import { EconomyModel } from "../../models/index.js";
-import { requestItemData, raiseMiscellaneousError } from "../../utils/index.js";
+import { logger, requestItemData, raiseMiscellaneousError } from "../../utils/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -72,7 +72,7 @@ module.exports = {
         }
       })
       .catch((err) => {
-        console.error(err);
+        logger.error(err);
         return interaction.reply({
           content: "An error occurred while trying to buy this item",
           ephemeral: true,

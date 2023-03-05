@@ -9,8 +9,8 @@ import {
   EmbedBuilder,
   ChatInputCommandInteraction,
 } from "discord.js";
-
 import { Color } from "../../constants.js";
+import { logger } from "../../utils/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -232,7 +232,7 @@ module.exports = {
               .setDescription(`You took too long to respond. Please try again.`);
             return interaction.followUp({ embeds: [replyEmbed], ephemeral: true });
           } else {
-            console.log(err);
+            logger.error(err);
             const replyEmbed = new EmbedBuilder()
               .setColor(Color.DiscordDanger)
               .setTitle(`Announcement failed`)

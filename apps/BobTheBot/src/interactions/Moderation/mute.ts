@@ -55,7 +55,6 @@ module.exports = {
     try {
       await member.timeout(ms(duration), reason);
     } catch (error) {
-      console.error(error);
       return interaction.reply({
         content: `:wrench:  \`${member.user.tag}\` could not be muted!`,
         ephemeral: true,
@@ -93,9 +92,7 @@ module.exports = {
 
     member
       .send(`You have been muted in \`${interaction.guild.name}\` for \`${reason}\`\nDuration: \`${duration}\``)
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch(() => {});
 
     return interaction.reply({
       content: `:mute:  \`${member.user.tag}\` has been muted for \`${reason}\``,

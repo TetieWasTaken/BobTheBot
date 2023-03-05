@@ -41,15 +41,12 @@ module.exports = {
         reason: reason,
       });
     } catch (error) {
-      console.error(error);
       try {
         await member.kick(reason);
       } catch (error) {
-        console.error(error);
         try {
           await member.timeout(1000 * 60 * 60 * 24 * 7, reason);
         } catch (error) {
-          console.error(error);
           return interaction.reply({
             content: `:wrench: An error occurred while trying to ban ${member.user.tag}!\nAn unsuccessfull attempt was made to kick but failed as well! Please manually ban the user.`,
             ephemeral: true,

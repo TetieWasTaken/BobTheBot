@@ -1,5 +1,5 @@
 import { EmbedBuilder, BaseInteraction } from "discord.js";
-import { raiseUserPermissionsError, raiseBotPermissionsError } from "../utils/index.js";
+import { logger, raiseUserPermissionsError, raiseBotPermissionsError } from "../utils/index.js";
 import type { ExtendedClient } from "../utils/index.js";
 import { GuildModel } from "../models/index.js";
 import { Color } from "../constants.js";
@@ -79,12 +79,19 @@ module.exports = {
       }
 
       try {
-        console.time(`Command ${interaction.commandName} executed in`);
+        const startTime = Date.now();
         await command.execute(interaction, client);
-        console.timeEnd(`Command ${interaction.commandName} executed in`);
+        logger.trace(
+          {
+            command: interaction.commandName,
+            user: `${interaction.user.tag} (${interaction.user.id})`,
+            time: `${Date.now() - startTime}ms`,
+          },
+          "Command executed"
+        );
       } catch (err) {
-        console.log(`Command ${interaction.commandName} failed to execute.\n\n${interaction}`);
-        if (err) console.error(err);
+        logger.warn(`Command ${interaction.commandName} failed to execute.\n\n${interaction}`);
+        if (err) logger.error(err);
         await interaction.reply({
           content: "An error occured while executing that command.",
           ephemeral: true,
@@ -94,14 +101,14 @@ module.exports = {
       const command = client.interactions.get(interaction.commandName);
 
       if (!command) {
-        return console.error(`No command matching ${interaction.commandName} was found.`);
+        return logger.error(`No command matching ${interaction.commandName} was found.`);
       }
 
       try {
         await command.autocomplete(interaction);
       } catch (error) {
-        console.log(`Autocomplete ${interaction.commandName} failed to execute.\n\n${interaction}`);
-        return console.error(error);
+        logger.warn(`Autocomplete ${interaction.commandName} failed to execute.\n\n${interaction}`);
+        return logger.error(error);
       }
     } else if (interaction.isButton()) {
       if (interaction.message.interaction?.user.id !== interaction.user.id)
@@ -114,13 +121,22 @@ module.exports = {
       if (!button) return new Error("No code for button!");
 
       try {
+        const startTime = Date.now();
         await button.execute(interaction);
+        logger.trace(
+          {
+            id: interaction.customId,
+            user: `${interaction.user.tag} (${interaction.user.id})`,
+            time: `${Date.now() - startTime}ms`,
+          },
+          "Button executed"
+        );
       } catch (err) {
-        console.log(`Button ${interaction.customId} failed to execute.\n\n${interaction}`);
-        console.log(err);
+        logger.warn(`Button ${interaction.customId} failed to execute.\n\n${interaction}`);
+        logger.error(err);
       }
     } else {
-      return console.error("Unknown interaction type");
+      return logger.warn("Unknown interaction type");
     }
   },
 };

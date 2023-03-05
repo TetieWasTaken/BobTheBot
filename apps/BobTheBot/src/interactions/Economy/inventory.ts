@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
 import { EconomyModel } from "../../models/index.js";
-import { requestItemData } from "../../utils/index.js";
+import { logger, requestItemData } from "../../utils/index.js";
 import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
@@ -68,7 +68,7 @@ module.exports = {
               inline: false,
             });
           } catch (err) {
-            console.log(err);
+            logger.error(err);
             inventoryEmbed.addFields({
               name: `Unknown Item — ${data.Inventory[i].amount}`,
               value: `*ID* \`${data.Inventory[i].id}\` — Unknown Type`,

@@ -30,9 +30,8 @@ module.exports = {
     try {
       interaction.channel.setRateLimitPerUser(duration);
     } catch (err) {
-      console.log(err);
       return interaction.reply({
-        content: "Something went wrong while setting the slowmode, please report this!",
+        content: ":x: I don't have the permissions to adjust the slowmode",
         ephemeral: true,
       });
     }
