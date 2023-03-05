@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "apps/BobTheBot/src/**"
 
 jobs:
   update_changelog:

@@ -11,7 +11,7 @@ if (!commitMsg) {
   return console.error("No commit message provided");
 }
 
-const changelog = fs.readFileSync("../CHANGELOG.md", "utf8");
+const changelog = fs.readFileSync("./apps/BobTheBot/CHANGELOG.md", "utf8");
 
 const changelogContent = changelog.match(/<!--Changelog start-->([\s\S]*)<!--Changelog end-->/m)[1];
 let commitTitle = commitMsg.match(
@@ -47,6 +47,6 @@ ${changelogContent}
 <!--Changelog end-->`
 );
 
-fs.writeFileSync("../CHANGELOG.md", newChangelog);
+fs.writeFileSync("./apps/BobTheBot/CHANGELOG.md", newChangelog);
 
 return console.log("Changelog updated successfully");
