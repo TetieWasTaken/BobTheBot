@@ -6,13 +6,11 @@ Fixes # (issue)
 
 ## Type of change
 
-Please delete options that are not relevant.
+Please select the relevant option
 
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-
-## Screenshots (optional)
+- [ ] Other
 
 # Checklist:
 
@@ -23,3 +21,5 @@ Please delete options that are not relevant.
 - [ ] My changes generate no new warnings or errros
 
 # Notes or extra information
+
+## Optional screenshots(s)

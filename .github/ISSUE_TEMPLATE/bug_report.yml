@@ -1,0 +1,51 @@
+name: Bug report
+description: Report unexpected behavior of an application
+labels: ["bug", "needs reproduction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Questions? Ask in our Discord server: https://discord.gg/FJ5DMEb8zA
+  - type: dropdown
+    attributes:
+      label: Which application is this bug report for?
+      multiple: false
+      options:
+        - "BobTheBot"
+        - "Website"
+        - "Other/GitHub"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Describe the bug
+      description: Include a clear and concise description of what the bug is. Describe it an as much detail as possible.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: To reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Code snippet
+      description: A code snippet to reproduce the bug
+      placeholder: |
+        Your minimal, complete, and reproducable example goes here
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: Add any other context about the problem here.
+      placeholder: |
+        Add any other context about the problem here. (E.x: "Only occurs on guilds over 1k members")
+    validations:
+      required: false
