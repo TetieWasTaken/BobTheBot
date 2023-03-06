@@ -15,7 +15,10 @@ import { Color } from "../../../constants.js";
 import { logger } from "../../../utils/index.js";
 
 module.exports = {
-  data: new ContextMenuCommandBuilder().setName("Report User").setType(ApplicationCommandType.User),
+  data: new ContextMenuCommandBuilder()
+    .setName("Report User")
+    .setType(ApplicationCommandType.User)
+    .setDMPermission(false),
   execute(interaction: UserContextMenuCommandInteraction<"cached">) {
     if (!interaction.channel) return;
 

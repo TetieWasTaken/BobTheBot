@@ -12,7 +12,10 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("roles").setDescription("Returns a list of all roles in the guild"),
+  data: new SlashCommandBuilder()
+    .setName("roles")
+    .setDescription("Returns a list of all roles in the current guild")
+    .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const roles = await Promise.resolve(
       interaction.guild.roles.fetch().then((roles) => {

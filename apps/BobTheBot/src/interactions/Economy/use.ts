@@ -16,7 +16,8 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("use")
     .setDescription("Use an item from your inventory.")
-    .addStringOption((option) => option.setName("item").setDescription("The item to use").setRequired(true)),
+    .addStringOption((option) => option.setName("item").setDescription("The item to use").setRequired(true))
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const itemInput = interaction.options.getString("item", true);
     const data = await EconomyModel.findOne({

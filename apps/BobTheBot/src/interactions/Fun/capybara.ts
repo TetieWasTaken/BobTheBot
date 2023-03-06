@@ -12,7 +12,10 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("capybara").setDescription("Get a random capybara image"),
+  data: new SlashCommandBuilder()
+    .setName("capybara")
+    .setDescription("Get a random capybara image")
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const img = await fetch("https://api.capy.lol/v1/capybara?json=true").then((res) => res.json());
 

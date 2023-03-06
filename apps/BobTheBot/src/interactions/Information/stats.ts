@@ -13,7 +13,10 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("stats").setDescription("Receive statistics about the bot"),
+  data: new SlashCommandBuilder()
+    .setName("stats")
+    .setDescription("Receive statistics about the bot")
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     let milliseconds = interaction.client.uptime;
 

@@ -42,7 +42,8 @@ module.exports = {
         .setName("1337")
         .setDescription("Convert text to 1337 (leet)")
         .addStringOption((option) => option.setName("input").setDescription("Text to convert").setRequired(true))
-    ),
+    )
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const subcommand = interaction.options.getSubcommand();
     const text = interaction.options.getString("input", true);

@@ -16,7 +16,8 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("diagnose")
     .setDescription("Diagnose a command")
-    .addStringOption((option) => option.setName("command").setDescription("The command to diagnose").setRequired(true)),
+    .addStringOption((option) => option.setName("command").setDescription("The command to diagnose").setRequired(true))
+    .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const command = interaction.options.getString("command");
 

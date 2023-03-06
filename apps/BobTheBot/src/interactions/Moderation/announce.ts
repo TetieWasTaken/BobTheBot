@@ -51,7 +51,8 @@ module.exports = {
         )
         .addStringOption((option) => option.setName("message").setDescription("Message to announce").setRequired(true))
     )
-    .setDefaultMemberPermissions(...requiredUserPerms.key),
+    .setDefaultMemberPermissions(...requiredUserPerms.key)
+    .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const channel = interaction.options.getChannel("channel", true);
 

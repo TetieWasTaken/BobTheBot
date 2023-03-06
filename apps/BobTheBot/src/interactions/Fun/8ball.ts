@@ -17,7 +17,8 @@ module.exports = {
     .setDescription("Ask the magic 8ball a question")
     .addStringOption((option: any) =>
       option.setName("question").setDescription("The question to ask").setRequired(true)
-    ),
+    )
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const eightballTxt = fs.readFileSync("./resources/8ballresponses.txt").toString().split("\n");
     const randomNum = Math.floor(Math.random() * 20);

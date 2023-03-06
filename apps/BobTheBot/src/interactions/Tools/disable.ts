@@ -57,7 +57,8 @@ module.exports = {
             .addChoices(...getCategories())
         )
     )
-    .setDefaultMemberPermissions(...requiredUserPerms.key),
+    .setDefaultMemberPermissions(...requiredUserPerms.key)
+    .setDMPermission(false),
   async autocomplete(interaction: AutocompleteInteraction<"cached">) {
     const query = interaction.options.getFocused();
     const choices = getCommands();

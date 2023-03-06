@@ -19,7 +19,8 @@ module.exports = {
     .addIntegerOption((option) =>
       option.setName("caseid").setDescription("case id of the warn to clear").setRequired(true)
     )
-    .setDefaultMemberPermissions(...requiredUserPerms.key),
+    .setDefaultMemberPermissions(...requiredUserPerms.key)
+    .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const user = interaction.options.getUser("target", true);
     const caseId = interaction.options.getInteger("caseid");

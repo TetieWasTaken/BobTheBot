@@ -35,7 +35,8 @@ module.exports = {
         .addStringOption((option) =>
           option.setName("item").setDescription("The item you want to sell").setRequired(true)
         )
-    ),
+    )
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const item = interaction.options.getString("item", true);
     const amount = interaction.options.getInteger("amount") ?? 1;

@@ -12,7 +12,10 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("meme").setDescription("Sends a random meme from r/memes"),
+  data: new SlashCommandBuilder()
+    .setName("meme")
+    .setDescription("Sends a random meme from r/memes")
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const data = await fetch(`https://www.reddit.com/r/memes/random/.json`).then((res) => {
       return res.json();

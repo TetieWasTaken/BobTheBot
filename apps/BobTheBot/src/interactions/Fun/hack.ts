@@ -15,7 +15,8 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("hack")
     .setDescription("Hacks a user (fake)")
-    .addUserOption((option) => option.setName("target").setDescription("user to target").setRequired(true)),
+    .addUserOption((option) => option.setName("target").setDescription("user to target").setRequired(true))
+    .setDMPermission(true),
   cooldownTime: 10 * 1000,
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const user = interaction.options.getUser("target");

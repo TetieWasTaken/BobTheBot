@@ -15,7 +15,10 @@ import { Color } from "../../../constants.js";
 import { logger } from "../../../utils/index.js";
 
 module.exports = {
-  data: new ContextMenuCommandBuilder().setName("Report Message").setType(ApplicationCommandType.Message),
+  data: new ContextMenuCommandBuilder()
+    .setName("Report Message")
+    .setType(ApplicationCommandType.Message)
+    .setDMPermission(false),
   execute(interaction: MessageContextMenuCommandInteraction<"cached">) {
     const modal = new ModalBuilder().setCustomId("report-message-modal").setTitle("Report Message");
 

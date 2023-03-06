@@ -13,7 +13,10 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("rankings").setDescription("Shows the top 10 richest people!"),
+  data: new SlashCommandBuilder()
+    .setName("rankings")
+    .setDescription("Shows the top 10 richest people!")
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const data = await EconomyModel.find().sort({ NetWorth: -1 }).limit(10);
     data.sort((a, b) => {

@@ -20,7 +20,8 @@ module.exports = {
     .addIntegerOption((option) => option.setName("page").setDescription("The page you want to view").setRequired(false))
     .addUserOption((option) =>
       option.setName("user").setDescription("The user you want to view the inventory of").setRequired(false)
-    ),
+    )
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const page = interaction.options.getInteger("page") ?? 1;
     const user = interaction.options.getUser("user") ?? interaction.user;

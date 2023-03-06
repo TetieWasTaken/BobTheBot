@@ -14,7 +14,8 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("unlock")
     .setDescription("unlock the current channel")
-    .setDefaultMemberPermissions(...requiredUserPerms.key),
+    .setDefaultMemberPermissions(...requiredUserPerms.key)
+    .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     if (!interaction.channel?.isTextBased() || interaction.channel.type !== ChannelType.GuildText)
       return interaction.reply({ content: "Something went wrong", ephemeral: true });

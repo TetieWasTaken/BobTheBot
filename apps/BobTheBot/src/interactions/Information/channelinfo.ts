@@ -14,7 +14,8 @@ const requiredUserPerms = {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("channelinfo")
-    .setDescription("Receive information about the current channel"),
+    .setDescription("Receive information about the current channel")
+    .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const channel = interaction.channel;
 

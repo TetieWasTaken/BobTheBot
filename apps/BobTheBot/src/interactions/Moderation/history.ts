@@ -17,7 +17,8 @@ module.exports = {
     .setName("history")
     .setDescription("Check a user's infraction history")
     .addUserOption((option) => option.setName("target").setDescription("member to view history of").setRequired(true))
-    .setDefaultMemberPermissions(...requiredUserPerms.key),
+    .setDefaultMemberPermissions(...requiredUserPerms.key)
+    .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const member = interaction.options.getMember("target");
 

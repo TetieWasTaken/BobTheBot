@@ -16,7 +16,8 @@ module.exports = {
     .setName("unmute")
     .setDescription("Removes a user from timeout")
     .addUserOption((option) => option.setName("target").setDescription("member to mute").setRequired(true))
-    .setDefaultMemberPermissions(...requiredUserPerms.key),
+    .setDefaultMemberPermissions(...requiredUserPerms.key)
+    .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const member = interaction.options.getMember("target");
 

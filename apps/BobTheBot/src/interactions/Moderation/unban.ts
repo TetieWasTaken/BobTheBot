@@ -15,7 +15,8 @@ module.exports = {
     .setName("unban")
     .setDescription("Unbans a user from the current guild")
     .addStringOption((option) => option.setName("userid").setDescription("discord id for unban").setRequired(true))
-    .setDefaultMemberPermissions(...requiredUserPerms.key),
+    .setDefaultMemberPermissions(...requiredUserPerms.key)
+    .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const userId = interaction.options.getString("userid", true);
 

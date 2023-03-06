@@ -72,7 +72,8 @@ module.exports = {
             .setRequired(true)
             .setAutocomplete(true)
         )
-    ),
+    )
+    .setDMPermission(true),
   async autocomplete(interaction: AutocompleteInteraction<"cached">) {
     const query = interaction.options.getFocused();
     const choices = getCommands();

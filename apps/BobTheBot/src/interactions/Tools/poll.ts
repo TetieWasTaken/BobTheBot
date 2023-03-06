@@ -27,7 +27,7 @@ for (let i = 1; i <= 9; i++) {
   );
 }
 
-command.setDefaultMemberPermissions(...requiredUserPerms.key);
+command.setDefaultMemberPermissions(...requiredUserPerms.key).setDMPermission(false);
 
 module.exports = {
   data: command,

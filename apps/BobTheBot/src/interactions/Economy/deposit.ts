@@ -28,7 +28,8 @@ module.exports = {
             .setMinValue(1)
             .setMaxValue(1000000)
         )
-    ),
+    )
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     let amount = interaction.options.getInteger("amount", true);
 

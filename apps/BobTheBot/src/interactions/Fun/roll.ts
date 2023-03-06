@@ -17,7 +17,8 @@ module.exports = {
     .setDescription("Rolls a dice")
     .addIntegerOption((option) =>
       option.setName("amount").setDescription("Amount of dice to roll").setMaxValue(6).setRequired(false)
-    ),
+    )
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">): Promise<void> {
     const amount = interaction.options.getInteger("amount") ?? 1;
 

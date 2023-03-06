@@ -19,7 +19,8 @@ module.exports = {
     .addStringOption((option) =>
       option.setName("reason").setDescription("reason for ban").setMaxLength(255).setRequired(false)
     )
-    .setDefaultMemberPermissions(...requiredUserPerms.key),
+    .setDefaultMemberPermissions(...requiredUserPerms.key)
+    .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const member = interaction.options.getMember("target");
     let reason = interaction.options.getString("reason") ?? "No reason provided";

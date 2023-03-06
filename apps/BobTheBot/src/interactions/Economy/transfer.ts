@@ -42,7 +42,8 @@ module.exports = {
         .addUserOption((option) =>
           option.setName("user").setDescription("The user to transfer the item to").setRequired(true)
         )
-    ),
+    )
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const target = interaction.options.getUser("user", true);
 

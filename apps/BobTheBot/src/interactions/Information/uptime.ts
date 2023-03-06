@@ -13,7 +13,7 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("uptime").setDescription("Receive the bots's uptime"),
+  data: new SlashCommandBuilder().setName("uptime").setDescription("Receive the bots's uptime").setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const embed = new EmbedBuilder()
       .setTitle("⏱️ Uptime")

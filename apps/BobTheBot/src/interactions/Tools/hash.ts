@@ -28,7 +28,8 @@ module.exports = {
           { name: "salt", value: "salt" }
         )
         .setMaxLength(128)
-    ),
+    )
+    .setDMPermission(true),
   cooldownTime: 15 * 1000,
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     let input = interaction.options.getString("string", true);

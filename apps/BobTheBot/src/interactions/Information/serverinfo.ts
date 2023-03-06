@@ -12,7 +12,10 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("serverinfo").setDescription("Receive information about the current guild"),
+  data: new SlashCommandBuilder()
+    .setName("serverinfo")
+    .setDescription("Receive information about the current guild")
+    .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     let boostCount = interaction.guild.premiumSubscriptionCount ?? 0;
     let boostTier = 0;

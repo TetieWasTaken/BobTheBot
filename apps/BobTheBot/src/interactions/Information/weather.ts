@@ -28,7 +28,8 @@ module.exports = {
         .setMinValue(0)
         .setMaxValue(23)
         .setRequired(false)
-    ),
+    )
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const city = interaction.options.getString("city");
     const hour = interaction.options.getInteger("hour");

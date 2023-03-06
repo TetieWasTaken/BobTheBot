@@ -16,7 +16,8 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("balance")
     .setDescription("Checks someone's balance")
-    .addUserOption((option: any) => option.setName("user").setDescription("The user to check").setRequired(false)),
+    .addUserOption((option: any) => option.setName("user").setDescription("The user to check").setRequired(false))
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const user = interaction.options.getUser("user") ?? interaction.user;
 

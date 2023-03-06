@@ -159,7 +159,8 @@ module.exports = {
             .setDescription("The repository you want to get information about.")
             .setRequired(true)
         )
-    ),
+    )
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const user = interaction.options.getString("user", true).toLowerCase();
 

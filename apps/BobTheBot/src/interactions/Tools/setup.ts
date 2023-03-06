@@ -29,7 +29,8 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("setup")
     .setDescription("Set up the bot for your server")
-    .setDefaultMemberPermissions(...requiredUserPerms.key),
+    .setDefaultMemberPermissions(...requiredUserPerms.key)
+    .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     let data = await GuildModel.findOne({
       GuildId: interaction.guild.id,

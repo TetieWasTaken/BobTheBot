@@ -16,7 +16,8 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("rank")
     .setDescription("Returns xp and rank of given user in the server")
-    .addUserOption((option) => option.setName("target").setDescription("User to display rank of").setRequired(false)),
+    .addUserOption((option) => option.setName("target").setDescription("User to display rank of").setRequired(false))
+    .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction) {
     let user = interaction.options.getUser("target") ?? interaction.user;
 

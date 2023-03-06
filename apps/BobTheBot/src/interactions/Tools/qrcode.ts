@@ -21,7 +21,8 @@ module.exports = {
         .setDescription("The full URL to generate a QR code for")
         .setRequired(true)
         .setMaxLength(2000)
-    ),
+    )
+    .setDMPermission(true),
   cooldownTime: 10 * 1000,
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const text = interaction.options.getString("url", true);

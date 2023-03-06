@@ -47,7 +47,8 @@ module.exports = {
           { name: "paper", value: ":newspaper2:" },
           { name: "scissors", value: ":scissors:" }
         )
-    ),
+    )
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const choice = interaction.options.getString("choice");
     const choice2 = interaction.options.getString("choice2");

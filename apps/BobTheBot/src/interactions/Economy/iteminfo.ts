@@ -16,7 +16,8 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("iteminfo")
     .setDescription("View information about an item")
-    .addStringOption((option) => option.setName("item").setDescription("The id of the item to view").setRequired(true)),
+    .addStringOption((option) => option.setName("item").setDescription("The id of the item to view").setRequired(true))
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const item = interaction.options.getString("item", true);
     const itemInfo = await requestItemData(item);

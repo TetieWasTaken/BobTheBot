@@ -17,7 +17,8 @@ module.exports = {
     .setDescription("Get information about a user")
     .addUserOption((option) =>
       option.setName("user").setDescription("The user to get information about").setRequired(false)
-    ),
+    )
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const member = interaction.options.getMember("user") ?? interaction.member;
     const user = member.user;

@@ -68,7 +68,8 @@ module.exports = {
             .setMinValue(10)
             .setMaxValue(99999)
         )
-    ),
+    )
+    .setDMPermission(true),
   cooldownTime: 60 * 5 * 1000,
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     let amount = interaction.options.getInteger("amount", true);

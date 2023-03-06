@@ -14,7 +14,8 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("roleinfo")
     .setDescription("Receive information about a role")
-    .addRoleOption((option) => option.setName("target").setDescription("role to target").setRequired(true)),
+    .addRoleOption((option) => option.setName("target").setDescription("role to target").setRequired(true))
+    .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const target = interaction.options.getRole("target", true);
     let permissionsArray = target.permissions.toArray();

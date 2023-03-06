@@ -12,7 +12,7 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("earn").setDescription("Earn some money"),
+  data: new SlashCommandBuilder().setName("earn").setDescription("Earn some money").setDMPermission(true),
   cooldownTime: 60 * 2 * 1000,
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const responses = {

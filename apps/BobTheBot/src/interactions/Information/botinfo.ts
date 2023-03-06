@@ -13,7 +13,10 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("botinfo").setDescription("Receive information about the bot"),
+  data: new SlashCommandBuilder()
+    .setName("botinfo")
+    .setDescription("Receive information about the bot")
+    .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const releases = await fetch("https://api.github.com/repos/TetieWasTaken/BobTheBot/releases").then((res) =>
       res.json()

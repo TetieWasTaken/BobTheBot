@@ -13,7 +13,7 @@ const requiredUserPerms = {
 };
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("fish").setDescription("Go fishing for some cash"),
+  data: new SlashCommandBuilder().setName("fish").setDescription("Go fishing for some cash").setDMPermission(true),
   cooldownTime: 60 * 2 * 1000,
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const data = await EconomyModel.findOne({
