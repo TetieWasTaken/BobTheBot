@@ -1,0 +1,30 @@
+{
+  "cmd": {
+    "prefix": ["ChatInput", "cmd", "command", "slashcommand", "slash"],
+    "description": "Creates a ChatInput command",
+    "body": [
+      "import { ChatInputCommandInteraction, SlashCommandBuilder } from \"discord.js\";",
+      "",
+      "const requiredBotPerms = {",
+      "  type: \"flags\" as const,",
+      "  key: [] as const,",
+      "};",
+      "",
+      "const requiredUserPerms = {",
+      "  type: \"flags\" as const,",
+      "  key: [] as const,",
+      "};",
+      "",
+      "module.exports = {",
+      "  data: new SlashCommandBuilder()",
+      "    .setName(\"placeholder\")",
+      "    .setDescription(\"placeholder\")",
+      "    .setDMPermission(true),",
+      "  async execute(interaction: ChatInputCommandInteraction<\"cached\">) {},",
+      "  requiredBotPerms: requiredBotPerms,",
+      "  requiredUserPerms: requiredUserPerms,",
+      "};",
+      ""
+    ]
+  }
+}
