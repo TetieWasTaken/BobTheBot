@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import fs from "fs";
 
 import Database from "./config/Database";
-import { Partials, GatewayIntentBits, Options, GuildMember, RateLimitData } from "discord.js";
+import { Partials, GatewayIntentBits, Options, GuildMember, RateLimitData, ActivityType } from "discord.js";
 import { logger, ExtendedClient } from "./utils/index.js";
 
 dotenv.config();
@@ -32,6 +32,10 @@ const client: ExtendedClient = new ExtendedClient({
       interval: 3600,
       lifetime: 1800,
     },
+  },
+  presence: {
+    activities: [{ name: `discord`, type: ActivityType.Watching }],
+    status: "online",
   },
 });
 
