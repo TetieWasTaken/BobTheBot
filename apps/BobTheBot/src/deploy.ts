@@ -1,7 +1,14 @@
-require("dotenv").config();
-const { REST, Routes } = require("discord.js");
-const fs = require("fs");
+import { REST, Routes } from "discord.js";
 import { logger } from "./utils/index.js";
+import dotenv from "dotenv";
+import fs from "fs";
+
+dotenv.config();
+
+if (!process.env.BOT_TOKEN) {
+  logger.error("No bot token provided.");
+  process.exit(1);
+}
 
 const commandFolders = fs.readdirSync("./src/interactions/").filter((item: string) => !/(^|\/)\.[^/.]/g.test(item));
 const interactions = [];
@@ -37,9 +44,19 @@ const rest = new REST({
 
 (async () => {
   try {
+    if (!process.env.CLIENT_ID) {
+      logger.error("No client id provided.");
+      process.exit(1);
+    }
+
     if (process.env.ENV === "production") {
       await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: interactions });
     } else {
+      if (!process.env.GUILD_ID) {
+        logger.error("No guild id provided.");
+        process.exit(1);
+      }
+
       await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), {
         body: interactions,
       });
