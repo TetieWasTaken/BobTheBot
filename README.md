@@ -1,51 +1,40 @@
-<div align="center">
-	<br />
-	<p>
-        <p>
-        <h1>
-        Bob The Bot
-        </h1>
-		<a href="https://discord.gg/FJ5DMEb8zA"><img src="https://cdn.discordapp.com/avatars/1036359071508484237/bac39af1334b3cec9f8e727efdbc5931.webp?size=256" alt="Bob the bot" /></a>
-        </p>
-	</p>
-</div>
+# BobTheBot
 
-# Contributing
+Imagine a discord bot that can maximize efficiency and productivity, combined with a dashboard that can be used to manage the bot. That's what Bob The Bot ~~is~~ almost is. It's a bot that can be used by anyone, and it's open source.
 
-To
+## About
 
-<!--Title start
-This template is licensed under the MIT license (https://choosealicense.com/licenses/mit/).
-The MIT License is a permissive open-source license that allows you to use this template for any purpose, including commercial purposes, as long as you include a copy of the license and retain the copyright notice. You can also modify and distribute the template, as long as you include the same license and copyright notice as the original template. You are not required to share your modifications or derivative works with others. You are free to use this template in your own projects without any limitations.
+This github repository is a monorepo that hosts the discord bot **[Bob The Bot][invite]** and the **[Website][website]** (wip!). The bot is written in **[TypeScript][typescript]** and uses **[Discord.js][discordjs]** as the main framework.
 
-NOTE: This template is licensed under the MIT license. The software itselfs under the Apache License V2.0.
-Title end-->
+- Performant
+- Easy to use
+- All purpose
+- Open source
 
-<!--Start template-->
+### Goals
 
-# ⚖️ License
+- A fully functional bot that can be used by anyone
+- A website that can be used to manage the bot
 
-This work is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+## Contributing
 
-<!--Alternatively, you can link it to your LICENSE file-->
+Before making an issue, make sure it doesn't already exist. If you wan't to make a pull request, but not sure how to, check out the [contributing][github_contributing] file.
 
-To use this work in your projects, you must follow the Apache License v2.0 terms.
+## Links
 
-Summarized,
+- [Discord][discord]
+- [Invite][invite]
+- [Website][website]
+- [Github][github]
+- [Support][support]
+- [Code of Conduct][code_of_conduct]
 
-- You must include a copy of the license in any distribution of the software.
-- You must provide clear attribution to the original authors of the software.
-- If you modify the software, you must include a notice stating that you have made changes to the original software.
-- If you distribute the software, you must include a disclaimer of warranties.
-
-###### Not sure how to attribute? You can include a copy of the [License](https://github.com/TetieWasTaken/BobTheBot/blob/main/LICENSE) in your software or you can copy the text below into your readme.md file.
-
-```
-###### ❤️ [@TetieWasTaken](https://github.com/TetieWasTaken)/[BobTheBot](https://github.com/TetieWasTaken/BobTheBot) - [Apache License 2.0](https://github.com/TetieWasTaken/BobTheBot/blob/main/LICENSE)
-```
-
-## What is the Apache License 2.0?
-
-The Apache 2.0 License is a permissive open-source license that allows the use, modification, and distribution of software and intellectual property. It allows users to use the software for any purpose, including commercial purposes, as long as they include a copy of the license and retain the copyright notice. The Apache 2.0 License also allows users to distribute modified versions of the software, as long as they include the same license and copyright notice as the original software. In addition, users must also include a copy of the Apache 2.0 License with any distribution of the software, and they must also provide a copy of the Apache 2.0 License to anyone to whom they distribute the software. The Apache 2.0 License is often used for software projects that require a strong emphasis on patent protection, as it includes a patent license grant that allows users to use any patents that are necessary for using the software.
-
-<!--End template-->
+[discord]: https://discord.gg/FJ5DMEb8zA
+[invite]: https://discord.com/api/oauth2/authorize?client_id=1036359071508484237&permissions=8&scope=bot%20applications.commands
+[website]: https://github.com/TetieWasTaken/BobTheBot/tree/main/apps/Website
+[github]: https://github.com/TetieWasTaken/BobTheBot
+[github_contributing]: https://github.com/TetieWasTaken/BobTheBot/blob/main/.github/CONTRIBUTING.md
+[typescript]: https://www.typescriptlang.org/
+[discordjs]: https://discord.js.org/#/
+[support]: https://github.com/TetieWasTaken/BobTheBot/blob/main/.github/SUPPORT.md
+[code_of_conduct]: https://github.com/TetieWasTaken/BobTheBot/blob/main/.github/CODE_OF_CONDUCT.md
