@@ -81,14 +81,25 @@ module.exports = {
       try {
         const startTime = Date.now();
         await command.execute(interaction, client);
-        logger.trace(
-          {
-            command: interaction.commandName,
-            user: `${interaction.user.tag} (${interaction.user.id})`,
-            time: `${Date.now() - startTime}ms`,
-          },
-          "Command executed"
-        );
+        if (Date.now() - startTime < 2000) {
+          logger.trace(
+            {
+              command: interaction.commandName,
+              user: `${interaction.user.tag} (${interaction.user.id})`,
+              time: `${Date.now() - startTime}ms`,
+            },
+            "Command executed"
+          );
+        } else {
+          logger.warn(
+            {
+              command: interaction.commandName,
+              user: `${interaction.user.tag} (${interaction.user.id})`,
+              time: `${Date.now() - startTime}ms`,
+            },
+            "Command executed"
+          );
+        }
       } catch (err) {
         logger.warn(`Command ${interaction.commandName} failed to execute.\n\n${interaction}`);
         if (err) logger.error(err);
