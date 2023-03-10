@@ -8,7 +8,7 @@ To contribute to this repository, follow these steps:
 
 1. **Fork the repository**: First, you will need to create a fork of the repository that you want to contribute to. A fork is a copy of the repository that you can use to make changes without affecting the original repository. To create a fork, click the "Fork" button on the repository page on GitHub.
 
-2. **Clone the repository**: Next, you will need to clone the repository to your local machine. This will allow you to make changes and commit them to your local repository. To clone the repository, use the `git clone` command and specify the URL of your fork. For example: `git clone https://github.com/YOUR-USERNAME/REPO-NAME.git`
+2. **Clone the repository**: Next, you will need to clone the repository to your local machine. This will allow you to make changes and commit them to your local repository. To clone the repository, use the `git clone` command and specify the URL of your fork. For example: `git clone https://github.com/TetieWasTaken/BobTheBot.git`
 
 3. **Create a new branch**: It's a good practice to create a new branch for your changes. This will allow you to keep your changes separate from the main codebase and make it easier to review and merge your changes later. To create a new branch, use the `git branch` command and specify a name for the branch. For example: `git branch my-changes`
 
