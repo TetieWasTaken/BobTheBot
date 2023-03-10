@@ -36,7 +36,7 @@ module.exports = {
         {
           name: `Legal`,
           value:
-            "[**Privacy Policy**](https://github.com/TetieWasTaken/BobTheBot/blob/main/PRIVACY.md)\n[**License**](https://github.com/TetieWasTaken/BobTheBot/blob/main/LICENSE)",
+            "[**Privacy Policy**](https://github.com/TetieWasTaken/BobTheBot/blob/main/apps/BobTheBot/PRIVACY.md)\n[**Terms of Service**](https://github.com/TetieWasTaken/BobTheBot/blob/main/apps/BobTheBot/TOS.md)\n[**License**](https://github.com/TetieWasTaken/BobTheBot/blob/main/LICENSE)",
           inline: true,
         },
         {
