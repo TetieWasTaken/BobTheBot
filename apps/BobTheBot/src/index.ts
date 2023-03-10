@@ -6,6 +6,11 @@ import fs from "fs";
 
 dotenv.config();
 
+if (!process.env.CLIENT_ID) {
+  logger.error("No client id provided.");
+  process.exit(1);
+}
+
 const client: ExtendedClient = new ExtendedClient({
   intents: [
     GatewayIntentBits.Guilds,
@@ -21,7 +26,7 @@ const client: ExtendedClient = new ExtendedClient({
     MessageManager: 100,
     GuildMemberManager: {
       maxSize: 150,
-      keepOverLimit: (member: GuildMember) => member.id === client.user.id,
+      keepOverLimit: (member: GuildMember) => member.id === process.env.CLIENT_ID,
     },
     ReactionManager: 0,
   }),
