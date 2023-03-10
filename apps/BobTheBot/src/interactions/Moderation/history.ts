@@ -1,4 +1,10 @@
-import { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, time, ChatInputCommandInteraction } from "discord.js";
+import {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  PermissionFlagsBits,
+  time,
+  type ChatInputCommandInteraction,
+} from "discord.js";
 import { InfractionsModel } from "../../models/index.js";
 import { Color } from "../../constants.js";
 

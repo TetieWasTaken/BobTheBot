@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, EmbedBuilder, version, ChatInputCommandInteraction } from "discord.js";
+import { SlashCommandBuilder, EmbedBuilder, version, type ChatInputCommandInteraction } from "discord.js";
 import { Color } from "../../constants.js";
 import mongoose from "mongoose";
 

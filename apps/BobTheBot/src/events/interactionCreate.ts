@@ -1,6 +1,5 @@
 import { EmbedBuilder, BaseInteraction } from "discord.js";
-import { logger, raiseUserPermissionsError, raiseBotPermissionsError } from "../utils/index.js";
-import type { ExtendedClient } from "../utils/index.js";
+import { logger, raiseUserPermissionsError, raiseBotPermissionsError, type ExtendedClient } from "../utils/index.js";
 import { GuildModel } from "../models/index.js";
 import { Color } from "../constants.js";
 

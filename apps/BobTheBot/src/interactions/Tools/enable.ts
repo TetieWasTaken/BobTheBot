@@ -2,11 +2,11 @@ import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   EmbedBuilder,
-  ChatInputCommandInteraction,
-  AutocompleteInteraction,
+  type ChatInputCommandInteraction,
+  type AutocompleteInteraction,
 } from "discord.js";
-import { GuildModel } from "../../models/index.js";
 import { capitalizeFirst, getCategories, damerAutocomplete } from "../../utils/index.js";
+import { GuildModel } from "../../models/index.js";
 import { Color } from "../../constants.js";
 import fs from "fs";
 

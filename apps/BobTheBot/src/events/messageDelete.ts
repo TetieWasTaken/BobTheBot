@@ -1,4 +1,4 @@
-import { EmbedBuilder, Message } from "discord.js";
+import { EmbedBuilder, type Message } from "discord.js";
 import { GuildModel } from "../models/index.js";
 import { Color } from "../constants.js";
 

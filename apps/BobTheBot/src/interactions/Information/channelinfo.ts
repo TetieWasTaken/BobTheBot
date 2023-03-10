@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder, ChannelType, time } from "discord.js";
+import { SlashCommandBuilder, EmbedBuilder, time, ChannelType, type ChatInputCommandInteraction } from "discord.js";
 import { Color } from "../../constants.js";
 
 const requiredBotPerms = {

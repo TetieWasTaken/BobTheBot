@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, EmbedBuilder, PermissionsBitField, ChatInputCommandInteraction } from "discord.js";
+import { SlashCommandBuilder, EmbedBuilder, PermissionsBitField, type ChatInputCommandInteraction } from "discord.js";
 import { Color } from "../../constants.js";
 import fs from "fs";
 

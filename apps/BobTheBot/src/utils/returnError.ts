@@ -1,4 +1,4 @@
-import { EmbedBuilder, PermissionsBitField, ChatInputCommandInteraction, CommandInteraction } from "discord.js";
+import { EmbedBuilder, PermissionsBitField, type ChatInputCommandInteraction, CommandInteraction } from "discord.js";
 import { Color } from "../constants.js";
 
 export function raiseUserPermissionsError(interaction: CommandInteraction<"cached">, permission: bigint) {

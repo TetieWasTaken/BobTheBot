@@ -1,5 +1,5 @@
 import { InfractionsModel } from "../../models/index.js";
-import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction } from "discord.js";
+import { SlashCommandBuilder, PermissionFlagsBits, type ChatInputCommandInteraction } from "discord.js";
 import { raiseUserHierarchyError, raiseBotHierarchyError } from "../../utils/index.js";
 
 const requiredBotPerms = {

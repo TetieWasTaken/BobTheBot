@@ -5,12 +5,12 @@ import {
   ButtonBuilder,
   ButtonStyle,
   PermissionFlagsBits,
-  ChatInputCommandInteraction,
   ButtonInteraction,
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
-  ModalSubmitInteraction,
+  type ChatInputCommandInteraction,
+  type ModalSubmitInteraction,
 } from "discord.js";
 import { GuildModel } from "../../models/index.js";
 import { Color } from "../../constants.js";

@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import { SlashCommandBuilder, type ChatInputCommandInteraction } from "discord.js";
 const { createHash, scryptSync, randomBytes } = require("crypto");
 
 const requiredBotPerms = {

@@ -8,11 +8,11 @@ import {
   ButtonStyle,
   ActionRowBuilder,
   EmbedBuilder,
-  UserContextMenuCommandInteraction,
+  type UserContextMenuCommandInteraction,
 } from "discord.js";
 import { GuildModel } from "../../../models/index.js";
-import { Color } from "../../../constants.js";
 import { logger } from "../../../utils/index.js";
+import { Color } from "../../../constants.js";
 
 module.exports = {
   data: new ContextMenuCommandBuilder()

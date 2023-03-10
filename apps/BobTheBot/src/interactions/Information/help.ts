@@ -2,16 +2,16 @@ import {
   SlashCommandBuilder,
   EmbedBuilder,
   PermissionsBitField,
-  ChatInputCommandInteraction,
-  AutocompleteInteraction,
-  ApplicationCommandSubCommandData,
-  ApplicationCommandOptionData,
-  ApplicationCommand,
-  Collection,
-  Snowflake,
+  type ChatInputCommandInteraction,
+  type AutocompleteInteraction,
+  type ApplicationCommandSubCommandData,
+  type ApplicationCommandOptionData,
+  type ApplicationCommand,
+  type Collection,
+  type Snowflake,
 } from "discord.js";
 import fs from "fs";
-import { damerAutocomplete, capitalizeFirst, getCategories, ExtendedClient } from "../../utils/index.js";
+import { damerAutocomplete, capitalizeFirst, getCategories, type ExtendedClient } from "../../utils/index.js";
 import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
@@ -95,6 +95,8 @@ module.exports = {
           .filter((file) => file.endsWith(".js"));
 
         let descriptionArray = [];
+
+        if (!client.application) return;
 
         const commands: Collection<Snowflake, ApplicationCommand> = await client.application.commands.fetch();
 

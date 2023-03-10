@@ -1,5 +1,5 @@
+import { logger, type ExtendedClient } from "../utils/index.js";
 import dotenv from "dotenv";
-import { logger, ExtendedClient } from "../utils/index.js";
 
 dotenv.config();
 

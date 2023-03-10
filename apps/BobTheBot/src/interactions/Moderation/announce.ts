@@ -1,13 +1,13 @@
 import {
   SlashCommandBuilder,
+  EmbedBuilder,
   PermissionFlagsBits,
   ChannelType,
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
   ActionRowBuilder,
-  EmbedBuilder,
-  ChatInputCommandInteraction,
+  type ChatInputCommandInteraction,
 } from "discord.js";
 import { Color } from "../../constants.js";
 import { logger } from "../../utils/index.js";

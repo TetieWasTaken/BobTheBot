@@ -1,5 +1,5 @@
-import { EmbedBuilder, Message } from "discord.js";
-import GuildSchema from "../models/GuildModel";
+import { EmbedBuilder, type Message } from "discord.js";
+import { GuildModel } from "../models/index.js";
 import { Color } from "../constants.js";
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
     if (newMessage.author.bot) return;
     if (!newMessage.guild) return;
 
-    const guildData = await GuildSchema.findOne({
+    const guildData = await GuildModel.findOne({
       GuildId: newMessage.guild.id,
     });
 

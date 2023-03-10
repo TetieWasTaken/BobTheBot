@@ -1,5 +1,5 @@
-import { SlashCommandBuilder, EmbedBuilder, ChatInputCommandInteraction } from "discord.js";
-import EconomySchema from "../../models/EconomyModel.js";
+import { SlashCommandBuilder, EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
+import { EconomyModel } from "../../models/index";
 import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
@@ -21,7 +21,7 @@ module.exports = {
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const user = interaction.options.getUser("user") ?? interaction.user;
 
-    const data = await EconomySchema.findOne({
+    const data = await EconomyModel.findOne({
       UserId: user.id,
     });
 

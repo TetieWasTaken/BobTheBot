@@ -2,12 +2,12 @@ import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   EmbedBuilder,
-  ChatInputCommandInteraction,
-  AutocompleteInteraction,
+  type ChatInputCommandInteraction,
+  type AutocompleteInteraction,
 } from "discord.js";
+import { damerAutocomplete, capitalizeFirst, getCategories, type ExtendedClient } from "../../utils/index.js";
 import { GuildModel } from "../../models/index.js";
 import { Color } from "../../constants.js";
-import { damerAutocomplete, capitalizeFirst, getCategories, ExtendedClient } from "../../utils/index.js";
 import fs from "fs";
 
 function getCommands() {

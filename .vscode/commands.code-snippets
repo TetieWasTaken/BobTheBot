@@ -3,7 +3,7 @@
     "prefix": ["ChatInput", "cmd", "command", "slashcommand", "slash"],
     "description": "Creates a ChatInput command",
     "body": [
-      "import { ChatInputCommandInteraction, SlashCommandBuilder } from \"discord.js\";",
+      "import { SlashCommandBuilder, type ChatInputCommandInteraction } from \"discord.js\";",
       "",
       "const requiredBotPerms = {",
       "  type: \"flags\" as const,",

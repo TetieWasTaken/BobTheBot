@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, Role } from "discord.js";
+import { SlashCommandBuilder, PermissionFlagsBits, type ChatInputCommandInteraction, Role } from "discord.js";
 import { raiseUserHierarchyError, raiseBotHierarchyError } from "../../utils/index.js";
 
 const requiredBotPerms = {

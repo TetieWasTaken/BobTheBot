@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction } from "discord.js";
+import { SlashCommandBuilder, type ChatInputCommandInteraction } from "discord.js";
 import { EconomyModel } from "../../models/index.js";
 import { requestItemData, raiseMiscellaneousError, IItem } from "../../utils/index.js";
 
