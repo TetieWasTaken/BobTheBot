@@ -1,4 +1,4 @@
-import { logger, sweeperLoop, type ExtendedClient } from "../utils/index.js";
+import { logger, sweeperLoop, type ExtendedClient } from "./utils/index.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 

@@ -1,6 +1,6 @@
 import { Partials, GatewayIntentBits, Options, GuildMember, ActivityType, type RateLimitData } from "discord.js";
 import { logger, ExtendedClient } from "./utils/index.js";
-import Database from "./config/Database";
+import Database from "./database.js";
 import dotenv from "dotenv";
 import fs from "fs";
 
