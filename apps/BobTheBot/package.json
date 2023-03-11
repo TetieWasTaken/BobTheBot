@@ -9,6 +9,7 @@
     "build:ts": "tsc",
     "build": "npm run build:clean && npm run build:ts",
     "dev": "npm run build && npm run deploy && npm run start",
+    "fix": "npm run lint:fix && npm run format",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write ."
