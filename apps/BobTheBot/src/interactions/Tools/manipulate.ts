@@ -20,7 +20,7 @@ module.exports = {
         .setName("reverse")
         .setDescription("Reverse text")
         .addStringOption((option) =>
-          option.setName("input").setDescription("Text to reverse").setRequired(true).setMaxLength(1024)
+          option.setName("input").setDescription("Text to reverse").setRequired(true).setMaxLength(1_024)
         )
     )
     .addSubcommand((subcommand) =>
@@ -58,13 +58,13 @@ module.exports = {
         return interaction.reply({
           content: `${text
             .split("")
-            .map((c) => c.charCodeAt(0))
+            .map((char) => char.codePointAt(0))
             .join(" ")}`,
           ephemeral: true,
         });
       case "vowel":
         return interaction.reply({
-          content: `${text.replace(/[aeiou]/gi, "")}`,
+          content: `${text.replaceAll(/[aeiou]/gi, "")}`,
           ephemeral: true,
         });
       case "1337": {
@@ -76,14 +76,14 @@ module.exports = {
               inline: false,
             },
             {
-              name: "\u200b",
+              name: "\u200B",
               value: `\`\`\`fix\n0U7PU7 = ${text
-                .replace(/a/gi, "4")
-                .replace(/e/gi, "3")
-                .replace(/i/gi, "1")
-                .replace(/o/gi, "0")
-                .replace(/s/gi, "5")
-                .replace(/t/gi, "7")}\`\`\``,
+                .replaceAll(/a/gi, "4")
+                .replaceAll(/e/gi, "3")
+                .replaceAll(/i/gi, "1")
+                .replaceAll(/o/gi, "0")
+                .replaceAll(/s/gi, "5")
+                .replaceAll(/t/gi, "7")}\`\`\``,
               inline: false,
             }
           )
@@ -94,6 +94,7 @@ module.exports = {
           ephemeral: true,
         });
       }
+
       default:
         return interaction.reply({
           content: "Unknown subcommand",
@@ -101,6 +102,6 @@ module.exports = {
         });
     }
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

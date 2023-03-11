@@ -21,6 +21,7 @@
     "dotenv": "^16.0.3",
     "ffmpeg-static": "^5.1.0",
     "mongoose": "^7.0.0",
+    "ms": "^3.0.0-canary.1",
     "node-cron": "^3.0.2",
     "pino": "^8.11.0",
     "pino-pretty": "^9.4.0",
@@ -31,7 +32,7 @@
   },
   "devDependencies": {
     "del-cli": "^5.0.0",
-    "eslint": "^8.34.0",
+    "eslint": "^8.35.0",
     "prettier": "^2.8.4"
   },
   "engines": {

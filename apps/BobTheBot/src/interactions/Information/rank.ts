@@ -19,7 +19,7 @@ module.exports = {
     .addUserOption((option) => option.setName("target").setDescription("User to display rank of").setRequired(false))
     .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction) {
-    let user = interaction.options.getUser("target") ?? interaction.user;
+    const user = interaction.options.getUser("target") ?? interaction.user;
 
     if (user.bot) {
       return interaction.reply({
@@ -30,7 +30,7 @@ module.exports = {
 
     if (!interaction.guild) return interaction.reply({ content: "Something went wrong!", ephemeral: true });
 
-    let data = await LevelModel.findOne({
+    const data = await LevelModel.findOne({
       GuildId: interaction.guild.id,
       UserId: user.id,
     });
@@ -38,12 +38,12 @@ module.exports = {
     let userXP = 0;
     let userLevel = 0;
 
-    if (data && data.UserXP && data.UserLevel) {
+    if (data?.UserXP && data.UserLevel) {
       userXP = data.UserXP;
       userLevel = data.UserLevel;
     }
 
-    let xpNeeded = 50 * (userLevel + 1) ** 2 + 50;
+    const xpNeeded = 50 * (userLevel + 1) ** 2 + 50;
 
     const rankEmbed = new EmbedBuilder()
       .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary)
@@ -65,6 +65,6 @@ module.exports = {
       embeds: [rankEmbed],
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

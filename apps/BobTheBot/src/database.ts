@@ -1,26 +1,30 @@
-import { logger, sweeperLoop, type ExtendedClient } from "./utils/index.js";
-import mongoose from "mongoose";
+import process from "node:process";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
+import { logger, sweeperLoop, type ExtendedClient } from "./utils/index.js";
 
 dotenv.config();
 
 export default class Database {
-  connection: any;
+  public connection: any;
 
-  constructor() {
+  public constructor() {
     this.connection = null;
   }
 
-  connect(client: ExtendedClient) {
-    if (!process.env.MONGO_DATABASETOKEN) return logger.error("No database token provided");
+  public async connect(client: ExtendedClient) {
+    if (!process.env.MONGO_DATABASETOKEN) {
+      logger.error("No database token provided");
+      return;
+    }
 
     const timerStart = Date.now();
 
     mongoose.set("strictQuery", true);
 
-    mongoose
+    await mongoose
       .connect(process.env.MONGO_DATABASETOKEN)
-      .then(() => {
+      .then(async () => {
         logger.info(`Connected to database in ${Date.now() - timerStart}ms`);
 
         this.connection = mongoose.connection;
@@ -46,8 +50,8 @@ export default class Database {
           "Database connection info"
         );
       })
-      .catch((err: Error) => {
-        logger.error(`Error connecting to database: ${err.message}`);
+      .catch((error: Error) => {
+        logger.error(`Error connecting to database: ${error.message}`);
       });
   }
 }

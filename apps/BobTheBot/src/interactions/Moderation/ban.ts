@@ -23,7 +23,7 @@ module.exports = {
     .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const member = interaction.options.getMember("target");
-    let reason = interaction.options.getString("reason") ?? "No reason provided";
+    const reason = interaction.options.getString("reason") ?? "No reason provided";
 
     if (!member || !interaction.guild.members.me)
       return interaction.reply({ content: "Something went wrong", ephemeral: true });
@@ -38,26 +38,28 @@ module.exports = {
 
     try {
       await member.ban({
-        deleteMessageSeconds: 604800,
-        reason: reason,
+        deleteMessageSeconds: 604_800,
+        reason,
       });
-    } catch (error) {
+    } catch {
       try {
         await member.kick(reason);
-      } catch (error) {
+      } catch {
         try {
-          await member.timeout(1000 * 60 * 60 * 24 * 7, reason);
-        } catch (error) {
+          await member.timeout(1_000 * 60 * 60 * 24 * 7, reason);
+        } catch {
           return interaction.reply({
             content: `:wrench: An error occurred while trying to ban ${member.user.tag}!\nAn unsuccessfull attempt was made to kick but failed as well! Please manually ban the user.`,
             ephemeral: true,
           });
         }
+
         return interaction.reply({
           content: `:wrench: An error occurred while trying to ban ${member.user.tag}!\nAn unsuccessfull attempt was made to kick but failed as well! Please manually ban the user.`,
           ephemeral: true,
         });
       }
+
       return interaction.reply({
         content: `:wrench: An error occurred while trying to ban ${member.user.tag}!\nThey were kicked instead!`,
         ephemeral: true,
@@ -69,6 +71,6 @@ module.exports = {
       ephemeral: true,
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

@@ -1,12 +1,12 @@
 {
   "logger": {
     "prefix": "import logger",
-    "body": ["import { logger } from \"../../utils/index.js\";", ""],
+    "body": ["import { logger } from \"../../utils/index.js\";"],
     "description": "Imports the logger in a generic interaction file"
   },
   "colors": {
     "prefix": "import color",
-    "body": ["import { Color } from \"../../constants.js\""],
+    "body": ["import { Color } from \"../../constants.js\";"],
     "description": "Imports the color constants in a generic interaction file"
   }
 }

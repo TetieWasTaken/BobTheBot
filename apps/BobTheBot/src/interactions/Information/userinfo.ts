@@ -36,16 +36,16 @@ module.exports = {
     };
 
     if (/avatars\/.\.png/.test(user.displayAvatarURL()))
-      userAvatar = `[${defaultAvatars[Number(user.displayAvatarURL().match(/\d/))]}](${user.displayAvatarURL()})`;
+      userAvatar = `[${defaultAvatars[Number(/\d/.exec(user.displayAvatarURL()))]}](${user.displayAvatarURL()})`;
     else
-      userAvatar = `[${user.displayAvatarURL().match(/[a-fA-F0-9]{32}/)}](<${user.displayAvatarURL()}>)${
-        user.bannerURL() ? `\nBanner: [${user.bannerURL()?.match(/[a-fA-F0-9]{32}/)}](${user.bannerURL()})` : ""
+      userAvatar = `[${/[\dA-Fa-f]{32}/.exec(user.displayAvatarURL())}](<${user.displayAvatarURL()}>)${
+        user.bannerURL() ? `\nBanner: [${user.bannerURL()?.match(/[\dA-Fa-f]{32}/)}](${user.bannerURL()})` : ""
       }`;
 
-    if (/guilds/.test(member.displayAvatarURL()))
-      guildAvatar = `\nGuild avatar: [${member
-        .displayAvatarURL()
-        .match(/[aA-zZ]_[a-fA-F0-9]{32}/)}](${member.displayAvatarURL()})`;
+    if (member.displayAvatarURL().includes("guilds"))
+      guildAvatar = `\nGuild avatar: [${/[A-z]_[\dA-Fa-f]{32}/.exec(
+        member.displayAvatarURL()
+      )}](${member.displayAvatarURL()})`;
 
     const badges: Record<string, string> = {
       VerifiedBot: "Verified Bot",
@@ -73,8 +73,8 @@ module.exports = {
           value: [
             `Tag: ${user.tag}`,
             `ID: ${user.id}`,
-            `Created: <t:${Math.round(user.createdTimestamp / 1000)}>: <t:${Math.round(
-              user.createdTimestamp / 1000
+            `Created: <t:${Math.round(user.createdTimestamp / 1_000)}>: <t:${Math.round(
+              user.createdTimestamp / 1_000
             )}:R>`,
             `Avatar: ${userAvatar}`,
             ...(formattedUserFlags.length ? [`Badges: (${formattedUserFlags.length})`, ...formattedUserFlags] : []),
@@ -86,7 +86,7 @@ module.exports = {
           name: "Member info",
           value: [
             `${member.nickname ? `Nickname: ${member.nickname}` : ""}`,
-            `${member.joinedTimestamp ? `Joined: <t:${Math.round(member.joinedTimestamp / 1000)}>` : ""}`,
+            `${member.joinedTimestamp ? `Joined: <t:${Math.round(member.joinedTimestamp / 1_000)}>` : ""}`,
             `${guildAvatar}`,
             `${member.roles.hoist ? `Hoist role: ${member.roles.hoist?.name}` : ""}`,
             `${
@@ -109,6 +109,6 @@ module.exports = {
 
     return interaction.reply({ embeds: [replyEmbed] });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

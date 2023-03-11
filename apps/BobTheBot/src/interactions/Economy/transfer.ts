@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, type ChatInputCommandInteraction } from "discord.js";
 import { EconomyModel } from "../../models/index.js";
-import { requestItemData, raiseMiscellaneousError, IItem } from "../../utils/index.js";
+import { requestItemData, raiseMiscellaneousError, type IItem } from "../../utils/index.js";
+import { logger } from "../../utils/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -26,7 +27,7 @@ module.exports = {
             .setDescription("The amount of Bobbucks to transfer")
             .setRequired(true)
             .setMinValue(1)
-            .setMaxValue(99999)
+            .setMaxValue(99_999)
         )
         .addUserOption((option) =>
           option.setName("user").setDescription("The user to transfer Bobbucks to").setRequired(true)
@@ -56,6 +57,7 @@ module.exports = {
           ephemeral: true,
         });
       }
+
       if (target.bot) {
         return interaction.reply({
           content: ":wrench: Unable to transfer bobbucks to a bot",
@@ -70,7 +72,7 @@ module.exports = {
         UserId: target.id,
       });
 
-      if (!userData || (userData?.Wallet ?? 0 < amount)) {
+      if (!userData || (userData?.Wallet ?? amount > 0)) {
         return interaction.reply({
           content: ":wrench: You don't have this much bobbucks in your wallet",
           ephemeral: true,
@@ -102,6 +104,7 @@ module.exports = {
         userData.NetWorth -= amount;
         await userData.save();
       }
+
       return interaction.reply({
         content: `💰 Successfully transferred ₳${amount} bobbucks to ${target.tag}`,
         ephemeral: true,
@@ -123,7 +126,7 @@ module.exports = {
         });
       }
 
-      const userItem = userData.Inventory.find((i) => i.id === itemName.toLowerCase().replace(/\s+/g, ""));
+      const userItem = userData.Inventory.find((item) => item.id === itemName.toLowerCase().replaceAll(/\s+/g, ""));
       if (!userItem) {
         return interaction.reply({
           content: ":wrench: You don't own this item",
@@ -141,10 +144,10 @@ module.exports = {
         const itemIndex = targetData.Inventory.findIndex((item: IItem) => item.id === itemId);
 
         if (itemIndex !== -1) {
-          let item = targetData.Inventory[itemIndex];
+          const item = targetData.Inventory[itemIndex];
           item.amount++;
           targetData.Inventory[itemIndex] = item;
-        } else {
+        } else if (itemIndex === -1) {
           targetData.Inventory.push(itemName);
         }
       } else {
@@ -169,18 +172,17 @@ module.exports = {
         });
       }
 
-      targetData.save();
+      await targetData.save().catch((error) => logger.error(error));
       userData.Inventory.splice(userData.Inventory.indexOf(itemName), 1);
-      userData.save();
+      await userData.save().catch((error) => logger.error(error));
 
       return interaction.reply({
         content: `:gift: Successfully transferred \`${itemName}\` to ${target.tag}`,
         ephemeral: true,
       });
     } else {
-      return;
     }
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

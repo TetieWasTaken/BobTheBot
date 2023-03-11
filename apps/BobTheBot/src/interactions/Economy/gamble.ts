@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, type ChatInputCommandInteraction } from "discord.js";
 import { EconomyModel } from "../../models/index.js";
+import { logger } from "../../utils/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -45,7 +46,7 @@ module.exports = {
             .setDescription("The amount of money you want to gamble")
             .setRequired(true)
             .setMinValue(10)
-            .setMaxValue(99999)
+            .setMaxValue(99_999)
         )
         .addIntegerOption((option) =>
           option
@@ -66,19 +67,19 @@ module.exports = {
             .setDescription("The amount of money you want to gamble")
             .setRequired(true)
             .setMinValue(10)
-            .setMaxValue(99999)
+            .setMaxValue(99_999)
         )
     )
     .setDMPermission(true),
-  cooldownTime: 60 * 5 * 1000,
+  cooldownTime: 60 * 5 * 1_000,
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
-    let amount = interaction.options.getInteger("amount", true);
+    const amount = interaction.options.getInteger("amount", true);
 
-    let data = await EconomyModel.findOne({
+    const data = await EconomyModel.findOne({
       UserId: interaction.user.id,
     });
 
-    if (!data || !data.Wallet || data.Wallet < amount) {
+    if (!data?.Wallet || data.Wallet < amount) {
       return interaction.reply({
         content: "You don't have enough money to gamble!",
         ephemeral: true,
@@ -95,24 +96,27 @@ module.exports = {
       const tails = 2;
 
       if (choice === "heads" && result === heads) {
-        interaction.reply({
-          content: `🪙 You won ${amount / 2} coins!`,
-        });
         data.Wallet += amount;
         data.NetWorth += amount;
-      } else if (choice === "tails" && result === tails) {
-        interaction.reply({
+
+        await interaction.reply({
           content: `🪙 You won ${amount / 2} coins!`,
         });
+      } else if (choice === "tails" && result === tails) {
         data.Wallet += amount / 2;
         data.NetWorth += amount / 2;
+
+        await interaction.reply({
+          content: `🪙 You won ${amount / 2} coins!`,
+        });
       } else {
-        interaction.reply({
+        data.Wallet -= amount;
+        data.NetWorth -= amount;
+
+        await interaction.reply({
           content: `🪙 You lost ${amount} coins!`,
           ephemeral: true,
         });
-        data.Wallet -= amount;
-        data.NetWorth -= amount;
       }
     } else if (interaction.options.getSubcommand() === "dice") {
       const number = interaction.options.getInteger("number");
@@ -120,20 +124,20 @@ module.exports = {
       const result = Math.floor(Math.random() * 6) + 1;
 
       if (number === result) {
-        interaction.reply({
-          content: `🎲 You won ${amount * 3} coins!`,
-        });
-
         data.Wallet += amount * 3;
         data.NetWorth += amount * 3;
+
+        await interaction.reply({
+          content: `🎲 You won ${amount * 3} coins!`,
+        });
       } else {
-        interaction.reply({
+        data.Wallet -= amount;
+        data.NetWorth -= amount;
+
+        await interaction.reply({
           content: `🎲 You lost ${amount} coins! Your choice: \`${number}\` | Result: \`${result}\``,
           ephemeral: true,
         });
-
-        data.Wallet -= amount;
-        data.NetWorth -= amount;
       }
     } else if (interaction.options.getSubcommand() === "slots") {
       const slot1 = Math.floor(Math.random() * 8) + 1;
@@ -141,25 +145,27 @@ module.exports = {
       const slot3 = Math.floor(Math.random() * 8) + 1;
 
       if (slot1 === slot2 && slot2 === slot3) {
-        interaction.reply({
-          content: `🎰 You won ${amount * 50} coins!`,
-        });
         data.Wallet += amount * 50;
         data.NetWorth += amount * 50;
+
+        await interaction.reply({
+          content: `🎰 You won ${amount * 50} coins!`,
+        });
       } else {
-        interaction.reply({
+        data.Wallet -= amount;
+        data.NetWorth -= amount;
+
+        await interaction.reply({
           content: `🎰 You lost ${amount} coins!`,
           ephemeral: true,
         });
-        data.Wallet -= amount;
-        data.NetWorth -= amount;
       }
     } else {
       return;
     }
 
-    return data.save();
+    await data.save().catch((error) => logger.error(error));
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

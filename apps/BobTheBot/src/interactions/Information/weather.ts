@@ -1,6 +1,7 @@
+import process from "node:process";
 import { SlashCommandBuilder, EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
-import { Color } from "../../constants.js";
 import dotenv from "dotenv";
+import { Color } from "../../constants.js";
 
 dotenv.config();
 
@@ -36,7 +37,7 @@ module.exports = {
 
     const cityAPI = await fetch(
       `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${process.env.WEATHER_API_KEY}`
-    ).then((res) => res.json());
+    ).then(async (res) => res.json());
 
     if (cityAPI[0].name !== city) {
       return interaction.reply({
@@ -79,7 +80,7 @@ module.exports = {
     if (!hour) {
       const weatherData = await fetch(
         `https://api.open-meteo.com/v1/forecast?latitude=${cityAPI[0].lat}&longitude=${cityAPI[0].lon}&current_weather=true&timeformat=unixtime`
-      ).then((res) => res.json());
+      ).then(async (res) => res.json());
 
       // Example data: https://api.open-meteo.com/v1/forecast?latitude=51.5&longitude=-0.120000124&current_weather=true&timeformat=unixtime
 
@@ -113,21 +114,21 @@ module.exports = {
           text: `Powered by OpenMeteo, Generation time: ${weatherData.generationtime_ms.toPrecision(2)}ms`,
         });
 
-      return await interaction.reply({ embeds: [replyEmbed] });
-    } else {
+      return interaction.reply({ embeds: [replyEmbed] });
+    } else if (hour) {
       const weatherData = await fetch(
         `https://api.open-meteo.com/v1/forecast?latitude=${cityAPI[0].lat}&longitude=${cityAPI[0].lon}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,cloudcover,windspeed_10m,winddirection_10m,snowfall,rain,weathercode,visibility&timeformat=unixtime`
-      ).then((res) => res.json());
+      ).then(async (res) => res.json());
 
       // Example data: https://api.open-meteo.com/v1/forecast?latitude=51.5&longitude=-0.120000124&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,cloudcover,windspeed_10m,winddirection_10m,snowfall,rain,weathercode,visibility&timeformat=unixtime
 
-      let userDate = new Date(Date.now());
+      const userDate = new Date(Date.now());
 
       userDate.setUTCHours(hour, 0, 0, 0);
 
-      const arrayIndex = weatherData.hourly.time.indexOf(userDate.getTime() / 1000);
+      const arrayIndex = weatherData.hourly.time.indexOf(userDate.getTime() / 1_000);
 
-      if (arrayIndex == -1) {
+      if (arrayIndex === -1) {
         return interaction.reply({
           content: `:wrench: Unable to find requested hour: \`${hour}\``,
           ephemeral: true,
@@ -166,7 +167,7 @@ module.exports = {
           },
           {
             name: "Visibility",
-            value: `${weatherData.hourly.visibility[arrayIndex] / 1000} km`,
+            value: `${weatherData.hourly.visibility[arrayIndex] / 1_000} km`,
             inline: true,
           },
           {
@@ -179,9 +180,9 @@ module.exports = {
           text: `Powered by OpenMeteo, Generation time: ${weatherData.generationtime_ms.toPrecision(2)}ms`,
         });
 
-      return await interaction.reply({ embeds: [replyEmbed] });
+      return interaction.reply({ embeds: [replyEmbed] });
     }
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

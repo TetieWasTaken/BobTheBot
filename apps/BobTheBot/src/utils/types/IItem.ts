@@ -1,27 +1,27 @@
 type I1 = {
-  sellable: false;
   buyable: false;
   price: undefined;
+  sellable: false;
 };
 
 type I2 = {
-  sellable: boolean;
   buyable: true;
   price: number;
+  sellable: boolean;
 };
 
 type I3 = {
-  sellable: true;
   buyable: boolean;
   price: number;
+  sellable: true;
 };
 
 type II = I1 | I2 | I3;
 
 export type IItem = II & {
+  description: string;
   id: string;
   name: string;
-  description: string;
   note: string | undefined;
   type: string;
   usable: boolean;

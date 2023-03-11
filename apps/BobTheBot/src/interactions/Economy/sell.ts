@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
-import { EconomyModel } from "../../models/index.js";
-import { requestItemData, raiseMiscellaneousError } from "../../utils/index.js";
 import { Color } from "../../constants.js";
+import { EconomyModel } from "../../models/index.js";
+import { requestItemData, raiseMiscellaneousError, logger } from "../../utils/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -52,13 +52,14 @@ module.exports = {
       });
     }
 
-    const object = data.Inventory.find((object) => object.id === item.toLowerCase().replace(/\s+/g, ""));
+    const object = data.Inventory.find((object) => object.id === item.toLowerCase().replaceAll(/\s+/g, ""));
     if (!object) {
       return interaction.reply({
         content: "🚫 You do not the have the item you are trying to sell",
         ephemeral: true,
       });
     }
+
     if (object.amount < amount) {
       return interaction.reply({
         content: "🚫 You do not have enough of the item you are trying to sell",
@@ -78,8 +79,8 @@ module.exports = {
       object.amount -= amount;
     }
 
-    data.Wallet = (data.Wallet ?? 0) + (itemObject.price ?? 0) * amount;
-    data.save();
+    data.Wallet = (data.Wallet ?? 0) + itemObject.price * amount;
+    await data.save().catch((error) => logger.error(error));
 
     const embed = new EmbedBuilder()
       .setTitle("Item Sold")
@@ -92,6 +93,6 @@ module.exports = {
       ephemeral: true,
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

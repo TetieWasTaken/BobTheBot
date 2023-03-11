@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
-import { EconomyModel } from "../../models/index.js";
 import { Color } from "../../constants.js";
+import { EconomyModel } from "../../models/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -32,13 +32,11 @@ module.exports = {
         iconURL: `${interaction.user.displayAvatarURL()}`,
       });
 
-    const fieldsArray = [];
-
     for (const [index, user] of data.entries()) {
       if (!user.UserId) continue;
 
       const member = await interaction.guild.members.fetch(user.UserId);
-      fieldsArray.push({
+      embed.addFields({
         name: `${index + 1}. ${member.displayName}`,
         value: `**Net Worth:** ${user.NetWorth}`,
         inline: false,
@@ -47,6 +45,6 @@ module.exports = {
 
     await interaction.reply({ embeds: [embed] });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

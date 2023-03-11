@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
-import { Color } from "../../constants";
+import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -20,21 +20,20 @@ module.exports = {
         .setName("url")
         .setDescription("The full URL to generate a QR code for")
         .setRequired(true)
-        .setMaxLength(2000)
+        .setMaxLength(2_000)
     )
     .setDMPermission(true),
-  cooldownTime: 10 * 1000,
+  cooldownTime: 10 * 1_000,
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const text = interaction.options.getString("url", true);
     const baseURL = "http://api.qrserver.com/v1";
-    const regex = /[(http(s)?)://(www.)?a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/;
+    const regex = /[\w#%()+./:=?@~]{2,256}\.[a-z]{2,6}\b(?<path>[\w#%&+./:=?@~-]*)/;
 
-    if (!text.match(regex)) {
-      interaction.reply({
+    if (!regex.test(text)) {
+      return interaction.reply({
         content: `Please enter a valid URL.`,
         ephemeral: true,
       });
-      return;
     }
 
     const encodedURL = `${baseURL}/create-qr-code/?size=150x150&data=` + encodeURIComponent(text);
@@ -46,8 +45,9 @@ module.exports = {
       .setFooter({ text: `Try it out, it works!` })
       .setTimestamp();
 
-    interaction.reply({ embeds: [replyEmbed] });
+    return interaction.reply({ embeds: [replyEmbed] });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+
+  requiredBotPerms,
+  requiredUserPerms,
 };

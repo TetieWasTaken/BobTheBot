@@ -1,7 +1,8 @@
 import { SlashCommandBuilder, PermissionFlagsBits, type ChatInputCommandInteraction } from "discord.js";
+// @ts-expect-error ms package will be fixed in v3.0.0
+import ms from "ms";
 import { InfractionsModel } from "../../models/index.js";
-import { raiseUserHierarchyError, raiseBotHierarchyError } from "../../utils/index.js";
-const ms = require("ms");
+import { raiseUserHierarchyError, raiseBotHierarchyError, logger } from "../../utils/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -31,8 +32,8 @@ module.exports = {
     .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const member = interaction.options.getMember("target");
-    let duration = interaction.options.getString("duration");
-    let reason = interaction.options.getString("reason") ?? "No reason provided";
+    const duration = interaction.options.getString("duration");
+    const reason = interaction.options.getString("reason") ?? "No reason provided";
 
     if (!member || !interaction.guild.members.me)
       return interaction.reply({ content: "Something went wrong", ephemeral: true });
@@ -55,29 +56,31 @@ module.exports = {
 
     try {
       await member.timeout(ms(duration), reason);
-    } catch (error) {
+    } catch {
       return interaction.reply({
         content: `:wrench:  \`${member.user.tag}\` could not be muted!`,
         ephemeral: true,
       });
     }
 
-    let data = await InfractionsModel.findOne({
+    const data = await InfractionsModel.findOne({
       GuildId: interaction.guild.id,
       UserId: member.id,
     });
 
     if (data) {
-      const NewCaseId = data.Punishments.reduce((a, b) => Math.max(a, b.CaseId), 0) + 1;
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+      const NewCaseId: number = data.Punishments.reduce((a, b) => Math.max(a, b.CaseId), 0) + 1;
 
       data.Punishments.unshift({
         PunishType: "MUTE",
         Reason: reason,
         CaseId: NewCaseId,
       });
-      data.save();
+
+      await data.save().catch((error) => logger.error(error));
     } else if (!data) {
-      let newData = new InfractionsModel({
+      const newData = new InfractionsModel({
         GuildId: interaction.guild.id,
         UserId: member.id,
         Punishments: [
@@ -88,10 +91,11 @@ module.exports = {
           },
         ],
       });
-      newData.save();
+
+      await newData.save().catch((error) => logger.error(error));
     }
 
-    member
+    await member
       .send(`You have been muted in \`${interaction.guild.name}\` for \`${reason}\`\nDuration: \`${duration}\``)
       .catch(() => {});
 
@@ -100,6 +104,6 @@ module.exports = {
       ephemeral: true,
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

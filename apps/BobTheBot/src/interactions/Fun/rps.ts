@@ -1,5 +1,6 @@
-import { SlashCommandBuilder, type ChatInputCommandInteraction } from "discord.js";
 import { setTimeout } from "node:timers/promises";
+import { SlashCommandBuilder, type ChatInputCommandInteraction } from "discord.js";
+import { logger } from "../../utils/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -54,25 +55,25 @@ module.exports = {
     const choice2 = interaction.options.getString("choice2");
     const choice3 = interaction.options.getString("choice3");
 
-    let userChoises = [choice, choice2, choice3];
+    const userChoises = [choice, choice2, choice3];
 
-    let result = [];
-    let replyMessageArray = [`\`ROCK PAPER SCISSORS\``];
+    const result = [];
+    const replyMessageArray = [`\`ROCK PAPER SCISSORS\``];
 
     await interaction.reply({
       content: "`ROCK PAPER SCISSORS`",
       ephemeral: true,
     });
 
-    for (let i = 0; i < 3; i++) {
+    for (let index = 0; index < 3; index++) {
       const randomNum = Math.floor(Math.random() * 3);
       const choices = [":rock:", ":newspaper2:", ":scissors:"];
       const botChoice = choices[randomNum];
 
-      if (userChoises[i] === botChoice) {
+      if (userChoises[index] === botChoice) {
         result.push("TIE");
       } else {
-        if (userChoises[i] === ":rock:") {
+        if (userChoises[index] === ":rock:") {
           if (botChoice === ":newspaper2:") {
             result.push("BOT");
           } else {
@@ -80,7 +81,7 @@ module.exports = {
           }
         }
 
-        if (userChoises[i] === ":newspaper2:") {
+        if (userChoises[index] === ":newspaper2:") {
           if (botChoice === ":scissors:") {
             result.push("BOT");
           } else {
@@ -88,7 +89,7 @@ module.exports = {
           }
         }
 
-        if (userChoises[i] === ":scissors:") {
+        if (userChoises[index] === ":scissors:") {
           if (botChoice === ":rock:") {
             result.push("BOT");
           } else {
@@ -97,12 +98,15 @@ module.exports = {
         }
       }
 
-      replyMessageArray.push(`\`ROUND ${i + 1}:\` ${userChoises[i]} vs ${botChoice} - \`${result[i]}\``);
+      replyMessageArray.push(`\`ROUND ${index + 1}:\` ${userChoises[index]} vs ${botChoice} - \`${result[index]}\``);
 
-      interaction.editReply({
-        content: `${replyMessageArray.join("\n")}`,
-      });
-      await new Promise((resolve: any) => setTimeout(resolve, 2000));
+      await interaction
+        .editReply({
+          content: `${replyMessageArray.join("\n")}`,
+        })
+        .catch((error) => logger.error(error));
+
+      await setTimeout(2_000);
     }
 
     const playerScore = result.filter((x) => x === "PLAYER").length;
@@ -116,10 +120,10 @@ module.exports = {
       replyMessageArray.push(`RESULT: \`TIE\``);
     }
 
-    interaction.editReply({
+    return interaction.editReply({
       content: `${replyMessageArray.join("\n")}`,
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

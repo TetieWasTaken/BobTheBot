@@ -1,23 +1,25 @@
 import { EmbedBuilder, type Message } from "discord.js";
-import { GuildModel } from "../models/index.js";
 import { Color } from "../constants.js";
+import { GuildModel } from "../models/index.js";
+import { logger } from "../utils/index.js";
 
 module.exports = {
   name: "messageUpdate",
   once: false,
   async execute(initMessage: Message, newMessage: Message): Promise<void> {
-    if (newMessage.author.bot) return;
-    if (!newMessage.guild) return;
+    if (newMessage.author.bot || !newMessage.guild) return;
 
     const guildData = await GuildModel.findOne({
       GuildId: newMessage.guild.id,
     });
 
-    if (guildData && guildData.GuildLogChannel !== null) {
+    if (guildData?.GuildLogChannel) {
       const logChannelId = guildData?.GuildLogChannel;
       if (!logChannelId) return;
       const logChannel = await newMessage.guild.channels.fetch(logChannelId);
-      if (!logChannel || !logChannel.isTextBased()) return;
+      if (!logChannel?.isTextBased()) return;
+
+      if (newMessage.channel.isDMBased()) return;
 
       const logEmbed = new EmbedBuilder()
         .setColor(Color.DiscordWarning)
@@ -28,7 +30,7 @@ module.exports = {
         .addFields(
           {
             name: `Channel`,
-            value: `${newMessage.channel}`,
+            value: `${newMessage.channel.name}`,
             inline: false,
           },
           {
@@ -48,7 +50,10 @@ module.exports = {
           }
         )
         .setTimestamp();
-      logChannel.send({ embeds: [logEmbed] });
+
+      await logChannel.send({ embeds: [logEmbed] }).catch((error) => {
+        logger.error(error);
+      });
     }
   },
 };

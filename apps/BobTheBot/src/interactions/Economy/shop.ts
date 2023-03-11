@@ -1,7 +1,6 @@
+import fs from "node:fs";
 import { SlashCommandBuilder, EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
-import type { IItem } from "../../utils/index.js";
 import { Color } from "../../constants.js";
-import fs from "fs";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -22,39 +21,36 @@ module.exports = {
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     let page = interaction.options.getInteger("page") ?? 1;
 
-    fs.readFile("./resources/items.json", (err, data) => {
-      if (err) throw err;
-      const itemsJSON = JSON.parse(data.toString());
+    const data = await fs.promises.readFile("./resources/items.json");
 
-      itemsJSON.forEach((item: IItem) => {
-        if (!item.buyable) itemsJSON.splice(itemsJSON.indexOf(item), 1);
-      });
+    const itemsJSON = JSON.parse(data.toString());
 
-      page = page > Math.ceil(itemsJSON.length / 5) ? Math.ceil(itemsJSON.length / 5) : page;
+    for (const item of itemsJSON) if (!item.buyable) itemsJSON.splice(itemsJSON.indexOf(item), 1);
 
-      const shopEmbed = new EmbedBuilder()
-        .setAuthor({ name: "Shop" })
-        .setFooter({
-          text: `Page ${page} of ${Math.ceil(itemsJSON.length / 5)}`,
-          iconURL: `${interaction.user.avatarURL}`,
-        })
-        .setColor(Color.DiscordEmbedBackground);
+    page = page > Math.ceil(itemsJSON.length / 5) ? Math.ceil(itemsJSON.length / 5) : page;
 
-      for (let i = 0; i < 5; i++) {
-        if (itemsJSON[i + (page - 1) * 5]) {
-          shopEmbed.addFields({
-            name: `${itemsJSON[i + (page - 1) * 5].name} — ₳${itemsJSON[i + (page - 1) * 5].price}`,
-            value: `*${itemsJSON[i + (page - 1) * 5].description}*`,
-            inline: false,
-          });
-        }
+    const shopEmbed = new EmbedBuilder()
+      .setAuthor({ name: "Shop" })
+      .setFooter({
+        text: `Page ${page} of ${Math.ceil(itemsJSON.length / 5)}`,
+        iconURL: `${interaction.user.avatarURL()}`,
+      })
+      .setColor(Color.DiscordEmbedBackground);
+
+    for (let index = 0; index < 5; index++) {
+      if (itemsJSON[index + (page - 1) * 5]) {
+        shopEmbed.addFields({
+          name: `${itemsJSON[index + (page - 1) * 5].name} — ₳${itemsJSON[index + (page - 1) * 5].price}`,
+          value: `*${itemsJSON[index + (page - 1) * 5].description}*`,
+          inline: false,
+        });
       }
+    }
 
-      return interaction.reply({
-        embeds: [shopEmbed],
-      });
+    return interaction.reply({
+      embeds: [shopEmbed],
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

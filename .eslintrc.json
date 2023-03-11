@@ -1,12 +1,8 @@
 {
-  "env": {
-    "node": true,
-    "commonjs": true,
-    "es2021": true
-  },
-  "extends": "eslint:recommended",
-  "overrides": [],
+  "root": true,
+  "extends": ["neon/common", "neon/node", "neon/typescript", "neon/prettier"],
   "parserOptions": {
-    "ecmaVersion": "latest"
-  }
+    "project": "./tsconfig.json"
+  },
+  "ignorePatterns": ["**/dist/*"]
 }

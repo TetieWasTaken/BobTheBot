@@ -1,5 +1,5 @@
+import { createHash, scryptSync, randomBytes } from "node:crypto";
 import { SlashCommandBuilder, type ChatInputCommandInteraction } from "discord.js";
-const { createHash, scryptSync, randomBytes } = require("crypto");
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -30,9 +30,9 @@ module.exports = {
         .setMaxLength(128)
     )
     .setDMPermission(true),
-  cooldownTime: 15 * 1000,
+  cooldownTime: 15 * 1_000,
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
-    let input = interaction.options.getString("string", true);
+    const input = interaction.options.getString("string", true);
     const algorithm = interaction.options.getString("algorithm", true);
 
     let string = input;
@@ -54,9 +54,9 @@ module.exports = {
           break;
         }
       }
-    } catch (e) {
+    } catch (error) {
       return interaction.reply({
-        content: `An error occured while hashing the string: \`${e}\``,
+        content: `An error occured while hashing the string: \`${error}\``,
         ephemeral: true,
       });
     }
@@ -66,6 +66,6 @@ module.exports = {
       ephemeral: true,
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

@@ -32,7 +32,7 @@ module.exports = {
         { name: `Name`, value: `${channel.name}`, inline: true },
         {
           name: `Type`,
-          value: `${ChannelType[channel.type].replace(/Guild/g, " ")}`,
+          value: `${ChannelType[channel.type].replaceAll("Guild", " ")}`,
           inline: true,
         },
         {
@@ -42,12 +42,12 @@ module.exports = {
         },
         {
           name: `Created at`,
-          value: `${channel.createdTimestamp ? time(Math.round(channel.createdTimestamp / 1000), "D") : "Unknown"}`,
+          value: `${channel.createdTimestamp ? time(Math.round(channel.createdTimestamp / 1_000), "D") : "Unknown"}`,
           inline: true,
         },
         {
           name: `Position`,
-          value: `${!channel.isThread() ? channel.position + 1 : "Unknown"}`,
+          value: `${channel.isThread() ? "Unknown" : channel.position + 1}`,
           inline: true,
         },
         {
@@ -62,6 +62,6 @@ module.exports = {
       embeds: [replyEmbed],
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

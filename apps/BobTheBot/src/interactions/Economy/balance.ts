@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
-import { EconomyModel } from "../../models/index";
 import { Color } from "../../constants.js";
+import { EconomyModel } from "../../models/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -26,7 +26,7 @@ module.exports = {
     });
 
     if (!data) {
-      let replyEmbed = new EmbedBuilder()
+      const replyEmbed = new EmbedBuilder()
         .setTitle(`Balance of ${user.username}#${user.discriminator}`)
         .setColor(Color.DiscordDanger)
         .addFields(
@@ -50,8 +50,8 @@ module.exports = {
       return interaction.reply({
         embeds: [replyEmbed],
       });
-    } else {
-      let replyEmbed = new EmbedBuilder().setTitle(`balance of ${user.username}#${user.discriminator}`).addFields(
+    } else if (data) {
+      const replyEmbed = new EmbedBuilder().setTitle(`balance of ${user.username}#${user.discriminator}`).addFields(
         {
           name: "🏦  Bank",
           value: `₳ ${data.Bank}`,
@@ -74,6 +74,6 @@ module.exports = {
       });
     }
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

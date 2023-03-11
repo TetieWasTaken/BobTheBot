@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import {
   SlashCommandBuilder,
   EmbedBuilder,
@@ -10,9 +11,8 @@ import {
   type Collection,
   type Snowflake,
 } from "discord.js";
-import fs from "fs";
-import { damerAutocomplete, capitalizeFirst, getCategories, type ExtendedClient } from "../../utils/index.js";
 import { Color } from "../../constants.js";
+import { damerAutocomplete, capitalizeFirst, getCategories, type ExtendedClient } from "../../utils/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -24,10 +24,12 @@ const requiredUserPerms = {
   key: [] as const,
 };
 
+/* eslint-disable @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
+
 function getCommands() {
   const categories = fs
     .readdirSync("./dist/interactions")
-    .filter((item) => !/(^|\/)\.[^/.]/g.test(item) && item !== "context-menu");
+    .filter((item) => !/(?:^|\/)\.[^./]/g.test(item) && item !== "context-menu");
 
   return categories.flatMap((category) =>
     fs
@@ -37,12 +39,12 @@ function getCommands() {
   );
 }
 
-function getBotPerms(perm: bigint, i: ChatInputCommandInteraction<"cached">) {
-  return i.guild.members.me?.permissions.has(perm) ? "+ " : "- ";
+function getBotPerms(perm: bigint, interaction: ChatInputCommandInteraction<"cached">) {
+  return interaction.guild.members.me?.permissions.has(perm) ? "+" : "-";
 }
 
-function getUserPerms(perm: bigint, i: ChatInputCommandInteraction<"cached">) {
-  return i.member.permissions.has(perm) ? "+ " : "- ";
+function getUserPerms(perm: bigint, interaction: ChatInputCommandInteraction<"cached">) {
+  return interaction.member.permissions.has(perm) ? "+" : "-";
 }
 
 module.exports = {
@@ -78,14 +80,14 @@ module.exports = {
     const query = interaction.options.getFocused();
     const choices = getCommands();
 
-    return await interaction.respond(damerAutocomplete(query, choices));
+    await interaction.respond(damerAutocomplete(query, choices));
   },
   async execute(interaction: ChatInputCommandInteraction<"cached">, client: ExtendedClient) {
     switch (interaction.options.getSubcommand()) {
       case "category": {
         const category = interaction.options.getString("category", true);
 
-        let catEmbed = new EmbedBuilder()
+        const catEmbed = new EmbedBuilder()
           .setAuthor({ name: category })
           .setColor(Color.DiscordSuccess)
           .setTitle(`Help for ${category}`);
@@ -94,14 +96,14 @@ module.exports = {
           .readdirSync(`./dist/interactions/${category}`)
           .filter((file) => file.endsWith(".js"));
 
-        let descriptionArray = [];
+        const descriptionArray = [];
 
         if (!client.application) return;
 
         const commands: Collection<Snowflake, ApplicationCommand> = await client.application.commands.fetch();
 
-        for (let file of categoryCommands) {
-          let command = require(`../${category}/${file}`);
+        for (const file of categoryCommands) {
+          const command = require(`../${category}/${file}`);
 
           const commandId = commands.find(
             (applicationCommand: ApplicationCommand) => applicationCommand.name === command.data.name
@@ -112,12 +114,13 @@ module.exports = {
 
         catEmbed.setDescription(descriptionArray.join("\n"));
 
-        return await interaction.reply({ embeds: [catEmbed] });
+        return interaction.reply({ embeds: [catEmbed] });
       }
+
       case "command": {
         const query = interaction.options.getString("query", true);
-        const commandRegExp = /^.*(?=(:))/g;
-        const commandQuery = query.replace(commandRegExp, "").trim().toLowerCase().slice(2);
+        const commandRegExp = /^.*(?=(?<colon>:))/g;
+        const commandQuery = query.replaceAll(commandRegExp, "").trim().toLowerCase().slice(2);
 
         const command = client.interactions.get(commandQuery);
 
@@ -138,7 +141,7 @@ module.exports = {
 
         if (command.data.options.length > 0) {
           let optionsString = "";
-          if (Object.prototype.hasOwnProperty.call(command.data.options[0], "options")) {
+          if (Object.hasOwn(command.data.options[0], "options")) {
             optionsString = command.data.options
               .map((subcommand: ApplicationCommandSubCommandData) => {
                 if (subcommand.options)
@@ -174,18 +177,18 @@ module.exports = {
           });
         }
 
-        let botPermsArray = [];
-        let userPermsArray = [];
+        const botPermsArray = [];
+        const userPermsArray = [];
         let hasPerm;
 
-        for (let perm of command.requiredBotPerms.key) {
+        for (const perm of command.requiredBotPerms.key) {
           hasPerm = getBotPerms(perm, interaction);
-          botPermsArray.push(hasPerm + new PermissionsBitField(perm).toArray());
+          botPermsArray.push(`${hasPerm} ${new PermissionsBitField(perm).toArray()}}`);
         }
 
-        for (let perm of command.requiredUserPerms.key) {
+        for (const perm of command.requiredUserPerms.key) {
           hasPerm = getUserPerms(perm, interaction);
-          userPermsArray.push(hasPerm + new PermissionsBitField(perm).toArray());
+          userPermsArray.push(`${hasPerm} ${new PermissionsBitField(perm).toArray()}`);
         }
 
         if (botPermsArray.length > 0) {
@@ -206,13 +209,13 @@ module.exports = {
           });
         }
 
-        return await interaction.reply({ embeds: [embed] });
+        return interaction.reply({ embeds: [embed] });
       }
+
       default: {
-        return;
       }
     }
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

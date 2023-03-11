@@ -1,10 +1,23 @@
-import { logger, type ExtendedClient } from "./index.js";
 import type { Connection, Collection } from "mongoose";
 import cron from "node-cron";
+import { logger, type ExtendedClient } from "./index.js";
 
-interface ICollection {
-  queryFn: (doc: any) => boolean;
+type ICollection = {
   label: string;
+  queryFn(doc: any): boolean;
+};
+
+async function deleteDocs(collection: Collection<any> | undefined, queryFn: any) {
+  if (!collection) return 0;
+  let count = 0;
+  for await (const doc of collection.find()) {
+    if (queryFn(doc)) {
+      await collection.deleteOne({ _id: doc._id });
+      count++;
+    }
+  }
+
+  return count;
 }
 
 export function sweeperLoop(client: ExtendedClient, connection: Connection) {
@@ -12,8 +25,8 @@ export function sweeperLoop(client: ExtendedClient, connection: Connection) {
   cron.schedule(
     "0 12 * * 6",
     async () => {
-      if (!client.isReady()) return logger.warn("Client is not ready, skipping sweep");
-      await sweep(client, connection);
+      if (!client.isReady()) logger.warn("Client is not ready, skipping sweep");
+      else if (client.isReady()) await sweep(client, connection);
     },
     {
       scheduled: true,
@@ -25,19 +38,7 @@ export function sweeperLoop(client: ExtendedClient, connection: Connection) {
 async function sweep(client: ExtendedClient, connection: Connection): Promise<void> {
   logger.info("Sweeping database");
 
-  let info: string[][] = [["Collection", "Deleted"]];
-
-  const deleteDocs = async (collection: Collection<any> | undefined, queryFn: any) => {
-    if (!collection) return 0;
-    let count = 0;
-    for await (const doc of collection.find()) {
-      if (queryFn(doc)) {
-        await collection.deleteOne({ _id: doc._id });
-        count++;
-      }
-    }
-    return count;
-  };
+  const info: string[][] = [["Collection", "Deleted"]];
 
   const collections: Record<string, ICollection> = {
     economymodels: { queryFn: (doc: any) => doc.NetWorth <= 0, label: "Economy" },

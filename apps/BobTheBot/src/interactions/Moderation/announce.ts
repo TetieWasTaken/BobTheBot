@@ -55,6 +55,7 @@ module.exports = {
     .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const channel = interaction.options.getChannel("channel", true);
+    if (!channel.isTextBased()) return;
 
     if (!interaction.guild.members.me) return interaction.reply({ content: "Something went wrong", ephemeral: true });
 
@@ -101,7 +102,7 @@ module.exports = {
       const footerTextInput = new TextInputBuilder()
         .setCustomId("footer-text-input")
         .setLabel("Footer Text")
-        .setMaxLength(2048)
+        .setMaxLength(2_048)
         .setMinLength(1)
         .setPlaceholder("Enter a text for the embed footer")
         .setRequired(false)
@@ -122,22 +123,22 @@ module.exports = {
 
       modal.addComponents(firstActionRow, secondActionRow, thirdActionRow, fourthActionRow, fifthActionRow);
 
-      interaction.showModal(modal);
+      await interaction.showModal(modal).catch((error) => logger.error(error));
 
-      interaction
-        .awaitModalSubmit({ filter: (i) => i.customId === "announce-embed-modal", time: 5 * 60 * 1000 })
-        .then(async (i) => {
-          const title = i.fields.getTextInputValue("title-input");
-          const description = i.fields.getTextInputValue("description-input");
-          const authorName = i.fields.getTextInputValue("author-name-input");
-          const footerText = i.fields.getTextInputValue("footer-text-input");
+      await interaction
+        .awaitModalSubmit({ filter: (modalI) => modalI.customId === "announce-embed-modal", time: 5 * 60 * 1_000 })
+        .then(async (modalI) => {
+          const title = modalI.fields.getTextInputValue("title-input");
+          const description = modalI.fields.getTextInputValue("description-input");
+          const authorName = modalI.fields.getTextInputValue("author-name-input");
+          const footerText = modalI.fields.getTextInputValue("footer-text-input");
           let color: any =
-            i.fields.getTextInputValue("color-input").length > 0
-              ? i.fields.getTextInputValue("color-input")
+            modalI.fields.getTextInputValue("color-input").length > 0
+              ? modalI.fields.getTextInputValue("color-input")
               : "Default";
 
           if (title.length <= 1 && description.length <= 1 && authorName.length <= 1 && footerText.length <= 1)
-            return i.reply({
+            return modalI.reply({
               embeds: [
                 new EmbedBuilder()
                   .setTitle("Content Error")
@@ -184,27 +185,28 @@ module.exports = {
             color = color.toLowerCase().replace(" ", "");
             if (color === "random") color = Math.floor(Math.random() * (0xffffff + 1));
             else if (color === "default") color = 0;
-            else color = colors[color] ?? parseInt(color.replace("#", ""), 16);
+            else color = colors[color] ?? Number.parseInt(color.replace("#", ""), 16);
           } else if (Array.isArray(color)) {
+            // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
             color = (color[0] << 16) + (color[1] << 8) + color[2];
           }
 
           if (color < 0 || color > 0xffffff)
-            return i.reply({
+            return modalI.reply({
               embeds: [
                 new EmbedBuilder()
                   .setTitle("Color Range Error")
-                  .setDescription("Color must be within the range 0 - 16777215 (0xFFFFFF): " + color)
+                  .setDescription(`Color must be within the range 0 - 16777215 (0xFFFFFF): ${color}`)
                   .setColor(Color.DiscordDanger),
               ],
               ephemeral: true,
             });
           if (Number.isNaN(color))
-            return i.reply({
+            return modalI.reply({
               embeds: [
                 new EmbedBuilder()
                   .setTitle("Color Convert Error")
-                  .setDescription("Unable to convert color to a number: " + color)
+                  .setDescription(`Unable to convert color to a number: ${color}`)
                   .setColor(Color.DiscordDanger),
               ],
               ephemeral: true,
@@ -217,23 +219,24 @@ module.exports = {
             .setFooter({ text: footerText.length > 0 ? footerText : "" })
             .setColor(color);
 
-          // @ts-ignore
-          channel.send({ embeds: [embed] });
+          await channel.send({ embeds: [embed] }).catch(async () => {
+            return interaction.reply({ content: `:x: Failed to send embed to <#${channel.id}>`, ephemeral: true });
+          });
 
-          return i.reply({
+          return modalI.reply({
             content: `:mega: Embed announced successfully! <#${channel.id}>`,
             ephemeral: true,
           });
         })
-        .catch(async (err) => {
-          if (err.message.endsWith("time")) {
+        .catch(async (error) => {
+          if (error.message.endsWith("time")) {
             const replyEmbed = new EmbedBuilder()
               .setColor(Color.DiscordDanger)
               .setTitle(`Announcement failed`)
               .setDescription(`You took too long to respond. Please try again.`);
             return interaction.followUp({ embeds: [replyEmbed], ephemeral: true });
           } else {
-            logger.error(err);
+            logger.error(error);
             const replyEmbed = new EmbedBuilder()
               .setColor(Color.DiscordDanger)
               .setTitle(`Announcement failed`)
@@ -242,19 +245,18 @@ module.exports = {
           }
         });
     } else if (interaction.options.getSubcommand() === "message") {
-      const message = interaction.options.getString("message");
+      const message = interaction.options.getString("message", true);
 
-      // @ts-ignore
-      channel.send(message);
+      await channel.send(message).catch(async () => {
+        return interaction.reply({ content: `:x: Failed to send message to <#${channel.id}>`, ephemeral: true });
+      });
 
       return interaction.reply({
         content: `:mega: Message announced successfully! <#${channel.id}>`,
         ephemeral: true,
       });
     }
-
-    return;
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

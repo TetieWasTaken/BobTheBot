@@ -34,21 +34,19 @@ module.exports = {
 
     await member
       .timeout(null)
-      .then(() => {
+      .then(async () => {
         return interaction.reply({
           content: `:loud_sound:  \`${member.user.tag}\` has been unmuted`,
           ephemeral: true,
         });
       })
-      .catch(() => {
+      .catch(async () => {
         return interaction.reply({
           content: `:x:  Unable to unmute \`${member.user.tag}\``,
           ephemeral: true,
         });
       });
-
-    return;
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

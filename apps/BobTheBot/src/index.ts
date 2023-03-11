@@ -1,8 +1,9 @@
-import { Partials, GatewayIntentBits, Options, GuildMember, ActivityType, type RateLimitData } from "discord.js";
-import { logger, ExtendedClient } from "./utils/index.js";
-import Database from "./database.js";
+import fs from "node:fs";
+import process from "node:process";
+import { Partials, GatewayIntentBits, Options, ActivityType, type GuildMember, type RateLimitData } from "discord.js";
 import dotenv from "dotenv";
-import fs from "fs";
+import Database from "./database.js";
+import { logger, ExtendedClient } from "./utils/index.js";
 
 dotenv.config();
 
@@ -33,8 +34,8 @@ const client: ExtendedClient = new ExtendedClient({
   sweepers: {
     ...Options.DefaultSweeperSettings,
     messages: {
-      interval: 3600,
-      lifetime: 1800,
+      interval: 3_600,
+      lifetime: 1_800,
     },
   },
   presence: {
@@ -44,11 +45,17 @@ const client: ExtendedClient = new ExtendedClient({
 });
 
 const db = new Database();
-db.connect(client);
+
+// eslint-disable-next-line promise/prefer-await-to-callbacks
+db.connect(client).catch((error: Error) => {
+  logger.error(`Error connecting to database: ${error.message}`);
+});
+
+/* eslint-disable @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
 
 let timerStart = Date.now();
 
-const commandFolders = fs.readdirSync("./src/interactions/").filter((item: string) => !/(^|\/)\.[^/.]/g.test(item));
+const commandFolders = fs.readdirSync("./src/interactions/").filter((item: string) => !/(?:^|\/)\.[^./]/g.test(item));
 
 let counter = 0;
 
@@ -67,6 +74,7 @@ for (const folder of commandFolders) {
           logger.error(`Error loading command ${subFile}: ${error}`);
         }
       }
+
       continue;
     }
 
@@ -103,6 +111,7 @@ for (const compfolder of componentFolders) {
           logger.error(`Error loading button ${file}: ${error}`);
         }
       }
+
       break;
     default:
       break;
@@ -128,6 +137,7 @@ for (let file of eventFiles) {
     } else {
       client.on(event.name, (...args: any[]) => event.execute(...args, client));
     }
+
     counter++;
   } catch (error) {
     logger.error(`Error loading event ${file}: ${error}`);
@@ -144,4 +154,7 @@ client.rest.on("rateLimited", (info: RateLimitData) => {
   logger.warn(`Rate limited for ${info.timeToReset}ms on route ${info.route}`);
 });
 
-client.login(process.env.BOT_TOKEN);
+// eslint-disable-next-line promise/prefer-await-to-callbacks
+client.login(process.env.BOT_TOKEN).catch((error: Error) => {
+  logger.error(`Error logging in: ${error.message}`);
+});

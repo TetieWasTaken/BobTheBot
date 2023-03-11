@@ -21,8 +21,8 @@ module.exports = {
       .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary)
       .setFooter({ text: `${interaction.client.uptime}ms` });
 
-    return await interaction.reply({ embeds: [embed] });
+    return interaction.reply({ embeds: [embed] });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

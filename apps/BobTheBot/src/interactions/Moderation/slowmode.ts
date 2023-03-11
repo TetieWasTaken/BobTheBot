@@ -24,21 +24,19 @@ module.exports = {
 
     if (!interaction.channel) return interaction.reply({ content: "Something went wrong", ephemeral: true });
 
-    if (duration >= 21601) {
-      duration = 21600;
+    if (duration >= 21_601) {
+      duration = 21_600;
     }
 
-    try {
-      interaction.channel.setRateLimitPerUser(duration);
-    } catch (err) {
+    await interaction.channel.setRateLimitPerUser(duration).catch(async () => {
       return interaction.reply({
         content: ":x: I don't have the permissions to adjust the slowmode",
         ephemeral: true,
       });
-    }
+    });
 
     let reply = `:rabbit2: Slowmode has been turned off!`;
-    if (duration == 1) {
+    if (duration === 1) {
       reply = `:turtle: Slowmode has been set to ${duration} second!`;
     } else if (duration <= 5 && duration > 1) {
       reply = `:turtle: Slowmode has been set to ${duration} seconds!`;
@@ -51,6 +49,6 @@ module.exports = {
       ephemeral: true,
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

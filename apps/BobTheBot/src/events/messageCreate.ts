@@ -1,5 +1,8 @@
 import type { Message } from "discord.js";
 import { LevelModel } from "../models/index.js";
+import { logger } from "../utils/index.js";
+
+const getxpNeededXP = (UserLevel: number) => 50 * UserLevel ** 2 + 50;
 
 module.exports = {
   name: "messageCreate",
@@ -10,16 +13,14 @@ module.exports = {
 
     if (author.bot) return;
 
-    //https://www.desmos.com/calculator/6lbyqqpk4u
-    //Special thanks to @That_Guy977#5882 for helping me with this formula
+    // https://www.desmos.com/calculator/6lbyqqpk4u
+    // Special thanks to @That_Guy977#5882 for helping me with this formula
 
-    const bonusXP = Math.floor(Math.min(210 - 115040 / (messageLength + 550), 50));
+    const bonusXP = Math.floor(Math.min(210 - 115_040 / (messageLength + 550), 50));
     const randomNum = Math.floor(Math.random() * 21 + 15);
     const xpToAdd = randomNum + bonusXP;
 
-    const getxpNeededXP = (UserLevel: number) => 50 * UserLevel ** 2 + 50;
-
-    let data = await LevelModel.findOneAndUpdate(
+    const data = await LevelModel.findOneAndUpdate(
       {
         GuildId: message.guild?.id,
         UserId: author.id,
@@ -36,7 +37,7 @@ module.exports = {
       if (!UserXP) UserXP = 0;
       if (!UserLevel) UserLevel = 0;
 
-      let xpNeeded = getxpNeededXP(UserLevel + 1);
+      const xpNeeded = getxpNeededXP(UserLevel + 1);
 
       if (UserXP >= xpNeeded) {
         ++UserLevel;
@@ -45,13 +46,16 @@ module.exports = {
     }
 
     if (!data) {
-      let data = new LevelModel({
+      const data = new LevelModel({
         GuildId: message.guild?.id,
         UserId: author.id,
         UserXP: xpToAdd,
         UserLevel: 0,
       });
-      data.save();
+
+      await data.save().catch((error) => {
+        logger.error(error);
+      });
     }
   },
 };

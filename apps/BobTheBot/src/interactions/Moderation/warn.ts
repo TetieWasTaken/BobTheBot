@@ -1,6 +1,6 @@
-import { InfractionsModel } from "../../models/index.js";
 import { SlashCommandBuilder, PermissionFlagsBits, type ChatInputCommandInteraction } from "discord.js";
-import { raiseUserHierarchyError, raiseBotHierarchyError } from "../../utils/index.js";
+import { InfractionsModel } from "../../models/index.js";
+import { raiseUserHierarchyError, raiseBotHierarchyError, logger } from "../../utils/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -24,7 +24,7 @@ module.exports = {
     .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const user = interaction.options.getUser("target", true);
-    let reason = interaction.options.getString("reason") ?? "No reason provided";
+    const reason = interaction.options.getString("reason") ?? "No reason provided";
 
     if (!interaction.guild.members.me)
       return interaction.reply({ content: ":x: I am not in this guild!", ephemeral: true });
@@ -35,6 +35,7 @@ module.exports = {
         ephemeral: true,
       });
     }
+
     if (user.id === interaction.user.id) {
       return interaction.reply({
         content: ":wrench: You can't warn yourself!",
@@ -51,22 +52,24 @@ module.exports = {
 
     if (highestUserRole.position >= authorMember.roles.highest.position) return raiseUserHierarchyError(interaction);
 
-    let data = await InfractionsModel.findOne({
+    const data = await InfractionsModel.findOne({
       GuildId: interaction.guild.id,
       UserId: user.id,
     });
 
     if (data) {
-      const NewCaseId = data.Punishments.reduce((a, b) => Math.max(a, b.CaseId), 0) + 1;
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+      const NewCaseId: number = data.Punishments.reduce((a, b) => Math.max(a, b.CaseId), 0) + 1;
 
       data.Punishments.unshift({
         PunishType: "WARN",
         Reason: reason,
         CaseId: NewCaseId,
       });
-      data.save();
+
+      await data.save().catch((error) => logger.error(error));
     } else if (!data) {
-      let newData = new InfractionsModel({
+      const newData = new InfractionsModel({
         GuildId: interaction.guild.id,
         UserId: user.id,
         Punishments: [
@@ -77,21 +80,20 @@ module.exports = {
           },
         ],
       });
-      newData.save();
+
+      await newData.save().catch((error) => logger.error(error));
     }
 
-    user
+    await user
       .send(`You have been warned in \`${interaction.guild.name}\` for \`${reason}\``)
       .catch(() => {})
-      .then(() => {
+      .then(async () => {
         return interaction.reply({
           content: `:warning:  \`${user.tag}\` has been warned for \`${reason}\``,
           ephemeral: true,
         });
       });
-
-    return;
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

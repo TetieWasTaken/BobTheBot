@@ -17,7 +17,7 @@ module.exports = {
     .setDescription("Sends a random meme from r/memes")
     .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
-    const data = await fetch(`https://www.reddit.com/r/memes/random/.json`).then((res) => {
+    const data = await fetch(`https://www.reddit.com/r/memes/random/.json`).then(async (res) => {
       return res.json();
     });
 
@@ -35,6 +35,6 @@ module.exports = {
 
     await interaction.reply({ embeds: [replyEmbed], ephemeral: true });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

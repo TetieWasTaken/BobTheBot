@@ -1,7 +1,8 @@
+import fs from "node:fs";
+import process from "node:process";
 import { REST, Routes } from "discord.js";
-import { logger } from "./utils/index.js";
 import dotenv from "dotenv";
-import fs from "fs";
+import { logger } from "./utils/index.js";
 
 dotenv.config();
 
@@ -10,8 +11,10 @@ if (!process.env.BOT_TOKEN) {
   process.exit(1);
 }
 
-const commandFolders = fs.readdirSync("./src/interactions/").filter((item: string) => !/(^|\/)\.[^/.]/g.test(item));
+const commandFolders = fs.readdirSync("./src/interactions/").filter((item: string) => !/(?:^|\/)\.[^./]/g.test(item));
 const interactions = [];
+
+/* eslint-disable @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports */
 
 for (const folder of commandFolders) {
   const commandFiles = fs.readdirSync(`./src/interactions/${folder}`);
@@ -26,6 +29,7 @@ for (const folder of commandFolders) {
           logger.error(error);
         }
       }
+
       continue;
     }
 

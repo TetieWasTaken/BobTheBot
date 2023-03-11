@@ -1,5 +1,6 @@
-import { logger, type ExtendedClient } from "../utils/index.js";
+import { setTimeout } from "node:timers/promises";
 import dotenv from "dotenv";
+import { logger, type ExtendedClient } from "../utils/index.js";
 
 dotenv.config();
 
@@ -9,7 +10,7 @@ module.exports = {
   async execute(client: ExtendedClient): Promise<void> {
     logger.info("Client is ready");
     // This Promise is required to make sure the WebSocket is fully ready before proceeding
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await setTimeout(1_000);
 
     const WSStatus: { [key: number]: string } = {
       0: "Ready",

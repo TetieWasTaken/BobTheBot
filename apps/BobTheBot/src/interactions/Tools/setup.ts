@@ -5,15 +5,16 @@ import {
   ButtonBuilder,
   ButtonStyle,
   PermissionFlagsBits,
-  ButtonInteraction,
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
+  type ButtonInteraction,
   type ChatInputCommandInteraction,
   type ModalSubmitInteraction,
 } from "discord.js";
-import { GuildModel } from "../../models/index.js";
 import { Color } from "../../constants.js";
+import { GuildModel } from "../../models/index.js";
+import { logger } from "../../utils/logger.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -48,7 +49,8 @@ module.exports = {
         GuildId: interaction.guild.id,
         GuildLogChannel: "Not set",
       });
-      data.save();
+
+      await data.save().catch((error: Error) => logger.error(error));
     }
 
     const replyEmbed = new EmbedBuilder()
@@ -78,8 +80,8 @@ module.exports = {
     });
 
     const buttonCollector = reply.createMessageComponentCollector({
-      filter: (i) => i.customId === "full-setup",
-      time: 60 * 1000,
+      filter: (buttonI) => buttonI.customId === "full-setup",
+      time: 60 * 1_000,
     });
 
     buttonCollector
@@ -99,14 +101,14 @@ module.exports = {
 
         modal.addComponents(firstActionRow);
 
-        await buttonI.showModal(modal).catch(() => {
+        await buttonI.showModal(modal).catch(async () => {
           return buttonI.reply({
             content: `Something went wrong!`,
           });
         });
 
-        buttonI
-          .awaitModalSubmit({ filter: (i) => i.customId === "full-setup-modal", time: 5 * 60 * 1000 })
+        await buttonI
+          .awaitModalSubmit({ filter: (modalI) => modalI.customId === "full-setup-modal", time: 5 * 60 * 1_000 })
           .then(async (modalI: ModalSubmitInteraction) => {
             const logChannelId = modalI.fields.getTextInputValue("logChannelIdInput");
 
@@ -136,13 +138,13 @@ module.exports = {
               {
                 GuildLogChannel: logChannelId,
               }
-            ).catch(() => {
+            ).catch(async () => {
               return modalI.reply({ content: "An error occurred while saving the data.", ephemeral: true });
             });
 
-            return await modalI.reply({ embeds: [replyEmbed], ephemeral: true });
+            return modalI.reply({ embeds: [replyEmbed], ephemeral: true });
           })
-          .catch(() => {
+          .catch(async () => {
             return buttonI.reply({ content: "Setup timed out.", ephemeral: true });
           });
       })
@@ -152,6 +154,6 @@ module.exports = {
         });
       });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

@@ -1,6 +1,7 @@
-import { SlashCommandBuilder, EmbedBuilder, version, type ChatInputCommandInteraction } from "discord.js";
-import { Color } from "../../constants.js";
+import { version as nodeVersion } from "node:process";
+import { SlashCommandBuilder, EmbedBuilder, version as djsVersion, type ChatInputCommandInteraction } from "discord.js";
 import mongoose from "mongoose";
+import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -18,7 +19,7 @@ module.exports = {
     .setDescription("Receive information about the bot")
     .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
-    const releases = await fetch("https://api.github.com/repos/TetieWasTaken/BobTheBot/releases").then((res) =>
+    const releases = await fetch("https://api.github.com/repos/TetieWasTaken/BobTheBot/releases").then(async (res) =>
       res.json()
     );
 
@@ -30,7 +31,7 @@ module.exports = {
       .addFields(
         {
           name: `Dependencies`,
-          value: `NodeJS: \`${process.version}\`\nDiscord.JS: \`${version}\`\nMongoose: \`${mongoose.version}\``,
+          value: `NodeJS: \`${nodeVersion}\`\nDiscord.JS: \`${djsVersion}\`\nMongoose: \`${mongoose.version}\``,
           inline: true,
         },
         {
@@ -57,10 +58,11 @@ module.exports = {
         iconURL: interaction.user.avatarURL() ?? undefined,
       })
       .setTimestamp();
-    interaction.reply({
+
+    return interaction.reply({
       embeds: [replyEmbed],
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

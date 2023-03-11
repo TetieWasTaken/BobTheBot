@@ -1,5 +1,7 @@
+import fs from "node:fs";
+import { setInterval, clearInterval } from "node:timers";
 import { SlashCommandBuilder, type ChatInputCommandInteraction } from "discord.js";
-import fs from "fs";
+import { logger } from "../../utils/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -21,41 +23,27 @@ module.exports = {
     .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">): Promise<void> {
     const amount = interaction.options.getInteger("amount") ?? 1;
-
     const diceFolder = fs.readdirSync("./resources/dice_images");
     let fileDirArray = [];
 
     await interaction.reply({ content: "Rolling dice...", ephemeral: true });
 
-    let j = 0;
-    let rollDiceInterval = setInterval(() => {
-      if (j < 2) {
-        fileDirArray = [];
-        for (let i = 0; i < amount; i++) {
-          const randomNum = Math.floor(Math.random() * 6);
-          fileDirArray.push("./resources/dice_images/" + diceFolder[randomNum]);
-        }
-
-        interaction.editReply({
-          content: "Rolling dice...",
-          files: fileDirArray,
-        });
-        j++;
-      } else {
-        fileDirArray = [];
-        for (let i = 0; i < amount; i++) {
-          const randomNum = Math.floor(Math.random() * 6);
-          fileDirArray.push("./resources/dice_images/" + diceFolder[randomNum]);
-        }
-
-        interaction.editReply({
-          content: "Dice rolled!",
-          files: fileDirArray,
-        });
-        clearInterval(rollDiceInterval);
+    let rollCount = 0;
+    const rollDiceInterval = setInterval(async () => {
+      fileDirArray = [];
+      for (let diceCount = 0; diceCount < amount; diceCount++) {
+        const randomNum = Math.floor(Math.random() * 6);
+        fileDirArray.push(`./resources/dice_images/${diceFolder[randomNum]}`);
       }
-    }, 1000);
+
+      const content = rollCount < 2 ? "Rolling dice..." : "Dice rolled!";
+      await interaction.editReply({ content, files: fileDirArray }).catch((error) => {
+        logger.error(error);
+      });
+
+      if (++rollCount === 3) clearInterval(rollDiceInterval);
+    }, 1_000);
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

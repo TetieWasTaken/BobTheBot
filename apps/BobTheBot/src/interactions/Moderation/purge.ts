@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, PermissionFlagsBits, type ChatInputCommandInteraction } from "discord.js";
+import { SlashCommandBuilder, PermissionFlagsBits, type ChatInputCommandInteraction, Collection } from "discord.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -29,21 +29,20 @@ module.exports = {
 
     if (!interaction.channel) return interaction.reply({ content: "Something went wrong", ephemeral: true });
 
-    return interaction.channel
-      .bulkDelete(amount)
-      .then((messages) =>
-        interaction.reply({
-          content: `:mag: Purged ${messages.size} messages`,
-          ephemeral: true,
-        })
-      )
-      .catch(() => {
-        return interaction.reply({
-          content: "Something went wrong while purging messages",
-          ephemeral: true,
-        });
+    const messages = await interaction.channel.bulkDelete(amount).catch(async () => {
+      return interaction.reply({
+        content: "Something went wrong while purging messages",
+        ephemeral: true,
       });
+    });
+
+    if (!(messages instanceof Collection)) return;
+
+    await interaction.reply({
+      content: `:mag: Purged ${messages.size} messages`,
+      ephemeral: true,
+    });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

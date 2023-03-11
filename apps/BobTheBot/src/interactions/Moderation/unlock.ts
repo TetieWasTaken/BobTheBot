@@ -25,23 +25,25 @@ module.exports = {
     );
     const helperRole = interaction.guild.roles.cache.find((role) => ["helper", "Helper"].includes(role.name));
 
-    interaction.channel.permissionOverwrites
+    await interaction.channel.permissionOverwrites
       .edit(interaction.guild.id, {
         SendMessages: null,
       })
-      .catch(() => {
+      .catch(async () => {
         return interaction.reply({
           content: `:x: Something went wrong while unlocking the channel`,
           ephemeral: true,
         });
       });
-    if (!(typeof modRole === "undefined")) {
-      interaction.channel.permissionOverwrites.edit(modRole, {
+
+    if (modRole) {
+      await interaction.channel.permissionOverwrites.edit(modRole, {
         SendMessages: null,
       });
     }
-    if (!(typeof helperRole === "undefined")) {
-      interaction.channel.permissionOverwrites.edit(helperRole, {
+
+    if (helperRole) {
+      await interaction.channel.permissionOverwrites.edit(helperRole, {
         SendMessages: null,
       });
     }
@@ -51,6 +53,6 @@ module.exports = {
       ephemeral: true,
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

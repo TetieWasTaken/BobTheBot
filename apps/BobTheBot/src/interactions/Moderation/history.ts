@@ -5,8 +5,9 @@ import {
   time,
   type ChatInputCommandInteraction,
 } from "discord.js";
-import { InfractionsModel } from "../../models/index.js";
 import { Color } from "../../constants.js";
+import { InfractionsModel } from "../../models/index.js";
+import { logger } from "../../utils/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -40,7 +41,8 @@ module.exports = {
         UserId: member.id,
         Punishments: [],
       });
-      data.save();
+
+      await data.save().catch((error) => logger.error(error));
     }
 
     let punishmentArray = ["No active infractions."];
@@ -49,7 +51,7 @@ module.exports = {
       punishmentArray = data.Punishments.map(
         (punishment) => `\`ID\`: ${punishment.CaseId}, \`${punishment.PunishType}\`: ${punishment.Reason}`
       );
-      if (punishmentArray.length == 0) {
+      if (punishmentArray.length === 0) {
         punishmentArray.push("No active infractions.");
       } else if (punishmentArray.length >= 20) {
         punishmentArray = punishmentArray.slice(0, 20);
@@ -79,6 +81,6 @@ module.exports = {
       embeds: [replyEmbed],
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

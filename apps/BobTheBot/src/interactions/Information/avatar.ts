@@ -18,7 +18,7 @@ module.exports = {
     .addUserOption((option) => option.setName("target").setDescription("user to target").setRequired(false))
     .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
-    let member = interaction.options.getMember("target") ?? interaction.member;
+    const member = interaction.options.getMember("target") ?? interaction.member;
 
     if (!member) return;
 
@@ -30,10 +30,10 @@ module.exports = {
       .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary)
       .setTimestamp();
 
-    interaction.reply({
+    return interaction.reply({
       embeds: [replyEmbed],
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
-import { requestItemData, raiseMiscellaneousError } from "../../utils/index.js";
 import { Color } from "../../constants.js";
+import { requestItemData, raiseMiscellaneousError } from "../../utils/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -58,6 +58,6 @@ module.exports = {
       embeds: [itemEmbed],
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

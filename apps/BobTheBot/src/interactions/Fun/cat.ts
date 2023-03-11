@@ -26,6 +26,6 @@ module.exports = {
 
     await interaction.reply({ embeds: [embed] });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

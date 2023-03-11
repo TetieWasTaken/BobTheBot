@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import {
   SlashCommandBuilder,
   PermissionFlagsBits,
@@ -5,15 +6,15 @@ import {
   type ChatInputCommandInteraction,
   type AutocompleteInteraction,
 } from "discord.js";
-import { capitalizeFirst, getCategories, damerAutocomplete } from "../../utils/index.js";
-import { GuildModel } from "../../models/index.js";
 import { Color } from "../../constants.js";
-import fs from "fs";
+import { GuildModel } from "../../models/index.js";
+import { capitalizeFirst, getCategories, damerAutocomplete } from "../../utils/index.js";
 
+/* eslint-disable @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
 function getCommands() {
   const categories = fs
     .readdirSync("./dist/interactions")
-    .filter((item) => !/(^|\/)\.[^/.]/g.test(item) && item !== "context-menu");
+    .filter((item) => !/(?:^|\/)\.[^./]/g.test(item) && item !== "context-menu");
 
   return categories.flatMap((category) =>
     fs
@@ -22,6 +23,7 @@ function getCommands() {
       .map((file) => `${capitalizeFirst(category)}: ${capitalizeFirst(require(`../${category}/${file}`).data.name)}`)
   );
 }
+/* eslint-enable @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires  */
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -63,12 +65,12 @@ module.exports = {
     const query = interaction.options.getFocused();
     const choices = getCommands();
 
-    return await interaction.respond(damerAutocomplete(query, choices));
+    await interaction.respond(damerAutocomplete(query, choices));
   },
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const subcommand = interaction.options.getSubcommand();
 
-    let guildData = await GuildModel.findOne({
+    const guildData = await GuildModel.findOne({
       guildId: interaction.guild.id,
     });
 
@@ -89,17 +91,17 @@ module.exports = {
       case "command": {
         let command = interaction.options.getString("command", true);
 
-        const index = command.indexOf(":");
-        if (index >= 0) command = command.substring(index + 2).toLowerCase();
+        const index: number = command.indexOf(":");
+        if (index >= 0) command = command.slice(Math.max(0, index + 2)).toLowerCase();
 
         let cmdEmbed: EmbedBuilder;
 
-        if (!guildData.DisabledCommands.includes(command)) {
+        if (!guildData.DisabledCommands.includes(command))
           cmdEmbed = new EmbedBuilder()
             .setTitle(":x: Command already enabled!")
             .setDescription(`Command \`${command}\` is already enabled!`)
             .setColor(Color.DiscordDanger);
-        } else {
+        else if (guildData.DisabledCommands.includes(command)) {
           guildData.DisabledCommands = guildData.DisabledCommands.filter((cmd) => cmd !== command);
 
           await guildData.save();
@@ -108,6 +110,11 @@ module.exports = {
             .setTitle(":white_check_mark: Command enabled!")
             .setDescription(`Command \`${command}\` has been enabled!`)
             .setColor(Color.DiscordSuccess);
+        } else {
+          cmdEmbed = new EmbedBuilder()
+            .setTitle(":x: Something went wrong!")
+            .setDescription(`Command \`${command}\` does not exist!`)
+            .setColor(Color.DiscordDanger);
         }
 
         return interaction.reply({
@@ -115,6 +122,7 @@ module.exports = {
           ephemeral: true,
         });
       }
+
       case "category": {
         const category = interaction.options.getString("category", true);
         const categories = fs.readdirSync("./dist/interactions");
@@ -124,9 +132,10 @@ module.exports = {
           const interactions = fs.readdirSync(`./dist/interactions/${category}`).filter((file) => file.endsWith(".js"));
 
           let commandCount = 0;
-          let disabledCommandsArray = [];
+          const disabledCommandsArray = [];
 
           for (const file of interactions) {
+            // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
             const command = require(`../${category}/${file}`);
             if (guildData.DisabledCommands.includes(command.data.name)) {
               commandCount++;
@@ -160,6 +169,7 @@ module.exports = {
           ephemeral: true,
         });
       }
+
       default:
         return interaction.reply({
           content: ":x: Unknown subcommand!",
@@ -167,6 +177,6 @@ module.exports = {
         });
     }
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

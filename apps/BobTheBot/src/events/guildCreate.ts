@@ -4,6 +4,6 @@ module.exports = {
   name: "guildCreate",
   once: false,
   async execute(guild: Guild) {
-    guild.members.me?.setNickname("Bob");
+    await guild.members.me?.setNickname("Bob").catch(() => {});
   },
 };

@@ -1,6 +1,6 @@
+import fs from "node:fs";
 import { SlashCommandBuilder, EmbedBuilder, PermissionsBitField, type ChatInputCommandInteraction } from "discord.js";
 import { Color } from "../../constants.js";
-import fs from "fs";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -24,20 +24,22 @@ module.exports = {
     if (!interaction.guild.members.me)
       return interaction.reply({ content: ":x: I am not in this guild!", ephemeral: true });
 
-    const commandFolders = fs.readdirSync("./interactions").filter((item) => !/(^|\/)\.[^/.]/g.test(item));
+    const commandFolders = fs.readdirSync("./interactions").filter((item) => !/(?:^|\/)\.[^./]/g.test(item));
     for (const folder of commandFolders) {
       const commandFiles = fs.readdirSync(`./interactions/${folder}`).filter((file) => file.endsWith(".js"));
       for (const file of commandFiles) {
+        /* eslint-disable @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports */
         const commandFile = require(`../../interactions/${folder}/${file}`);
         if (commandFile.data.name === command) {
           let requiredBotPerms = require(`../../interactions/${folder}/${file}`);
+          /* eslint-enable @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports */
           requiredBotPerms = requiredBotPerms.requiredBotPerms;
 
           let replyEmbed = new EmbedBuilder();
 
-          for (let i = 0; i < requiredBotPerms.key.length; i++) {
-            if (!interaction.guild.members.me.permissions.has(requiredBotPerms.key[i])) {
-              let missingPermission = new PermissionsBitField(requiredBotPerms.key[i]).toArray();
+          for (const perm of requiredBotPerms.key) {
+            if (!interaction.guild.members.me.permissions.has(perm)) {
+              const missingPermission = new PermissionsBitField(perm).toArray();
 
               replyEmbed = new EmbedBuilder()
                 .setColor(Color.DiscordDanger)
@@ -69,6 +71,6 @@ module.exports = {
       ephemeral: true,
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

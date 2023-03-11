@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
+import { Color } from "../../constants.js";
 import { EconomyModel } from "../../models/index.js";
 import { logger, requestItemData } from "../../utils/index.js";
-import { Color } from "../../constants.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -56,34 +56,35 @@ module.exports = {
           text: `Page ${page}/${Math.ceil(data.Inventory.length / 5)}`,
         })
         .setColor(Color.DiscordEmbedBackground);
-      for (let i = 0; i < 5; i++) {
-        if (data.Inventory[i + (page - 1) * 5]) {
+      for (let index = 0; index < 5; index++) {
+        if (data.Inventory[index + (page - 1) * 5]) {
           try {
-            const itemData = await requestItemData(data.Inventory[i + (page - 1) * 5].id);
+            const itemData = await requestItemData(data.Inventory[index + (page - 1) * 5].id);
 
             if (!itemData) return;
 
             inventoryEmbed.addFields({
-              name: `${itemData.name} — ${data.Inventory[i].amount}`,
-              value: `*ID* \`${data.Inventory[i].id}\` — ${itemData.type}`,
+              name: `${itemData.name} — ${data.Inventory[index].amount}`,
+              value: `*ID* \`${data.Inventory[index].id}\` — ${itemData.type}`,
               inline: false,
             });
-          } catch (err) {
-            logger.error(err);
+          } catch (error) {
+            logger.error(error);
             inventoryEmbed.addFields({
-              name: `Unknown Item — ${data.Inventory[i].amount}`,
-              value: `*ID* \`${data.Inventory[i].id}\` — Unknown Type`,
+              name: `Unknown Item — ${data.Inventory[index].amount}`,
+              value: `*ID* \`${data.Inventory[index].id}\` — Unknown Type`,
               inline: false,
             });
             continue;
           }
         }
       }
+
       return interaction.reply({
         embeds: [inventoryEmbed],
       });
     }
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

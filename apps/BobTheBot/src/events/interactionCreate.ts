@@ -1,7 +1,20 @@
-import { EmbedBuilder, BaseInteraction } from "discord.js";
-import { logger, raiseUserPermissionsError, raiseBotPermissionsError, type ExtendedClient } from "../utils/index.js";
-import { GuildModel } from "../models/index.js";
+import { setTimeout } from "node:timers/promises";
+import { EmbedBuilder, type BaseInteraction } from "discord.js";
 import { Color } from "../constants.js";
+import { GuildModel } from "../models/index.js";
+import { logger, raiseUserPermissionsError, raiseBotPermissionsError, type ExtendedClient } from "../utils/index.js";
+
+function logInteractionError(interaction: BaseInteraction<"cached">) {
+  logger.trace({
+    interaction: {
+      id: interaction.id,
+      guild: interaction.guild?.id,
+      channel: interaction.channel?.id,
+      member: interaction.member?.id,
+      user: interaction.user.id,
+    },
+  });
+}
 
 module.exports = {
   name: "interactionCreate",
@@ -16,21 +29,19 @@ module.exports = {
         GuildId: interaction.guild?.id,
       });
 
-      if (guildData && guildData.DisabledCommands) {
-        if (guildData.DisabledCommands.includes(interaction.commandName)) {
-          const embed = new EmbedBuilder()
-            .setColor(Color.DiscordDanger)
-            .setTitle(":x: Command Disabled")
-            .setDescription(`This command has been disabled by the server administrators.`)
-            .setFooter({
-              text: `Believe this is a mistake? Contact administrators to /enable this command`,
-            });
-
-          return interaction.reply({
-            embeds: [embed],
-            ephemeral: true,
+      if (guildData?.DisabledCommands && guildData.DisabledCommands.includes(interaction.commandName)) {
+        const embed = new EmbedBuilder()
+          .setColor(Color.DiscordDanger)
+          .setTitle(":x: Command Disabled")
+          .setDescription(`This command has been disabled by the server administrators.`)
+          .setFooter({
+            text: `Believe this is a mistake? Contact administrators to /enable this command`,
           });
-        }
+
+        return interaction.reply({
+          embeds: [embed],
+          ephemeral: true,
+        });
       }
 
       if (command.cooldownTime) {
@@ -41,7 +52,7 @@ module.exports = {
           const timeLeft = cooldownTime - (currentTime - client.cooldowns.get(interaction.commandName));
           if (timeLeft > 0) {
             return interaction.reply({
-              content: `Please wait \`${timeLeft / 1000}\` seconds before using this command again.`,
+              content: `Please wait \`${timeLeft / 1_000}\` seconds before using this command again.`,
               ephemeral: true,
             });
           }
@@ -49,9 +60,13 @@ module.exports = {
 
         client.cooldowns.set(`${interaction.commandName}`, currentTime);
 
-        setTimeout(() => {
+        // After cooldownTime, execute client.cooldowns.delete(interaction.commandName);
+
+        await setTimeout(cooldownTime, () => {
           client.cooldowns.delete(interaction.commandName);
-        }, cooldownTime);
+        }).catch((error) => {
+          logger.error(error);
+        });
       }
 
       if (!interaction.inCachedGuild()) {
@@ -80,7 +95,7 @@ module.exports = {
       try {
         const startTime = Date.now();
         await command.execute(interaction, client);
-        if (Date.now() - startTime < 2000) {
+        if (Date.now() - startTime < 2_000) {
           logger.trace(
             {
               command: interaction.commandName,
@@ -99,9 +114,10 @@ module.exports = {
             "Command executed"
           );
         }
-      } catch (err) {
-        logger.warn(`Command ${interaction.commandName} failed to execute.\n\n${interaction}`);
-        if (err) logger.error(err);
+      } catch (error) {
+        logger.warn(`Command ${interaction.commandName} failed to execute.`);
+        logInteractionError(interaction);
+        if (error) logger.error(error);
         await interaction.reply({
           content: "An error occured while executing that command.",
           ephemeral: true,
@@ -110,15 +126,19 @@ module.exports = {
     } else if (interaction.isAutocomplete()) {
       const command = client.interactions.get(interaction.commandName);
 
+      if (!interaction.inCachedGuild()) return;
+
       if (!command) {
-        return logger.error(`No command matching ${interaction.commandName} was found.`);
+        logger.error(`No command matching ${interaction.commandName} was found.`);
+        return;
       }
 
       try {
         await command.autocomplete(interaction);
       } catch (error) {
-        logger.warn(`Autocomplete ${interaction.commandName} failed to execute.\n\n${interaction}`);
-        return logger.error(error);
+        logger.warn(`Autocomplete ${interaction.commandName} failed to execute.`);
+        logInteractionError(interaction);
+        logger.error(error);
       }
     } else if (interaction.isButton()) {
       if (interaction.message.interaction?.user.id !== interaction.user.id)
@@ -126,6 +146,8 @@ module.exports = {
           content: "This button is not for you!",
           ephemeral: true,
         });
+
+      if (!interaction.inCachedGuild()) return;
 
       const button = client.buttons.get(interaction.customId);
       if (!button) return new Error("No code for button!");
@@ -141,12 +163,13 @@ module.exports = {
           },
           "Button executed"
         );
-      } catch (err) {
-        logger.warn(`Button ${interaction.customId} failed to execute.\n\n${interaction}`);
-        logger.error(err);
+      } catch (error) {
+        logger.warn(`Button ${interaction.customId} failed to execute.`);
+        logInteractionError(interaction);
+        logger.error(error);
       }
     } else {
-      return logger.warn("Unknown interaction type");
+      logger.warn("Unknown interaction type");
     }
   },
 };

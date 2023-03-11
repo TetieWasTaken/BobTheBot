@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import {
   SlashCommandBuilder,
   PermissionFlagsBits,
@@ -5,15 +6,16 @@ import {
   type ChatInputCommandInteraction,
   type AutocompleteInteraction,
 } from "discord.js";
-import { damerAutocomplete, capitalizeFirst, getCategories, type ExtendedClient } from "../../utils/index.js";
-import { GuildModel } from "../../models/index.js";
 import { Color } from "../../constants.js";
-import fs from "fs";
+import { GuildModel } from "../../models/index.js";
+import { damerAutocomplete, capitalizeFirst, getCategories, type ExtendedClient } from "../../utils/index.js";
+
+/* eslint-disable @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
 
 function getCommands() {
   const categories = fs
     .readdirSync("./dist/interactions")
-    .filter((item) => !/(^|\/)\.[^/.]/g.test(item) && item !== "context-menu");
+    .filter((item) => !/(?:^|\/)\.[^./]/g.test(item) && item !== "context-menu");
 
   return categories.flatMap((category) =>
     fs
@@ -63,7 +65,7 @@ module.exports = {
     const query = interaction.options.getFocused();
     const choices = getCommands();
 
-    return await interaction.respond(damerAutocomplete(query, choices));
+    await interaction.respond(damerAutocomplete(query, choices));
   },
   async execute(interaction: ChatInputCommandInteraction<"cached">, client: ExtendedClient) {
     const subcommand = interaction.options.getSubcommand();
@@ -87,12 +89,12 @@ module.exports = {
       case "command": {
         let command = interaction.options.getString("command", true);
 
-        const index = command.indexOf(":");
-        if (index >= 0) command = command.substring(index + 2).toLowerCase();
+        const index: number = command.indexOf(":");
+        if (index >= 0) command = command.slice(Math.max(0, index + 2)).toLowerCase();
 
         let cmdEmbed: EmbedBuilder;
 
-        if (command == "disable" || command == "enable") {
+        if (command === "disable" || command === "enable") {
           cmdEmbed = new EmbedBuilder()
             .setTitle(":x: Unable to disable command")
             .setDescription(`Command \`${command}\` cannot be disabled or enabled!`)
@@ -112,15 +114,15 @@ module.exports = {
             .setColor(Color.DiscordSuccess);
         }
 
-        interaction.reply({ embeds: [cmdEmbed], ephemeral: true });
-
+        await interaction.reply({ embeds: [cmdEmbed], ephemeral: true });
         break;
       }
+
       case "category": {
         const category = interaction.options.getString("category", true);
 
         let commandCount = 0;
-        let disabledCommandsArray = [];
+        const disabledCommandsArray = [];
 
         const interactions = fs.readdirSync(`./dist/interactions/${category}`).filter((file) => file.endsWith(".js"));
 
@@ -131,6 +133,7 @@ module.exports = {
             if (guildData.DisabledCommands.includes(command.data.name)) {
               continue;
             }
+
             commandCount++;
             disabledCommandsArray.push(command.data.name);
             guildData.DisabledCommands.push(command.data.name);
@@ -158,14 +161,14 @@ module.exports = {
           ephemeral: true,
         });
       }
+
       default:
         return interaction.reply({
           content: "Unknown subcommand!",
           ephemeral: true,
         });
     }
-    return;
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

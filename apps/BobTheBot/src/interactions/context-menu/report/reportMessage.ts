@@ -10,22 +10,22 @@ import {
   EmbedBuilder,
   type MessageContextMenuCommandInteraction,
 } from "discord.js";
+import { Color } from "../../../constants.js";
 import { GuildModel } from "../../../models/index.js";
 import { logger } from "../../../utils/index.js";
-import { Color } from "../../../constants.js";
 
 module.exports = {
   data: new ContextMenuCommandBuilder()
     .setName("Report Message")
     .setType(ApplicationCommandType.Message)
     .setDMPermission(false),
-  execute(interaction: MessageContextMenuCommandInteraction<"cached">) {
+  async execute(interaction: MessageContextMenuCommandInteraction<"cached">) {
     const modal = new ModalBuilder().setCustomId("report-message-modal").setTitle("Report Message");
 
     const messageInput = new TextInputBuilder()
       .setCustomId("message-input")
       .setLabel("Reason")
-      .setMaxLength(1024)
+      .setMaxLength(1_024)
       .setMinLength(4)
       .setPlaceholder("Enter a detailed reason for reporting this message")
       .setRequired(true)
@@ -35,14 +35,14 @@ module.exports = {
 
     modal.addComponents(firstActionRow);
 
-    interaction.showModal(modal);
+    await interaction.showModal(modal).catch((error: Error) => logger.error(error));
 
-    interaction
-      .awaitModalSubmit({ filter: (i) => i.customId === "report-message-modal", time: 5 * 60 * 1000 })
-      .then(async (i) => {
+    await interaction
+      .awaitModalSubmit({ filter: (modalI) => modalI.customId === "report-message-modal", time: 5 * 60 * 1_000 })
+      .then(async (modalI) => {
         if (!interaction.channel) return;
 
-        const message = i.fields.getTextInputValue("message-input");
+        const message = modalI.fields.getTextInputValue("message-input");
 
         const replyEmbed = new EmbedBuilder()
           .setColor(Color.DiscordEmbedBackground)
@@ -66,7 +66,7 @@ module.exports = {
         const actionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(confirmButton, discordButton);
         const confirmedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(discordButton);
 
-        const reply = await i.reply({
+        const reply = await modalI.reply({
           content: `Are you sure you want to report this message?`,
           embeds: [replyEmbed],
           components: [actionRow],
@@ -75,19 +75,19 @@ module.exports = {
         });
 
         const confirmCollector = reply.createMessageComponentCollector({
-          filter: (i) => i.customId === "confirm-button",
-          time: 60 * 1000,
+          filter: (buttonI) => buttonI.customId === "confirm-button",
+          time: 60 * 1_000,
         });
 
         confirmCollector
-          .on("collect", async (i) => {
+          .on("collect", async (buttonI) => {
             if (!interaction.channel) return;
 
             const guildData = await GuildModel.findOne({
               GuildId: interaction.guild.id,
             });
 
-            if (guildData && guildData.GuildLogChannel) {
+            if (guildData?.GuildLogChannel) {
               const reportEmbed = new EmbedBuilder()
                 .setColor(Color.DiscordDanger)
                 .setAuthor({ name: `${interaction.user.tag}`, iconURL: `${interaction.member.displayAvatarURL()}` })
@@ -113,19 +113,19 @@ module.exports = {
 
               const reportChannel = interaction.guild.channels.cache.get(guildData.GuildLogChannel);
 
-              if (!reportChannel || !reportChannel.isTextBased()) {
+              if (!reportChannel?.isTextBased()) {
                 const replyEmbed = new EmbedBuilder()
                   .setColor(Color.DiscordDanger)
                   .setTitle(`Report failed`)
                   .setDescription(
                     `I was unable to find the log channel. Make sure I can view and send messages in it.`
                   );
-                return void i.reply({ embeds: [replyEmbed], ephemeral: true });
+                return void buttonI.reply({ embeds: [replyEmbed], ephemeral: true });
               }
 
               try {
-                reportChannel.send({ embeds: [reportEmbed] });
-              } catch (err) {
+                await reportChannel.send({ embeds: [reportEmbed] });
+              } catch {
                 const replyEmbed = new EmbedBuilder()
                   .setColor(Color.DiscordDanger)
                   .setTitle(`Report failed`)
@@ -133,7 +133,7 @@ module.exports = {
                     `I was unable to send the report to the report channel. Please check the permissions and try again.`
                   );
 
-                return void i.reply({ embeds: [replyEmbed], ephemeral: true });
+                return void buttonI.reply({ embeds: [replyEmbed], ephemeral: true });
               }
 
               const replyEmbed = new EmbedBuilder()
@@ -148,7 +148,7 @@ module.exports = {
                 .setFooter({ text: `#${interaction.channel.name}` })
                 .setTimestamp(interaction.targetMessage.createdAt);
 
-              return void i.update({
+              return void buttonI.update({
                 content: "Message reported successfully!",
                 embeds: [replyEmbed],
                 components: [confirmedRow],
@@ -160,7 +160,7 @@ module.exports = {
                 .setDescription(
                   `The server moderators have not set up a log channel. Please contact them to set one up.`
                 );
-              return void i.update({ embeds: [replyEmbed], components: [confirmedRow] });
+              return void buttonI.update({ embeds: [replyEmbed], components: [confirmedRow] });
             }
           })
           .on("end", () => {
@@ -171,15 +171,15 @@ module.exports = {
             return void interaction.followUp({ embeds: [replyEmbed] });
           });
       })
-      .catch((err) => {
-        if (err.message.endsWith("time")) {
+      .catch(async (error) => {
+        if (error.message.endsWith("time")) {
           const replyEmbed = new EmbedBuilder()
             .setColor(Color.DiscordDanger)
             .setTitle(`Report user failed`)
             .setDescription(`You took too long to respond. Please try again.`);
           return interaction.followUp({ embeds: [replyEmbed], ephemeral: true });
         } else {
-          logger.error(err);
+          logger.error(error);
           const replyEmbed = new EmbedBuilder()
             .setColor(Color.DiscordDanger)
             .setTitle(`Report user failed`)

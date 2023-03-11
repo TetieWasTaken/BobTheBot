@@ -1,6 +1,7 @@
 import { EmbedBuilder, type Message } from "discord.js";
-import { GuildModel } from "../models/index.js";
 import { Color } from "../constants.js";
+import { GuildModel } from "../models/index.js";
+import { logger } from "../utils/index.js";
 
 module.exports = {
   name: "messageDelete",
@@ -12,11 +13,13 @@ module.exports = {
       GuildId: message.guild?.id,
     });
 
-    if (guildData && guildData.GuildLogChannel !== null) {
+    if (guildData?.GuildLogChannel) {
       const logChannelId = guildData?.GuildLogChannel;
       if (!logChannelId) return;
       const logChannel = await message.guild?.channels.fetch(logChannelId);
-      if (!logChannel || !logChannel.isTextBased()) return;
+      if (!logChannel?.isTextBased()) return;
+
+      if (message.channel.isDMBased()) return;
 
       const logEmbed = new EmbedBuilder()
         .setColor(Color.DiscordDanger)
@@ -27,7 +30,7 @@ module.exports = {
         .addFields(
           {
             name: `Channel`,
-            value: `${message.channel}`,
+            value: `${message.channel.name}`,
             inline: false,
           },
           {
@@ -42,7 +45,10 @@ module.exports = {
           }
         )
         .setTimestamp();
-      logChannel.send({ embeds: [logEmbed] });
+
+      await logChannel.send({ embeds: [logEmbed] }).catch((error) => {
+        logger.error(error);
+      });
     }
   },
 };

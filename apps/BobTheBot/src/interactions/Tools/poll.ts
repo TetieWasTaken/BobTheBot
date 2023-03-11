@@ -18,12 +18,12 @@ const command = new SlashCommandBuilder()
     option.setName("message").setDescription("message to display on the poll").setRequired(true)
   );
 
-for (let i = 1; i <= 9; i++) {
+for (let index = 1; index <= 9; index++) {
   command.addStringOption((option) =>
     option
-      .setName(`option${i}`)
+      .setName(`option${index}`)
       .setDescription(`Add a poll option (min 2 max 9)`)
-      .setRequired(i <= 2 ? true : false)
+      .setRequired(index <= 2)
   );
 }
 
@@ -31,7 +31,7 @@ command.setDefaultMemberPermissions(...requiredUserPerms.key).setDMPermission(fa
 
 module.exports = {
   data: command,
-  cooldownTime: 20 * 1000,
+  cooldownTime: 20 * 1_000,
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const message = interaction.options.getString("message");
     const option1 = interaction.options.getString("option1");
@@ -99,7 +99,7 @@ module.exports = {
       )
       .setTimestamp();
 
-    for (let i = 9; i > optionsFiltered.length; i--) {
+    for (let optionIndex = 9; optionIndex > optionsFiltered.length; optionIndex--) {
       pollEmbed.spliceFields(-1, 1);
     }
 
@@ -109,11 +109,11 @@ module.exports = {
       embeds: [pollEmbed],
       fetchReply: true,
     });
-    for (let i = 1; i <= optionsFiltered.length; i++) {
-      if (reactions[i]) interactionMessage.react(reactions[i]!);
-      await new Promise((resolve) => setTimeout(resolve, 500));
+
+    for (let optionIndex = 1; optionIndex <= optionsFiltered.length; optionIndex++) {
+      if (reactions[optionIndex]) await interactionMessage.react(reactions[optionIndex]!);
     }
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

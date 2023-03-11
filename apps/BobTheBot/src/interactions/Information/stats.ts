@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
+import { SlashCommandBuilder, EmbedBuilder, type ChatInputCommandInteraction, type Guild } from "discord.js";
 import { Color } from "../../constants.js";
 import { convertMS } from "../../utils/index.js";
 
@@ -18,7 +18,7 @@ module.exports = {
     .setDescription("Receive statistics about the bot")
     .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
-    let milliseconds = interaction.client.uptime;
+    const milliseconds = interaction.client.uptime;
 
     const replyEmbed = new EmbedBuilder()
       .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary)
@@ -32,7 +32,11 @@ module.exports = {
         },
         {
           name: `Users`,
-          value: `\`${interaction.client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)}\``,
+          value: `\`${interaction.client.guilds.cache.reduce(
+            // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+            (acc: number, guild: Guild) => acc + guild.memberCount,
+            0
+          )}\``,
           inline: true,
         },
         {
@@ -46,8 +50,9 @@ module.exports = {
           inline: true,
         }
       );
-    interaction.reply({ embeds: [replyEmbed] });
+
+    return interaction.reply({ embeds: [replyEmbed] });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

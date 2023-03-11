@@ -17,7 +17,7 @@ module.exports = {
     .setDescription("Receive information about the current guild")
     .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
-    let boostCount = interaction.guild.premiumSubscriptionCount ?? 0;
+    const boostCount = interaction.guild.premiumSubscriptionCount ?? 0;
     let boostTier = 0;
 
     if (boostCount >= 2) {
@@ -54,10 +54,10 @@ module.exports = {
       .setFooter({ text: `${interaction.guild.id}` })
       .setTimestamp();
 
-    interaction.reply({
+    return interaction.reply({
       embeds: [replyEmbed],
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

@@ -22,19 +22,19 @@ module.exports = {
 
     await interaction.guild.members
       .unban(userId)
-      .then(() => {
+      .then(async () => {
         return interaction.reply({
           content: `:scales:  <@${userId}> has been unbanned`,
           ephemeral: true,
         });
       })
-      .catch(() => {
+      .catch(async () => {
         return interaction.reply({
           content: "Something went wrong while unbanning this user, try manually unbanning them.",
           ephemeral: true,
         });
       });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

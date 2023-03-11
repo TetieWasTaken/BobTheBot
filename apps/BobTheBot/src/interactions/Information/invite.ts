@@ -24,11 +24,12 @@ module.exports = {
       )
       .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary)
       .setTimestamp();
-    interaction.reply({
+
+    return interaction.reply({
       embeds: [replyEmbed],
       ephemeral: true,
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

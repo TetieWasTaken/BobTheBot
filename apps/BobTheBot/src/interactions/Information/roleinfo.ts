@@ -19,7 +19,7 @@ module.exports = {
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const target = interaction.options.getRole("target", true);
     let permissionsArray = target.permissions.toArray();
-    permissionsArray = permissionsArray.filter((e: string) =>
+    permissionsArray = permissionsArray.filter((permissions: string) =>
       [
         "KickMembers",
         "BanMembers",
@@ -32,9 +32,10 @@ module.exports = {
         "ManageNicknames",
         "ManageWebhooks",
         "ManageEmojisAndStickers",
-      ].includes(e)
+      ].includes(permissions)
     );
-    permissionsArray.sort();
+    permissionsArray.sort((a, b) => a.localeCompare(b));
+
     const replyEmbed = new EmbedBuilder()
       .setColor(target.color)
       .setThumbnail(target.icon)
@@ -76,10 +77,11 @@ module.exports = {
         }
       )
       .setTimestamp();
-    interaction.reply({
+
+    return interaction.reply({
       embeds: [replyEmbed],
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

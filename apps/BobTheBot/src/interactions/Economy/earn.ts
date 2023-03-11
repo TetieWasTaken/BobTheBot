@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
 import { EconomyModel } from "../../models/index.js";
+import { logger } from "../../utils/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -13,38 +14,39 @@ const requiredUserPerms = {
 
 module.exports = {
   data: new SlashCommandBuilder().setName("earn").setDescription("Earn some money").setDMPermission(true),
-  cooldownTime: 60 * 2 * 1000,
+  cooldownTime: 60 * 2 * 1_000,
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const responses = {
       data: [
         {
           name: "Fisher",
-          value: "A local fisherman gave you some fish and you sold it for ${randomAmount}.",
+          value: "A local fisherman gave you some fish and you sold it for ##AmountPlaceholder##.",
           randomAmount: Math.floor(Math.random() * 50) + 30,
         },
         {
           name: "Homeless",
-          value: "Some homeless guy gave you ₳ ${randomAmount} bobbucks in return for a meal you found in the trash.",
+          value:
+            "Some homeless guy gave you ₳ ##AmountPlaceholder## bobbucks in return for a meal you found in the trash.",
           randomAmount: Math.floor(Math.random() * 15) + 5,
         },
         {
           name: "CEO",
-          value: "You begged a CEO for money and he gave you ₳ ${randomAmount} bobbucks.",
+          value: "You begged a CEO for money and he gave you ₳ ##AmountPlaceholder## bobbucks.",
           randomAmount: Math.floor(Math.random() * 100) + 50,
         },
         {
           name: "Petty Cash",
-          value: "You found ₳ ${randomAmount} bobbucks in the petty cash drawer at work.",
+          value: "You found ₳ ##AmountPlaceholder## bobbucks in the petty cash drawer at work.",
           randomAmount: Math.floor(Math.random() * 50) + 20,
         },
         {
           name: "Garage Sale",
-          value: "You sold some old stuff at a garage sale for ₳ ${randomAmount} bobbucks.",
+          value: "You sold some old stuff at a garage sale for ₳ ##AmountPlaceholder## bobbucks.",
           randomAmount: Math.floor(Math.random() * 30) + 10,
         },
         {
           name: "Freelancing",
-          value: "You earned ₳ ${randomAmount} bobbucks from a freelancing gig.",
+          value: "You earned ₳ ##AmountPlaceholder## bobbucks from a freelancing gig.",
           randomAmount: Math.floor(Math.random() * 70) + 40,
         },
       ],
@@ -71,15 +73,16 @@ module.exports = {
         Wallet: randomResponse.randomAmount,
         NetWorth: randomResponse.randomAmount,
       });
-      data.save();
+
+      await data.save().catch((error) => logger.error(error));
     }
 
     const embed = new EmbedBuilder()
       .setAuthor({ name: randomResponse.name })
-      .setDescription(randomResponse.value.replace("${randomAmount}", `${randomResponse.randomAmount}`));
+      .setDescription(randomResponse.value.replace("##AmountPlaceholder##", `${randomResponse.randomAmount}`));
 
     return interaction.reply({ embeds: [embed] });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

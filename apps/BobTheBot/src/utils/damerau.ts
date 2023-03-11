@@ -1,19 +1,21 @@
-interface IDamerauResponse {
-  steps: number;
+type IDamerauResponse = {
   relative: number;
   similarity: number;
-}
+  steps: number;
+};
 
-interface IAutocompleteResponse {
+type IAutocompleteResponse = {
   name: string;
   value: string;
-}
+};
+
+/* eslint-disable id-length, @typescript-eslint/no-confusing-non-null-assertion */
 
 function damerau(a: string, b: string): IDamerauResponse {
   if (a.length === 0) return { steps: b.length, relative: 1, similarity: 0 };
   if (b.length === 0) return { steps: a.length, relative: 1, similarity: 0 };
 
-  const matrix: Array<number>[] = [];
+  const matrix: number[][] = [];
 
   let i: number;
   for (i = 0; i <= b.length; i++) {
@@ -30,7 +32,7 @@ function damerau(a: string, b: string): IDamerauResponse {
       if (b.charAt(i - 1) === a.charAt(j - 1)) {
         matrix[i]![j]! = matrix[i - 1]![j - 1]!;
       } else {
-        matrix[i]![j] = Math.min(matrix[i - 1]![j - 1]! + 1, Math.min(matrix[i]![j - 1]! + 1, matrix[i - 1]![j]! + 1)); // TODO: Tweak substitution and insertion/deletion costs
+        matrix[i]![j] = Math.min(matrix[i - 1]![j - 1]! + 1, Math.min(matrix[i]![j - 1]! + 1, matrix[i - 1]![j]! + 1));
       }
     }
 
@@ -75,16 +77,18 @@ function quickSort(arr: string[], left: number, right: number, query: string) {
   quickSort(arr, i, right, query);
 }
 
+/* eslint-enable id-length */
+
 export function damerAutocomplete(query: string, choices: readonly string[]): IAutocompleteResponse[] {
   if (!choices) return [];
 
-  let levChoices = [];
+  const levChoices = [];
 
   for (const choice of choices) {
     const index = choice.indexOf(":");
     if (index >= 0) {
       const levChoice = choice
-        .substring(index + 2)
+        .slice(Math.max(0, index + 2))
         .trim()
         .toLowerCase();
       levChoices.push(levChoice);
@@ -92,7 +96,7 @@ export function damerAutocomplete(query: string, choices: readonly string[]): IA
   }
 
   const filtered = levChoices.filter((choice) => {
-    let lev: IDamerauResponse = damerau(choice, query);
+    const lev: IDamerauResponse = damerau(choice, query);
     if (query.length > 2) return lev.relative <= 0.75;
     else if (query.length > 1) return lev.relative <= 0.8;
     else return lev.relative <= 1;

@@ -1,5 +1,5 @@
+import fs from "node:fs";
 import { SlashCommandBuilder, type ChatInputCommandInteraction } from "discord.js";
-import fs from "fs";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -17,8 +17,8 @@ module.exports = {
     const dadJokesTxt = fs.readFileSync("./resources/dadjokes.txt").toString().split("\n");
     const randomNum = Math.floor(Math.random() * 710);
 
-    interaction.reply({ content: dadJokesTxt[randomNum] });
+    return interaction.reply({ content: dadJokesTxt[randomNum] });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

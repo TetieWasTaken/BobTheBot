@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, type ChatInputCommandInteraction } from "discord.js";
 import { EconomyModel } from "../../models/index.js";
+import { logger } from "../../utils/logger.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -26,7 +27,7 @@ module.exports = {
             .setDescription("The amount of money you want to withdraw")
             .setRequired(true)
             .setMinValue(1)
-            .setMaxValue(1000000)
+            .setMaxValue(1_000_000)
         )
     )
     .setDMPermission(true),
@@ -37,7 +38,7 @@ module.exports = {
       UserId: interaction.user.id,
     });
 
-    if (!data || !data.Bank) {
+    if (!data?.Bank) {
       return interaction.reply({
         content: "You do not have enough money in your bank to withdraw!",
         ephemeral: true,
@@ -58,13 +59,13 @@ module.exports = {
 
       data.Bank -= amount;
       data.Wallet += amount;
-      data.save();
+      await data.save().catch((error) => logger.error(error));
 
       return interaction.reply({
         content: `You withdrew ₳${amount} from your bank`,
       });
     }
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

@@ -1,5 +1,5 @@
+import fs from "node:fs";
 import { SlashCommandBuilder, type ChatInputCommandInteraction } from "discord.js";
-import fs from "fs";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -23,11 +23,11 @@ module.exports = {
     const eightballTxt = fs.readFileSync("./resources/8ballresponses.txt").toString().split("\n");
     const randomNum = Math.floor(Math.random() * 20);
 
-    interaction.reply({
+    return interaction.reply({
       content: `\`${interaction.options.getString("question")}\`\n:8ball: ${eightballTxt[randomNum]}`,
       ephemeral: true,
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

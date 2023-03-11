@@ -6,8 +6,8 @@ type ItemHandlerMap = Record<
 >;
 
 const itemHandlers: ItemHandlerMap = {
-  placeholder: (interaction: ChatInputCommandInteraction<"cached">, item: any, data: any) => {
-    const reward = Math.floor(Math.random() * 1000) + 1;
+  placeholder: async (interaction: ChatInputCommandInteraction<"cached">, item: any, data: any) => {
+    const reward = Math.floor(Math.random() * 1_000) + 1;
 
     data.Inventory[item.name] -= 1;
     data.Wallet += reward;
@@ -18,7 +18,7 @@ const itemHandlers: ItemHandlerMap = {
       ephemeral: true,
     });
   },
-  chicken: (interaction: ChatInputCommandInteraction<"cached">, item: any, data: any) => {
+  chicken: async (interaction: ChatInputCommandInteraction<"cached">, item: any, data: any) => {
     switch (item.name) {
       case "Chicken":
         data.Multiplier = 1.2;
@@ -46,7 +46,7 @@ const itemHandlers: ItemHandlerMap = {
   },
 };
 
-export function useItem(interaction: ChatInputCommandInteraction<"cached">, item: any, data: any) {
+export async function useItem(interaction: ChatInputCommandInteraction<"cached">, item: any, data: any) {
   const handler = itemHandlers[item.name.toLowerCase()];
   if (handler) {
     return handler(interaction, item, data);

@@ -21,15 +21,18 @@ module.exports = {
     const data = await LevelModel.find({ GuildID: interaction.guild.id }).sort({ UserXP: -1 }).limit(10);
 
     const mappedData = data
-      .map((d, i) => `\`${i + 1}\` <@${d.UserId}> - Level: \`${d.UserLevel}\` - XP: \`${d.UserXP}\``)
+      .map(
+        (data, index) => `\`${index + 1}\` <@${data.UserId}> - Level: \`${data.UserLevel}\` - XP: \`${data.UserXP}\``
+      )
       .join("\n");
 
     const embed = new EmbedBuilder()
       .setTitle("Leaderboard")
       .setDescription(mappedData.toString())
       .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary);
-    interaction.reply({ embeds: [embed] });
+
+    return interaction.reply({ embeds: [embed] });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

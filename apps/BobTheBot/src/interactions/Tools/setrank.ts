@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, PermissionFlagsBits, type ChatInputCommandInteraction } from "discord.js";
 import { LevelModel } from "../../models/index.js";
+import { logger } from "../../utils/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -10,6 +11,8 @@ const requiredUserPerms = {
   type: "flags" as const,
   key: [PermissionFlagsBits.Administrator] as const,
 };
+
+const xpForLevel = (desiredRank: number) => 50 * (desiredRank + 1) ** 2 + 50;
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -32,8 +35,6 @@ module.exports = {
       });
     }
 
-    const xpForLevel = (desiredRank: number) => 50 * (desiredRank + 1) ** 2 + 50;
-
     let data = await LevelModel.findOneAndUpdate(
       { GuildId: interaction.guild.id, UserId: user.id },
       { UserXP: xpForLevel(rank), UserLevel: rank }
@@ -46,7 +47,7 @@ module.exports = {
         UserXP: xpForLevel(rank),
         UserLevel: rank,
       });
-      data.save();
+      await data.save().catch((error: Error) => logger.error(error));
     }
 
     return interaction.reply({
@@ -54,6 +55,6 @@ module.exports = {
       ephemeral: true,
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

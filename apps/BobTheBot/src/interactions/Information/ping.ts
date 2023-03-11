@@ -24,6 +24,6 @@ module.exports = {
       }ms\``
     );
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

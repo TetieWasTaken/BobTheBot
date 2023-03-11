@@ -49,9 +49,15 @@ module.exports = {
       });
     }
 
-    useItem(interaction, item, data);
+    await useItem(interaction, item, data).catch(async () => {
+      return interaction.reply({
+        content: `An error occurred while using this item!`,
+        ephemeral: true,
+      });
+    });
+
     return data.save();
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

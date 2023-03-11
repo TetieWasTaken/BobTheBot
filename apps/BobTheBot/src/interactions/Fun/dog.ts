@@ -14,7 +14,7 @@ const requiredUserPerms = {
 module.exports = {
   data: new SlashCommandBuilder().setName("woof").setDescription("Get a random dog image!").setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
-    const res = await fetch("https:random.dog/woof.json").then((res) => res.json());
+    const res = await fetch("https:random.dog/woof.json").then(async (res) => res.json());
     const embed = new EmbedBuilder()
       .setTitle("Woof!")
       .setImage(res.url)
@@ -27,6 +27,6 @@ module.exports = {
 
     await interaction.reply({ embeds: [embed] });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

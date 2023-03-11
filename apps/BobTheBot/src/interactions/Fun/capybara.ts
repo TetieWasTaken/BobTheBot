@@ -17,7 +17,7 @@ module.exports = {
     .setDescription("Get a random capybara image")
     .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
-    const img = await fetch("https://api.capy.lol/v1/capybara?json=true").then((res) => res.json());
+    const img = await fetch("https://api.capy.lol/v1/capybara?json=true").then(async (res) => res.json());
 
     const embed = new EmbedBuilder()
       .setTitle("Okay I pull up")
@@ -30,6 +30,6 @@ module.exports = {
 
     await interaction.reply({ embeds: [embed] });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

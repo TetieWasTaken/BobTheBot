@@ -1,4 +1,6 @@
 {
   "extends": ["../../.eslintrc.json"],
-  "ignorePatterns": ["dist/"]
+  "rules": {
+    "n/no-sync": "off"
+  }
 }

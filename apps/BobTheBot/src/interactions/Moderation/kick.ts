@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, PermissionFlagsBits, type ChatInputCommandInteraction, Role } from "discord.js";
+import { SlashCommandBuilder, PermissionFlagsBits, type Role, type ChatInputCommandInteraction } from "discord.js";
 import { raiseUserHierarchyError, raiseBotHierarchyError } from "../../utils/index.js";
 
 const requiredBotPerms = {
@@ -23,7 +23,7 @@ module.exports = {
     .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const member = interaction.options.getMember("target");
-    let reason = interaction.options.getString("reason") ?? "No reason provided";
+    const reason = interaction.options.getString("reason") ?? "No reason provided";
 
     if (!member || !interaction.guild.members.me)
       return interaction.reply({ content: "Something went wrong", ephemeral: true });
@@ -41,9 +41,9 @@ module.exports = {
       .catch(() => null);
 
     try {
-      member.kick(reason);
-    } catch (error) {
-      userMsg?.delete();
+      await member.kick(reason);
+    } catch {
+      await userMsg?.delete().catch(() => null);
       return interaction.reply({
         content: `❌  I was unable to kick \`${member.user.tag}\``,
         ephemeral: true,
@@ -55,6 +55,6 @@ module.exports = {
       ephemeral: true,
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

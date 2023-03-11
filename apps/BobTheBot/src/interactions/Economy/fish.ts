@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, type ChatInputCommandInteraction } from "discord.js";
 import { EconomyModel } from "../../models/index.js";
-import { raiseMiscellaneousError } from "../../utils/index.js";
+import { raiseMiscellaneousError, logger, type IItem } from "../../utils/index.js";
 
 const requiredBotPerms = {
   type: "flags" as const,
@@ -14,13 +14,13 @@ const requiredUserPerms = {
 
 module.exports = {
   data: new SlashCommandBuilder().setName("fish").setDescription("Go fishing for some cash").setDMPermission(true),
-  cooldownTime: 60 * 2 * 1000,
+  cooldownTime: 60 * 2 * 1_000,
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const data = await EconomyModel.findOne({
       UserId: interaction.user.id,
     });
 
-    if (!data || !data.Inventory.find((item) => item.id === "fishingrod")) {
+    if (!data?.Inventory.some((item: IItem) => item.id === "fishingrod")) {
       return raiseMiscellaneousError(interaction, "Property Error", "You need a fishing rod to go fishing!");
     }
 
@@ -52,7 +52,7 @@ module.exports = {
       data.Inventory.splice(rodIndex, 1);
       data.Wallet += randomAmount;
       data.NetWorth += randomAmount;
-      data.save();
+      await data.save().catch((error) => logger.error(error));
 
       return interaction.reply({
         content: `You went fishing and caught a ${items[randomItem]}! Unfortunately, your fishing rod broke and you lost it. The pawn shop gave you ₳${randomAmount} Bobbucks for it.`,
@@ -60,13 +60,13 @@ module.exports = {
     } else {
       data.Wallet += randomAmount;
       data.NetWorth += randomAmount;
-      data.save();
+      await data.save().catch((error) => logger.error(error));
 
       return interaction.reply({
         content: `${sellResponses[randomSellResponse]}`,
       });
     }
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

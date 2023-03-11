@@ -30,11 +30,11 @@ module.exports = {
         ephemeral: true,
       });
 
-    EconomyModel.findOne({
+    await EconomyModel.findOne({
       UserId: interaction.user.id,
     })
-      .then((data) => {
-        if (!data || !data.Wallet) {
+      .then(async (data) => {
+        if (!data?.Wallet) {
           return interaction.reply({
             content: "You do not have enough money to buy this item",
             ephemeral: true,
@@ -47,41 +47,41 @@ module.exports = {
             ephemeral: true,
           });
         } else {
-          const itemIndex = data.Inventory.findIndex((item) => item.id === itemName.toLowerCase().replace(/\s+/g, ""));
+          const itemIndex = data.Inventory.findIndex(
+            (item) => item.id === itemName.toLowerCase().replaceAll(/\s+/g, "")
+          );
           if (itemIndex === -1) {
             data.Inventory.push({
               id: item.id,
               amount: 1,
             });
           } else {
-            let item = data.Inventory[itemIndex];
+            const item = data.Inventory[itemIndex];
             item.amount++;
             data.Inventory[itemIndex] = item;
           }
 
           data.Wallet -= item.price;
-          data.save();
+          await data.save().catch((error) => logger.error(error));
 
           return interaction.reply({
             content: `You have bought a \`${item.name
-              .replace(/:.*?:/g, "")
+              .replaceAll(/:.*?:/g, "")
               .replace(
-                /(\u00a9\s|\u00ae\s|[\u2000-\u3300]\s|\ud83c[\ud000-\udfff]\s|\ud83d[\ud000-\udfff]\s|\ud83e[\ud000-\udfff])(\s)?/,
+                /(?:\u00A9\s|\u00AE\s|[\u2000-\u3300]\s|\uD83C[\uD000-\uDFFF]\s|\uD83D[\uD000-\uDFFF]\s|\uD83E[\uD000-\uDFFF])(?<ws>\s)?/,
                 ""
               )}\` for ₳\`${item.price}\` Bobbucks`,
           });
         }
       })
-      .catch((err) => {
-        logger.error(err);
+      .catch(async (error) => {
+        logger.error(error);
         return interaction.reply({
           content: "An error occurred while trying to buy this item",
           ephemeral: true,
         });
       });
-
-    return;
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

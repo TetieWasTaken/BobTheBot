@@ -25,7 +25,7 @@ module.exports = {
     const user = interaction.options.getUser("target", true);
     const caseId = interaction.options.getInteger("caseid");
 
-    let data = await InfractionsModel.findOneAndUpdate(
+    const data = await InfractionsModel.findOneAndUpdate(
       {
         "GuildId": interaction.guild.id,
         "UserId": user.id,
@@ -46,6 +46,6 @@ module.exports = {
       ephemeral: true,
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };

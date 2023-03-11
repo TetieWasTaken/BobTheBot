@@ -35,10 +35,10 @@ module.exports = {
       .setFooter({ text: `${interaction.guild.id}` })
       .setTimestamp();
 
-    interaction.reply({
+    return interaction.reply({
       embeds: [replyEmbed],
     });
   },
-  requiredBotPerms: requiredBotPerms,
-  requiredUserPerms: requiredUserPerms,
+  requiredBotPerms,
+  requiredUserPerms,
 };
