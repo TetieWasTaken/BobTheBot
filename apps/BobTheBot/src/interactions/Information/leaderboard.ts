@@ -16,7 +16,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("leaderboard")
     .setDescription("Returns the top 10 users with the most amount of XP")
-    .setDMPermission(true),
+    .setDMPermission(false),
   async execute(interaction: ChatInputCommandInteraction<"cached">) {
     const data = await LevelModel.find({ GuildID: interaction.guild.id }).sort({ UserXP: -1 }).limit(10);
 

@@ -18,7 +18,7 @@ module.exports = {
     .setDescription("Checks someone's balance")
     .addUserOption((option: any) => option.setName("user").setDescription("The user to check").setRequired(false))
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const user = interaction.options.getUser("user") ?? interaction.user;
 
     const data = await EconomyModel.findOne({

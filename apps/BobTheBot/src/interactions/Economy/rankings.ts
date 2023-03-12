@@ -17,7 +17,7 @@ module.exports = {
     .setName("rankings")
     .setDescription("Shows the top 10 richest people!")
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const data = await EconomyModel.find().sort({ NetWorth: -1 }).limit(10);
     data.sort((a, b) => {
       if (!a.NetWorth || !b.NetWorth) return 0;
@@ -32,13 +32,13 @@ module.exports = {
         iconURL: `${interaction.user.displayAvatarURL()}`,
       });
 
-    for (const [index, user] of data.entries()) {
-      if (!user.UserId) continue;
+    for (const [index, doc] of data.entries()) {
+      if (!doc.UserId) continue;
 
-      const member = await interaction.guild.members.fetch(user.UserId);
+      const user = await interaction.client.users.fetch(doc.UserId);
       embed.addFields({
-        name: `${index + 1}. ${member.displayName}`,
-        value: `**Net Worth:** ${user.NetWorth}`,
+        name: `${index + 1}. ${user.username}`,
+        value: `**Net Worth:** ${doc.NetWorth}`,
         inline: false,
       });
     }

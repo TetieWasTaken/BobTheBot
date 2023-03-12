@@ -50,7 +50,7 @@ module.exports = {
         )
     )
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const choice = interaction.options.getString("choice");
     const choice2 = interaction.options.getString("choice2");
     const choice3 = interaction.options.getString("choice3");

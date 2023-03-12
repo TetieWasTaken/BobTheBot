@@ -18,7 +18,7 @@ module.exports = {
     .setName("botinfo")
     .setDescription("Receive information about the bot")
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const releases = await fetch("https://api.github.com/repos/TetieWasTaken/BobTheBot/releases").then(async (res) =>
       res.json()
     );

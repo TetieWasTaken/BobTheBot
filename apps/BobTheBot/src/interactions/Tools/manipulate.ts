@@ -44,7 +44,7 @@ module.exports = {
         .addStringOption((option) => option.setName("input").setDescription("Text to convert").setRequired(true))
     )
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const subcommand = interaction.options.getSubcommand();
     const text = interaction.options.getString("input", true);
 
@@ -87,7 +87,7 @@ module.exports = {
               inline: false,
             }
           )
-          .setColor(interaction.guild.members.me?.displayHexColor ?? Color.DiscordPrimary);
+          .setColor(interaction.guild?.members.me?.displayHexColor ?? Color.DiscordPrimary);
 
         return interaction.reply({
           embeds: [embed],

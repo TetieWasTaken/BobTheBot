@@ -19,7 +19,7 @@ module.exports = {
       option.setName("question").setDescription("The question to ask").setRequired(true)
     )
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const eightballTxt = fs.readFileSync("./resources/8ballresponses.txt").toString().split("\n");
     const randomNum = Math.floor(Math.random() * 20);
 

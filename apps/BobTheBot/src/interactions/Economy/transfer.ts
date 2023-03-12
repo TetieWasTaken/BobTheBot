@@ -45,7 +45,7 @@ module.exports = {
         )
     )
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const target = interaction.options.getUser("user", true);
 
     const subcommand = interaction.options.getSubcommand();

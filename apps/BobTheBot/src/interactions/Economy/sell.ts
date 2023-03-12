@@ -37,7 +37,7 @@ module.exports = {
         )
     )
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const item = interaction.options.getString("item", true);
     const amount = interaction.options.getInteger("amount") ?? 1;
 

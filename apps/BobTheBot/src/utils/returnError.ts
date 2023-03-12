@@ -77,7 +77,7 @@ export async function raiseBotHierarchyError(interaction: ChatInputCommandIntera
  * ```
  */
 export async function raiseMiscellaneousError(
-  interaction: ChatInputCommandInteraction<"cached">,
+  interaction: ChatInputCommandInteraction,
   errTitle: string,
   description: string
 ) {

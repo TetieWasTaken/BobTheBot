@@ -17,18 +17,34 @@ module.exports = {
     .setDescription("Returns the avatar of the user specified")
     .addUserOption((option) => option.setName("target").setDescription("user to target").setRequired(false))
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
-    const member = interaction.options.getMember("target") ?? interaction.member;
+  async execute(interaction: ChatInputCommandInteraction) {
+    let replyEmbed: EmbedBuilder;
 
-    if (!member) return;
+    if (interaction.inCachedGuild()) {
+      const member = interaction.options.getMember("target") ?? interaction.member;
 
-    const replyEmbed = new EmbedBuilder()
-      .setTitle(member.user.username)
-      .setFooter({ text: `${member.id}` })
-      .setThumbnail(member?.user?.bannerURL() ?? null)
-      .setImage(member.displayAvatarURL({ size: 2_048 }))
-      .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary)
-      .setTimestamp();
+      if (!member) return;
+
+      replyEmbed = new EmbedBuilder()
+        .setTitle(member.user.username)
+        .setFooter({ text: `${member.id}` })
+        .setThumbnail(member?.user?.bannerURL() ?? null)
+        .setImage(member.displayAvatarURL({ size: 2_048 }))
+        .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary)
+        .setTimestamp();
+    } else {
+      const user = interaction.options.getUser("target") ?? interaction.user;
+
+      if (!user) return;
+
+      replyEmbed = new EmbedBuilder()
+        .setTitle(user.username)
+        .setFooter({ text: `${user.id}` })
+        .setThumbnail(user.bannerURL() ?? null)
+        .setImage(user.displayAvatarURL({ size: 2_048 }))
+        .setColor(Color.DiscordPrimary)
+        .setTimestamp();
+    }
 
     return interaction.reply({
       embeds: [replyEmbed],

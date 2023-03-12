@@ -16,7 +16,7 @@ module.exports = {
     .setName("meme")
     .setDescription("Sends a random meme from r/memes")
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const data = await fetch(`https://www.reddit.com/r/memes/random/.json`).then(async (res) => {
       return res.json();
     });

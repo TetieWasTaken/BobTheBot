@@ -18,7 +18,7 @@ module.exports = {
     .setDescription("Buy an item from the shop")
     .addStringOption((option) => option.setName("item").setDescription("The item to buy").setRequired(true))
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const itemName = interaction.options.getString("item", true);
 
     const item = await requestItemData(itemName);

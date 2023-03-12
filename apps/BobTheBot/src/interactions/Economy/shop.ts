@@ -18,7 +18,7 @@ module.exports = {
     .setDescription("View the shop")
     .addIntegerOption((option) => option.setName("page").setDescription("The page to view").setRequired(false))
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     let page = interaction.options.getInteger("page") ?? 1;
 
     const data = await fs.promises.readFile("./resources/items.json");

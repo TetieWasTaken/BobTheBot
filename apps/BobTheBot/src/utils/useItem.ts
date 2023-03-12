@@ -4,7 +4,7 @@ import type { IItem } from "./index.js";
 
 type ItemHandlerMap = Record<
   string,
-  (interaction: ChatInputCommandInteraction<"cached">, item: IItem, data: any) => Promise<InteractionResponse<boolean>>
+  (interaction: ChatInputCommandInteraction, item: IItem, data: any) => Promise<InteractionResponse<boolean>>
 >;
 
 /**
@@ -15,7 +15,7 @@ type ItemHandlerMap = Record<
  * @returns An interaction reply, with either a success or error message
  */
 const itemHandlers: ItemHandlerMap = {
-  placeholder: async (interaction: ChatInputCommandInteraction<"cached">, item: IItem, data: any) => {
+  placeholder: async (interaction: ChatInputCommandInteraction, item: IItem, data: any) => {
     const reward = Math.floor(Math.random() * 1_000) + 1;
 
     data.Inventory[item.name] -= 1;
@@ -27,7 +27,7 @@ const itemHandlers: ItemHandlerMap = {
       ephemeral: true,
     });
   },
-  chicken: async (interaction: ChatInputCommandInteraction<"cached">, item: IItem, data: any) => {
+  chicken: async (interaction: ChatInputCommandInteraction, item: IItem, data: any) => {
     switch (item.name) {
       case "Chicken":
         data.Multiplier = 1.2;
@@ -74,7 +74,7 @@ const itemHandlers: ItemHandlerMap = {
  * await useItem(interaction, item, data).catch((error) => { ... });
  * ```
  */
-export async function useItem(interaction: ChatInputCommandInteraction<"cached">, item: IItem, data: Document) {
+export async function useItem(interaction: ChatInputCommandInteraction, item: IItem, data: Document) {
   const handler = itemHandlers[item.name.toLowerCase()];
   if (handler) {
     return handler(interaction, item, data);

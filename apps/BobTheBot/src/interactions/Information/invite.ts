@@ -16,7 +16,7 @@ module.exports = {
     .setName("invite")
     .setDescription("Receive an invite link for the bot")
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const replyEmbed = new EmbedBuilder()
       .setTitle("Invite BobTheBot")
       .setDescription(

@@ -13,6 +13,10 @@ const requiredUserPerms = {
   key: [] as const,
 };
 
+function hasDisplayName(member: any): member is { displayName: string } {
+  return typeof member.displayName === "string";
+}
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("inventory")
@@ -22,7 +26,7 @@ module.exports = {
       option.setName("user").setDescription("The user you want to view the inventory of").setRequired(false)
     )
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const page = interaction.options.getInteger("page") ?? 1;
     const user = interaction.options.getUser("user") ?? interaction.user;
     const member = interaction.options.getMember("user") ?? interaction.member;
@@ -34,7 +38,7 @@ module.exports = {
     if (!data || data.Inventory.length === 0) {
       const inventoryEmbed = new EmbedBuilder()
         .setAuthor({
-          name: `${member.displayName}'s inventory`,
+          name: `${hasDisplayName(member) ? member.displayName : user.username}'s inventory`,
           iconURL: user.displayAvatarURL(),
         })
         .setDescription("This us'r is hath broken")
@@ -49,7 +53,7 @@ module.exports = {
     } else {
       const inventoryEmbed = new EmbedBuilder()
         .setAuthor({
-          name: `${member.displayName}'s inventory`,
+          name: `${hasDisplayName(member) ? member.displayName : user.username}'s inventory`,
           iconURL: user.displayAvatarURL(),
         })
         .setFooter({

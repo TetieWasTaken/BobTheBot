@@ -12,7 +12,7 @@ const requiredUserPerms = {
 
 module.exports = {
   data: new SlashCommandBuilder().setName("ping").setDescription("Returns the bots's latency").setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const sent = await interaction.reply({
       content: "Pinging...",
       fetchReply: true,

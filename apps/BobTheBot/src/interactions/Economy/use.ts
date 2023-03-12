@@ -18,7 +18,7 @@ module.exports = {
     .setDescription("Use an item from your inventory.")
     .addStringOption((option) => option.setName("item").setDescription("The item to use").setRequired(true))
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const itemInput = interaction.options.getString("item", true);
     const data = await EconomyModel.findOne({
       UserId: interaction.user.id,

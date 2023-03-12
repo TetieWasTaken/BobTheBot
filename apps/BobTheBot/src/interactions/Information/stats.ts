@@ -17,7 +17,7 @@ module.exports = {
     .setName("stats")
     .setDescription("Receive statistics about the bot")
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const milliseconds = interaction.client.uptime;
 
     const replyEmbed = new EmbedBuilder()

@@ -16,7 +16,7 @@ module.exports = {
     .setName("capybara")
     .setDescription("Get a random capybara image")
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const img = await fetch("https://api.capy.lol/v1/capybara?json=true").then(async (res) => res.json());
 
     const embed = new EmbedBuilder()

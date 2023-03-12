@@ -13,7 +13,7 @@ const requiredUserPerms = {
 
 module.exports = {
   data: new SlashCommandBuilder().setName("meow").setDescription("Get a random cat image!").setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const embed = new EmbedBuilder()
       .setTitle("Meow!")
       .setImage(`https://cataas.com/cat?${Date.now()}`)

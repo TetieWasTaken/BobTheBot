@@ -31,7 +31,7 @@ module.exports = {
         )
     )
     .setDMPermission(true),
-  async execute(interaction: ChatInputCommandInteraction<"cached">) {
+  async execute(interaction: ChatInputCommandInteraction) {
     let amount = interaction.options.getInteger("amount", true);
 
     const data = await EconomyModel.findOne({
