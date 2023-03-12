@@ -39,7 +39,7 @@ module.exports = {
     if (interaction.isCommand()) {
       const command = client.interactions.get(interaction.commandName);
 
-      if (!command || !interaction.inGuild()) return;
+      if (!command || !interaction.inGuild()) return logger.fatal(`Command ${interaction.commandName} not found.`);
 
       const guildData = await GuildModel.findOne({
         GuildId: interaction.guild?.id,
@@ -142,12 +142,9 @@ module.exports = {
     } else if (interaction.isAutocomplete()) {
       const command = client.interactions.get(interaction.commandName);
 
-      if (!interaction.inCachedGuild()) return;
+      if (!interaction.inCachedGuild()) return logger.warn("Guild failed to cache");
 
-      if (!command) {
-        logger.error(`No command matching ${interaction.commandName} was found.`);
-        return;
-      }
+      if (!command) return logger.error(`No command matching ${interaction.commandName} was found.`);
 
       try {
         await command.autocomplete(interaction);
@@ -163,7 +160,7 @@ module.exports = {
           ephemeral: true,
         });
 
-      if (!interaction.inCachedGuild()) return;
+      if (!interaction.inCachedGuild()) return logger.warn("Guild failed to cache");
 
       const button = client.buttons.get(interaction.customId);
       if (!button) return new Error("No code for button!");
