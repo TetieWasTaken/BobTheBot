@@ -26,7 +26,7 @@ module.exports = {
       .setTitle(member.user.username)
       .setFooter({ text: `${member.id}` })
       .setThumbnail(member?.user?.bannerURL() ?? null)
-      .setImage(member.displayAvatarURL({ size: 256 }))
+      .setImage(member.displayAvatarURL({ size: 2_048 }))
       .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary)
       .setTimestamp();
 
