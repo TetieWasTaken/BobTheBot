@@ -5,6 +5,9 @@ import { logger, sweeperLoop, type ExtendedClient } from "./utils/index.js";
 
 dotenv.config();
 
+/**
+ * Database class to handle database connection to MongoDB using Mongoose
+ */
 export default class Database {
   public connection: any;
 
@@ -12,6 +15,16 @@ export default class Database {
     this.connection = null;
   }
 
+  /**
+   * @param client - The client to pass to sweeperLoop
+   * @example
+   * ```
+   * import Database from "./database.js";
+   *
+   * const db = new Database();
+   * db.connect(client).catch((error) => { ... });
+   * ```
+   */
   public async connect(client: ExtendedClient) {
     if (!process.env.MONGO_DATABASETOKEN) {
       logger.error("No database token provided");

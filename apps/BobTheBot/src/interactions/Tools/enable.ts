@@ -11,6 +11,14 @@ import { GuildModel } from "../../models/index.js";
 import { capitalizeFirst, getCategories, damerAutocomplete } from "../../utils/index.js";
 
 /* eslint-disable @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
+/**
+ * @returns A list of all the commands in an array formatted for the autocomplete interaction
+ * @example
+ * ```
+ * const commands = getCommands();
+ * console.log(commands); // ["Information: Avatar", "Information: Botinfo", etc..]
+ * ```
+ */
 function getCommands() {
   const categories = fs
     .readdirSync("./dist/interactions")

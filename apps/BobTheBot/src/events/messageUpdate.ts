@@ -6,6 +6,13 @@ import { logger } from "../utils/index.js";
 module.exports = {
   name: "messageUpdate",
   once: false,
+
+  /**
+   * Handles the messageUpdate event and logs the edited message to the log channel
+   *
+   * @param initMessage - The message before it was edited
+   * @param newMessage - The message after it was edited
+   */
   async execute(initMessage: Message, newMessage: Message): Promise<void> {
     if (newMessage.author.bot || !newMessage.guild) return;
 

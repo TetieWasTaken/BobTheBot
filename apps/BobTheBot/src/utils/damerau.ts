@@ -11,6 +11,11 @@ type IAutocompleteResponse = {
 
 /* eslint-disable id-length, @typescript-eslint/no-confusing-non-null-assertion */
 
+/**
+ * @param a - The first string to compare
+ * @param b - The second string to compare
+ * @returns The Damerau-Levenshtein distance between the two strings
+ */
 function damerau(a: string, b: string): IDamerauResponse {
   if (a.length === 0) return { steps: b.length, relative: 1, similarity: 0 };
   if (b.length === 0) return { steps: a.length, relative: 1, similarity: 0 };
@@ -79,6 +84,11 @@ function quickSort(arr: string[], left: number, right: number, query: string) {
 
 /* eslint-enable id-length */
 
+/**
+ * @param query - The query to autocomplete
+ * @param choices - The choices to autocomplete from
+ * @returns The autocompleted choices in an array of objects
+ */
 export function damerAutocomplete(query: string, choices: readonly string[]): IAutocompleteResponse[] {
   if (!choices) return [];
 

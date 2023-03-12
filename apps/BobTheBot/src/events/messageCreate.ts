@@ -2,11 +2,28 @@ import type { Message } from "discord.js";
 import { LevelModel } from "../models/index.js";
 import { logger } from "../utils/index.js";
 
+/**
+ * Calculates the amount of XP needed to level up
+ *
+ * @param UserLevel - The user's current level
+ * @returns The amount of XP needed to level up
+ * @example
+ * ```
+ * const xpNeeded = getxpNeededXP(3);
+ * console.log(xpNeeded); // 500
+ * ```
+ */
 const getxpNeededXP = (UserLevel: number) => 50 * UserLevel ** 2 + 50;
 
 module.exports = {
   name: "messageCreate",
   once: false,
+
+  /**
+   * Handles the messageCreate event and adds XP to the user
+   *
+   * @param message - The message that was created and is being handled
+   */
   async execute(message: Message) {
     const author = message.author;
     const messageLength = message.content.length;

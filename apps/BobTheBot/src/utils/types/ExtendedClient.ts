@@ -1,5 +1,8 @@
 import { Client, Collection } from "discord.js";
 
+/**
+ * Extended discord.js Client class
+ */
 export class ExtendedClient extends Client {
   public interactions: Collection<string, any>;
 

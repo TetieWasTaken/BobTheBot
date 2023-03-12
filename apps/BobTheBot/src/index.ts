@@ -12,6 +12,9 @@ if (!process.env.CLIENT_ID) {
   process.exit(1);
 }
 
+/**
+ * Client for the bot with intents and partials
+ */
 const client: ExtendedClient = new ExtendedClient({
   intents: [
     GatewayIntentBits.Guilds,

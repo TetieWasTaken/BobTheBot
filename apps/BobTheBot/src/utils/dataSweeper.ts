@@ -7,6 +7,11 @@ type ICollection = {
   queryFn(doc: any): boolean;
 };
 
+/**
+ * @param collection - The collection to delete from
+ * @param queryFn - The function to query the collection with
+ * @returns The number of documents deleted
+ */
 async function deleteDocs(collection: Collection<any> | undefined, queryFn: any) {
   if (!collection) return 0;
   let count = 0;
@@ -20,6 +25,10 @@ async function deleteDocs(collection: Collection<any> | undefined, queryFn: any)
   return count;
 }
 
+/**
+ * @param client - The client to use
+ * @param connection - The mongoose connection to use
+ */
 export function sweeperLoop(client: ExtendedClient, connection: Connection) {
   logger.info("Starting database sweep loop");
   cron.schedule(
@@ -35,6 +44,11 @@ export function sweeperLoop(client: ExtendedClient, connection: Connection) {
   );
 }
 
+/**
+ * @param client - The client to use
+ * @param connection - The mongoose connection to use
+ * @internal
+ */
 async function sweep(client: ExtendedClient, connection: Connection): Promise<void> {
   logger.info("Sweeping database");
 

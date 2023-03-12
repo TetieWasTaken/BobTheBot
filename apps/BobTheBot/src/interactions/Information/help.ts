@@ -26,6 +26,14 @@ const requiredUserPerms = {
 
 /* eslint-disable @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires */
 
+/**
+ * @returns A list of all the commands in an array formatted for the autocomplete interaction
+ * @example
+ * ```
+ * const commands = getCommands();
+ * console.log(commands); // ["Information: Avatar", "Information: Botinfo", etc..]
+ * ```
+ */
 function getCommands() {
   const categories = fs
     .readdirSync("./dist/interactions")
@@ -39,10 +47,24 @@ function getCommands() {
   );
 }
 
+/**
+ * Checks if the bot has the specified permission
+ *
+ * @param perm - The permission to check
+ * @param interaction - The interaction to check the permission for
+ * @returns A string with a "+" if the bot has the permission, or a "-" if it doesn't
+ */
 function getBotPerms(perm: bigint, interaction: ChatInputCommandInteraction<"cached">) {
   return interaction.guild.members.me?.permissions.has(perm) ? "+" : "-";
 }
 
+/**
+ * Checks if the user has the specified permission
+ *
+ * @param perm - The permission to check
+ * @param interaction - The interaction to check the permission for
+ * @returns A string with a "+" if the bot has the permission, or a "-" if it doesn't
+ */
 function getUserPerms(perm: bigint, interaction: ChatInputCommandInteraction<"cached">) {
   return interaction.member.permissions.has(perm) ? "+" : "-";
 }

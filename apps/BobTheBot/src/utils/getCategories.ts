@@ -1,5 +1,8 @@
 import fs from "node:fs";
 
+/**
+ * @returns Categories in an array of objects
+ */
 export function getCategories() {
   return fs
     .readdirSync("./dist/interactions")

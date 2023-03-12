@@ -6,7 +6,7 @@
     "type": "tool",
     "sellable": true,
     "buyable": true,
-    "useable": false,
+    "usable": false,
     "price": 70,
     "usage": "reusable",
     "id": "fishingrod"
@@ -17,7 +17,7 @@
     "type": "tool",
     "sellable": false,
     "buyable": false,
-    "useable": true,
+    "usable": true,
     "usage": "reusable",
     "id": "placeholder"
   },
@@ -27,7 +27,7 @@
     "type": "pet",
     "sellable": false,
     "buyable": true,
-    "useable": true,
+    "usable": true,
     "price": 100,
     "usage": "consumable",
     "id": "chicken"

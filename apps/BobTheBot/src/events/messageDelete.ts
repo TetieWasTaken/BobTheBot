@@ -6,6 +6,12 @@ import { logger } from "../utils/index.js";
 module.exports = {
   name: "messageDelete",
   once: false,
+
+  /**
+   * Handles the messageDelete event and logs the deleted message to the log channel
+   *
+   * @param message - The message that was deleted
+   */
   async execute(message: Message) {
     if (message.author.bot) return;
 

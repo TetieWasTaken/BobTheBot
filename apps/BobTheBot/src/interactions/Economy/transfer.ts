@@ -164,7 +164,7 @@ module.exports = {
               sellable: item.sellable,
               buyable: item.buyable,
               price: item.price,
-              useable: item.usable,
+              usable: item.usable,
               id: item.id,
               amount: 1,
             },

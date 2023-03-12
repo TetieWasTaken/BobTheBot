@@ -4,6 +4,15 @@ import { Color } from "../constants.js";
 import { GuildModel } from "../models/index.js";
 import { logger, raiseUserPermissionsError, raiseBotPermissionsError, type ExtendedClient } from "../utils/index.js";
 
+/**
+ * Logs the interaction error to the console
+ *
+ * @param interaction - The interaction that failed
+ * @example
+ * ```
+ * logInteractionError(interaction);
+ * ```
+ */
 function logInteractionError(interaction: BaseInteraction<"cached">) {
   logger.trace({
     interaction: {
@@ -19,6 +28,13 @@ function logInteractionError(interaction: BaseInteraction<"cached">) {
 module.exports = {
   name: "interactionCreate",
   once: false,
+
+  /**
+   * Handles the interactionCreate event
+   *
+   * @param interaction - The interaction that was created and is being handled
+   * @param client - The client that is handling the interaction
+   */
   async execute(interaction: BaseInteraction, client: ExtendedClient) {
     if (interaction.isCommand()) {
       const command = client.interactions.get(interaction.commandName);

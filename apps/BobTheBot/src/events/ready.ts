@@ -7,6 +7,12 @@ dotenv.config();
 module.exports = {
   name: "ready",
   once: true,
+
+  /**
+   * Handles the ready event and logs the client status to the console
+   *
+   * @param client - The client that is ready
+   */
   async execute(client: ExtendedClient): Promise<void> {
     logger.info("Client is ready");
     // This Promise is required to make sure the WebSocket is fully ready before proceeding
