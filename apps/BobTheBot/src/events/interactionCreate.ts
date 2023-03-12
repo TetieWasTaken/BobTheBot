@@ -13,13 +13,12 @@ import { logger, raiseUserPermissionsError, raiseBotPermissionsError, type Exten
  * logInteractionError(interaction);
  * ```
  */
-function logInteractionError(interaction: BaseInteraction<"cached">) {
+function logInteractionError(interaction: BaseInteraction) {
   logger.trace({
     interaction: {
       id: interaction.id,
       guild: interaction.guild?.id,
       channel: interaction.channel?.id,
-      member: interaction.member?.id,
       user: interaction.user.id,
     },
   });
@@ -39,25 +38,56 @@ module.exports = {
     if (interaction.isCommand()) {
       const command = client.interactions.get(interaction.commandName);
 
-      if (!command || !interaction.inGuild()) return logger.fatal(`Command ${interaction.commandName} not found.`);
+      if (!command) {
+        logger.error(`Command ${interaction.commandName} not found.`);
+        logInteractionError(interaction);
+        return;
+      }
 
-      const guildData = await GuildModel.findOne({
-        GuildId: interaction.guild?.id,
-      });
-
-      if (guildData?.DisabledCommands && guildData.DisabledCommands.includes(interaction.commandName)) {
-        const embed = new EmbedBuilder()
-          .setColor(Color.DiscordDanger)
-          .setTitle(":x: Command Disabled")
-          .setDescription(`This command has been disabled by the server administrators.`)
-          .setFooter({
-            text: `Believe this is a mistake? Contact administrators to /enable this command`,
+      if (!interaction.channel?.isDMBased()) {
+        if (!interaction.inCachedGuild()) {
+          logger.error("Guild failed to cache");
+          logInteractionError(interaction);
+          return interaction.reply({
+            content: "An unexpected error occured. Please try again later.\nREASON: Guild failed to cache.",
+            ephemeral: true,
           });
+        }
 
-        return interaction.reply({
-          embeds: [embed],
-          ephemeral: true,
+        const guildData = await GuildModel.findOne({
+          GuildId: interaction.guild?.id,
         });
+
+        if (guildData?.DisabledCommands && guildData.DisabledCommands.includes(interaction.commandName)) {
+          const embed = new EmbedBuilder()
+            .setColor(Color.DiscordDanger)
+            .setTitle(":x: Command Disabled")
+            .setDescription(`This command has been disabled by the server administrators.`)
+            .setFooter({
+              text: `Believe this is a mistake? Contact administrators to /enable this command`,
+            });
+
+          return interaction.reply({
+            embeds: [embed],
+            ephemeral: true,
+          });
+        }
+
+        if (command.requiredUserPerms?.key.length > 0) {
+          for (const userPerm of command.requiredUserPerms.key) {
+            if (!interaction.member?.permissions.has(userPerm)) {
+              return raiseUserPermissionsError(interaction, userPerm);
+            }
+          }
+        }
+
+        if (command.requiredBotPerms?.key.length > 0) {
+          for (const botPerm of command.requiredBotPerms.key) {
+            if (!interaction.guild?.members.me?.permissions.has(botPerm)) {
+              return raiseBotPermissionsError(interaction, botPerm);
+            }
+          }
+        }
       }
 
       if (command.cooldownTime) {
@@ -76,36 +106,11 @@ module.exports = {
 
         client.cooldowns.set(`${interaction.commandName}`, currentTime);
 
-        // After cooldownTime, execute client.cooldowns.delete(interaction.commandName);
-
         await setTimeout(cooldownTime, () => {
           client.cooldowns.delete(interaction.commandName);
         }).catch((error) => {
           logger.error(error);
         });
-      }
-
-      if (!interaction.inCachedGuild()) {
-        return interaction.reply({
-          content: "An unexpected error occured. Please try again later.\nREASON: Guild failed to cache.",
-          ephemeral: true,
-        });
-      }
-
-      if (command.requiredUserPerms?.key.length > 0) {
-        for (const userPerm of command.requiredUserPerms.key) {
-          if (!interaction.member?.permissions.has(userPerm)) {
-            return raiseUserPermissionsError(interaction, userPerm);
-          }
-        }
-      }
-
-      if (command.requiredBotPerms?.key.length > 0) {
-        for (const botPerm of command.requiredBotPerms.key) {
-          if (!interaction.guild?.members.me?.permissions.has(botPerm)) {
-            return raiseBotPermissionsError(interaction, botPerm);
-          }
-        }
       }
 
       try {
@@ -142,9 +147,15 @@ module.exports = {
     } else if (interaction.isAutocomplete()) {
       const command = client.interactions.get(interaction.commandName);
 
-      if (!interaction.inCachedGuild()) return logger.warn("Guild failed to cache");
+      if (!command) {
+        logger.error(`No command matching ${interaction.commandName} was found.`);
+        return;
+      }
 
-      if (!command) return logger.error(`No command matching ${interaction.commandName} was found.`);
+      if (!interaction.inCachedGuild() && !interaction.channel?.isDMBased()) {
+        logger.error("Guild failed to cache");
+        return;
+      }
 
       try {
         await command.autocomplete(interaction);
@@ -160,7 +171,10 @@ module.exports = {
           ephemeral: true,
         });
 
-      if (!interaction.inCachedGuild()) return logger.warn("Guild failed to cache");
+      if (!interaction.inCachedGuild() && !interaction.channel?.isDMBased()) {
+        logger.error("Guild failed to cache");
+        return;
+      }
 
       const button = client.buttons.get(interaction.customId);
       if (!button) return new Error("No code for button!");
