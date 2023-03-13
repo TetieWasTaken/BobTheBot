@@ -1,18 +1,14 @@
 import { EmbedBuilder, type Message } from "discord.js";
 import { Color } from "../constants.js";
 import { GuildModel } from "../models/index.js";
-import { logger } from "../utils/index.js";
+import { logger, type Event } from "../utils/index.js";
 
-module.exports = {
-  name: "messageDelete",
-  once: false,
+export default class implements Event {
+  public name = "messageDelete";
 
-  /**
-   * Handles the messageDelete event and logs the deleted message to the log channel
-   *
-   * @param message - The message that was deleted
-   */
-  async execute(message: Message) {
+  public once = false;
+
+  public async execute(message: Message) {
     if (message.author.bot) return;
 
     const guildData = await GuildModel.findOne({
@@ -56,5 +52,5 @@ module.exports = {
         logger.error(error);
       });
     }
-  },
-};
+  }
+}
