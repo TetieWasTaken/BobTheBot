@@ -4,6 +4,7 @@ export * from "./convertMS.js";
 export * from "./damerau.js";
 export * from "./dataSweeper.js";
 export * from "./getCategories.js";
+export * from "./getCommandData.js";
 export * from "./logger.js";
 export * from "./requestItemData.js";
 export * from "./returnError.js";
