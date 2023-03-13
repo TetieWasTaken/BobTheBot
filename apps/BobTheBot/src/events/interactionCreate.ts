@@ -2,7 +2,13 @@ import { setTimeout } from "node:timers/promises";
 import { EmbedBuilder, type BaseInteraction } from "discord.js";
 import { Color } from "../constants.js";
 import { GuildModel } from "../models/index.js";
-import { logger, raiseUserPermissionsError, raiseBotPermissionsError, type ExtendedClient } from "../utils/index.js";
+import {
+  logger,
+  raiseUserPermissionsError,
+  raiseBotPermissionsError,
+  type ExtendedClient,
+  type Event,
+} from "../utils/index.js";
 
 /**
  * Logs the interaction error to the console
@@ -24,17 +30,12 @@ function logInteractionError(interaction: BaseInteraction) {
   });
 }
 
-module.exports = {
-  name: "interactionCreate",
-  once: false,
+export default class implements Event {
+  public name = "interactionCreate";
 
-  /**
-   * Handles the interactionCreate event
-   *
-   * @param interaction - The interaction that was created and is being handled
-   * @param client - The client that is handling the interaction
-   */
-  async execute(interaction: BaseInteraction, client: ExtendedClient) {
+  public once = false;
+
+  public async execute(interaction: BaseInteraction, client: ExtendedClient) {
     if (interaction.isCommand()) {
       const command = client.interactions.get(interaction.commandName);
 
@@ -48,10 +49,11 @@ module.exports = {
         if (!interaction.inCachedGuild()) {
           logger.error("Guild failed to cache");
           logInteractionError(interaction);
-          return interaction.reply({
+          interaction.reply({
             content: "An unexpected error occured. Please try again later.\nREASON: Guild failed to cache.",
             ephemeral: true,
           });
+          return;
         }
 
         const guildData = await GuildModel.findOne({
@@ -67,16 +69,18 @@ module.exports = {
               text: `Believe this is a mistake? Contact administrators to /enable this command`,
             });
 
-          return interaction.reply({
+          interaction.reply({
             embeds: [embed],
             ephemeral: true,
           });
+          return;
         }
 
         if (command.requiredUserPerms?.key.length > 0) {
           for (const userPerm of command.requiredUserPerms.key) {
             if (!interaction.member?.permissions.has(userPerm)) {
-              return raiseUserPermissionsError(interaction, userPerm);
+              await raiseUserPermissionsError(interaction, userPerm);
+              return;
             }
           }
         }
@@ -84,7 +88,8 @@ module.exports = {
         if (command.requiredBotPerms?.key.length > 0) {
           for (const botPerm of command.requiredBotPerms.key) {
             if (!interaction.guild?.members.me?.permissions.has(botPerm)) {
-              return raiseBotPermissionsError(interaction, botPerm);
+              await raiseBotPermissionsError(interaction, botPerm);
+              return;
             }
           }
         }
@@ -97,10 +102,11 @@ module.exports = {
         if (client.cooldowns.has(interaction.commandName)) {
           const timeLeft = cooldownTime - (currentTime - client.cooldowns.get(interaction.commandName));
           if (timeLeft > 0) {
-            return interaction.reply({
+            interaction.reply({
               content: `Please wait \`${timeLeft / 1_000}\` seconds before using this command again.`,
               ephemeral: true,
             });
+            return;
           }
         }
 
@@ -165,11 +171,13 @@ module.exports = {
         logger.error(error);
       }
     } else if (interaction.isButton()) {
-      if (interaction.message.interaction?.user.id !== interaction.user.id)
-        return interaction.reply({
+      if (interaction.message.interaction?.user.id !== interaction.user.id) {
+        interaction.reply({
           content: "This button is not for you!",
           ephemeral: true,
         });
+        return;
+      }
 
       if (!interaction.inCachedGuild() && !interaction.channel?.isDMBased()) {
         logger.error("Guild failed to cache");
@@ -177,7 +185,11 @@ module.exports = {
       }
 
       const button = client.buttons.get(interaction.customId);
-      if (!button) return new Error("No code for button!");
+      if (!button) {
+        logger.error(`Button ${interaction.customId} not found.`);
+        logInteractionError(interaction);
+        return;
+      }
 
       try {
         const startTime = Date.now();
@@ -198,5 +210,5 @@ module.exports = {
     } else {
       logger.warn("Unknown interaction type");
     }
-  },
-};
+  }
+}
