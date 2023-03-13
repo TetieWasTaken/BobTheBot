@@ -1,19 +1,14 @@
 import { EmbedBuilder, type Message } from "discord.js";
 import { Color } from "../constants.js";
 import { GuildModel } from "../models/index.js";
-import { logger } from "../utils/index.js";
+import { logger, type Event } from "../utils/index.js";
 
-module.exports = {
-  name: "messageUpdate",
-  once: false,
+export default class implements Event {
+  public name = "messageUpdate";
 
-  /**
-   * Handles the messageUpdate event and logs the edited message to the log channel
-   *
-   * @param initMessage - The message before it was edited
-   * @param newMessage - The message after it was edited
-   */
-  async execute(initMessage: Message, newMessage: Message): Promise<void> {
+  public once = false;
+
+  public async execute(initMessage: Message, newMessage: Message) {
     if (newMessage.author.bot || !newMessage.guild) return;
 
     const guildData = await GuildModel.findOne({
@@ -62,5 +57,5 @@ module.exports = {
         logger.error(error);
       });
     }
-  },
-};
+  }
+}
