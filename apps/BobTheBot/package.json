@@ -27,6 +27,7 @@
     "node-cron": "^3.0.2",
     "pino": "^8.11.0",
     "pino-pretty": "^9.4.0",
+    "readdirp": "^3.6.0",
     "table": "^6.8.1"
   },
   "overrides": {
