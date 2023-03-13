@@ -1,1 +1,1 @@
-export * from "./test/test.js";
+export { PingCommand } from "./information/ping.js";

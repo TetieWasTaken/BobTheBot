@@ -1,7 +1,7 @@
 import process from "node:process";
 import { REST, Routes } from "discord.js";
 import dotenv from "dotenv";
-import { TestCommand } from "./interactions/index.js";
+import { PingCommand } from "./interactions/index.js";
 import { logger } from "./utils/index.js";
 
 dotenv.config();
@@ -23,7 +23,7 @@ const rest = new REST({
     }
 
     if (process.env.ENV === "production") {
-      await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: [TestCommand] });
+      await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: [PingCommand] });
     } else {
       if (!process.env.GUILD_ID) {
         logger.error("No guild id provided.");
@@ -31,7 +31,7 @@ const rest = new REST({
       }
 
       await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), {
-        body: [TestCommand],
+        body: [PingCommand],
       });
     }
   } catch (error) {
