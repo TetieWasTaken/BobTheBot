@@ -19,7 +19,7 @@ const client: ExtendedClient = new ExtendedClient({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.GuildBans, // Temporarily changed to GuildBans, since Dapi v0.37.20 doesn't support GuildModeration
+    GatewayIntentBits.GuildBans,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.GuildMessageReactions,
     GatewayIntentBits.MessageContent,
