@@ -21,13 +21,15 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("inventory")
     .setDescription("View your inventory")
-    .addIntegerOption((option) => option.setName("page").setDescription("The page you want to view").setRequired(false))
+    .addIntegerOption((option) =>
+      option.setName("page").setDescription("The page you want to view").setRequired(false).setMinValue(1)
+    )
     .addUserOption((option) =>
       option.setName("user").setDescription("The user you want to view the inventory of").setRequired(false)
     )
     .setDMPermission(true),
   async execute(interaction: ChatInputCommandInteraction) {
-    const page = interaction.options.getInteger("page") ?? 1;
+    let page = interaction.options.getInteger("page") ?? 1;
     const user = interaction.options.getUser("user") ?? interaction.user;
     const member = interaction.options.getMember("user") ?? interaction.member;
 
@@ -51,6 +53,8 @@ module.exports = {
         embeds: [inventoryEmbed],
       });
     } else {
+      if (page > Math.ceil(data.Inventory.length / 5)) page = Math.ceil(data.Inventory.length / 5);
+
       const inventoryEmbed = new EmbedBuilder()
         .setAuthor({
           name: `${hasDisplayName(member) ? member.displayName : user.username}'s inventory`,
