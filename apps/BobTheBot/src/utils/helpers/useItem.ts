@@ -1,6 +1,6 @@
 import type { ChatInputCommandInteraction, InteractionResponse } from "discord.js";
 import type { Document } from "mongoose";
-import type { IItem } from "./index.js";
+import type { IItem } from "../index.js";
 
 type ItemHandlerMap = Record<
   string,

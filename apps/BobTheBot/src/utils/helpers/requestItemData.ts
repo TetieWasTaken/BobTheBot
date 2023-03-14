@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import type { IItem } from "./index.js";
+import type { IItem } from "../index.js";
 
 /**
  * @param id - The id of the item to get

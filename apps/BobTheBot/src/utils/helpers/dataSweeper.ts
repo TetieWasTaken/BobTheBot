@@ -1,6 +1,6 @@
 import type { Connection, Collection } from "mongoose";
 import cron from "node-cron";
-import { logger, type ExtendedClient } from "./index.js";
+import { logger, type ExtendedClient } from "../index.js";
 
 type ICollection = {
   label: string;
