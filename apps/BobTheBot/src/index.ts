@@ -56,7 +56,7 @@ await db.connect(client).catch((error: Error) => {
 
 try {
   for await (const dir of readdirp(fileURLToPath(new URL("interactions", import.meta.url)), {
-    fileFilter: ["*.js", "!index.js"],
+    fileFilter: ["*.js"],
   })) {
     const command = await import(`${dir.fullPath}`);
     const commandData = getCommandData(dir.path);
