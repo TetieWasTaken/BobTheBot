@@ -59,7 +59,7 @@ type ApplicationCommandOption =
  * ```
  */
 export type Command = {
-  default_member_permissions: string;
+  default_member_permissions: string | undefined;
   description: string;
   description_localizations?: Record<Locale, string>;
   dm_permission: boolean;
