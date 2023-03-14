@@ -66,6 +66,6 @@ export type Command = {
   name: string;
   name_localizations?: Record<Locale, string>;
   nsfw?: boolean;
-  options?: ApplicationCommandOption[];
+  options?: readonly ApplicationCommandOption[];
   type?: ApplicationCommandType;
 };
