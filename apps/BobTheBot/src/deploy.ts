@@ -15,7 +15,7 @@ if (!process.env.BOT_TOKEN) {
 const interactions = [];
 
 for await (const file of readdirp(fileURLToPath(new URL("interactions", import.meta.url)), {
-  fileFilter: ["*.js", "!index.js"],
+  fileFilter: ["*.js"],
 })) {
   const commandName = `${capitalizeFirst(getCommandData(file.fullPath)?.name ?? "")}Command`;
   if (commandName.length <= 7) {
