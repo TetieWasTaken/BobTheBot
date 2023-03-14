@@ -4,7 +4,7 @@ import {
   type CommandInteraction,
   type ChatInputCommandInteraction,
 } from "discord.js";
-import { Color } from "../constants.js";
+import { Color } from "../../constants.js";
 
 /**
  * @param interaction - The command interaction to reply to
