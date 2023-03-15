@@ -20,10 +20,10 @@ export const RankCommand: Command = {
     },
   ],
   default_member_permissions: permissionToString(RequiredPerms.user),
-  dm_permission: true,
+  dm_permission: false,
 } as const;
 
-export async function execute(interaction: ChatInputCommandInteraction) {
+export async function execute(interaction: ChatInputCommandInteraction<"cached">) {
   const user = interaction.options.getUser("target") ?? interaction.user;
 
   if (user.bot) {
