@@ -14,23 +14,25 @@ if (!process.env.BOT_TOKEN) {
 
 const interactions = [];
 
-for await (const file of readdirp(fileURLToPath(new URL("interactions", import.meta.url)), {
+for await (const dir of readdirp(fileURLToPath(new URL("interactions", import.meta.url)), {
   fileFilter: ["*.js"],
 })) {
-  const commandName = `${capitalizeFirst(getCommandData(file.fullPath)?.name ?? "")}Command`;
+  const commandName = `${capitalizeFirst(getCommandData(dir.fullPath)?.name ?? "")}Command`;
   if (commandName.length <= 7) {
-    logger.error(`No command name provided for ${file.fullPath}`);
+    logger.error(`No command name provided for ${dir.fullPath}`);
     continue;
   }
 
-  const test = await import(file.fullPath);
+  const command = await import(dir.fullPath);
 
-  if (!test[commandName]) {
-    logger.error(`No command found for ${file.fullPath}`);
+  if (!command[commandName]) {
+    logger.error(`No command found for ${dir.fullPath}`);
     continue;
   }
 
-  interactions.push(test[commandName]);
+  logger.info({ name: dir.path }, `Registering command: ${command[commandName].name}`);
+
+  interactions.push(command[commandName]);
 }
 
 const rest = new REST({
@@ -60,5 +62,5 @@ const rest = new REST({
     logger.error(error);
   }
 
-  logger.info(`Successfully registered application commands.`);
+  logger.info(`Successfully registered application commands`);
 })();
