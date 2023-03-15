@@ -77,7 +77,7 @@ async function getCommands() {
   for await (const dir of readdirp(fileURLToPath(new URL(/.*dist\/interactions\//.exec(import.meta.url)!.toString())), {
     fileFilter: ["*.js"],
   })) {
-    const parent = dir.fullPath.match(/(?<=\/)[^/]+(?=\/[^/]+$)/)?.toString();
+    const parent = /(?<=\/)[^/]+(?=\/[^/]+$)/.exec(dir.fullPath)?.toString();
     const basename = dir.basename.split(".")[0];
     if (!parent || !basename) continue;
 

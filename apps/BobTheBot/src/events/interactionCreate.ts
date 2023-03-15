@@ -49,7 +49,8 @@ export default class implements Event {
         if (!interaction.inCachedGuild()) {
           logger.error("Guild failed to cache");
           logInteractionError(interaction);
-          interaction.reply({
+
+          await interaction.reply({
             content: "An unexpected error occured. Please try again later.\nREASON: Guild failed to cache.",
             ephemeral: true,
           });
@@ -69,7 +70,7 @@ export default class implements Event {
               text: `Believe this is a mistake? Contact administrators to /enable this command`,
             });
 
-          interaction.reply({
+          await interaction.reply({
             embeds: [embed],
             ephemeral: true,
           });
@@ -102,7 +103,7 @@ export default class implements Event {
         if (client.cooldowns.has(interaction.commandName)) {
           const timeLeft = cooldownTime - (currentTime - client.cooldowns.get(interaction.commandName));
           if (timeLeft > 0) {
-            interaction.reply({
+            await interaction.reply({
               content: `Please wait \`${timeLeft / 1_000}\` seconds before using this command again.`,
               ephemeral: true,
             });
@@ -172,7 +173,7 @@ export default class implements Event {
       }
     } else if (interaction.isButton()) {
       if (interaction.message.interaction?.user.id !== interaction.user.id) {
-        interaction.reply({
+        await interaction.reply({
           content: "This button is not for you!",
           ephemeral: true,
         });
