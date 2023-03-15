@@ -1,5 +1,5 @@
 import type { ChatInputCommandInteraction } from "discord.js";
-import { type Command, permissionToString } from "../../utils/index.js";
+import { permissionToString, type Command } from "../../utils/index.js";
 
 export const RequiredPermissions = {
   bot: [],
