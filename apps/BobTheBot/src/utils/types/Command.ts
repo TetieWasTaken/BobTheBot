@@ -8,7 +8,7 @@ import type {
 
 type BaseApplicationCommandOption = {
   channel_types?: ChannelType[];
-  choices?: ApplicationCommandOptionChoiceData[];
+  choices?: readonly ApplicationCommandOptionChoiceData[];
   description: string;
   description_localizations?: Record<Locale, string>;
   max_length?: number;
@@ -17,7 +17,7 @@ type BaseApplicationCommandOption = {
   min_value?: number;
   name: string;
   name_localizations?: Record<Locale, string>;
-  options?: ApplicationCommandOption[];
+  options?: readonly ApplicationCommandOption[];
   required?: boolean;
 };
 
