@@ -12,7 +12,7 @@ export const LeaderboardCommand: Command = {
   name: "leaderboard",
   description: "Returns the top 10 users with the most amount of XP in the guild",
   default_member_permissions: permissionToString(RequiredPerms.user),
-  dm_permission: true,
+  dm_permission: false,
 } as const;
 
 export async function execute(interaction: ChatInputCommandInteraction<"cached">) {

@@ -11,7 +11,7 @@ export const ChannelinfoCommand: Command = {
   name: "channelinfo",
   description: "Get information about the current channel",
   default_member_permissions: permissionToString(RequiredPerms.user),
-  dm_permission: true,
+  dm_permission: false,
 } as const;
 
 export async function execute(interaction: ChatInputCommandInteraction<"cached">) {
