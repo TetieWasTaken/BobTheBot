@@ -39,7 +39,7 @@ export const MuteCommand: Command = {
     },
   ],
   default_member_permissions: permissionToString(RequiredPerms.user),
-  dm_permission: true,
+  dm_permission: false,
 } as const;
 
 export async function execute(interaction: ChatInputCommandInteraction<"cached">) {
