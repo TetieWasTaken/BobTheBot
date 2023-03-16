@@ -14,7 +14,7 @@ import { logger, permissionToString, type Command } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [],
-  user: [],
+  user: [PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageGuild],
 } as const;
 
 export const AnnounceCommand: Command = {
