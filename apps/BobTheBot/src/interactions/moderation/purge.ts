@@ -19,6 +19,8 @@ export const PurgeCommand: Command = {
       name: "amount",
       description: "The amount of messages to delete",
       type: ApplicationCommandOptionType.Integer,
+      min_value: 1,
+      max_value: 100,
       required: true,
     },
   ],
