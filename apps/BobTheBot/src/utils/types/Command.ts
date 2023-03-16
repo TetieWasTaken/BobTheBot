@@ -7,7 +7,7 @@ import type {
 } from "discord.js";
 
 type BaseApplicationCommandOption = {
-  channel_types?: ChannelType[];
+  channel_types?: readonly ChannelType[];
   choices?: readonly ApplicationCommandOptionChoiceData[];
   description: string;
   description_localizations?: Record<Locale, string>;
