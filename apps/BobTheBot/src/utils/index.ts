@@ -11,6 +11,7 @@ export * from "./helpers/returnError.js";
 export * from "./helpers/useItem.js";
 
 // Types
+export * from "./types/Github.js";
 export * from "./types/Command.js";
 export * from "./types/Event.js";
 export * from "./types/ExtendedClient.js";
