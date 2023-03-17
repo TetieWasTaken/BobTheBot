@@ -70,8 +70,7 @@ export async function execute(interaction: ChatInputCommandInteraction<"cached">
   });
 
   if (data) {
-    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-    const NewCaseId: number = data.Punishments.reduce((a, b) => Math.max(a, b.CaseId), 0) + 1;
+    const NewCaseId: number = Number(data.Punishments.reduce((a, b) => Math.max(a, b.CaseId), 0)) + 1;
 
     data.Punishments.unshift({
       PunishType: "WARN",
