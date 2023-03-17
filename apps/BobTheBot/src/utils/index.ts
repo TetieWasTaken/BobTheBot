@@ -1,9 +1,9 @@
 // Helpers
+export * from "./helpers/autocompleteHelpers.js";
 export * from "./helpers/capitalizeFirst.js";
 export * from "./helpers/convertMS.js";
 export * from "./helpers/damerau.js";
 export * from "./helpers/dataSweeper.js";
-export * from "./helpers/getCategories.js";
 export * from "./helpers/getCommandData.js";
 export * from "./helpers/processPermissions.js";
 export * from "./helpers/requestItemData.js";

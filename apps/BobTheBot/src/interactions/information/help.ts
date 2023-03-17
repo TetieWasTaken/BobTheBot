@@ -1,5 +1,4 @@
 import fs from "node:fs";
-import { fileURLToPath, URL } from "node:url";
 import {
   EmbedBuilder,
   PermissionsBitField,
@@ -10,13 +9,13 @@ import {
   type Snowflake,
   type ApplicationCommand,
 } from "discord.js";
-import readdirp from "readdirp";
 import { Color } from "../../constants.js";
 import {
   damerAutocomplete,
   permissionToString,
   capitalizeFirst,
   getCategories,
+  getCommands,
   type Command,
   type ExtendedClient,
 } from "../../utils/index.js";
@@ -62,30 +61,6 @@ export const HelpCommand: Command = {
   default_member_permissions: permissionToString(RequiredPerms.user),
   dm_permission: true,
 } as const;
-
-/**
- * @returns A list of all the commands in an array formatted for the autocomplete interaction
- * @example
- * ```
- * const commands = await getCommands();
- * console.log(commands); // ["Information: Avatar", "Information: Botinfo", etc..]
- * ```
- */
-async function getCommands() {
-  const entries: string[] = [];
-
-  for await (const dir of readdirp(fileURLToPath(new URL(/.*dist\/interactions\//.exec(import.meta.url)!.toString())), {
-    fileFilter: ["*.js"],
-  })) {
-    const parent = /(?<=\/)[^/]+(?=\/[^/]+$)/.exec(dir.fullPath)?.toString();
-    const basename = dir.basename.split(".")[0];
-    if (!parent || !basename) continue;
-
-    entries.push(`${capitalizeFirst(parent)}: ${capitalizeFirst(basename)}`);
-  }
-
-  return entries;
-}
 
 /**
  * Checks if the bot has the specified permission
