@@ -74,7 +74,7 @@ export async function execute(interaction: ChatInputCommandInteraction<"cached">
   if (member.communicationDisabledUntil) {
     replyEmbed.addFields({
       name: `Active infraction`,
-      value: `This member is timed out until: <t:${member.communicationDisabledUntil}:f>`,
+      value: `This member is timed out until: <t:${member.communicationDisabledUntilTimestamp}:f>`,
       inline: false,
     });
   }
