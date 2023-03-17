@@ -227,7 +227,7 @@ export async function execute(interaction: ChatInputCommandInteraction<"cached">
           .setColor(color);
 
         await channel.send({ embeds: [embed] }).catch(async () => {
-          return interaction.reply({ content: `:x: Failed to send embed to <#${channel.id}>`, ephemeral: true });
+          return interaction.reply({ content: `❌ Failed to send embed to <#${channel.id}>`, ephemeral: true });
         });
 
         return modalI.reply({
@@ -255,7 +255,7 @@ export async function execute(interaction: ChatInputCommandInteraction<"cached">
     const message = interaction.options.getString("message", true);
 
     await channel.send(message).catch(async () => {
-      return interaction.reply({ content: `:x: Failed to send message to <#${channel.id}>`, ephemeral: true });
+      return interaction.reply({ content: `❌ Failed to send message to <#${channel.id}>`, ephemeral: true });
     });
 
     return interaction.reply({

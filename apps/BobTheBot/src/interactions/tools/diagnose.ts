@@ -46,7 +46,7 @@ export async function execute(interaction: ChatInputCommandInteraction<"cached">
   const commandInput = interaction.options.getString("command", true).replace(/.*: /, "").toLowerCase();
   const commandData = client.interactions.get(commandInput);
 
-  if (!commandData) return interaction.reply({ content: ":x: That command does not exist!", ephemeral: true });
+  if (!commandData) return interaction.reply({ content: "❌ That command does not exist!", ephemeral: true });
 
   const replyEmbed = new EmbedBuilder();
 

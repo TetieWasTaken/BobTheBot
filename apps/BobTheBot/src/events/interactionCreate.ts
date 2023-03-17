@@ -64,7 +64,7 @@ export default class implements Event {
         if (guildData?.DisabledCommands && guildData.DisabledCommands.includes(interaction.commandName)) {
           const embed = new EmbedBuilder()
             .setColor(Color.DiscordDanger)
-            .setTitle(":x: Command Disabled")
+            .setTitle("❌ Command Disabled")
             .setDescription(`This command has been disabled by the server administrators.`)
             .setFooter({
               text: `Believe this is a mistake? Contact administrators to /enable this command`,

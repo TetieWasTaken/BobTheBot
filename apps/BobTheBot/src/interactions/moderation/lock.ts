@@ -28,7 +28,7 @@ export async function execute(interaction: ChatInputCommandInteraction<"cached">
     })
     .catch(async () => {
       return interaction.reply({
-        content: `:x: Something went wrong while locking the channel`,
+        content: `❌ Something went wrong while locking the channel`,
         ephemeral: true,
       });
     });

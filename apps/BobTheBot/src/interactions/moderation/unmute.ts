@@ -50,7 +50,7 @@ export async function execute(interaction: ChatInputCommandInteraction<"cached">
     })
     .catch(async () => {
       return interaction.reply({
-        content: `:x:  Unable to unmute \`${member.user.tag}\``,
+        content: `❌  Unable to unmute \`${member.user.tag}\``,
         ephemeral: true,
       });
     });

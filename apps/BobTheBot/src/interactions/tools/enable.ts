@@ -107,7 +107,7 @@ export async function execute(interaction: ChatInputCommandInteraction<"cached">
         await guildData.save();
 
         cmdEmbed = new EmbedBuilder()
-          .setTitle(":white_check_mark: Command enabled!")
+          .setTitle("✅ Command enabled!")
           .setDescription(`Command \`${command}\` has been enabled!`)
           .setColor(Color.DiscordSuccess);
       } else {
@@ -155,7 +155,7 @@ export async function execute(interaction: ChatInputCommandInteraction<"cached">
           .setColor(Color.DiscordDanger);
       } else {
         catEmbed
-          .setTitle(`:white_check_mark: Enabled ${commandCount} commands!`)
+          .setTitle(`✅ Enabled ${commandCount} commands!`)
           .setDescription(`Enabled commands: \`${disabledCommandsArray.join("`, `")}\``)
           .setColor(Color.DiscordSuccess);
       }

@@ -30,7 +30,7 @@ export async function execute(interaction: ChatInputCommandInteraction<"cached">
 
   await interaction.channel.setRateLimitPerUser(duration).catch(async () => {
     return interaction.reply({
-      content: ":x: I don't have the permissions to adjust the slowmode",
+      content: "❌ I don't have the permissions to adjust the slowmode",
       ephemeral: true,
     });
   });

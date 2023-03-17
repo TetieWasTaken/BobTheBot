@@ -39,7 +39,7 @@ export async function execute(interaction: ChatInputCommandInteraction<"cached">
   const reason = interaction.options.getString("reason") ?? "No reason provided";
 
   if (!interaction.guild.members.me)
-    return interaction.reply({ content: ":x: I am not in this guild!", ephemeral: true });
+    return interaction.reply({ content: "❌ I am not in this guild!", ephemeral: true });
 
   if (user.bot) {
     return interaction.reply({
