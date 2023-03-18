@@ -1,12 +1,12 @@
 import { ApplicationCommandOptionType, PermissionFlagsBits, type ChatInputCommandInteraction } from "discord.js";
-import { permissionToString, type Command } from "../../utils/index.js";
+import { permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [PermissionFlagsBits.BanMembers],
   user: [PermissionFlagsBits.BanMembers],
 } as const;
 
-export const UnbanCommand: Command = {
+export const UnbanCommand: ChatInputCommand = {
   name: "unban",
   description: "Unban a user from the guild",
   options: [

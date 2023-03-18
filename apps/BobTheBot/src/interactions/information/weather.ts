@@ -1,14 +1,14 @@
 import { env } from "node:process";
 import { ApplicationCommandOptionType, EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
 import { Color } from "../../constants.js";
-import { permissionToString, type Command } from "../../utils/index.js";
+import { permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [],
   user: [],
 } as const;
 
-export const WeatherCommand: Command = {
+export const WeatherCommand: ChatInputCommand = {
   name: "weather",
   description: "Returns the weather of a location",
   options: [

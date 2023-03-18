@@ -4,14 +4,14 @@ import {
   Collection,
   type ChatInputCommandInteraction,
 } from "discord.js";
-import { permissionToString, type Command } from "../../utils/index.js";
+import { permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [PermissionFlagsBits.ManageMessages],
   user: [PermissionFlagsBits.ManageMessages],
 } as const;
 
-export const PurgeCommand: Command = {
+export const PurgeCommand: ChatInputCommand = {
   name: "purge",
   description: "Bulk deletes a specific amount of messages",
   options: [

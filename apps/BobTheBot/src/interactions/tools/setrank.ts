@@ -1,13 +1,13 @@
 import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
 import { LevelModel } from "../../models/index.js";
-import { permissionToString, logger, type Command } from "../../utils/index.js";
+import { permissionToString, logger, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [],
   user: [],
 } as const;
 
-export const SetrankCommand: Command = {
+export const SetrankCommand: ChatInputCommand = {
   name: "setrank",
   description: "Set a user's rank",
   options: [

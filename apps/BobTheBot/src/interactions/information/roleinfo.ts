@@ -1,12 +1,12 @@
 import { ApplicationCommandOptionType, EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
-import { permissionToString, type Command } from "../../utils/index.js";
+import { permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [],
   user: [],
 } as const;
 
-export const RoleinfoCommand: Command = {
+export const RoleinfoCommand: ChatInputCommand = {
   name: "roleinfo",
   description: "Receive information about a role",
   options: [

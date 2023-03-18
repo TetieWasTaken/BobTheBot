@@ -1,14 +1,14 @@
 import { EmbedBuilder, ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
 import { Color } from "../../constants.js";
 import { LevelModel } from "../../models/index.js";
-import { permissionToString, type Command } from "../../utils/index.js";
+import { permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [],
   user: [],
 } as const;
 
-export const RankCommand: Command = {
+export const RankCommand: ChatInputCommand = {
   name: "rank",
   description: "Shows your rank in the server",
   options: [

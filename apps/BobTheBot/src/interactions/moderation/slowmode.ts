@@ -1,12 +1,12 @@
 import { PermissionFlagsBits, ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
-import { permissionToString, type Command } from "../../utils/index.js";
+import { permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [PermissionFlagsBits.ManageChannels],
   user: [PermissionFlagsBits.ManageChannels],
 } as const;
 
-export const SlowmodeCommand: Command = {
+export const SlowmodeCommand: ChatInputCommand = {
   name: "slowmode",
   description: "Set the slowmode for the current channel",
   options: [

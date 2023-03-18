@@ -1,13 +1,13 @@
 import { ApplicationCommandOptionType, EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
 import { Color } from "../../constants.js";
-import { permissionToString, type Command } from "../../utils/index.js";
+import { permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [],
   user: [],
 } as const;
 
-export const AvatarCommand: Command = {
+export const AvatarCommand: ChatInputCommand = {
   name: "avatar",
   description: "Get the avatar of a user",
   options: [

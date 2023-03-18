@@ -8,7 +8,7 @@ import {
   permissionToString,
   raiseUserHierarchyError,
   raiseBotHierarchyError,
-  type Command,
+  type ChatInputCommand,
 } from "../../utils/index.js";
 
 export const RequiredPerms = {
@@ -16,7 +16,7 @@ export const RequiredPerms = {
   user: [PermissionFlagsBits.KickMembers],
 } as const;
 
-export const KickCommand: Command = {
+export const KickCommand: ChatInputCommand = {
   name: "kick",
   description: "Kick a member from the guild",
   options: [

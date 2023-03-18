@@ -1,12 +1,12 @@
 import { PermissionFlagsBits, ChannelType, type ChatInputCommandInteraction } from "discord.js";
-import { permissionToString, type Command } from "../../utils/index.js";
+import { permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [PermissionFlagsBits.ManageChannels],
   user: [PermissionFlagsBits.ManageChannels],
 } as const;
 
-export const LockCommand: Command = {
+export const LockCommand: ChatInputCommand = {
   name: "lock",
   description: "Locks the current channel",
   default_member_permissions: permissionToString(RequiredPerms.user),

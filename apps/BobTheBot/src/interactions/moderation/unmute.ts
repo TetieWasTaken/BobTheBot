@@ -3,7 +3,7 @@ import {
   permissionToString,
   raiseUserHierarchyError,
   raiseBotHierarchyError,
-  type Command,
+  type ChatInputCommand,
 } from "../../utils/index.js";
 
 export const RequiredPerms = {
@@ -11,7 +11,7 @@ export const RequiredPerms = {
   user: [PermissionFlagsBits.ModerateMembers],
 } as const;
 
-export const UnmuteCommand: Command = {
+export const UnmuteCommand: ChatInputCommand = {
   name: "unmute",
   description: "Removes a user from timeout",
   options: [

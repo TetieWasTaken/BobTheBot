@@ -10,7 +10,7 @@ import {
   permissionToString,
   getCommands,
   damerAutocomplete,
-  type Command,
+  type ChatInputCommand,
   type ExtendedClient,
 } from "../../utils/index.js";
 
@@ -19,7 +19,7 @@ export const RequiredPerms = {
   user: [],
 } as const;
 
-export const DiagnoseCommand: Command = {
+export const DiagnoseCommand: ChatInputCommand = {
   name: "diagnose",
   description: "Test if a command is working",
   options: [

@@ -1,13 +1,13 @@
 import { EmbedBuilder, type ChatInputCommandInteraction, type Guild } from "discord.js";
 import { Color } from "../../constants.js";
-import { permissionToString, convertMS, type Command } from "../../utils/index.js";
+import { permissionToString, convertMS, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [],
   user: [],
 } as const;
 
-export const StatsCommand: Command = {
+export const StatsCommand: ChatInputCommand = {
   name: "stats",
   description: "Get information about the bot",
   default_member_permissions: permissionToString(RequiredPerms.user),

@@ -1,13 +1,13 @@
 import { createHash, scryptSync, randomBytes } from "node:crypto";
 import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
-import { permissionToString, type Command } from "../../utils/index.js";
+import { permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [],
   user: [],
 } as const;
 
-export const HashCommand: Command = {
+export const HashCommand: ChatInputCommand = {
   name: "hash",
   description: "Hashes a string",
   options: [

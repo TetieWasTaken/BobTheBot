@@ -10,14 +10,14 @@ import {
   type ChatInputCommandInteraction,
 } from "discord.js";
 import { Color } from "../../constants.js";
-import { logger, permissionToString, type Command } from "../../utils/index.js";
+import { logger, permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [],
   user: [PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageGuild],
 } as const;
 
-export const AnnounceCommand: Command = {
+export const AnnounceCommand: ChatInputCommand = {
   name: "announce",
   description: "Announces a message to a channel",
   options: [

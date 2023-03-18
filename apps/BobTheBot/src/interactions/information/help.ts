@@ -16,7 +16,7 @@ import {
   capitalizeFirst,
   getCategories,
   getCommands,
-  type Command,
+  type ChatInputCommand,
   type ExtendedClient,
 } from "../../utils/index.js";
 
@@ -25,7 +25,7 @@ export const RequiredPerms = {
   user: [],
 } as const;
 
-export const HelpCommand: Command = {
+export const HelpCommand: ChatInputCommand = {
   name: "help",
   description: "Shows a list of all commands or information about a specific command",
   options: [
@@ -114,7 +114,7 @@ export async function execute(interaction: ChatInputCommandInteraction<"cached">
 
         const command = await import(`../${category}/${file}`);
 
-        const commandData: Command = command[commandName];
+        const commandData: ChatInputCommand = command[commandName];
         if (!commandData) continue;
 
         const commandId = commands.find(
@@ -146,7 +146,7 @@ export async function execute(interaction: ChatInputCommandInteraction<"cached">
 
       const commandName = `${capitalizeFirst(commandQuery)}Command`;
 
-      const commandData: Command = command[commandName];
+      const commandData: ChatInputCommand = command[commandName];
 
       if (!commandData) {
         return interaction.reply({

@@ -1,13 +1,13 @@
 import { EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
 import { Color } from "../../constants.js";
-import { permissionToString, type Command } from "../../utils/index.js";
+import { permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [],
   user: [],
 } as const;
 
-export const InviteCommand: Command = {
+export const InviteCommand: ChatInputCommand = {
   name: "invite",
   description: "Generates an invite link for the bot",
   default_member_permissions: permissionToString(RequiredPerms.user),

@@ -3,7 +3,7 @@ import {
   permissionToString,
   raiseUserHierarchyError,
   raiseBotHierarchyError,
-  type Command,
+  type ChatInputCommand,
 } from "../../utils/index.js";
 
 export const RequiredPerms = {
@@ -11,7 +11,7 @@ export const RequiredPerms = {
   user: [PermissionFlagsBits.BanMembers],
 } as const;
 
-export const BanCommand: Command = {
+export const BanCommand: ChatInputCommand = {
   name: "ban",
   description: "Bans a user from the guild",
   options: [

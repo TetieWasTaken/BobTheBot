@@ -2,14 +2,14 @@ import { version as NodeVersion } from "node:process";
 import { EmbedBuilder, version as DjsVersion, type ChatInputCommandInteraction } from "discord.js";
 import { version as MongooseVersion } from "mongoose";
 import { Color } from "../../constants.js";
-import { permissionToString, type Command } from "../../utils/index.js";
+import { permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [],
   user: [],
 } as const;
 
-export const BotinfoCommand: Command = {
+export const BotinfoCommand: ChatInputCommand = {
   name: "botinfo",
   description: "Receive information about the bot",
   default_member_permissions: permissionToString(RequiredPerms.user),

@@ -13,7 +13,7 @@ import {
   permissionToString,
   getCommands,
   damerAutocomplete,
-  type Command,
+  type ChatInputCommand,
   getCategories,
   getCommandData,
 } from "../../utils/index.js";
@@ -23,7 +23,7 @@ export const RequiredPerms = {
   user: [PermissionFlagsBits.Administrator],
 } as const;
 
-export const EnableCommand: Command = {
+export const EnableCommand: ChatInputCommand = {
   name: "enable",
   description: "Enable a command or module",
   options: [

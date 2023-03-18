@@ -1,13 +1,13 @@
 import { ApplicationCommandOptionType, PermissionFlagsBits, type ChatInputCommandInteraction } from "discord.js";
 import { InfractionsModel } from "../../models/index.js";
-import { permissionToString, type Command } from "../../utils/index.js";
+import { permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [],
   user: [PermissionFlagsBits.ManageMessages],
 } as const;
 
-export const RevokeCommand: Command = {
+export const RevokeCommand: ChatInputCommand = {
   name: "revoke",
   description: "Revoke a user's infraction",
   options: [

@@ -6,14 +6,14 @@ import {
 } from "discord.js";
 import { Color } from "../../constants.js";
 import { InfractionsModel } from "../../models/index.js";
-import { logger, permissionToString, type Command } from "../../utils/index.js";
+import { logger, permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [],
   user: [PermissionFlagsBits.SendMessages],
 } as const;
 
-export const HistoryCommand: Command = {
+export const HistoryCommand: ChatInputCommand = {
   name: "history",
   description: "View a user's history",
   options: [

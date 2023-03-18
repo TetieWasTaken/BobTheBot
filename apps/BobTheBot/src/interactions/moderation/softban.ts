@@ -1,12 +1,12 @@
 import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
-import { permissionToString, type Command } from "../../utils/index.js";
+import { permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [],
   user: [],
 } as const;
 
-export const SoftbanCommand: Command = {
+export const SoftbanCommand: ChatInputCommand = {
   name: "softban",
   description: "Softbans a user from the guild",
   options: [

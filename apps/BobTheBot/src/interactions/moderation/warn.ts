@@ -5,7 +5,7 @@ import {
   raiseUserHierarchyError,
   raiseBotHierarchyError,
   logger,
-  type Command,
+  type ChatInputCommand,
 } from "../../utils/index.js";
 
 export const RequiredPerms = {
@@ -13,7 +13,7 @@ export const RequiredPerms = {
   user: [PermissionFlagsBits.ManageMessages],
 } as const;
 
-export const WarnCommand: Command = {
+export const WarnCommand: ChatInputCommand = {
   name: "warn",
   description: "Warn a member in the guild",
   options: [

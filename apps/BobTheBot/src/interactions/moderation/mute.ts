@@ -7,7 +7,7 @@ import {
   logger,
   raiseUserHierarchyError,
   raiseBotHierarchyError,
-  type Command,
+  type ChatInputCommand,
 } from "../../utils/index.js";
 
 export const RequiredPerms = {
@@ -15,7 +15,7 @@ export const RequiredPerms = {
   user: [PermissionFlagsBits.ModerateMembers],
 } as const;
 
-export const MuteCommand: Command = {
+export const MuteCommand: ChatInputCommand = {
   name: "mute",
   description: "Puts a specific member in a timeout state",
   options: [

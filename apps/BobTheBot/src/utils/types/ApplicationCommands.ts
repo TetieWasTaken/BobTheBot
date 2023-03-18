@@ -34,15 +34,25 @@ type ApplicationCommandOption =
         | ApplicationCommandOptionType.String;
     });
 
+export type ContextMenuCommand = {
+  default_member_permissions: string | undefined;
+  description_localizations?: Record<Locale, string>;
+  dm_permission: boolean;
+  name: string;
+  name_localizations?: Record<Locale, string>;
+  nsfw?: boolean;
+  type?: ApplicationCommandType;
+};
+
 /**
- * Type for a command.
+ * Type for a chat input command.
  *
  * For consistency, default_member_permissions and dm_permission is required
  *
  * @experimental
  * @example
  * ```ts
- * const ExampleCommand: Command = {
+ * const ExampleCommand: ChatInputCommand = {
  *  name: "example",
  * description: "This is an example command",
  * options: [
@@ -58,14 +68,7 @@ type ApplicationCommandOption =
  * } as const;
  * ```
  */
-export type Command = {
-  default_member_permissions: string | undefined;
+export type ChatInputCommand = ContextMenuCommand & {
   description: string;
-  description_localizations?: Record<Locale, string>;
-  dm_permission: boolean;
-  name: string;
-  name_localizations?: Record<Locale, string>;
-  nsfw?: boolean;
   options?: readonly ApplicationCommandOption[];
-  type?: ApplicationCommandType;
 };

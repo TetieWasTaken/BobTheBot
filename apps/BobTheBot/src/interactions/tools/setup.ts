@@ -13,14 +13,14 @@ import {
 } from "discord.js";
 import { Color } from "../../constants.js";
 import { GuildModel } from "../../models/index.js";
-import { permissionToString, logger, type Command } from "../../utils/index.js";
+import { permissionToString, logger, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [],
   user: [PermissionFlagsBits.Administrator],
 } as const;
 
-export const SetupCommand: Command = {
+export const SetupCommand: ChatInputCommand = {
   name: "setup",
   description: "Set up the bot for your server",
   default_member_permissions: permissionToString(RequiredPerms.user),

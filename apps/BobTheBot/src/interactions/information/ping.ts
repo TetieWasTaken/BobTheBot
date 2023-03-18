@@ -1,12 +1,12 @@
 import type { ChatInputCommandInteraction } from "discord.js";
-import { permissionToString, type Command } from "../../utils/index.js";
+import { permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPermissions = {
   bot: [],
   user: [],
 } as const;
 
-export const PingCommand: Command = {
+export const PingCommand: ChatInputCommand = {
   name: "ping",
   description: "Returns the bots's latency",
   default_member_permissions: permissionToString(RequiredPermissions.user),

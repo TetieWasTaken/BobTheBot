@@ -1,14 +1,14 @@
 import { EmbedBuilder, type ChatInputCommandInteraction } from "discord.js";
 import { Color } from "../../constants.js";
 import { LevelModel } from "../../models/index.js";
-import { permissionToString, type Command } from "../../utils/index.js";
+import { permissionToString, type ChatInputCommand } from "../../utils/index.js";
 
 export const RequiredPerms = {
   bot: [],
   user: [],
 } as const;
 
-export const LeaderboardCommand: Command = {
+export const LeaderboardCommand: ChatInputCommand = {
   name: "leaderboard",
   description: "Returns the top 10 users with the most amount of XP in the guild",
   default_member_permissions: permissionToString(RequiredPerms.user),

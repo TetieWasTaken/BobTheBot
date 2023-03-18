@@ -15,7 +15,7 @@ import {
   damerAutocomplete,
   getCategories,
   getCommands,
-  type Command,
+  type ChatInputCommand,
 } from "../../utils/index.js";
 
 export const RequiredPerms = {
@@ -23,7 +23,7 @@ export const RequiredPerms = {
   user: [PermissionFlagsBits.Administrator],
 } as const;
 
-export const DisableCommand: Command = {
+export const DisableCommand: ChatInputCommand = {
   name: "disable",
   description: "Disable a command or module",
   options: [
