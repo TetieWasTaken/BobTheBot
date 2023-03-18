@@ -35,12 +35,23 @@ export default class implements Event {
 
   public once = false;
 
+  private commandName: string = "";
+
   public async execute(interaction: BaseInteraction, client: ExtendedClient) {
     if (interaction.isCommand()) {
-      const command = client.interactions.get(interaction.commandName);
+      this.commandName = interaction.commandName;
+
+      if (interaction.isContextMenuCommand())
+        this.commandName = interaction.commandName
+          .replaceAll(/^\w|[A-Z]|\b\w/g, (word, _index) => {
+            return _index === 0 ? word.toLowerCase() : word.toUpperCase();
+          })
+          .replaceAll(/\s+/g, "");
+
+      const command = client.interactions.get(this.commandName);
 
       if (!command) {
-        logger.error(`Command ${interaction.commandName} not found.`);
+        logger.error(`Command ${this.commandName} not found.`);
         logInteractionError(interaction);
         return;
       }
@@ -61,7 +72,7 @@ export default class implements Event {
           GuildId: interaction.guild?.id,
         });
 
-        if (guildData?.DisabledCommands && guildData.DisabledCommands.includes(interaction.commandName)) {
+        if (guildData?.DisabledCommands && guildData.DisabledCommands.includes(this.commandName)) {
           const embed = new EmbedBuilder()
             .setColor(Color.DiscordDanger)
             .setTitle("❌ Command Disabled")
@@ -100,8 +111,8 @@ export default class implements Event {
         const cooldownTime = command.cooldownTime;
 
         const currentTime = Date.now();
-        if (client.cooldowns.has(interaction.commandName)) {
-          const timeLeft = cooldownTime - (currentTime - client.cooldowns.get(interaction.commandName));
+        if (client.cooldowns.has(this.commandName)) {
+          const timeLeft = cooldownTime - (currentTime - client.cooldowns.get(this.commandName));
           if (timeLeft > 0) {
             await interaction.reply({
               content: `Please wait \`${timeLeft / 1_000}\` seconds before using this command again.`,
@@ -111,10 +122,10 @@ export default class implements Event {
           }
         }
 
-        client.cooldowns.set(`${interaction.commandName}`, currentTime);
+        client.cooldowns.set(`${this.commandName}`, currentTime);
 
         await setTimeout(cooldownTime, () => {
-          client.cooldowns.delete(interaction.commandName);
+          client.cooldowns.delete(this.commandName);
         }).catch((error) => {
           logger.error(error);
         });
@@ -126,7 +137,7 @@ export default class implements Event {
         if (Date.now() - startTime < 2_000) {
           logger.trace(
             {
-              command: interaction.commandName,
+              command: this.commandName,
               user: `${interaction.user.tag} (${interaction.user.id})`,
               time: `${Date.now() - startTime}ms`,
             },
@@ -135,7 +146,7 @@ export default class implements Event {
         } else {
           logger.warn(
             {
-              command: interaction.commandName,
+              command: this.commandName,
               user: `${interaction.user.tag} (${interaction.user.id})`,
               time: `${Date.now() - startTime}ms`,
             },
@@ -143,7 +154,7 @@ export default class implements Event {
           );
         }
       } catch (error) {
-        logger.warn(`Command ${interaction.commandName} failed to execute.`);
+        logger.warn(`Command ${this.commandName} failed to execute.`);
         logInteractionError(interaction);
         if (error) logger.error(error);
         await interaction.reply({
@@ -152,10 +163,10 @@ export default class implements Event {
         });
       }
     } else if (interaction.isAutocomplete()) {
-      const command = client.interactions.get(interaction.commandName);
+      const command = client.interactions.get(this.commandName);
 
       if (!command) {
-        logger.error(`No command matching ${interaction.commandName} was found.`);
+        logger.error(`No command matching ${this.commandName} was found.`);
         return;
       }
 
@@ -167,7 +178,7 @@ export default class implements Event {
       try {
         await command.autocomplete(interaction);
       } catch (error) {
-        logger.warn(`Autocomplete ${interaction.commandName} failed to execute.`);
+        logger.warn(`Autocomplete ${this.commandName} failed to execute.`);
         logInteractionError(interaction);
         logger.error(error);
       }
