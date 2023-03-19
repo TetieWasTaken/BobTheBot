@@ -20,7 +20,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
   const embed = new EmbedBuilder()
     .setTitle("Okay I pull up")
     .setImage(`${img.data.url}`)
-    .setColor(interaction.guild?.members?.me?.displayHexColor ?? Color.DiscordPrimary)
+    .setColor(Color.DiscordEmbedBackground)
     .setFooter({
       text: `Requested by ${interaction.user.tag}`,
       iconURL: `${interaction.user.displayAvatarURL()}`,
