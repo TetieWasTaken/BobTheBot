@@ -21,7 +21,6 @@
     "@types/node-cron": "^3.0.7",
     "discord.js": "^14.8.0",
     "dotenv": "^16.0.3",
-    "ffmpeg-static": "^5.1.0",
     "mongoose": "^7.0.0",
     "ms": "^3.0.0-canary.1",
     "node-cron": "^3.0.2",
