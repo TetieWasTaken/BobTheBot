@@ -6,8 +6,8 @@ import {
   ButtonStyle,
   ActionRowBuilder,
   EmbedBuilder,
-  type MessageContextMenuCommandInteraction,
   ApplicationCommandType,
+  type MessageContextMenuCommandInteraction,
 } from "discord.js";
 import { Color } from "../../../constants.js";
 import { GuildModel } from "../../../models/index.js";
