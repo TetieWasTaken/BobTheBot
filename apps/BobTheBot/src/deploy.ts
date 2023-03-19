@@ -17,7 +17,7 @@ const interactions = [];
 for await (const dir of readdirp(fileURLToPath(new URL("interactions", import.meta.url)), {
   fileFilter: ["*.js"],
 })) {
-  const commandName = `${capitalizeFirst(getCommandData(dir.fullPath)?.name ?? "")}Command`;
+  const commandName = `${capitalizeFirst(getCommandData(dir.fullPath)?.name.replaceAll(/\d/g, "") ?? "")}Command`;
   if (commandName.length <= 7) {
     logger.error(`No command name provided for ${dir.fullPath}`);
     continue;
