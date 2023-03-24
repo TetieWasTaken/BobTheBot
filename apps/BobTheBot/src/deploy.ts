@@ -1,8 +1,9 @@
-import fs from "node:fs";
 import process from "node:process";
+import { fileURLToPath, URL } from "node:url";
 import { REST, Routes } from "discord.js";
 import dotenv from "dotenv";
-import { logger } from "./utils/index.js";
+import readdirp from "readdirp";
+import { capitalizeFirst, getCommandData, logger } from "./utils/index.js";
 
 dotenv.config();
 
@@ -11,35 +12,27 @@ if (!process.env.BOT_TOKEN) {
   process.exit(1);
 }
 
-const commandFolders = fs.readdirSync("./src/interactions/").filter((item: string) => !/(?:^|\/)\.[^./]/g.test(item));
 const interactions = [];
 
-/* eslint-disable @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports */
-
-for (const folder of commandFolders) {
-  const commandFiles = fs.readdirSync(`./src/interactions/${folder}`);
-  for (const file of commandFiles) {
-    if (!file.endsWith(".js") && !file.endsWith(".ts")) {
-      const subFiles = fs.readdirSync(`./src/interactions/${folder}/${file}`);
-      for (const subFile of subFiles) {
-        try {
-          const command = require(`./interactions/${folder}/${file}/${subFile.replace(".ts", ".js")}`);
-          interactions.push(command.data.toJSON());
-        } catch (error) {
-          logger.error(error);
-        }
-      }
-
-      continue;
-    }
-
-    try {
-      const command = require(`./interactions/${folder}/${file.replace(".ts", ".js")}`);
-      interactions.push(command.data.toJSON());
-    } catch (error) {
-      logger.error(error);
-    }
+for await (const dir of readdirp(fileURLToPath(new URL("interactions", import.meta.url)), {
+  fileFilter: ["*.js"],
+})) {
+  const commandName = `${capitalizeFirst(getCommandData(dir.fullPath)?.name.replaceAll(/\d/g, "") ?? "")}Command`;
+  if (commandName.length <= 7) {
+    logger.error(`No command name provided for ${dir.fullPath}`);
+    continue;
   }
+
+  const command = await import(dir.fullPath);
+
+  if (!command[commandName]) {
+    logger.error(`No command found for ${dir.fullPath}`);
+    continue;
+  }
+
+  logger.info({ name: dir.path }, `Registering command: ${command[commandName].name}`);
+
+  interactions.push(command[commandName]);
 }
 
 const rest = new REST({
@@ -69,5 +62,5 @@ const rest = new REST({
     logger.error(error);
   }
 
-  logger.info(`Successfully registered ${interactions.length} application commands.`);
+  logger.info(`Successfully registered application commands`);
 })();

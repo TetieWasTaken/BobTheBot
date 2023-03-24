@@ -1,13 +1,12 @@
 import type { Guild } from "discord.js";
+import type { Event } from "../utils/index.js";
 
-module.exports = {
-  name: "guildCreate",
-  once: false,
+export default class implements Event {
+  public name = "guildCreate";
 
-  /**
-   * @param guild - The guild that the bot joined
-   */
-  async execute(guild: Guild) {
+  public once = false;
+
+  public async execute(guild: Guild) {
     await guild.members.me?.setNickname("Bob").catch(() => {});
-  },
-};
+  }
+}

@@ -1,19 +1,12 @@
 import { setTimeout } from "node:timers/promises";
-import dotenv from "dotenv";
-import { logger, type ExtendedClient } from "../utils/index.js";
+import { logger, type ExtendedClient, type Event } from "../utils/index.js";
 
-dotenv.config();
+export default class ReadyEvent implements Event {
+  public name = "ready";
 
-module.exports = {
-  name: "ready",
-  once: true,
+  public once = true;
 
-  /**
-   * Handles the ready event and logs the client status to the console
-   *
-   * @param client - The client that is ready
-   */
-  async execute(client: ExtendedClient): Promise<void> {
+  public async execute(client: ExtendedClient) {
     logger.info("Client is ready");
     // This Promise is required to make sure the WebSocket is fully ready before proceeding
     await setTimeout(1_000);
@@ -39,5 +32,5 @@ module.exports = {
       },
       "Client status"
     );
-  },
-};
+  }
+}
