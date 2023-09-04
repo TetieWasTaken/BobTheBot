@@ -11,7 +11,7 @@ jobs:
   update_changelog:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: jitterbit/get-changed-files@v1
         id: changed-files
